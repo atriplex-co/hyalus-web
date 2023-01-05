@@ -71,7 +71,6 @@
         <p v-else>{{ space.name.slice(0, 1) }}</p>
       </button>
       <button
-        v-if="isDev"
         class="dark:hover:bg-primary-400 dark:bg-dark-700 text-primary-400 flex h-10 w-10 items-center justify-center rounded-full bg-gray-300 transition dark:hover:bg-opacity-10"
         @click="spaceCreateModal = true"
       >
@@ -139,7 +138,6 @@ const userMenu = ref(false);
 const updateReloadModal = ref(false);
 const spaceCreateModal = ref(false);
 const spaceJoinModal = ref(false);
-const isDev = import.meta.env.VITE_GIT_BRANCH === "dev";
 const selectedSpaceId = ref("");
 const selectedSpace = computed(() => {
   return store.spaces.find((space) => space.id === selectedSpaceId.value);

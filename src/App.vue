@@ -29,7 +29,6 @@
     >
       <div id="app-inner"></div>
       <DesktopTitlebar v-if="isDesktop" />
-      <DebugMenu v-if="debug" />
       <router-view v-if="!inApp && !desktopUpdating" />
       <div
         v-if="inApp && store.ready && !desktopUpdating"
@@ -74,7 +73,6 @@ import { ColorTheme, ColorMode } from "@/src/global/constants";
 import UserInviteModal from "./components/UserInviteModal.vue";
 import { isDesktop, isMobile } from "./global/helpers";
 import { useStore } from "./global/store";
-import DebugMenu from "./components/DebugMenu.vue";
 import AppDownloadBanner from "./components/AppDownloadBanner.vue";
 import WelcomeModal from "./components/WelcomeModal.vue";
 import EmailVerifyBanner from "./components/EmailVerifyBanner.vue";

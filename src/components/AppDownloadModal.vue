@@ -44,46 +44,35 @@
         class="mb-4 flex w-full transform flex-col items-center space-y-4 overflow-hidden transition-all"
         :class="{
           'h-0 ': !showAllDownloads,
-          'mt-4 h-[18.625rem] ': showAllDownloads,
+          'mt-4 h-[8rem] ': showAllDownloads,
         }"
       >
         <div
           class="dark:border-dark-600 dark:bg-dark-900 dark:divide-dark-600 col flex w-full flex-col divide-y rounded-md border border-gray-200 bg-gray-100 text-sm shadow-sm"
         >
           <a
-            v-for="download in downloads"
+            v-for="download in availableDownloads"
             :key="download.url"
             :href="download.url"
             target="blank"
             rel="noopener noreferrer"
-            class="dark:hover:bg-dark-700 flex h-10 items-center justify-between px-4 transition hover:bg-gray-200 hover:bg-opacity-50"
+            class="dark:hover:bg-dark-700 flex h-10 space-x-4 items-center px-4 transition hover:bg-gray-200 hover:bg-opacity-50"
           >
-            <div class="flex items-center space-x-4">
-              <WindowsIcon
-                v-if="download.platform === 'win32'"
-                class="h-4 w-4 text-gray-500 dark:text-gray-400"
-              />
-              <AppleIcon
-                v-if="download.platform === 'osx'"
-                class="h-4 w-4 text-gray-500 dark:text-gray-400"
-              />
-              <LinuxIcon
-                v-if="download.platform === 'linux'"
-                class="h-4 w-4 text-gray-500 dark:text-gray-400"
-              />
-              <p>{{ download.url.split("/").at(-1) }}</p>
-            </div>
-            <div
-              class="dark:bg-primary-600 bg-primary-500 rounded-md px-1.5 py-0.5 font-bold text-white"
-            >
-              {{ download.branch }}
-            </div>
+            <WindowsIcon
+              v-if="download.platform === 'win32'"
+              class="h-4 w-4 text-gray-500 dark:text-gray-400"
+            />
+            <AppleIcon
+              v-if="download.platform === 'osx'"
+              class="h-4 w-4 text-gray-500 dark:text-gray-400"
+            />
+            <LinuxIcon
+              v-if="download.platform === 'linux'"
+              class="h-4 w-4 text-gray-500 dark:text-gray-400"
+            />
+            <p>{{ download.url.split("/").at(-1) }}</p>
           </a>
         </div>
-        <p class="w-96 text-center text-sm text-gray-500 dark:text-gray-400">
-          Stable/Dev builds can coexist on the same PC, and connect to seperate
-          servers.
-        </p>
       </div>
     </div>
   </ModalBase>
@@ -102,33 +91,33 @@ import XMarkIcon from "@heroicons/vue/20/solid/XMarkIcon";
 const downloads = [
   {
     platform: "win32",
-    branch: "main",
-    url: "https://github.com/atriplex-co/hyalus/releases/latest/download/HyalusDesktop-win32.exe",
+    origins: ["hyalus.app"],
+    url: "https://github.com/atriplex-co/hyalus-desktop/releases/latest/download/HyalusDesktop-win32.exe",
   },
   {
     platform: "win32",
-    branch: "dev",
-    url: "https://github.com/atriplex-co/hyalus-dev/releases/latest/download/HyalusDesktopDev-win32.exe",
+    origins: ["dev.hyalus.app", "localhost"],
+    url: "https://github.com/atriplex-co/hyalus-desktop-dev/releases/latest/download/HyalusDesktopDev-win32.exe",
   },
   {
     platform: "osx",
-    branch: "main",
-    url: "https://github.com/atriplex-co/hyalus/releases/latest/download/HyalusDesktop-osx.zip",
+    origins: ["hyalus.app"],
+    url: "https://github.com/atriplex-co/hyalus-desktop/releases/latest/download/HyalusDesktop-osx.zip",
   },
   {
     platform: "osx",
-    branch: "dev",
-    url: "https://github.com/atriplex-co/hyalus-dev/releases/latest/download/HyalusDesktopDev-osx.zip",
+    origins: ["dev.hyalus.app", "localhost"],
+    url: "https://github.com/atriplex-co/hyalus-desktop-dev/releases/latest/download/HyalusDesktopDev-osx.zip",
   },
   {
     platform: "linux",
-    branch: "main",
-    url: "https://github.com/atriplex-co/hyalus/releases/latest/download/HyalusDesktop-linux.AppImage",
+    origins: ["hyalus.app"],
+    url: "https://github.com/atriplex-co/hyalus-desktop/releases/latest/download/HyalusDesktop-linux.AppImage",
   },
   {
     platform: "linux",
-    branch: "dev",
-    url: "https://github.com/atriplex-co/hyalus-dev/releases/latest/download/HyalusDesktopDev-linux.AppImage",
+    origins: ["dev.hyalus.app", "localhost"],
+    url: "https://github.com/atriplex-co/hyalus-desktop-dev/releases/latest/download/HyalusDesktopDev-linux.AppImage",
   },
 ];
 
@@ -146,13 +135,16 @@ if (navigator.userAgent.includes("Linux")) {
   platform = "linux";
 }
 
+const availableDownloads = downloads.filter((download) =>
+  download.origins.includes(location.hostname)
+);
 const defaultDownload = downloads.find(
   (download) =>
     download.platform === platform &&
-    download.branch === import.meta.env.VITE_GIT_BRANCH
+    download.origins.includes(location.hostname)
 );
 
 defineEmits(["close"]);
 
-const showAllDownloads = ref(!defaultDownload);
+const showAllDownloads = ref(!availableDownloads);
 </script>

@@ -310,8 +310,7 @@ const submit = async () => {
     +window.HyalusDesktop.osRelease.split(".")[0] >= 10 &&
     +window.HyalusDesktop.osRelease.split(".")[2] >= 19043 &&
     renderer &&
-    !renderer.includes("SwiftShader") && // prevent users w/ no GPU/drivers from using HME.
-    import.meta.env.VITE_GIT_BRANCH === "dev"; // TODO: roll out HME to main channel.
+    !renderer.includes("SwiftShader");
 
   if (win32CaptureSupported) {
     if (!debugForceLegacy.value) {

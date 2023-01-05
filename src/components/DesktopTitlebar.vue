@@ -9,11 +9,8 @@
         <AppIcon class="h-4 w-4" />
         <p>{{ title }}</p>
       </div>
-      <p
-        v-if="gitBranch === 'dev'"
-        class="bg-dark-600 rounded-full px-2 font-bold text-gray-400"
-      >
-        Dev ({{ gitCommitHash }})
+      <p class="bg-dark-600 rounded-full px-2 font-bold text-gray-400">
+        {{ env }} ({{ commit }})
       </p>
     </div>
     <div class="flex h-full items-center text-gray-500">
@@ -55,11 +52,9 @@
 import AppIcon from "../icons/AppIcon.vue";
 import { onUnmounted, ref } from "vue";
 
-const gitBranch = import.meta.env.VITE_GIT_BRANCH;
-const gitCommitHash = import.meta.env.VITE_GIT_COMMIT_HASH;
-
+const env = import.meta.env.VITE_ENV;
+const commit = import.meta.env.VITE_COMMIT;
 const title = ref("");
-
 let updateTitleInterval: number;
 
 const updateTitle = () => {
@@ -81,7 +76,6 @@ const minimize = () => {
 };
 
 updateTitleInterval = +setInterval(updateTitle, 100);
-
 onUnmounted(() => {
   clearInterval(updateTitleInterval);
 });

@@ -14,6 +14,10 @@ import DayLocalizedFormat from "dayjs/plugin/localizedFormat";
 import DayISOWeek from "dayjs/plugin/isoWeek";
 import { ColorMode } from "@/src/global/constants";
 
+console.log(
+  `${import.meta.env.VITE_ENV} (${import.meta.env.VITE_COMMIT})`
+);
+
 if (!isMobile) {
   document.querySelector("link[rel='manifest']")?.remove(); // prevent PWA from being installed on desktop.
 }
