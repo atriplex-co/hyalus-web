@@ -4,7 +4,7 @@
     <div class="mt-8 flex items-center justify-between">
       <div class="flex items-center space-x-4">
         <div
-          class="ring-primary-500 dark:border-dark-500 transition-gray-400 relative h-16 w-16 cursor-pointer overflow-hidden rounded-full border border-gray-200 bg-gray-100 text-gray-600 shadow-sm transition dark:bg-gray-900"
+          class="ring-primary-500 dark:border-dark-500 transition-gray-400 relative h-16 w-16 cursor-pointer overflow-hidden rounded-full border border-gray-200 bg-gray-100 text-gray-600 shadow-sm transition dark:bg-dark-800"
           @click="setAvatar"
         >
           <UserAvatar
