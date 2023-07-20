@@ -104,6 +104,13 @@ export const useStore = defineStore("main", {
     async start(): Promise<void> {
       await sodium.ready;
 
+      if (window.HyalusDesktop && window.HyalusDesktop.getBoostrapConfig) {
+        const config = window.HyalusDesktop.getBoostrapConfig();
+        if (config) {
+          localStorage.config = config;
+        }
+      }
+
       const oldConfig = await idbGet("config");
       if (oldConfig) {
         localStorage.config = sodium.to_base64(msgpack.encode(oldConfig));
@@ -822,7 +829,9 @@ export const useStore = defineStore("main", {
         !opts.submitOverride &&
         [CallStreamType.Video, CallStreamType.DisplayVideo].includes(opts.type)
       ) {
-        encoder = new VideoEncoder(encoderInit as VideoEncoderInit) as MediaEncoder;
+        encoder = new VideoEncoder(
+          encoderInit as VideoEncoderInit,
+        ) as MediaEncoder;
       }
 
       stream =
