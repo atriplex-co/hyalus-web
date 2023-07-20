@@ -92,17 +92,17 @@ const downloads = [
   {
     platform: "win32",
     branch: "main",
-    url: "https://github.com/atriplex-co/hyalus/releases/latest/download/HyalusDesktop-win32.exe",
+    url: "https://github.com/atriplex-co/hyalus-desktop/releases/latest/download/HyalusDesktop-win32.exe",
   },
   {
     platform: "osx",
     branch: "main",
-    url: "https://github.com/atriplex-co/hyalus/releases/latest/download/HyalusDesktop-osx.zip",
+    url: "https://github.com/atriplex-co/hyalus-desktop/releases/latest/download/HyalusDesktop-osx.zip",
   },
   {
     platform: "linux",
     branch: "main",
-    url: "https://github.com/atriplex-co/hyalus/releases/latest/download/HyalusDesktop-linux.AppImage",
+    url: "https://github.com/atriplex-co/hyalus-desktop/releases/latest/download/HyalusDesktop-linux.AppImage",
   },
 ];
 
