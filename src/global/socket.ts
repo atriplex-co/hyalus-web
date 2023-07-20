@@ -119,13 +119,6 @@ export class Socket {
             currentSessionId: string;
             flags: number;
           };
-          sessions: {
-            id: string;
-            createdAt: number;
-            updatedAt: number;
-            ip: string;
-            userAgent: string;
-          }[];
           friends: {
             id: string;
             name: string;
@@ -234,22 +227,11 @@ export class Socket {
           flags: data.self.flags,
         };
 
-        store.sessions = [];
         store.friends = [];
         store.channels = [];
         store.channelStates = [];
         store.spaces = [];
         store.voiceStates = [];
-
-        for (const session of data.sessions) {
-          store.sessions.push({
-            id: session.id,
-            createdAt: new Date(session.createdAt),
-            updatedAt: new Date(session.updatedAt),
-            ip: session.ip,
-            userAgent: session.userAgent,
-          });
-        }
 
         for (const friend of data.friends) {
           store.friends.push({
@@ -581,54 +563,6 @@ export class Socket {
         if (data.colorTheme !== undefined && store.config.colorSync) {
           await store.writeConfig("colorTheme", data.colorTheme);
         }
-      }
-
-      if (msg.t === SocketMessageType.SSessionCreate) {
-        const data = msg.d as {
-          id: string;
-          createdAt: number;
-          updatedAt: number;
-          ip: string;
-          userAgent: string;
-        };
-
-        store.sessions.push({
-          id: data.id,
-          createdAt: new Date(data.createdAt),
-          updatedAt: new Date(data.updatedAt),
-          ip: data.ip,
-          userAgent: data.userAgent,
-        });
-      }
-
-      if (msg.t === SocketMessageType.SSessionUpdate) {
-        const data = msg.d as {
-          id: string;
-          lastStart?: number;
-        };
-
-        const session = store.sessions.find(
-          (session) => session.id === data.id,
-        );
-
-        if (!session) {
-          console.warn(`SSessionUpdate for invalid session: ${data.id}`);
-          return;
-        }
-
-        if (data.lastStart !== undefined) {
-          session.updatedAt = new Date(data.lastStart);
-        }
-      }
-
-      if (msg.t === SocketMessageType.SSessionDelete) {
-        const data = msg.d as {
-          id: string;
-        };
-
-        store.sessions = store.sessions.filter(
-          (session) => session.id !== data.id,
-        );
       }
 
       if (msg.t === SocketMessageType.SFriendCreate) {

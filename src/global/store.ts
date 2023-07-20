@@ -83,7 +83,6 @@ export const useStore = defineStore("main", {
       },
       updateAvailable: false,
       updateRequired: false,
-      sessions: [],
       friends: [],
       channels: [],
       channelStates: [],

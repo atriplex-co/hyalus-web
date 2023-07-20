@@ -75,21 +75,9 @@ export const router = createRouter({
       beforeEnter: requireAuth,
     },
     {
-      name: "settingsUpdate",
-      path: "/settings/update",
-      component: () => import("../views/SettingsUpdateView.vue"),
-      beforeEnter: requireAuth,
-    },
-    {
       name: "settingsNotifications",
       path: "/settings/notifications",
       component: () => import("../views/SettingsNotificationsView.vue"),
-      beforeEnter: requireAuth,
-    },
-    {
-      name: "settingsSessions",
-      path: "/settings/sessions",
-      component: () => import("../views/SettingsSessionsView.vue"),
       beforeEnter: requireAuth,
     },
     {

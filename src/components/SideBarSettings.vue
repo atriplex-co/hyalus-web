@@ -21,18 +21,6 @@
         class="flex cursor-pointer items-center space-x-4 rounded-md py-1.5 px-3 transition hover:bg-gray-200 hover:bg-opacity-50 hover:text-gray-800 dark:hover:bg-gray-800 dark:hover:bg-opacity-50 dark:hover:text-white"
         :class="{
           'bg-gray-200 text-gray-800 dark:bg-gray-800 dark:text-white':
-            active === 'sessions',
-        }"
-        to="/settings/sessions"
-        @click="active = 'sessions'"
-      >
-        <DesktopIcon class="h-5 w-5" />
-        <p>Sessions</p>
-      </router-link>
-      <router-link
-        class="flex cursor-pointer items-center space-x-4 rounded-md py-1.5 px-3 transition hover:bg-gray-200 hover:bg-opacity-50 hover:text-gray-800 dark:hover:bg-gray-800 dark:hover:bg-opacity-50 dark:hover:text-white"
-        :class="{
-          'bg-gray-200 text-gray-800 dark:bg-gray-800 dark:text-white':
             active === 'appearance',
         }"
         to="/settings/appearance"
@@ -78,18 +66,6 @@
         <p>Keyboard Shortcuts</p>
       </router-link>
       <router-link
-        class="flex cursor-pointer items-center space-x-4 rounded-md py-1.5 px-3 transition hover:bg-gray-200 hover:bg-opacity-50 hover:text-gray-800 dark:hover:bg-gray-800 dark:hover:bg-opacity-50 dark:hover:text-white"
-        :class="{
-          'bg-gray-200 text-gray-800 dark:bg-gray-800 dark:text-white':
-            active === 'update',
-        }"
-        to="/settings/update"
-        @click="active = 'update'"
-      >
-        <RefreshIcon class="h-5 w-5" />
-        <p>Updates &amp; Changelog</p>
-      </router-link>
-      <router-link
         v-if="isDesktop"
         class="flex cursor-pointer items-center space-x-4 rounded-md py-1.5 px-3 transition hover:bg-gray-200 hover:bg-opacity-50 hover:text-gray-800 dark:hover:bg-gray-800 dark:hover:bg-opacity-50 dark:hover:text-white"
         :class="{
@@ -119,11 +95,9 @@ import LogoutModal from "./LogoutModal.vue";
 import UserIcon from "../icons/UserIcon.vue";
 import BellIcon from "../icons/BellIcon.vue";
 import VideoIcon from "../icons/VideoIcon.vue";
-import RefreshIcon from "../icons/RefreshIcon.vue";
 import LogoutIcon from "../icons/LogoutIcon.vue";
 import KeyboardIcon from "../icons/KeyboardIcon.vue";
 import EyeIcon from "../icons/EyeIcon.vue";
-import DesktopIcon from "../icons/DesktopIcon.vue";
 import { ref, watch } from "vue";
 import { useRouter } from "vue-router";
 import ChipIcon from "../icons/ChipIcon.vue";

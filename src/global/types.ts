@@ -21,7 +21,6 @@ export interface IState {
   updateAvailable: boolean;
   updateRequired: boolean;
   self: ISelf | null;
-  sessions: ISession[];
   friends: IFriend[];
   channels: IChannel[];
   channelStates: IChannelState[];
