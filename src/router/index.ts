@@ -51,42 +51,6 @@ export const router = createRouter({
       beforeEnter: requireNoAuth,
     },
     {
-      name: "settingsAccount",
-      path: "/settings/account",
-      component: () => import("../views/SettingsAccountView.vue"),
-      beforeEnter: requireAuth,
-    },
-    {
-      name: "settingsAppearance",
-      path: "/settings/appearance",
-      component: () => import("../views/SettingsAppearanceView.vue"),
-      beforeEnter: requireAuth,
-    },
-    {
-      name: "settingsMedia",
-      path: "/settings/media",
-      component: () => import("../views/SettingsMediaView.vue"),
-      beforeEnter: requireAuth,
-    },
-    {
-      name: "settingsKeyboard",
-      path: "/settings/keyboard",
-      component: () => import("../views/SettingsKeyboardView.vue"),
-      beforeEnter: requireAuth,
-    },
-    {
-      name: "settingsNotifications",
-      path: "/settings/notifications",
-      component: () => import("../views/SettingsNotificationsView.vue"),
-      beforeEnter: requireAuth,
-    },
-    {
-      name: "settingsDesktop",
-      path: "/settings/desktop",
-      component: () => import("../views/SettingsDesktopView.vue"),
-      beforeEnter: requireAuth,
-    },
-    {
       name: "channel",
       path: "/channels/:channelId",
       component: () => import("../views/ChannelView.vue"),

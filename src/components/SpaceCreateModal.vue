@@ -9,7 +9,7 @@
       <PlusIcon />
     </template>
     <template #main>
-      <p class="text-primary-500">
+      <p class="text-ctp-accent">
         WARNING: Spaces are currently experimental and may be wiped during
         development!
       </p>
@@ -18,7 +18,7 @@
     </template>
     <template #submit>
       <button
-        class="dark:bg-dark-500 bg-primary-500 hover:bg-primary-600 dark:hover:bg-dark-400 cursor-pointer rounded-md px-4 py-2 text-gray-400 shadow-sm transition hover:text-white"
+        class="dark:bg-dark-500 bg-ctp-base hover:bg-ctp-base dark:hover:bg-dark-400 cursor-pointer rounded-md px-4 py-2 text-gray-400 shadow-sm transition hover:text-white"
         @click="
           $emit('close');
           $emit('join');

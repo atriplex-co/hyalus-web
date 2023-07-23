@@ -14,13 +14,13 @@
           <p
             class="truncate font-semibold"
             :class="{
-              'text-gray-400 transition group-hover:text-white': !color,
+              'text-ctp-subtext0 transition group-hover:text-ctp-text': !color,
             }"
             :style="color ? `color: ${color};` : ''"
           >
             {{ member.name }}
           </p>
-          <p class="truncate text-xs text-gray-500 dark:text-gray-400">
+          <p class="truncate text-xs text-ctp-subtext0">
             @{{ member.username }}
           </p>
         </div>

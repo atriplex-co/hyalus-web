@@ -9,7 +9,7 @@
     }"
   >
     <div
-      class="dark:bg-dark-900 flex min-h-0 w-16 flex-col items-center space-y-2 bg-gray-200 py-2"
+      class="flex min-h-0 w-16 flex-col items-center space-y-2 bg-ctp-crust py-2"
     >
       <div class="relative" @mouseup="userMenu && $event.stopPropagation()">
         <UserAvatar
@@ -24,7 +24,7 @@
       <router-link
         v-for="channel in privateChannels"
         :key="channel.id"
-        class="hover:text-primary-400 dark:bg-dark-800 relative flex h-10 w-10 items-center justify-center rounded-full bg-gray-300 text-gray-500 transition hover:bg-gray-400 hover:bg-opacity-50"
+        class="hover:text-ctp-accent dark:bg-dark-800 relative flex h-10 w-10 items-center justify-center rounded-full bg-gray-300 text-gray-500 transition hover:bg-gray-400 hover:bg-opacity-50"
         :to="`/channels/${channel.id}`"
       >
         <UserAvatar
@@ -45,20 +45,20 @@
           {{ channel.name.slice(0, 1) }}
         </p>
         <p
-          class="bg-primary-500 ring-dark-900 absolute bottom-0 right-0 h-4 min-w-[1rem] rounded-full px-1 text-center text-xs font-bold text-white ring-2"
+          class="bg-ctp-accent ring-ctp-crust absolute bottom-0 right-0 h-4 min-w-[1rem] rounded-full px-1 text-center text-xs font-bold text-ctp-base ring-2"
         >
           {{ getChannelState(channel).mentionCount }}
         </p>
       </router-link>
       <div class="w-full px-3">
-        <div class="border-dark-600 -mt-px border-t"></div>
+        <div class="border-ctp-base -mt-px border-t"></div>
       </div>
       <button
         v-for="space in store.spaces"
         :key="space.id"
-        class="dark:bg-dark-700 dark:hover:bg-primary-400 flex h-10 w-10 items-center justify-center overflow-hidden rounded-full bg-gray-300 transition hover:bg-gray-400 hover:bg-opacity-50 dark:hover:bg-opacity-10"
+        class="bg-ctp-base flex h-10 w-10 items-center justify-center overflow-hidden rounded-full transition text-ctp-accent hover:bg-ctp-surface0/75"
         :class="{
-          'ring-primary-600 ring-2':
+          'ring-ctp-accent ring-2':
             store.sideBarState === SideBarState.SPACE &&
             selectedSpaceId === space.id,
         }"
@@ -72,14 +72,14 @@
       </button>
       <button
         v-if="isDev"
-        class="dark:hover:bg-primary-400 dark:bg-dark-700 text-primary-400 flex h-10 w-10 items-center justify-center rounded-full bg-gray-300 transition dark:hover:bg-opacity-10"
+        class="bg-ctp-base hover:bg-ctp-surface0/75 text-ctp-accent flex h-10 w-10 items-center justify-center rounded-full transition"
         @click="spaceCreateModal = true"
       >
         <PlusIcon class="h-5 w-5" />
       </button>
       <button
         v-if="store.updateAvailable"
-        class="dark:hover:bg-primary-400 dark:bg-dark-700 text-primary-400 flex h-10 w-10 items-center justify-center rounded-full bg-gray-300 transition dark:hover:bg-opacity-10"
+        class="bg-ctp-base hover:bg-ctp-surface0/75 text-ctp-accent flex h-10 w-10 items-center justify-center rounded-full transition"
         @click="updateReloadModal = true"
       >
         <RefreshIcon class="h-5 w-5" />
@@ -87,7 +87,7 @@
     </div>
     <div
       v-if="store.sideBarState !== SideBarState.NONE"
-      class="dark:bg-dark-800 flex min-w-0 flex-1 flex-col bg-gray-100"
+      class="flex min-w-0 flex-1 flex-col bg-ctp-mantle"
     >
       <div class="min-h-0 flex-1">
         <SidebarHome v-if="store.sideBarState == SideBarState.HOME" />

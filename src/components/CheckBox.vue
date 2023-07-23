@@ -1,16 +1,15 @@
 <template>
   <div
     :class="[
-      'rounded-md border transition duration-100',
+      'rounded-md transition duration-100 border border-ctp-surface0',
       {
-        'dark:bg-dark-800 dark:border-dark-600 border-gray-200 bg-white text-transparent shadow-sm':
-          !modelValue,
+        'text-transparent': !modelValue,
       },
-      { 'bg-primary-500 border-primary-500 text-white': modelValue },
+      { 'bg-ctp-accent text-ctp-base': modelValue },
     ]"
     @click="$emit('update:modelValue', !modelValue)"
   >
-    <CheckIcon class="h-6 w-6 p-1" />
+    <CheckIcon class="h-5 w-5 p-1" />
   </div>
 </template>
 

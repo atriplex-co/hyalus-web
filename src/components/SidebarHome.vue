@@ -2,30 +2,30 @@
   <div class="flex h-full w-full flex-col">
     <div class="flex h-14 items-center space-x-2 p-2">
       <div
-        class="dark:bg-dark-900 flex h-8 w-full items-center space-x-3 overflow-hidden rounded-md bg-gray-200 px-3 dark:text-gray-400"
+        class="bg-ctp-crust flex h-8 w-full items-center space-x-3 overflow-hidden rounded-md px-3 dark:text-gray-400"
       >
         <input
           type="text"
           placeholder="Search"
-          class="w-full bg-transparent text-sm placeholder:text-gray-500"
+          class="w-full bg-transparent text-sm placeholder:text-ctp-overlay0"
         />
-        <SearchIcon class="mt-0.5 h-5 w-5 text-gray-500" />
+        <SearchIcon class="mt-0.5 h-5 w-5 text-ctp-overlay0" />
       </div>
       <div
         to="/friends"
-        class="dark:bg-dark-900 relative flex h-8 w-8 flex-shrink-0 cursor-pointer items-center justify-center rounded-md bg-gray-200 text-gray-500 transition hover:text-gray-800 dark:text-gray-400 dark:hover:text-white"
+        class="bg-ctp-crust relative flex h-8 w-8 flex-shrink-0 cursor-pointer items-center justify-center rounded-md text-ctp-overlay0 transition hover:text-ctp-text dark:text-gray-400 dark:hover:text-white"
         @click="store.sideBarState = SideBarState.FRIENDS"
       >
         <FriendsIcon class="h-4 w-4" />
         <div
           v-if="acceptableFriendsCount"
-          class="bg-primary-500 dark:bg-primary-600 absolute -top-1 -right-1 rounded-full px-1 text-center text-xs font-bold text-white"
+          class="bg-ctp-accent absolute -top-1 -right-1 rounded-full px-1 text-center text-xs font-bold text-ctp-base"
         >
           {{ acceptableFriendsCount }}
         </div>
       </div>
       <div
-        class="dark:bg-dark-900 flex h-8 w-8 flex-shrink-0 cursor-pointer items-center justify-center rounded-md bg-gray-200 text-gray-500 transition hover:text-gray-800 dark:text-gray-400 dark:hover:text-white"
+        class="bg-ctp-crust flex h-8 w-8 flex-shrink-0 cursor-pointer items-center justify-center rounded-md text-ctp-overlay0 transition hover:text-ctp-text dark:text-gray-400 dark:hover:text-white"
         to="/settings/account"
         @click="
           if ($event.shiftKey) {
@@ -47,12 +47,12 @@
     </div>
     <div
       v-if="!channels.length"
-      class="flex flex-1 flex-col items-center justify-center space-y-4 text-sm text-gray-500"
+      class="flex flex-1 flex-col items-center justify-center space-y-4 text-sm text-ctp-subtext0"
     >
       <SparklesIcon class="bg-dark-600 h-12 w-12 rounded-full p-2" />
       <p>Welcome to Hyalus!</p>
       <button
-        class="bg-dark-600 text-primary-400 hover:bg-primary-300 rounded-md p-1.5 transition hover:bg-opacity-5"
+        class="bg-ctp-surface0/50 text-ctp-accent hover:bg-ctp-base rounded-md p-1.5 transition"
         @click="friendAddModal = true"
       >
         Add Friend

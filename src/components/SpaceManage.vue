@@ -74,7 +74,7 @@
       <div class="py-2 px-3">
         <div class="border-dark-600 border-t"></div>
       </div>
-      <div class="text-primary-500 px-3 py-1.5 text-sm">
+      <div class="text-ctp-accent px-3 py-1.5 text-sm">
         WARNING: Spaces are currently experimental and may be wiped during
         development!
       </div>

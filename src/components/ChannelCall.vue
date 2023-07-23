@@ -1,7 +1,7 @@
 <template>
   <div
     v-if="store.call"
-    class="bg-dark-900 top-0 flex flex-col text-white"
+    class="bg-ctp-crust top-0 flex flex-col"
     :style="`height: ${resizeHeight}px;`"
     @mouseenter="controls = true"
     @mouseleave="controls = false"
@@ -34,8 +34,8 @@
         <div
           class="h-12 w-12 cursor-pointer rounded-full p-3.5 transition"
           :class="{
-            'bg-dark-400 text-white': audioStream,
-            'bg-dark-600 bg-opacity-50 text-gray-500 hover:text-white':
+            'bg-ctp-text text-ctp-base': audioStream,
+            'bg-ctp-mantle text-ctp-overlay0 hover:text-ctp-text':
               !audioStream,
           }"
         >
@@ -47,8 +47,8 @@
         <div
           class="h-12 w-12 cursor-pointer rounded-full p-3.5 transition"
           :class="{
-            'bg-dark-400 text-white': videoStream,
-            'bg-dark-600 bg-opacity-50 text-gray-500 hover:text-white':
+            'bg-ctp-text text-ctp-base': videoStream,
+            'bg-ctp-mantle text-ctp-overlay0 hover:text-ctp-text':
               !videoStream,
           }"
         >
@@ -58,15 +58,15 @@
       </div>
       <div @click="stop">
         <CallEndIcon
-          class="bg-primary-500 hover:bg-primary-600 h-12 w-12 cursor-pointer rounded-full p-3 text-white transition"
+          class="bg-ctp-red hover:bg-ctp-red/75 h-12 w-12 cursor-pointer rounded-full p-3 text-ctp-base transition"
         />
       </div>
       <div @click="toggleStream(CallStreamType.DisplayVideo)($event)">
         <DisplayIcon
           class="h-12 w-12 cursor-pointer rounded-full p-3.5 transition"
           :class="{
-            'bg-dark-400 text-white': displayVideoStream,
-            'bg-dark-600 bg-opacity-50 text-gray-500 hover:text-white':
+            'bg-ctp-text text-ctp-base': displayVideoStream,
+            'bg-ctp-mantle text-ctp-overlay0 hover:text-ctp-text':
               !displayVideoStream,
           }"
         />
@@ -75,8 +75,8 @@
         <div
           class="h-12 w-12 cursor-pointer rounded-full p-3.5 transition"
           :class="{
-            'bg-dark-400 text-white': store.call.deaf,
-            'bg-dark-600 bg-opacity-50 text-gray-500 hover:text-white':
+            'bg-ctp-text text-ctp-base': store.call.deaf,
+            'bg-ctp-mantle text-ctp-overlay0 hover:text-ctp-text':
               !store.call.deaf,
           }"
         >

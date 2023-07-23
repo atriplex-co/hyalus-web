@@ -1,27 +1,27 @@
 <template>
   <ModalBase empty @close="$emit('close')">
     <div
-      class="dark:bg-dark-800 relative w-screen max-w-md rounded-md bg-white p-4"
+      class="relative w-screen max-w-md rounded-md bg-ctp-mantle p-4"
     >
       <div
         class="absolute top-4 right-4 cursor-pointer"
         @click="$emit('close')"
       >
-        <XMarkIcon class="h-5 w-5 text-gray-500 dark:text-gray-400" />
+        <XMarkIcon class="h-5 w-5 text-ctp-overlay0" />
       </div>
       <div
         v-if="defaultDownload"
         class="mt-8 flex w-full flex-col items-center space-y-4"
       >
         <div
-          class="dark:bg-dark-600 mb-2 h-20 w-20 rounded-full bg-gray-100 p-4 text-gray-500 dark:text-gray-400"
+          class="mb-2 h-20 w-20 rounded-full bg-ctp-surface0 p-4"
         >
           <WindowsIcon v-if="defaultDownload.platform === 'win32'" />
           <AppleIcon v-if="defaultDownload.platform === 'osx'" />
           <LinuxIcon v-if="defaultDownload.platform === 'linux'" />
         </div>
         <a
-          class="dark:bg-primary-600 bg-primary-500 rounded-md p-2 font-bold text-white shadow-sm"
+          class="bg-ctp-accent rounded-md p-2 font-medium text-ctp-base shadow-sm"
           :href="defaultDownload.url"
         >
           <p v-if="defaultDownload.platform === 'win32'">
@@ -31,7 +31,7 @@
           <p v-if="defaultDownload.platform === 'linux'">Download for Linux</p>
         </a>
         <div
-          class="flex cursor-pointer items-center space-x-1 text-sm text-gray-500 dark:text-gray-400"
+          class="flex cursor-pointer items-center space-x-1 text-sm text-ctp-subtext0"
           @click="showAllDownloads = !showAllDownloads"
         >
           <p v-if="!showAllDownloads">Show all downloads</p>
@@ -48,7 +48,7 @@
         }"
       >
         <div
-          class="dark:border-dark-600 dark:bg-dark-900 dark:divide-dark-600 col flex w-full flex-col divide-y rounded-md border border-gray-200 bg-gray-100 text-sm shadow-sm"
+          class="col flex w-full flex-col divide-y rounded-md border border-ctp-base divide-ctp-base text-sm shadow-sm bg-ctp-crust"
         >
           <a
             v-for="download in downloads"
@@ -56,19 +56,19 @@
             :href="download.url"
             target="blank"
             rel="noopener noreferrer"
-            class="dark:hover:bg-dark-700 flex h-10 items-center space-x-4 px-4 transition hover:bg-gray-200 hover:bg-opacity-50"
+            class="flex h-10 items-center space-x-4 px-4 transition hover:bg-ctp-mantle/75"
           >
             <WindowsIcon
               v-if="download.platform === 'win32'"
-              class="h-4 w-4 text-gray-500 dark:text-gray-400"
+              class="h-4 w-4 text-ctp-subtext0"
             />
             <AppleIcon
               v-if="download.platform === 'osx'"
-              class="h-4 w-4 text-gray-500 dark:text-gray-400"
+              class="h-4 w-4 text-ctp-subtext0"
             />
             <LinuxIcon
               v-if="download.platform === 'linux'"
-              class="h-4 w-4 text-gray-500 dark:text-gray-400"
+              class="h-4 w-4 text-ctp-subtext0"
             />
             <p>{{ download.url.split("/").at(-1) }}</p>
           </a>

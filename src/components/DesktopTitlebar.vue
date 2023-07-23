@@ -1,6 +1,6 @@
 <template>
   <div
-    class="dark:bg-dark-900 z-10 flex h-[30px] items-center bg-gray-200 text-sm text-gray-800 dark:text-gray-200"
+    class="dark:bg-dark-900 flex h-[30px] items-center bg-ctp-crust text-sm z-20"
   >
     <div
       class="draggable flex h-full flex-1 select-none items-center justify-between px-2"
@@ -17,9 +17,9 @@
         Dev ({{ gitCommitHash }})
       </p> -->
     </div>
-    <div class="flex h-full items-center text-gray-500">
+    <div class="flex h-full items-center text-ctp-overlay0">
       <div
-        class="dark:hover:bg-dark-800 flex h-full w-10 items-center justify-center p-2 transition hover:bg-gray-300 hover:text-gray-800 dark:hover:text-white"
+        class="hover:bg-ctp-mantle hover:text-ctp-text flex h-full w-10 items-center justify-center p-2 transition"
         @click="minimize"
       >
         <svg width="11" height="1" viewBox="0 0 11 1" fill="currentColor">
@@ -27,7 +27,7 @@
         </svg>
       </div>
       <div
-        class="dark:hover:bg-dark-800 flex h-full w-10 items-center justify-center p-2 transition hover:bg-gray-300 hover:text-gray-800 dark:hover:text-white"
+        class="hover:bg-ctp-mantle hover:text-ctp-text flex h-full w-10 items-center justify-center p-2 transition"
         @click="maximize"
       >
         <svg width="10" height="10" viewBox="0 0 10 10" fill="currentColor">
@@ -38,7 +38,7 @@
         </svg>
       </div>
       <div
-        class="dark:hover:bg-dark-800 flex h-full w-10 items-center justify-center p-2 transition hover:bg-gray-300 hover:text-gray-800 dark:hover:text-white"
+        class="hover:bg-ctp-mantle hover:text-ctp-text flex h-full w-10 items-center justify-center p-2 transition"
         @click="close"
       >
         <svg width="12" height="12" viewBox="0 0 12 12" fill="currentColor">
@@ -59,7 +59,7 @@ import { onUnmounted, ref } from "vue";
 // const gitBranch = import.meta.env.VITE_GIT_BRANCH;
 // const gitCommitHash = import.meta.env.VITE_GIT_COMMIT_HASH;
 
-const title = ref("");
+const title = ref("Hyalus");
 
 let updateTitleInterval: number;
 

@@ -1,9 +1,9 @@
 <template>
   <div
-    class="dark:hover:border-dark-400 flex w-96 cursor-pointer items-center justify-between rounded-md border bg-gray-100 px-2 py-1 transition hover:border-gray-300 dark:bg-[#1c1c1c]"
+    class="flex w-96 cursor-pointer items-center justify-between rounded-md border px-2 py-1 transition bg-ctp-crust"
     :class="{
-      'dark:border-dark-600 border-gray-200': !record,
-      'dark:border-dark-400 border-gray-300': record,
+      'border-ctp-surface0/50 hover:border-ctp-surface0': !record,
+      'border-ctp-accent hover:border-ctp-accent/50': record,
     }"
     @click="toggleRecord"
   >

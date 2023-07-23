@@ -3,10 +3,10 @@
     class="flex overflow-hidden rounded-full"
     :class="{
       'border-2 p-px': status !== undefined,
-      'border-green-500': status === Status.Online,
-      'border-amber-500': status === Status.Away,
-      'border-rose-500': status === Status.Busy,
-      'border-gray-500': status === Status.Offline,
+      'border-ctp-green': status === Status.Online,
+      'border-ctp-yellow': status === Status.Away,
+      'border-ctp-red': status === Status.Busy,
+      'border-ctp-surface0': status === Status.Offline,
     }"
   >
     <div
@@ -38,7 +38,7 @@
     </div>
     <div
       v-else
-      class="bg-primary-500 flex w-full items-center justify-center rounded-full text-white"
+      class="bg-ctp-accent flex w-full items-center justify-center rounded-full text-ctp-base"
     >
       <UserIcon class="h-2/3 w-2/3" />
     </div>

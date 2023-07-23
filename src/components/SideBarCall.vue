@@ -1,18 +1,16 @@
 <template>
   <div
     v-if="store.self && store.call && channel"
-    class="dark:bg-dark-700 group m-2 mt-0 flex flex-col items-center rounded-md bg-[#fcfcfc] p-2.5 drop-shadow-2xl"
+    class="group m-2 mt-0 flex flex-col items-center rounded-md bg-ctp-crust p-2.5 drop-shadow-2xl"
   >
     <div class="flex w-full min-w-0 items-center justify-between space-x-2">
       <div class="flex min-w-0 flex-1 items-center space-x-2">
-        <div
-          class="dark:bg-dark-500 text-primary-500 h-8 w-8 rounded-md bg-[#f0f0f0] p-2"
-        >
+        <div class="text-ctp-accent h-8 w-8 rounded-md bg-ctp-mantle p-2">
           <PhoneIcon />
         </div>
         <div class="min-w-0 flex-1">
-          <p class="text-primary-500 text-sm font-bold">Call Connected</p>
-          <div class="flex min-w-0 space-x-1 text-xs text-gray-400">
+          <p class="text-ctp-accent text-sm font-bold">Call Connected</p>
+          <div class="flex min-w-0 space-x-1 text-xs text-ctp-subtext0">
             <router-link
               :to="`/channels/${channel.id}`"
               class="block truncate hover:underline"
@@ -26,9 +24,9 @@
       <div class="mr-2 flex flex-shrink-0 -space-x-3">
         <UserAvatar
           :avatar="store.self.avatar"
-          class="h-7 w-7 rounded-full border border-gray-900 transition"
+          class="h-7 w-7 rounded-full border border-ctp-mantle transition"
           :class="{
-            'ring-primary-500 ring-2': store.call.localStreams.find(
+            'ring-ctp-accent ring-2': store.call.localStreams.find(
               (stream) => stream.type === CallStreamType.Audio,
             )?.speaking,
           }"
@@ -37,9 +35,9 @@
           v-for="user in voiceUsersShown"
           :key="user.id"
           :avatar="user.avatar"
-          class="h-7 w-7 rounded-full border border-gray-900 transition"
+          class="h-7 w-7 rounded-full border border-ctp-mantle transition"
           :class="{
-            'ring-primary-500 ring-2': store.call.remoteStreams.find(
+            'ring-ctp-accent ring-2': store.call.remoteStreams.find(
               (stream) =>
                 stream.type === CallStreamType.Audio &&
                 stream.userId === user.id,
@@ -48,7 +46,7 @@
         />
         <div
           v-if="voiceUsers.length !== voiceUsersShown.length"
-          class="bg-primary-500 flex h-7 w-7 items-center justify-center rounded-full border border-gray-900 text-xs font-bold text-white"
+          class="bg-ctp-base flex h-7 w-7 items-center justify-center rounded-full border border-gray-900 text-xs font-bold text-white"
         >
           <p>+{{ voiceUsers.length - voiceUsersShown.length }}</p>
         </div>
@@ -61,10 +59,8 @@
         <div
           class="h-10 w-10 cursor-pointer rounded-full p-3 transition"
           :class="{
-            'dark:bg-dark-100 bg-gray-200 text-gray-500 dark:text-white':
-              audioStream,
-            'dark:bg-dark-900 bg-[#f0f0f0] text-gray-500 hover:text-gray-800 dark:bg-opacity-50 dark:hover:text-white':
-              !audioStream,
+            'bg-ctp-text text-ctp-base': audioStream,
+            'bg-ctp-mantle hover:text-ctp-text text-ctp-subtext0': !audioStream,
           }"
         >
           <MicIcon v-if="audioStream" />
@@ -75,10 +71,8 @@
         <div
           class="h-10 w-10 cursor-pointer rounded-full p-3 transition"
           :class="{
-            'dark:bg-dark-100 bg-gray-200 text-gray-500 dark:text-white':
-              videoStream,
-            'dark:bg-dark-900 bg-[#f0f0f0] text-gray-500 hover:text-gray-800 dark:bg-opacity-50 dark:hover:text-white':
-              !videoStream,
+            'bg-ctp-text text-ctp-base': videoStream,
+            'bg-ctp-mantle hover:text-ctp-text text-ctp-subtext0': !videoStream,
           }"
         >
           <VideoIcon v-if="videoStream" />
@@ -87,16 +81,15 @@
       </div>
       <div @click="stop">
         <CallEndIcon
-          class="bg-primary-500 hover:bg-primary-600 h-10 w-10 cursor-pointer rounded-full p-3 text-white transition"
+          class="bg-ctp-red hover:bg-ctp-red/75 h-10 w-10 cursor-pointer rounded-full p-3 text-ctp-base transition"
         />
       </div>
       <div @click="toggleStream(CallStreamType.DisplayVideo)($event)">
         <DisplayIcon
           class="h-10 w-10 cursor-pointer rounded-full p-3 transition"
           :class="{
-            'dark:bg-dark-100 bg-gray-200 text-gray-500 dark:text-white':
-              displayVideoStream,
-            'dark:bg-dark-900 bg-[#f0f0f0] text-gray-500 hover:text-gray-800 dark:bg-opacity-50 dark:hover:text-white':
+            'bg-ctp-text text-ctp-base': displayVideoStream,
+            'bg-ctp-mantle hover:text-ctp-text text-ctp-subtext0':
               !displayVideoStream,
           }"
         />
@@ -105,9 +98,8 @@
         <div
           class="h-10 w-10 cursor-pointer rounded-full p-3 transition"
           :class="{
-            'dark:bg-dark-100 bg-gray-200 text-gray-500 dark:text-white':
-              store.call.deaf,
-            'dark:bg-dark-900 bg-[#f0f0f0] text-gray-500 hover:text-gray-800 dark:bg-opacity-50 dark:hover:text-white':
+            'bg-ctp-text text-ctp-base': store.call.deaf,
+            'bg-ctp-mantle hover:text-ctp-text text-ctp-subtext0':
               !store.call.deaf,
           }"
         >

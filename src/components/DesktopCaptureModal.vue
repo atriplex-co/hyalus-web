@@ -13,21 +13,20 @@
         <p class="text-sm">Source</p>
         <div
           v-if="!sources.length"
-          class="dark:bg-dark-900 dark:border-dark-600 flex h-96 w-full items-center justify-center rounded-md border border-gray-200 bg-gray-100 p-2 shadow-sm"
+          class="flex h-96 w-full items-center justify-center rounded-md border border-ctp-base bg-ctp-crust p-2 shadow-sm"
         >
-          <LoadingIcon class="h-5 w-5 text-gray-400 dark:text-gray-600" />
+          <LoadingIcon class="h-5 w-5" />
         </div>
         <div
           v-if="sources.length"
-          class="dark:bg-dark-900 dark:border-dark-600 grid h-96 w-full grid-cols-2 items-start gap-2 overflow-auto rounded-md border border-gray-200 bg-gray-100 p-2 shadow-sm"
+          class="grid h-96 w-full grid-cols-2 items-start gap-2 overflow-auto rounded-md border border-ctp-base bg-ctp-crust p-2 shadow-sm"
         >
           <div
             v-for="source in sources"
             :key="source.id"
-            class="flex min-w-0 cursor-pointer flex-col items-center space-y-3 rounded-md px-3 py-2 text-gray-500 hover:bg-gray-200 dark:text-gray-400 dark:hover:bg-gray-900"
+            class="flex min-w-0 cursor-pointer flex-col items-center space-y-3 rounded-md px-3 py-2 hover:bg-ctp-mantle/50 text-ctp-subtext0"
             :class="{
-              'bg-gray-200 bg-opacity-50 dark:bg-gray-900 dark:bg-opacity-50':
-                selectedSourceId === source.id,
+              'bg-ctp-mantle': selectedSourceId === source.id,
             }"
             @click="selectedSourceId = source.id"
           >
@@ -35,7 +34,7 @@
               class="aspect-video h-[72px] w-[128px] rounded-sm object-contain shadow-sm"
               :src="source.thumbnail"
             />
-            <p class="w-full flex-1 truncate text-xs font-bold">
+            <p class="w-full flex-1 truncate text-center text-xs font-bold">
               {{ source.name }}
             </p>
           </div>
@@ -105,17 +104,13 @@ const debugForceLegacy = ref(false);
 // const getRenderer = (): string => {
 //   const canvas = document.createElement("canvas");
 //   const gl = canvas.getContext("webgl");
-
 //   if (!gl) {
 //     return "";
 //   }
-
 //   const ext = gl.getExtension("WEBGL_debug_renderer_info");
-
 //   if (!ext) {
 //     return "";
 //   }
-
 //   return gl.getParameter(ext.UNMASKED_RENDERER_WEBGL);
 // };
 

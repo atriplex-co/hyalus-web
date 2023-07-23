@@ -1,6 +1,6 @@
 <template>
   <div class="space-y-1">
-    <p class="px-1.5 text-xs font-semibold uppercase text-gray-400">
+    <p class="px-1.5 text-xs font-semibold uppercase text-ctp-subtext0">
       {{ name }} - {{ members.length }}
     </p>
     <div>

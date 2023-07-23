@@ -14,11 +14,11 @@
       <div class="w-full space-y-2">
         <p>Type</p>
         <div
-          class="dark:bg-dark-900 dark:border-dark-600 flex w-full items-center space-x-3 rounded-md border border-gray-200 bg-gray-100 p-3 shadow-sm"
+          class="flex w-full items-center space-x-3 rounded-md border bg-ctp-crust border-ctp-base p-3 shadow-sm"
           @click="type = ChannelType.SpaceText"
         >
           <HashtagIcon
-            class="dark:bg-dark-800 h-8 w-8 rounded-full bg-gray-200 p-2 text-gray-500 dark:text-gray-400"
+            class="bg-ctp-base h-8 w-8 rounded-full p-2 text-ctp-subtext0"
           />
           <div class="flex-1">
             <p class="font-bold">Text Channel</p>
@@ -26,11 +26,11 @@
           <CheckBox :model-value="type === ChannelType.SpaceText" />
         </div>
         <div
-          class="dark:bg-dark-900 dark:border-dark-600 flex w-full items-center space-x-3 rounded-md border border-gray-200 bg-gray-100 p-3 shadow-sm"
+          class="flex w-full items-center space-x-3 rounded-md border bg-ctp-crust border-ctp-base p-3 shadow-sm"
           @click="type = ChannelType.SpaceVoice"
         >
           <SpeakerWaveIcon
-            class="dark:bg-dark-800 h-8 w-8 rounded-full bg-gray-200 p-2 text-gray-500 dark:text-gray-400"
+            class="bg-ctp-base h-8 w-8 rounded-full p-2 text-ctp-subtext0"
           />
           <div class="flex-1">
             <p class="font-bold">Voice Channel</p>

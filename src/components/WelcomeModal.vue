@@ -14,7 +14,7 @@
         <ModalError v-if="error" :error="error" />
         <p>Get started by setting up your account.</p>
         <div
-          class="ring-primary-500 dark:bg-dark-900 dark:border-dark-600 transition-gray-400 relative h-16 w-16 cursor-pointer overflow-hidden rounded-full border border-gray-200 bg-gray-100 text-gray-600 shadow-sm transition"
+          class="ring-ctp-accent transition relative h-16 w-16 cursor-pointer overflow-hidden rounded-full shadow-sm bg-ctp-crust"
           @click="setAvatar"
         >
           <UserAvatar
@@ -23,10 +23,9 @@
             class="h-16 w-16 cursor-pointer rounded-full"
           />
           <div
-            class="absolute inset-0 flex items-center justify-center transition hover:text-black dark:hover:text-white"
+            class="absolute inset-0 flex items-center justify-center text-ctp-subtext0 hover:text-ctp-text transition hover:bg-ctp-crust/50"
             :class="{
-              'text-white opacity-0 hover:bg-gray-900 hover:bg-opacity-50 hover:opacity-100':
-                store.self.avatar,
+              'opacity-0 hover:opacity-100': store.self.avatar,
             }"
           >
             <ArrowUpOnSquareIcon class="h-5 w-5" />
@@ -38,27 +37,27 @@
           <div class="relative">
             <input
               v-model="username"
-              class="ring-primary-500 dark:bg-dark-900 dark:border-dark-600 w-full rounded-md border border-gray-200 bg-gray-100 px-4 py-2 pl-11 text-gray-600 shadow-sm transition focus:outline-none focus:ring dark:text-gray-400"
+              class="ring-ctp-accent w-full rounded-md border border-ctp-base bg-ctp-crust px-4 py-2 pl-11 text-ctp-subtext0 shadow-sm transition focus:outline-none focus:ring dark:text-gray-400"
               type="text"
               spellcheck="false"
               @input="usernameEdited = true"
             />
             <div
-              class="dark:border-dark-600 absolute left-0 top-0 ml-1 -mt-px flex h-full items-center border-r px-2 dark:text-gray-500"
+              class="absolute left-0 top-0 ml-1 -mt-px flex h-full items-center border-r px-2 text-ctp-subtext0 border-ctp-base"
             >
               <p>@</p>
             </div>
             <div class="absolute top-0 right-0 h-full py-2 px-3">
               <div
                 v-if="usernameCheckOk === 1"
-                class="flex h-full items-center space-x-1 rounded-md bg-green-600 px-1 text-xs text-white"
+                class="flex h-full items-center space-x-1 rounded-md bg-ctp-accent px-1 text-xs text-ctp-base"
               >
                 <CheckIcon class="h-4 w-4" />
                 <p>Available</p>
               </div>
               <div
                 v-if="usernameCheckOk === 2"
-                class="flex h-full items-center space-x-1 rounded-md bg-rose-500 px-1 text-xs text-white"
+                class="flex h-full items-center space-x-1 rounded-md bg-ctp-red px-1 text-xs text-ctp-base"
               >
                 <XMarkIcon class="h-4 w-4" />
                 <p>Taken</p>

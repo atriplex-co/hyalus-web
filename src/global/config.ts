@@ -44,6 +44,6 @@ export const messageFormatter = new MarkdownIt("zero", {
     attrs: {
       target: "_blank",
       rel: "noopener noreferrer",
-      class: "text-primary-400 hover:text-primary-500 transition",
+      class: "underline font-medium",
     },
   });

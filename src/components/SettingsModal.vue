@@ -2,10 +2,9 @@
   <SplitModal @close="$emit('close')">
     <template #left>
       <div
-        class="dark:hover:bg-dark-600 flex cursor-pointer items-center space-x-4 rounded-md py-1.5 px-3 transition hover:bg-gray-200 hover:bg-opacity-50 hover:text-gray-800 dark:hover:text-white"
+        class="flex cursor-pointer items-center space-x-4 rounded-md py-1.5 px-3 transition hover:bg-ctp-base/50"
         :class="{
-          'dark:bg-dark-600 bg-gray-200 text-gray-800 dark:text-white':
-            active === 'account',
+          'text-ctp-text bg-ctp-base': active === 'account',
         }"
         @click="active = 'account'"
       >
@@ -13,10 +12,9 @@
         <p>Account</p>
       </div>
       <div
-        class="dark:hover:bg-dark-600 flex cursor-pointer items-center space-x-4 rounded-md py-1.5 px-3 transition hover:bg-gray-200 hover:bg-opacity-50 hover:text-gray-800 dark:hover:text-white"
+        class="flex cursor-pointer items-center space-x-4 rounded-md py-1.5 px-3 transition hover:bg-ctp-base/50"
         :class="{
-          'dark:bg-dark-600 bg-gray-200 text-gray-800 dark:text-white':
-            active === 'profile',
+          'text-ctp-text bg-ctp-base': active === 'profile',
         }"
         @click="active = 'profile'"
       >
@@ -24,10 +22,9 @@
         <p>Profile</p>
       </div>
       <div
-        class="dark:hover:bg-dark-600 flex cursor-pointer items-center space-x-4 rounded-md py-1.5 px-3 transition hover:bg-gray-200 hover:bg-opacity-50 hover:text-gray-800 dark:hover:text-white"
+        class="flex cursor-pointer items-center space-x-4 rounded-md py-1.5 px-3 transition hover:bg-ctp-base/50"
         :class="{
-          'dark:bg-dark-600 bg-gray-200 text-gray-800 dark:text-white':
-            active === 'sessions',
+          'text-ctp-text bg-ctp-base': active === 'sessions',
         }"
         @click="active = 'sessions'"
       >
@@ -35,10 +32,9 @@
         <p>Sessions</p>
       </div>
       <div
-        class="dark:hover:bg-dark-600 flex cursor-pointer items-center space-x-4 rounded-md py-1.5 px-3 transition hover:bg-gray-200 hover:bg-opacity-50 hover:text-gray-800 dark:hover:text-white"
+        class="flex cursor-pointer items-center space-x-4 rounded-md py-1.5 px-3 transition hover:bg-ctp-base/50"
         :class="{
-          'dark:bg-dark-600 bg-gray-200 text-gray-800 dark:text-white':
-            active === 'appearance',
+          'text-ctp-text bg-ctp-base': active === 'appearance',
         }"
         @click="active = 'appearance'"
       >
@@ -46,10 +42,9 @@
         <p>Appearance</p>
       </div>
       <div
-        class="dark:hover:bg-dark-600 flex cursor-pointer items-center space-x-4 rounded-md py-1.5 px-3 transition hover:bg-gray-200 hover:bg-opacity-50 hover:text-gray-800 dark:hover:text-white"
+        class="flex cursor-pointer items-center space-x-4 rounded-md py-1.5 px-3 transition hover:bg-ctp-base/50"
         :class="{
-          'dark:bg-dark-600 bg-gray-200 text-gray-800 dark:text-white':
-            active === 'notifications',
+          'text-ctp-text bg-ctp-base': active === 'notifications',
         }"
         @click="active = 'notifications'"
       >
@@ -57,10 +52,9 @@
         <p>Notifications</p>
       </div>
       <div
-        class="dark:hover:bg-dark-600 flex cursor-pointer items-center space-x-4 rounded-md py-1.5 px-3 transition hover:bg-gray-200 hover:bg-opacity-50 hover:text-gray-800 dark:hover:text-white"
+        class="flex cursor-pointer items-center space-x-4 rounded-md py-1.5 px-3 transition hover:bg-ctp-base/50"
         :class="{
-          'dark:bg-dark-600 bg-gray-200 text-gray-800 dark:text-white':
-            active === 'av',
+          'text-ctp-text bg-ctp-base': active === 'av',
         }"
         @click="active = 'av'"
       >
@@ -68,10 +62,9 @@
         <p>Audio &amp; Video</p>
       </div>
       <div
-        class="dark:hover:bg-dark-600 flex cursor-pointer items-center space-x-4 rounded-md py-1.5 px-3 transition hover:bg-gray-200 hover:bg-opacity-50 hover:text-gray-800 dark:hover:text-white"
+        class="flex cursor-pointer items-center space-x-4 rounded-md py-1.5 px-3 transition hover:bg-ctp-base/50"
         :class="{
-          'dark:bg-dark-600 bg-gray-200 text-gray-800 dark:text-white':
-            active === 'keybinds',
+          'text-ctp-text bg-ctp-base': active === 'keybinds',
         }"
         @click="active = 'keybinds'"
       >
@@ -80,10 +73,9 @@
       </div>
       <div
         v-if="isDesktop"
-        class="dark:hover:bg-dark-600 flex cursor-pointer items-center space-x-4 rounded-md py-1.5 px-3 transition hover:bg-gray-200 hover:bg-opacity-50 hover:text-gray-800 dark:hover:text-white"
+        class="flex cursor-pointer items-center space-x-4 rounded-md py-1.5 px-3 transition hover:bg-ctp-base/50"
         :class="{
-          'dark:bg-dark-600 bg-gray-200 text-gray-800 dark:text-white':
-            active === 'desktop',
+          'text-ctp-text bg-ctp-base': active === 'desktop',
         }"
         @click="active = 'desktop'"
       >
@@ -91,10 +83,9 @@
         <p>Desktop App</p>
       </div>
       <div
-        class="dark:hover:bg-dark-600 flex cursor-pointer items-center space-x-4 rounded-md py-1.5 px-3 transition hover:bg-gray-200 hover:bg-opacity-50 hover:text-gray-800 dark:hover:text-white"
+        class="flex cursor-pointer items-center space-x-4 rounded-md py-1.5 px-3 transition hover:bg-ctp-base/50"
         :class="{
-          'dark:bg-dark-600 bg-gray-200 text-gray-800 dark:text-white':
-            active === 'changelog',
+          'text-ctp-text bg-ctp-base': active === 'changelog',
         }"
         @click="active = 'changelog'"
       >
@@ -102,7 +93,7 @@
         <p>Changelog</p>
       </div>
       <div
-        class="flex cursor-pointer items-center space-x-4 rounded-md py-1.5 px-3 transition hover:bg-gray-200 hover:bg-opacity-50 hover:text-black dark:hover:bg-gray-900 dark:hover:text-white"
+        class="flex cursor-pointer items-center space-x-4 rounded-md py-1.5 px-3 transition hover:bg-ctp-base/50"
         @click="logoutModal = true"
       >
         <ArrowLeftOnRectangleIcon class="h-5 w-5" />

@@ -1,6 +1,6 @@
 <template>
   <div
-    class="bg-dark-800 z-20 h-full w-64 max-w-xs space-y-4 overflow-y-auto rounded-md px-2 py-4 text-sm"
+    class="bg-ctp-mantle z-20 h-full w-64 max-w-xs space-y-4 overflow-y-auto rounded-md px-2 py-4 text-sm"
   >
     <ChannelMemberListGroup
       v-for="group in groups"

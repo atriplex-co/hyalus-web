@@ -10,7 +10,7 @@
       <UserPlusIcon />
     </template>
     <template #main>
-      <p class="text-primary-500">
+      <p class="text-ctp-accent">
         WARNING: Spaces are currently experimental and may be wiped during
         development!
       </p>

@@ -10,16 +10,17 @@
     </template>
     <template #main>
       <div
-        class="dark:border-dark-600 overflow-hidden rounded-md border shadow-sm"
+        class="border-ctp-base overflow-hidden rounded-md border shadow-sm"
       >
         <img
-          class="h-full w-full contrast-[95%] filter dark:contrast-[85%] dark:invert"
+          class="h-full w-full"
           :src="qrcodeUrl"
+          style="filter:contrast(87%)invert()sepia()saturate(150%)hue-rotate(180deg)"
         />
       </div>
       <div class="space-y-2 text-sm">
         <a
-          class="group flex items-center space-x-3 text-gray-600 transition hover:text-black dark:text-gray-400 dark:hover:text-white"
+          class="group flex items-center space-x-3 text-ctp-subtext0 hover:text-ctp-text transition"
           href="https://apps.apple.com/us/app/google-authenticator/id388497605"
           target="_blank"
           rel="noreferrer noopener"
@@ -28,7 +29,7 @@
           <p>Authenticator for iOS</p>
         </a>
         <a
-          class="group flex items-center space-x-3 text-gray-600 transition hover:text-black dark:text-gray-400 dark:hover:text-white"
+          class="group flex items-center space-x-3 text-ctp-subtext0 hover:text-ctp-text transition"
           href="https://play.google.com/store/apps/details?id=com.google.android.apps.authenticator2"
           target="_blank"
           rel="noreferrer noopener"
@@ -37,7 +38,7 @@
           <p>Authenticator for Android</p>
         </a>
         <div
-          class="group flex items-center space-x-3 text-gray-600 transition hover:text-black dark:text-gray-400 dark:hover:text-white"
+          class="group flex items-center space-x-3 transition text-ctp-subtext0 hover:text-ctp-text"
         >
           <LockIcon class="h-6 w-6" />
           <p v-if="showTotpSecretB32" class="select-all">{{ totpSecretB32 }}</p>

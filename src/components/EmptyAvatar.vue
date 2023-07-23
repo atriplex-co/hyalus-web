@@ -1,6 +1,6 @@
 <template>
   <div
-    class="bg-primary-500 flex items-center justify-center rounded-full font-bold text-white"
+    class="bg-ctp-accent flex items-center justify-center rounded-full font-bold text-ctp-base"
   >
     <p>{{ name ? name.slice(0, 1) : "?" }}</p>
   </div>

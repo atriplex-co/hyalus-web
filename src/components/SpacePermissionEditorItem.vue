@@ -37,7 +37,7 @@
       <div
         class="flex h-6 w-6 items-center justify-center"
         :class="{
-          'bg-green-500': allow & permission,
+          'bg-ctp-accent': allow & permission,
         }"
         @click="
           $emit('update:allow', allow | permission);

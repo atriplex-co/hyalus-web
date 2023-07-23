@@ -3,11 +3,11 @@
     <p class="text-2xl">Sessions</p>
     <div v-if="sessions.length" class="mt-8 space-y-6">
       <div class="space-y-4">
-        <p class="text-sm font-semibold text-gray-400">This Device</p>
+        <p class="text-sm font-semibold">This Device</p>
         <SessionItem :session="sessions[0]" />
       </div>
       <div v-if="sessions.length > 1" class="space-y-4">
-        <p class="text-sm font-semibold text-gray-400">Other Devices</p>
+        <p class="text-sm font-semibold">Other Devices</p>
         <SessionItem
           v-for="session in sessions.slice(1)"
           :key="session.id"

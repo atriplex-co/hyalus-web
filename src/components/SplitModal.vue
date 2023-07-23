@@ -6,8 +6,8 @@
         'pt-[30px]': isDesktop,
       }"
     >
-      <div class="bg-dark-800 w-[50%]"></div>
-      <div class="bg-dark-700 w-[50%]"></div>
+      <div class="bg-ctp-crust w-[50%]"></div>
+      <div class="bg-ctp-mantle w-[50%]"></div>
     </div>
     <div
       class="fixed inset-0 flex justify-center"
@@ -15,10 +15,10 @@
         'pt-[30px]': isDesktop,
       }"
     >
-      <div class="bg-dark-800 w-56 space-y-0.5 pr-4 pt-16 text-gray-400">
+      <div class="bg-ctp-crust w-56 space-y-0.5 pr-4 pt-16 text-ctp-subtext0">
         <slot name="left"></slot>
       </div>
-      <div id="main" class="bg-dark-700 flex space-x-4 overflow-auto px-8">
+      <div id="main" class="bg-ctp-mantle flex space-x-4 overflow-auto px-8">
         <div class="w-screen max-w-2xl pt-16">
           <transition
             enter-active-class="transition transform duration-75 ease-out"
@@ -32,7 +32,7 @@
         </div>
         <div class="h-8 w-8 pt-16" @click="$emit('close')">
           <XCircleIcon
-            class="absolute h-8 w-8 cursor-pointer text-gray-600 transition hover:text-white"
+            class="absolute h-8 w-8 cursor-pointer text-ctp-overlay0 transition hover:text-ctp-text"
           />
         </div>
       </div>

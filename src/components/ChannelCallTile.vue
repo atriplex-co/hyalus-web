@@ -4,14 +4,14 @@
     class="group absolute flex h-full w-full items-center justify-center overflow-hidden rounded-md transition"
     :class="{
       'cursor-none': !controls,
-      'ring-primary-600 ring ring-opacity-75': speaking,
+      'ring-ctp-accent ring ring-opacity-75': speaking,
       'bg-black':
         isFullscreen ||
         (stream &&
           [CallStreamType.Video, CallStreamType.DisplayVideo].includes(
             stream?.type,
           )),
-      'bg-dark-700 bg-opacity-50':
+      'bg-ctp-mantle':
         !stream ||
         ![CallStreamType.Video, CallStreamType.DisplayVideo].includes(
           stream?.type,

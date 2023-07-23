@@ -9,7 +9,7 @@
     @dragsend.prevent
   >
     <div
-      class="dark:bg-dark-600 relative z-10 min-h-[56px] w-full bg-gray-100 shadow-md"
+      class="relative z-10 min-h-[56px] w-full bg-ctp-base shadow-md"
       :class="{
         'bg-black': inVoice,
       }"
@@ -27,13 +27,10 @@
       >
         <ChannelCall v-if="inVoice" />
       </transition>
-      <p
-        v-if="!writable"
-        class="dark:bg-dark-900 bg-gray-200 px-4 py-2 text-sm"
-      >
-        You can't send messages in this channel.
-      </p>
     </div>
+    <p v-if="!writable" class="bg-ctp-crust px-4 py-2 text-sm">
+      You can't send messages in this channel.
+    </p>
     <div class="flex min-h-0 flex-1">
       <div class="flex min-h-0 min-w-0 flex-1 flex-col">
         <div class="relative min-h-0 w-full flex-1">
@@ -75,26 +72,26 @@
         </div>
         <div
           v-if="writable"
-          class="bg-dark-600 m-4 mt-0 flex items-center space-x-4 rounded-md py-2 px-4 shadow-lg"
+          class="bg-ctp-mantle m-4 mt-0 flex items-center space-x-4 rounded-md py-2 px-4 shadow-lg"
         >
           <textarea
             ref="messageBox"
             v-model="messageBoxText"
             rows="1"
             :placeholder="`Message ${name}`"
-            class="max-h-32 flex-1 resize-none border-transparent bg-transparent text-sm outline-none placeholder:text-gray-400 focus:border-transparent dark:placeholder:text-gray-500"
+            class="max-h-32 flex-1 resize-none border-transparent bg-transparent text-sm outline-none placeholder:text-ctp-overlay0 focus:border-transparent dark:placeholder:text-gray-500"
             @input="messageBoxInput"
             @keydown="messageBoxKeydown"
           />
           <div class="flex space-x-2 text-gray-400">
             <div @click="attachFile">
               <PaperclipIcon
-                class="h-8 w-8 cursor-pointer rounded-full bg-gray-100 p-2 transition hover:text-gray-800 dark:bg-gray-900 dark:hover:text-white"
+                class="h-8 w-8 cursor-pointer rounded-full bg-ctp-surface0 text-ctp-subtext0 p-2 transition hover:text-ctp-text"
               />
             </div>
             <div @click="messageBoxSubmit">
               <AirplaneIcon
-                class="h-8 w-8 cursor-pointer rounded-full bg-gray-100 p-2 transition hover:text-gray-800 dark:bg-gray-900 dark:hover:text-white"
+                class="h-8 w-8 cursor-pointer rounded-full bg-ctp-surface0 text-ctp-subtext0 p-2 transition hover:text-ctp-text"
               />
             </div>
           </div>

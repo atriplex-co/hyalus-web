@@ -32,13 +32,13 @@
               v-if="
                 dropRoleId === role.id && draggedRolePosition < role.position
               "
-              class="border-primary-500 absolute bottom-0 w-full border-t-2"
+              class="border-ctp-accent absolute bottom-0 w-full border-t-2"
             />
             <div
               v-if="
                 dropRoleId === role.id && draggedRolePosition > role.position
               "
-              class="border-primary-500 absolute top-0 w-full border-t-2"
+              class="border-ctp-accent absolute top-0 w-full border-t-2"
             />
             <button
               class="hover:bg-dark-800 flex w-full items-center space-x-2 rounded-md py-1.5 px-2 text-sm transition"
@@ -78,7 +78,7 @@
           <input
             v-model="name"
             type="text"
-            class="ring-primary-500 dark:border-dark-500 dark:bg-dark-800 w-full resize-none rounded-md border border-gray-200 bg-gray-100 px-3 py-2 text-gray-600 shadow-sm transition focus:outline-none focus:ring dark:text-gray-400"
+            class="ring-ctp-accent dark:border-dark-500 dark:bg-dark-800 w-full resize-none rounded-md border border-gray-200 bg-gray-100 px-3 py-2 text-gray-600 shadow-sm transition focus:outline-none focus:ring dark:text-gray-400"
           />
         </div>
         <div v-if="id" class="w-full space-y-2.5">
@@ -88,7 +88,7 @@
           <input
             v-model="color"
             type="text"
-            class="ring-primary-500 dark:border-dark-500 dark:bg-dark-800 w-full resize-none rounded-md border border-gray-200 bg-gray-100 px-3 py-2 text-gray-600 shadow-sm transition focus:outline-none focus:ring dark:text-gray-400"
+            class="ring-ctp-accent dark:border-dark-500 dark:bg-dark-800 w-full resize-none rounded-md border border-gray-200 bg-gray-100 px-3 py-2 text-gray-600 shadow-sm transition focus:outline-none focus:ring dark:text-gray-400"
           />
           <div
             class="bg-dark-800 border-dark-500 flex items-center justify-center space-x-4 border p-2"
@@ -119,7 +119,7 @@
                   @click="color = 'a3e635'"
                 ></button>
                 <button
-                  class="h-6 w-6 rounded-md bg-green-400 transition hover:bg-opacity-80"
+                  class="h-6 w-6 rounded-md bg-ctp-accent transition hover:bg-opacity-80"
                   @click="color = '4ade80'"
                 ></button>
                 <button
@@ -169,7 +169,7 @@
                   @click="color = 'a3e635'"
                 ></button>
                 <button
-                  class="h-6 w-6 rounded-md bg-green-500 transition hover:bg-opacity-80"
+                  class="h-6 w-6 rounded-md bg-ctp-accent transition hover:bg-opacity-80"
                   @click="color = '4ade80'"
                 ></button>
                 <button

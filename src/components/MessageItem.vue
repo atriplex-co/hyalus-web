@@ -6,22 +6,30 @@
       'pt-3': firstInChunk && !showDate && !embedded,
     }"
   >
-    <p
+    <!-- <p
       v-if="showDate && !embedded"
-      class="dark:border-dark-600 mt-4 mb-2 border-t border-gray-100 py-4 text-center text-sm text-gray-500"
+      class="mt-4 mb-2 border-t border-ctp-surface0/50 py-4 text-center text-xs text-ctp-subtext0"
     >
       {{ date }}
-    </p>
+    </p> -->
+    <div v-if="showDate && !embedded" class="relative py-6 px-2.5">
+      <div class="border-t border-ctp-surface0"></div>
+      <div
+        class="text-xs text-ctp-subtext0 absolute top-4 w-full flex justify-center"
+      >
+        <p class="bg-ctp-base px-2">{{ date }}</p>
+      </div>
+    </div>
     <div
       v-if="isEvent(message)"
-      class="dark:bg-dark-600 group mx-4 flex items-center justify-between rounded-[4px] border-l-4 bg-gray-100 px-3 py-2.5 text-sm shadow-md"
+      class="group mx-4 flex items-center justify-between rounded-[4px] border-l-4 bg-ctp-mantle px-3 py-2.5 text-sm shadow-md"
       :class="{
-        'dark:border-dark-100 border-gray-300': !sentByMe,
-        'border-primary-500': sentByMe,
+        'border-ctp-surface0': !sentByMe,
+        'border-ctp-accent': sentByMe,
       }"
     >
       <div class="flex items-center space-x-3">
-        <div class="h-4 w-4 text-gray-400 dark:text-gray-500">
+        <div class="h-4 w-4 text-ctp-subtext0">
           <FriendsIcon v-if="message.type === MessageType.FriendAccept" />
           <GroupIcon v-if="message.type === MessageType.GroupCreate" />
           <UserAddIcon v-if="message.type === MessageType.GroupAdd" />
@@ -30,15 +38,15 @@
           <PencilIcon v-if="message.type === MessageType.GroupName" />
           <PhotographIcon v-if="message.type === MessageType.GroupAvatar" />
         </div>
-        <p class="text-gray-600 dark:text-gray-300">{{ message.dataString }}</p>
+        <p class="text-ctp-text">{{ message.dataString }}</p>
       </div>
-      <p class="text-gray-400 opacity-0 transition group-hover:opacity-100">
+      <p class="text-ctp-subtext0 opacity-0 transition group-hover:opacity-100">
         {{ time }}
       </p>
     </div>
     <div
       v-if="!isEvent(message)"
-      class="group flex items-end space-x-2 text-white"
+      class="group flex items-end space-x-2"
       :class="{
         'mx-4': !embedded,
         'flex-row-reverse space-x-reverse':
@@ -63,17 +71,16 @@
           <p
             class="cursor-pointer transition"
             :class="{
-              'text-gray-800 dark:text-gray-400 dark:hover:text-white':
-                !userColor,
+              'text-ctp-text': !userColor,
             }"
             :style="userColor ? `color:${userColor};` : ''"
             @click="userModal = true"
           >
             {{ message.author.name }}
           </p>
-          <div class="relative text-gray-400 transition-all dark:text-gray-500">
+          <div class="relative text-ctp-overlay2 transition-all">
             <div
-              class="dark:bg-dark-600 ttarrow absolute bottom-[calc(100%+0.5rem)] left-[50%] -ml-[5rem] w-[10rem] transform rounded-md bg-gray-100 p-2 text-center text-gray-600 shadow-md transition dark:text-white"
+              class="ttarrow absolute bottom-[calc(100%+0.5rem)] left-[50%] -ml-[5rem] w-[10rem] transform rounded-md p-2 text-center shadow-md transition bg-ctp-surface0 text-ctp-text"
               :class="{
                 'invisible opacity-0': !timeExpanded,
               }"
@@ -91,7 +98,7 @@
           </div>
           <PencilIcon
             v-if="+message.createdAt !== +message.updatedAt"
-            class="h-3 w-3 text-gray-500"
+            class="h-3 w-3 text-ctp-subtext0"
           />
         </div>
         <div
@@ -103,9 +110,8 @@
           <div
             class="relative flex min-w-0 flex-1 flex-col break-words rounded-md text-sm shadow-md"
             :class="{
-              'bg-primary-300 bg-opacity-5': sentByMe && !previewUrl,
-              'dark:bg-dark-600 bg-gray-100 text-gray-800 dark:text-gray-200':
-                !sentByMe || previewUrl,
+              'bg-ctp-accent text-ctp-base': sentByMe && !previewUrl,
+              'bg-ctp-surface0': !sentByMe || previewUrl,
             }"
           >
             <!-- eslint-disable vue/no-v-html -->
@@ -113,7 +119,7 @@
               <div v-html="message.dataFormatted"></div>
               <div
                 v-if="invite"
-                class="bg-dark-400 mt-2 flex w-80 items-center justify-between rounded-md p-3"
+                class="bg-ctp-base mt-2 flex w-80 items-center justify-between rounded-md p-3 text-ctp-text"
               >
                 <div class="flex items-center space-x-3">
                   <div
@@ -129,7 +135,7 @@
                     <p class="text-semibold">
                       {{ invite.space.name }}
                     </p>
-                    <p class="text-xs text-gray-400">
+                    <p class="text-xs text-ctp-subtext0">
                       {{ invite.space.memberCount }} Member{{
                         invite.space.memberCount > 1 ? "s" : ""
                       }}
@@ -137,7 +143,7 @@
                   </div>
                 </div>
                 <button
-                  class="bg-primary-600 hover:bg-primary-700 rounded-md p-1.5 text-white transition"
+                  class="bg-ctp-accent rounded-md p-1.5 text-ctp-base hover:bg-ctp-accent/75 transition text-xs"
                   @click="useInvite"
                 >
                   Join
@@ -152,9 +158,8 @@
                   class="h-8 w-8 rounded-full p-2"
                   :class="{
                     'cursor-pointer': !fileDownloadActive,
-                    'bg-primary-600 dark:bg-primary-700 bg-opacity-50 dark:bg-opacity-75':
-                      sentByMe,
-                    'dark:bg-primary-600 bg-primary-500': !sentByMe,
+                    'bg-black/10': sentByMe,
+                    'bg-ctp-accent text-ctp-surface0': !sentByMe,
                   }"
                   @click="fileDownload(true)"
                 >
@@ -166,8 +171,8 @@
                   <p
                     class="text-xs"
                     :class="{
-                      'text-primary-200': sentByMe,
-                      'text-gray-500 dark:text-gray-400': !sentByMe,
+                      'text-ctp-surface0': sentByMe,
+                      'text-ctp-subtext0': !sentByMe,
                     }"
                   >
                     {{ upload.sizeFormatted }}
@@ -209,28 +214,28 @@
           </div>
           <div
             v-if="!embedded"
-            class="flex flex-shrink-0 items-center space-x-2 text-gray-400 transition dark:text-gray-500"
+            class="flex flex-shrink-0 items-center space-x-2 text-ctp-overlay0 transition"
             :class="{
               'px-2 opacity-0 group-hover:opacity-100': !embedded,
             }"
           >
             <div
               v-if="editable"
-              class="h-4 w-4 cursor-pointer transition hover:text-black dark:hover:text-white"
+              class="h-4 w-4 cursor-pointer transition hover:text-ctp-text"
               @click="editModal = true"
             >
               <PencilIcon />
             </div>
             <div
               v-if="removable"
-              class="h-4 w-4 cursor-pointer transition hover:text-black dark:hover:text-white"
+              class="h-4 w-4 cursor-pointer transition hover:text-ctp-text"
               @click="remove"
             >
               <TrashIcon />
             </div>
             <a
               v-if="previewUrl"
-              class="h-4 w-4 cursor-pointer transition hover:text-black dark:hover:text-white"
+              class="h-4 w-4 cursor-pointer transition hover:text-ctp-text"
               :href="previewUrl"
               :download="upload?.name"
             >
@@ -1213,22 +1218,8 @@ const useInvite = async () => {
 </script>
 
 <style>
-/* 
-  pre {
-    @apply -m-2 bg-gray-800 p-2;
-  }
-  
-  pre code {
-    @apply border-none p-0;
-  }
-  
-  code {
-    @apply rounded-md border border-gray-600 bg-gray-800 py-1 px-2 text-gray-200;
-  }
-  */
-
 pre {
-  @apply border-primary-500 bg-dark-900 -m-1.5 whitespace-pre-wrap rounded-md p-2;
+  @apply border-ctp-accent bg-ctp-crust -m-1.5 whitespace-pre-wrap rounded-md p-2;
 }
 
 pre + * {
@@ -1236,7 +1227,7 @@ pre + * {
 }
 
 .ttarrow::after {
-  @apply shadow-md;
+  @apply shadow-md border-transparent border-t-ctp-surface0;
   content: " ";
   position: absolute;
   top: 100%;
@@ -1244,10 +1235,5 @@ pre + * {
   margin-left: -5px;
   border-width: 5px;
   border-style: solid;
-  border-color: #f5f5f5 transparent transparent transparent;
-}
-
-.dark .ttarrow::after {
-  border-color: #222222 transparent transparent transparent;
 }
 </style>

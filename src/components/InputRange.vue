@@ -1,10 +1,10 @@
 <template>
   <div
-    class="relative h-2.5 w-full rounded-md bg-gray-200 shadow-sm dark:bg-gray-800"
+    class="relative h-2.5 min-w-0 rounded-md bg-ctp-surface0 shadow-sm"
   >
     <div
       id="val"
-      class="dark:bg-dark-900 dark:border-dark-800 absolute -top-10 z-10 flex w-10 items-center justify-center rounded-md border border-gray-200 bg-gray-100 py-1 px-2 text-sm shadow-sm transition"
+      class="absolute -top-10 z-10 flex w-10 items-center justify-center rounded-md border border-ctp-surface0 bg-ctp-base py-1 px-2 text-sm shadow-sm transition"
       :class="{
         'opacity-0': !valueShow,
       }"
@@ -21,7 +21,7 @@
       @mouseenter="valueShow = true"
       @mouseleave="valueShow = false"
     />
-    <div id="bar" class="bg-primary-500 absolute h-full rounded-l-md" />
+    <div id="bar" class="bg-ctp-accent absolute h-full rounded-l-md" />
   </div>
 </template>
 
@@ -89,7 +89,7 @@ input {
 
 input::-webkit-slider-thumb {
   pointer-events: auto;
-  @apply absolute -top-1 z-10 h-[1.125rem] w-2 cursor-[ew-resize] appearance-none rounded-full bg-gray-100 shadow-sm;
+  @apply absolute -top-1 z-10 h-[1.125rem] w-2 cursor-[ew-resize] appearance-none rounded-full bg-ctp-text shadow-sm;
   left: v-bind(barWidth);
 }
 

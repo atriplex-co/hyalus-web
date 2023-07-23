@@ -1,12 +1,10 @@
 <template>
   <div class="w-full space-y-2">
     <p class="text-sm">Friends</p>
-    <div
-      class="dark:bg-dark-900 dark:border-dark-600 rounded-md border border-gray-200 bg-gray-100 shadow-sm"
-    >
+    <div class="border-ctp-base bg-ctp-crust rounded-md border shadow-sm">
       <input
         v-model="search"
-        class="dark:border-dark-600 ring-primary-500 -mt-px w-full rounded-sm border border-gray-200 bg-transparent px-4 py-2 text-gray-500 transition focus:outline-none focus:ring dark:text-gray-400"
+        class="border-ctp-base ring-ctp-accent -mt-px w-full rounded-sm border bg-transparent px-4 py-2 transition focus:outline-none focus:ring placeholder:text-ctp-overlay0 text-ctp-subtext0"
         type="text"
         placeholder="Search for friends"
       />
@@ -21,9 +19,7 @@
               <UserAvatar :avatar="user.avatar" class="h-8 w-8 rounded-full" />
               <div>
                 <p class="font-bold">{{ user.name }}</p>
-                <p class="text-xs text-gray-500 dark:text-gray-400">
-                  @{{ user.username }}
-                </p>
+                <p class="text-xs text-ctp-subtext0">@{{ user.username }}</p>
               </div>
             </div>
             <CheckBox v-model="user.selected" />
@@ -31,7 +27,7 @@
         </div>
         <div
           v-else
-          class="flex h-full w-full flex-col items-center justify-center space-y-4 text-gray-500"
+          class="flex h-full w-full flex-col items-center justify-center space-y-4 text-ctp-overlay0"
         >
           <GroupIcon class="h-8 w-8" />
           <p>No more friends to add</p>

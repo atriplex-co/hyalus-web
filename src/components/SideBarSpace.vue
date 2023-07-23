@@ -2,11 +2,18 @@
   <div v-if="store.self" class="flex h-full flex-col">
     <div class="relative">
       <div
-        class="bg-dark-700 relative flex h-14 cursor-pointer items-center justify-between px-4 shadow-md transition"
+        class="bg-dark-700 relative flex h-14 cursor-pointer items-center justify-between px-4 shadow-md transition hover:bg-ctp-surface0/50 group"
         @click="menu = !menu"
       >
         <p class="font-semibold">{{ space.name }}</p>
-        <ChevronDownIcon class="h-4 w-4 text-gray-400" />
+        <ChevronDownIcon
+          v-if="!menu"
+          class="h-4 w-4 text-ctp-subtext0 group-hover:text-ctp-text"
+        />
+        <ChevronUpIcon
+          v-if="menu"
+          class="h-4 w-4 text-ctp-subtext0 group-hover:text-ctp-text"
+        />
       </div>
       <Transition
         enter-active-class="transition ease-out duration-100 origin-top"
@@ -17,10 +24,10 @@
         leave-to-class="transform opacity-0 scale-95"
       >
         <div v-if="menu" class="absolute z-10 w-full p-2">
-          <div class="bg-dark-900 rounded-md p-2 text-sm shadow-lg">
+          <div class="bg-ctp-crust rounded-md p-2 text-sm shadow-lg">
             <div
               v-if="allowManageSpace || allowManageRoles || allowBanMember"
-              class="flex cursor-pointer items-center space-x-3 rounded-md p-2 text-gray-400 transition hover:bg-gray-900 hover:text-white"
+              class="flex cursor-pointer items-center space-x-3 rounded-md p-2 hover:bg-ctp-accent hover:text-ctp-base transition"
               @click="
                 manageModal = true;
                 menu = false;
@@ -31,7 +38,7 @@
             </div>
             <div
               v-if="allowCreateInvite"
-              class="flex cursor-pointer items-center space-x-3 rounded-md p-2 text-gray-400 transition hover:bg-gray-900 hover:text-white"
+              class="flex cursor-pointer items-center space-x-3 rounded-md p-2 hover:bg-ctp-accent hover:text-ctp-base transition"
               @click="
                 inviteCreateModal = true;
                 menu = false;
@@ -42,7 +49,7 @@
             </div>
             <div
               v-if="allowManageChannels"
-              class="flex cursor-pointer items-center space-x-3 rounded-md p-2 text-gray-400 transition hover:bg-gray-900 hover:text-white"
+              class="flex cursor-pointer items-center space-x-3 rounded-md p-2 hover:bg-ctp-accent hover:text-ctp-base transition"
               @click="
                 categoryCreateModal = true;
                 menu = false;
@@ -53,7 +60,7 @@
             </div>
             <div
               v-if="allowManageChannels"
-              class="flex cursor-pointer items-center space-x-3 rounded-md p-2 text-gray-400 transition hover:bg-gray-900 hover:text-white"
+              class="flex cursor-pointer items-center space-x-3 rounded-md p-2 hover:bg-ctp-accent hover:text-ctp-base transition"
               @click="
                 channelCreateModal = true;
                 menu = false;
@@ -64,7 +71,7 @@
             </div>
             <div
               v-if="allowSetAlias"
-              class="flex cursor-pointer items-center space-x-3 rounded-md p-2 text-gray-400 transition hover:bg-gray-900 hover:text-white"
+              class="flex cursor-pointer items-center space-x-3 rounded-md p-2 hover:bg-ctp-accent hover:text-ctp-base transition"
               @click="
                 setAliasModal = true;
                 menu = false;
@@ -74,7 +81,7 @@
               <p>Change Nickname</p>
             </div>
             <div
-              class="flex cursor-pointer items-center space-x-3 rounded-md p-2 text-gray-400 transition hover:bg-gray-900 hover:text-white"
+              class="flex cursor-pointer items-center space-x-3 rounded-md p-2 hover:bg-ctp-accent hover:text-ctp-base transition"
               @click="
                 privacySettingsModal = true;
                 menu = false;
@@ -84,7 +91,7 @@
               <p>Privacy Settings</p>
             </div>
             <div
-              class="flex cursor-pointer items-center space-x-3 rounded-md p-2 text-gray-400 transition hover:bg-gray-900 hover:text-white"
+              class="flex cursor-pointer items-center space-x-3 rounded-md p-2 hover:bg-ctp-accent hover:text-ctp-base transition"
               @click="
                 notificationSettingsModal = true;
                 menu = false;
@@ -93,10 +100,10 @@
               <BellIcon class="h-4 w-4" />
               <p>Notification Settings</p>
             </div>
-            <div class="border-dark-800 my-1 mx-2 border-t"></div>
+            <div class="border-ctp-base my-1 mx-2 border-t"></div>
             <div
               v-if="space.ownerId === store.self.id"
-              class="flex cursor-pointer items-center space-x-3 rounded-md p-2 text-red-400 transition hover:bg-red-500 hover:text-white"
+              class="flex cursor-pointer items-center space-x-3 rounded-md p-2 text-red-400 hover:bg-ctp-red hover:text-ctp-base transition"
               @click="
                 deleteModal = true;
                 menu = false;
@@ -107,7 +114,7 @@
             </div>
             <div
               v-if="space.ownerId !== store.self.id"
-              class="flex cursor-pointer items-center space-x-3 rounded-md p-2 text-red-400 transition hover:bg-red-500 hover:text-white"
+              class="flex cursor-pointer items-center space-x-3 rounded-md p-2 text-red-400 hover:bg-ctp-red hover:text-ctp-base transition"
               @click="
                 leaveModal = true;
                 menu = false;
@@ -204,6 +211,7 @@ import {
   UserPlusIcon,
   BellIcon,
   LockClosedIcon,
+  ChevronUpIcon,
 } from "@heroicons/vue/20/solid";
 import { useStore } from "../global/store";
 import { checkSpacePermissions } from "../global/helpers";

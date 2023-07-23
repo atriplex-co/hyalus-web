@@ -7,9 +7,7 @@
       'top-8': isDesktop,
     }"
   />
-  <div
-    class="dark:bg-dark-900 flex h-full flex-1 items-center justify-center bg-gray-100"
-  >
+  <div class="flex h-full flex-1 items-center justify-center bg-ctp-crust">
     <div class="flex w-full max-w-sm flex-col space-y-8 rounded-md">
       <div class="flex flex-col items-center space-y-6 text-2xl font-bold">
         <AppIcon class="h-16 w-16" />
@@ -22,9 +20,9 @@
           <div class="space-y-4">
             <div
               v-if="error"
-              class="dark:bg-dark-800 -mt-2 flex items-center space-x-3 rounded-md bg-white p-4 text-sm shadow-sm"
+              class="-mt-2 flex items-center space-x-3 rounded-md p-4 text-sm shadow-sm bg-ctp-mantle"
             >
-              <ErrorIcon class="h-5 w-5 text-gray-500 dark:text-gray-400" />
+              <ErrorIcon class="h-5 w-5" />
               <p class="flex-1">{{ error }}</p>
             </div>
             <div v-if="['login', 'register'].includes(mode)" class="space-y-2">
@@ -32,7 +30,7 @@
               <p v-if="mode === 'register'" class="text-sm">Email</p>
               <input
                 v-model="email"
-                class="ring-primary-500 dark:bg-dark-800 dark:border-dark-600 w-full rounded-md border border-gray-200 bg-white px-3 py-2 text-gray-500 shadow-sm transition focus:outline-none focus:ring dark:text-gray-400"
+                class="ring-ctp-accent bg-ctp-mantle w-full rounded-md border border-ctp-base px-3 py-2 text-ctp-subtext0 shadow-sm transition focus:outline-none focus:ring dark:text-gray-400"
                 type="text"
                 autocomplete="username"
               />
@@ -41,7 +39,7 @@
               <p class="text-sm">Password</p>
               <input
                 v-model="password"
-                class="ring-primary-500 dark:bg-dark-800 dark:border-dark-600 w-full rounded-md border border-gray-200 bg-white px-3 py-2 text-gray-500 shadow-sm transition focus:outline-none focus:ring dark:text-gray-400"
+                class="ring-ctp-accent bg-ctp-mantle w-full rounded-md border border-ctp-base px-3 py-2 text-ctp-subtext0 shadow-sm transition focus:outline-none focus:ring dark:text-gray-400"
                 type="password"
                 autocomplete="current-password"
               />
@@ -50,7 +48,7 @@
               <p class="text-sm">Confirm password</p>
               <input
                 v-model="passwordConfirm"
-                class="ring-primary-500 dark:bg-dark-800 dark:border-dark-600 w-full rounded-md border border-gray-200 bg-white px-3 py-2 text-gray-500 shadow-sm transition focus:outline-none focus:ring dark:text-gray-400"
+                class="ring-ctp-accent bg-ctp-mantle w-full rounded-md border border-ctp-base px-3 py-2 text-ctp-subtext0 shadow-sm transition focus:outline-none focus:ring dark:text-gray-400"
                 type="password"
                 autocomplete="current-password"
               />
@@ -59,7 +57,7 @@
               <p class="text-sm">Code</p>
               <input
                 v-model="totpCode"
-                class="ring-primary-500 dark:bg-dark-800 dark:border-dark-600 w-full rounded-md border border-gray-200 bg-white px-3 py-2 text-gray-500 shadow-sm transition focus:outline-none focus:ring dark:text-gray-400"
+                class="ring-ctp-accent bg-ctp-mantle w-full rounded-md border border-ctp-base px-3 py-2 text-ctp-subtext0 shadow-sm transition focus:outline-none focus:ring dark:text-gray-400"
                 type="totpCode"
                 autocomplete="current-password"
                 autofocus
@@ -68,7 +66,7 @@
           </div>
           <div class="flex flex-col items-center space-y-6">
             <button
-              class="bg-primary-500 hover:bg-primary-600 w-full rounded-md py-2.5 text-sm text-white transition focus:outline-none"
+              class="bg-ctp-accent hover:bg-ctp-accent/75 w-full rounded-md py-2.5 text-sm text-ctp-base font-medium transition focus:outline-none"
             >
               <template v-if="ready">
                 <p v-if="mode === 'login'">Sign in</p>
@@ -80,7 +78,7 @@
             <div class="space-y-4 text-sm">
               <button
                 v-if="mode === 'login'"
-                class="text-primary-500 hover:text-primary-600 transition"
+                class="text-ctp-accent hover:text-ctp-accent transition"
                 @click="
                   error = '';
                   mode = 'register';
@@ -90,7 +88,7 @@
               </button>
               <button
                 v-if="mode === 'register'"
-                class="text-primary-500 hover:text-primary-600 transition"
+                class="text-ctp-accent hover:text-ctp-accent transition"
                 @click="
                   error = '';
                   mode = 'login';
@@ -100,7 +98,7 @@
               </button>
               <button
                 v-if="mode === 'loginTotp'"
-                class="text-primary-500 hover:text-primary-600 transition"
+                class="text-ctp-accent hover:text-ctp-accent transition"
                 @click="
                   error = '';
                   mode = 'login';

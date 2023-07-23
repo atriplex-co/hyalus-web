@@ -16,7 +16,7 @@
         v-model="messageBoxText"
         rows="1"
         placeholder="Send a message"
-        class="ring-primary-500 dark:bg-dark-900 dark:border-dark-600 max-h-32 w-full resize-none rounded-md border border-gray-200 bg-gray-100 px-4 py-2 shadow-sm outline-none transition focus:outline-none focus:ring"
+        class="ring-ctp-accent bg-ctp-crust border-ctp-base max-h-32 w-full resize-none rounded-md border px-4 py-2 shadow-sm outline-none transition focus:outline-none focus:ring text-ctp-subtext0 placeholder:text-ctp-overlay0"
         @input="messageBoxInput"
         @keydown="messageBoxKeydown"
       />

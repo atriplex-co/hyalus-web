@@ -1,8 +1,8 @@
 <template>
   <router-link
-    class="dark:hover:bg-dark-700 flex h-12 w-full cursor-pointer items-center space-x-3 rounded-md p-1.5 transition hover:bg-gray-300"
+    class="hover:bg-ctp-base flex h-12 w-full cursor-pointer items-center space-x-3 rounded-md p-1.5 transition"
     :class="{
-      'dark:bg-dark-700 bg-gray-200': selected,
+      'bg-ctp-base': selected,
     }"
     :to="`/channels/${channel.id}`"
   >
@@ -18,9 +18,9 @@
     <div
       class="min-w-0 flex-1 transition"
       :class="{
-        'text-gray-400 hover:text-white':
+        'text-ctp-subtext0 hover:text-ctp-text':
           !selected && !channelState.mentionCount,
-        'text-white': selected || channelState.mentionCount,
+        'text-ctp-text': selected || channelState.mentionCount,
       }"
     >
       <p
@@ -69,7 +69,7 @@ const name = computed(() => {
     return "Unknown";
   }
 
-  if (props.channel.type === ChannelType.DM) {
+  if (props.channel.type === ChannelType.DM && props.channel.members.length) {
     return props.channel.members[0].name;
   }
 
@@ -81,7 +81,7 @@ const avatar = computed(() => {
     return "Unknown";
   }
 
-  if (props.channel.type === ChannelType.DM) {
+  if (props.channel.type === ChannelType.DM && props.channel.members.length) {
     return props.channel.members[0].avatar;
   }
 
@@ -89,7 +89,7 @@ const avatar = computed(() => {
 });
 
 const status = computed(() => {
-  if (props.channel.type === ChannelType.DM) {
+  if (props.channel.type === ChannelType.DM && props.channel.members.length) {
     const friend = store.friends.find(
       (friend) => friend.id === props.channel.members[0].id,
     );

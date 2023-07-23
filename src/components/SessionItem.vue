@@ -3,9 +3,8 @@
     v-if="store.self"
     class="flex items-center justify-between rounded-md p-4"
     :class="{
-      'bg-primary-400 text-dark-600':
-        session.id === store.self.currentSessionId,
-      'bg-dark-500': session.id !== store.self.currentSessionId,
+      'bg-ctp-accent text-ctp-base': session.id === store.self.currentSessionId,
+      'bg-ctp-surface0/50': session.id !== store.self.currentSessionId,
     }"
   >
     <div class="flex items-center space-x-4">
@@ -19,7 +18,8 @@
         <p
           class="text-sm"
           :class="{
-            'text-gray-300': session.id !== store.self.currentSessionId,
+            'text-ctp-subtext0': session.id !== store.self.currentSessionId,
+            'text-ctp-surface0': session.id === store.self.currentSessionId,
           }"
         >
           {{ updatedAt }}
@@ -28,7 +28,7 @@
     </div>
     <button
       v-if="session.id !== store.self.currentSessionId"
-      class="bg-dark-600 h-8 w-8 rounded-full p-2 text-gray-400 transition hover:text-white"
+      class="bg-ctp-surface0 h-8 w-8 rounded-full p-2 transition text-ctp-subtext0 hover:text-ctp-white hover:bg-ctp-surface0/50"
       @click="del"
     >
       <TrashIcon />

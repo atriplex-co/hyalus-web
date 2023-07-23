@@ -9,7 +9,7 @@
   >
     <div
       v-if="store.self && show"
-      class="dark:bg-dark-900 absolute z-10 my-1 w-48 select-none overflow-hidden rounded-md bg-white p-2 text-sm shadow-lg shadow-[#00000044]"
+      class="absolute z-10 my-1 w-48 select-none overflow-hidden rounded-md bg-ctp-base p-2 text-sm shadow-lg shadow-[#00000044]"
       @mouseup.stop
     >
       <div class="flex items-center justify-between">
@@ -43,7 +43,7 @@
         "
       >
         <div class="flex h-4 w-4 items-center justify-center">
-          <div class="h-2.5 w-2.5 rounded-full bg-green-500" />
+          <div class="h-2.5 w-2.5 rounded-full bg-ctp-accent" />
         </div>
         <p>Online</p>
       </div>

@@ -1,6 +1,6 @@
 <template>
   <div>
-    <img
+    <!-- <img
       v-if="store.config.colorTheme === ColorTheme.Red"
       src="../assets/images/icon-standalone-red.png"
     />
@@ -67,13 +67,13 @@
     <img
       v-if="store.config.colorTheme === ColorTheme.Rose"
       src="../assets/images/icon-standalone-rose.png"
-    />
+    /> -->
+    <img src="../assets/images/icon-standalone-green.png" />
   </div>
 </template>
 
 <script lang="ts" setup>
-import { ColorTheme } from "@/../hyalus-server/src/types";
-import { useStore } from "../global/store";
-
-const store = useStore();
+// import { ColorTheme } from "@/../hyalus-server/src/types";
+// import { useStore } from "../global/store";
+// const store = useStore();
 </script>

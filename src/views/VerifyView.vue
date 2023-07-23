@@ -7,7 +7,7 @@
       <p class="text-xl font-bold">Verifying email</p>
     </template>
     <template v-if="mode === 1">
-      <CheckCircleIcon class="text-primary-500 h-10 w-10" />
+      <CheckCircleIcon class="text-ctp-accent h-10 w-10" />
       <p class="text-xl font-bold">Email verified</p>
     </template>
     <template v-if="mode === 2">

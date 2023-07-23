@@ -7,7 +7,7 @@
       <p class="text-2xl font-bold">Hyalus needs an update</p>
     </div>
     <div
-      class="bg-primary-500 hover:bg-primary-600 cursor-pointer rounded-md px-4 py-2 transition"
+      class="bg-ctp-base hover:bg-ctp-base cursor-pointer rounded-md px-4 py-2 transition"
       @click="submit"
     >
       <p>Reload</p>

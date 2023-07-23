@@ -14,7 +14,7 @@
         <p>Are you sure you want to delete this message?</p>
         <div
           ref="container"
-          class="dark:border-dark-500 dark:bg-dark-900 max-h-48 w-full overflow-auto overflow-x-hidden rounded-md border bg-white p-2 shadow-sm"
+          class="max-h-48 w-full overflow-auto overflow-x-hidden rounded-md border p-2 shadow-sm border-ctp-base bg-ctp-crust"
         >
           <slot />
         </div>

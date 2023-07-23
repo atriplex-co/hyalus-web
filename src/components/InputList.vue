@@ -1,7 +1,7 @@
 <template>
   <div ref="root" class="cursor-pointer" @click="open = !open">
     <div
-      class="dark:border-dark-600 dark:hover:border-dark-400 flex w-96 items-center justify-between border border-gray-200 bg-gray-100 px-2 py-1 shadow-sm transition hover:border-gray-300 dark:bg-gray-800 dark:bg-opacity-50"
+      class="flex w-96 items-center justify-between border border-ctp-surface0/50 bg-ctp-crust px-2 py-1 shadow-sm transition hover:border-ctp-surface0 dark:bg-gray-800 dark:bg-opacity-50 group"
       :class="{
         'rounded-md': !open,
         'rounded-t-md': open,
@@ -10,7 +10,9 @@
       <div class="flex items-center space-x-2">
         <slot name="selected" />
       </div>
-      <ArrowDownIcon class="h-4 w-4 text-gray-400" />
+      <ArrowDownIcon
+        class="h-4 w-4 text-ctp-subtext0 group-hover:text-ctp-text"
+      />
     </div>
     <div class="relative z-20">
       <transition
@@ -23,7 +25,7 @@
       >
         <div
           v-if="open"
-          class="dark:border-dark-600 absolute -mt-px flex max-h-32 w-96 flex-col overflow-auto rounded-b-md border border-gray-200 bg-gray-100 shadow-lg dark:bg-[#1c1c1c]"
+          class="border-ctp-surface0/50 absolute -mt-px flex max-h-32 w-96 flex-col overflow-auto rounded-b-md border shadow-lg bg-ctp-crust"
         >
           <slot name="items" />
         </div>

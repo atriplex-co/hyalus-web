@@ -1,5 +1,5 @@
 <template>
-  <div class="accent-green flex-1 bg-gray-900 text-white">
+  <div class="accent-green flex-1 bg-ctp-crust">
     <div class="bg-dark-900 py-16">
       <div class="mx-auto flex w-full max-w-4xl items-center justify-between">
         <div>
@@ -8,16 +8,16 @@
             class="h-12 w-12"
           />
           <p class="mt-8 text-2xl font-bold">Hyalus</p>
-          <p class="mt-2 text-lg text-gray-400">It's a messaging app.</p>
+          <p class="mt-2 text-lg text-ctp-subtext0">It's a messaging app.</p>
           <div class="mt-8 flex space-x-4 text-sm">
             <button
-              class="bg-primary-500 hover:bg-primary-600 rounded-md py-2.5 px-3.5 transition"
+              class="bg-ctp-accent text-ctp-base hover:bg-ctp-accent/75 rounded-md py-2.5 px-3.5 transition"
               @click="appDownloadModal = true"
             >
               Download
             </button>
             <router-link
-              class="bg-dark-700 rounded-md py-2.5 px-3.5 text-gray-400 transition hover:text-white"
+              class="bg-dark-700 rounded-md py-2.5 px-3.5 text-ctp-subtext0 transition bg-ctp-base hover:bg-ctp-base/75"
               to="/app"
             >
               Open Web App
@@ -27,31 +27,31 @@
         <img src="../assets/images/Chat-bro.png" class="max-w-md" />
       </div>
     </div>
-    <div class="bg-dark-800 flex flex-col items-center py-20">
+    <div class="bg-ctp-mantle flex flex-col items-center py-20">
       <p class="text-3xl font-bold">A better chat app</p>
-      <p class="mt-4 text-lg text-gray-400">
+      <p class="mt-4 text-lg text-ctp-subtext0">
         See why Hyalus is the best thing since sliced bread.
       </p>
       <div class="mt-20 space-y-16">
         <div class="flex space-x-12">
           <div
-            class="bg-dark-700 flex h-48 w-80 flex-col items-center rounded-md px-8 text-center shadow-md"
+            class="bg-ctp-base flex h-48 w-80 flex-col items-center rounded-md px-8 text-center shadow-md"
           >
             <div
-              class="from-primary-500 to-primary-600 -mt-6 h-12 w-12 rounded-md bg-gradient-to-br p-3 shadow-sm"
+              class="-mt-6 h-12 w-12 rounded-md bg-ctp-accent text-ctp-surface0 p-3 shadow-sm"
             >
               <LockIcon />
             </div>
             <p class="mt-8 text-2xl font-bold">Secure</p>
-            <p class="mt-4 text-gray-400">
+            <p class="mt-4 text-ctp-subtext0">
               Messages and calls are end-to-end encrypted by default.
             </p>
           </div>
           <div
-            class="bg-dark-700 flex h-48 w-80 flex-col items-center rounded-md px-8 text-center shadow-md"
+            class="bg-ctp-base flex h-48 w-80 flex-col items-center rounded-md px-8 text-center shadow-md"
           >
             <div
-              class="from-primary-500 to-primary-600 -mt-6 h-12 w-12 rounded-md bg-gradient-to-br p-3 shadow-sm"
+              class="-mt-6 h-12 w-12 rounded-md bg-ctp-accent text-ctp-surface0 p-3 shadow-sm"
             >
               <svg
                 xmlns="http://www.w3.org/2000/svg"
@@ -64,15 +64,15 @@
               </svg>
             </div>
             <p class="mt-8 text-2xl font-bold">Platforms</p>
-            <p class="mt-4 text-gray-400">
+            <p class="mt-4 text-ctp-subtext0">
               Desktop app support for Windows, macOS, and Linux.
             </p>
           </div>
           <div
-            class="bg-dark-700 flex h-48 w-80 flex-col items-center rounded-md px-8 text-center shadow-md"
+            class="bg-ctp-base flex h-48 w-80 flex-col items-center rounded-md px-8 text-center shadow-md"
           >
             <div
-              class="from-primary-500 to-primary-600 -mt-6 h-12 w-12 rounded-md bg-gradient-to-br p-3 shadow-sm"
+              class="-mt-6 h-12 w-12 rounded-md bg-ctp-accent text-ctp-surface0 p-3 shadow-sm"
             >
               <svg
                 xmlns="http://www.w3.org/2000/svg"
@@ -88,30 +88,30 @@
               </svg>
             </div>
             <p class="mt-8 text-2xl font-bold">Lightweight</p>
-            <p class="mt-4 text-gray-400">
+            <p class="mt-4 text-ctp-subtext0">
               Because your chat app shouldn't slow down your game.
             </p>
           </div>
         </div>
         <div class="flex space-x-12">
           <div
-            class="bg-dark-700 flex h-48 w-80 flex-col items-center rounded-md px-8 text-center shadow-md"
+            class="bg-ctp-base flex h-48 w-80 flex-col items-center rounded-md px-8 text-center shadow-md"
           >
             <div
-              class="from-primary-500 to-primary-600 -mt-6 h-12 w-12 rounded-md bg-gradient-to-br p-3 shadow-sm"
+              class="-mt-6 h-12 w-12 rounded-md bg-ctp-accent text-ctp-surface0 p-3 shadow-sm"
             >
               <DesktopIcon />
             </div>
             <p class="mt-8 text-2xl font-bold">Screenshare</p>
-            <p class="mt-4 text-gray-400">
+            <p class="mt-4 text-ctp-subtext0">
               Share your screen with our GPU-accelerated media engine.
             </p>
           </div>
           <div
-            class="bg-dark-700 flex h-48 w-80 flex-col items-center rounded-md px-8 text-center shadow-md"
+            class="bg-ctp-base flex h-48 w-80 flex-col items-center rounded-md px-8 text-center shadow-md"
           >
             <div
-              class="from-primary-500 to-primary-600 -mt-6 h-12 w-12 rounded-md bg-gradient-to-br p-3 shadow-sm"
+              class="-mt-6 h-12 w-12 rounded-md bg-ctp-accent text-ctp-surface0 p-3 shadow-sm"
             >
               <svg
                 xmlns="http://www.w3.org/2000/svg"
@@ -127,19 +127,21 @@
             </div>
             <div class="mt-8 flex items-center space-x-2">
               <p class="text-2xl font-bold">Servers</p>
-              <p class="bg-dark-500 rounded-md py-1 px-2 text-xs text-gray-400">
+              <p
+                class="bg-ctp-surface0 rounded-md py-1 px-2 text-xs text-ctp-subtext0"
+              >
                 WIP
               </p>
             </div>
-            <p class="mt-4 text-gray-400">
+            <p class="mt-4 text-ctp-subtext0">
               Organized and customizable spaces for clubs & communities.
             </p>
           </div>
           <div
-            class="bg-dark-700 flex h-48 w-80 flex-col items-center rounded-md px-8 text-center shadow-md"
+            class="bg-ctp-base flex h-48 w-80 flex-col items-center rounded-md px-8 text-center shadow-md"
           >
             <div
-              class="from-primary-500 to-primary-600 -mt-6 h-12 w-12 rounded-md bg-gradient-to-br p-3 shadow-sm"
+              class="-mt-6 h-12 w-12 rounded-md bg-ctp-accent text-ctp-surface0 p-3 shadow-sm"
             >
               <svg
                 xmlns="http://www.w3.org/2000/svg"
@@ -154,19 +156,19 @@
               </svg>
             </div>
             <p class="mt-8 text-2xl font-bold">Tweakable</p>
-            <p class="mt-4 text-gray-400">
+            <p class="mt-4 text-ctp-subtext0">
               Personalize Hyalus with custom or built-in themes & colors.
             </p>
           </div>
         </div>
       </div>
     </div>
-    <div class="bg-dark-900 text-gray-400">
+    <div class="text-ctp-subtext0">
       <div
         class="mx-auto flex w-full max-w-4xl items-center justify-between py-12"
       >
         <p>&copy; Atriplex 2022</p>
-        <div class="flex space-x-4 text-gray-400">
+        <div class="flex space-x-4">
           <a
             href="https://twitter.com/hyalusapp"
             rel="noopener noreferrer"

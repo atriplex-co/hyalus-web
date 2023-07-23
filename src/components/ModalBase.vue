@@ -36,28 +36,26 @@
             <slot v-if="empty" />
             <div
               v-else
-              class="w-screen max-w-md overflow-hidden rounded-md bg-white opacity-100 shadow-lg dark:bg-gray-900"
+              class="w-screen max-w-md overflow-hidden rounded-md bg-ctp-mantle opacity-100 shadow-lg"
             >
               <div class="space-y-4 p-4">
                 <div class="flex items-center space-x-3">
-                  <div
-                    class="dark:bg-dark-500 h-8 w-8 rounded-full bg-gray-200 p-2 text-gray-600 dark:text-gray-400"
-                  >
+                  <div class="h-8 w-8 rounded-full bg-ctp-surface0 p-2">
                     <slot name="icon" />
                   </div>
-                  <p class="text-xl font-bold text-gray-800 dark:text-white">
+                  <p class="text-xl font-bold">
                     {{ title }}
                   </p>
                 </div>
                 <form
-                  class="flex flex-col items-start space-y-4 pb-2 text-sm text-gray-800 dark:text-gray-300"
+                  class="flex flex-col items-start space-y-4 pb-2 text-sm"
                   @submit.prevent="$emit('submit')"
                 >
                   <slot name="main" />
                 </form>
               </div>
               <div
-                class="dark:bg-dark-800 flex items-center justify-between space-x-2 bg-gray-100 p-4 text-sm text-gray-500 dark:text-gray-400"
+                class="flex items-center justify-between space-x-2 bg-ctp-crust p-4 text-sm"
               >
                 <div class="flex-1">
                   <slot name="submit" />
@@ -65,13 +63,13 @@
                 <div class="flex items-center">
                   <p
                     v-if="!required"
-                    class="cursor-pointer px-4 py-2 transition hover:text-black dark:hover:text-white"
+                    class="cursor-pointer px-4 py-2 transition text-ctp-subtext0 hover:text-ctp-text"
                     @click="$emit('close')"
                   >
                     {{ cancelText }}
                   </p>
                   <p
-                    class="dark:bg-primary-600 bg-primary-500 hover:bg-primary-600 dark:hover:bg-primary-700 cursor-pointer rounded-md px-4 py-2 text-white shadow-sm transition"
+                    class="bg-ctp-accent hover:bg-ctp-accent/75 cursor-pointer rounded-md px-4 py-2 text-ctp-base shadow-sm transition"
                     @click="$emit('submit')"
                   >
                     {{ submitText }}

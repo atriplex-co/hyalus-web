@@ -3,7 +3,6 @@ import { computed } from "vue";
 import sodium from "libsodium-wrappers";
 import {
   CallStreamType,
-  ColorTheme,
   MessageType,
   SpaceChannelOverrideType,
   SpacePermission,
@@ -277,13 +276,14 @@ export const playSound = (url: string) => {
 };
 
 export const updateIcon = async () => {
-  (document.querySelector("link[rel='icon']") as HTMLLinkElement).href = (
-    await import(
-      `../assets/images/icon-standalone-${ColorTheme[
-        store.config.colorTheme
-      ].toLowerCase()}.png`
-    )
-  ).default;
+  // (document.querySelector("link[rel='icon']") as HTMLLinkElement).href = (
+  //   await import(
+  //     `../assets/images/icon-standalone-${ColorTheme[
+  //       store.config.colorTheme
+  //     ].toLowerCase()}.png`
+  //   )
+  // ).default;
+  // TODO: re-enable dynamic icon support
 };
 
 export const getCachedUser = async (

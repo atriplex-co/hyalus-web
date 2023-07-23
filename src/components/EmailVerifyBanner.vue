@@ -1,13 +1,13 @@
 <template>
   <div class="w-full">
     <div
-      class="dark:bg-primary-600 bg-primary-500 flex h-9 items-center justify-between rounded-sm px-2 text-sm text-white"
+      class="bg-ctp-accent text-ctp-base flex h-9 items-center justify-between rounded-sm px-2 text-sm"
     >
       <div class="flex items-center space-x-2 px-1">
         <EnvelopeIcon class="h-5 w-5" />
         <p>Check your email for a link to verify your account.</p>
         <button
-          class="hover:text-primary-500 rounded-md border border-white px-2 py-0.5 font-bold transition hover:bg-white"
+          class="rounded-md border border-ctp-base px-2 py-0.5 font-bold transition hover:bg-ctp-base hover:text-ctp-accent"
           @click="setEmailModal = true"
         >
           <p>Resend</p>

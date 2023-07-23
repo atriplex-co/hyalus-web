@@ -1,18 +1,18 @@
 <template>
   <div v-if="channel.type === ChannelType.SpaceCategory" class="space-y-1.5">
-    <div class="flex items-center justify-between px-2 text-gray-500">
+    <div class="flex items-center justify-between px-2 text-ctp-subtext0">
       <p class="text-xs font-bold uppercase">
         {{ channel.name }}
       </p>
       <div class="flex items-center space-x-2">
         <PlusIcon
           v-if="allowManageChannels"
-          class="h-4 w-4 cursor-pointer transition hover:text-white"
+          class="h-4 w-4 cursor-pointer transition hover:text-ctp-accent"
           @click="createModal = true"
         />
         <CogIcon
           v-if="allowManageChannels || allowManageRoles"
-          class="h-4 w-4 cursor-pointer transition hover:text-white"
+          class="h-4 w-4 cursor-pointer transition hover:text-ctp-accent"
           @click="manageModal = true"
         />
       </div>
@@ -28,15 +28,15 @@
   </div>
   <div
     v-else
-    class="hover:bg-dark-700 group flex cursor-pointer items-center justify-between rounded-md p-1.5 text-sm transition hover:text-gray-200"
+    class="group flex cursor-pointer items-center justify-between rounded-md p-1.5 text-sm transition hover:bg-ctp-surface0/75 hover:text-ctp-text"
     :class="{
-      'text-gray-400': route.path !== `/channels/${channel.id}`,
-      'bg-dark-700 text-white': route.path === `/channels/${channel.id}`,
+      'text-ctp-subtext0': route.path !== `/channels/${channel.id}`,
+      'bg-ctp-surface0': route.path === `/channels/${channel.id}`,
     }"
     @click="click"
   >
     <div class="flex items-center space-x-1">
-      <div class="h-4 w-4 text-gray-400">
+      <div class="h-4 w-4">
         <HashtagIcon v-if="channel.type === ChannelType.SpaceText" />
         <SpeakerWaveIcon v-if="channel.type === ChannelType.SpaceVoice" />
       </div>
@@ -45,7 +45,7 @@
     <div class="items-center opacity-0 transition group-hover:opacity-100">
       <CogIcon
         v-if="allowManageChannels || allowManageRoles"
-        class="hover:text-primary-500 h-4 w-4 cursor-pointer transition"
+        class="hover:text-ctp-accent h-4 w-4 cursor-pointer transition"
         @click="manageModal = true"
       />
     </div>

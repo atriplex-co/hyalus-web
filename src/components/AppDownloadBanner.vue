@@ -1,20 +1,20 @@
 <template>
   <div class="w-full">
     <div
-      class="dark:bg-primary-600 bg-primary-500 flex h-9 items-center justify-between rounded-sm px-2 text-sm text-white shadow-md"
+      class="bg-ctp-accent text-ctp-base flex h-9 items-center justify-between rounded-sm px-2 text-sm shadow-md"
     >
       <div class="flex items-center space-x-2 px-1">
         <DesktopIcon class="h-5 w-5" />
         <p>Get the desktop app for Windows/macOS/Linux.</p>
         <button
-          class="hover:text-primary-500 rounded-md border border-white px-2 py-0.5 font-bold transition hover:bg-white"
+          class="rounded-md border border-ctp-base px-2 py-0.5 font-bold transition hover:bg-ctp-base hover:text-ctp-accent"
           @click="appDownloadModal = true"
         >
           Download
         </button>
       </div>
       <div
-        class="h-6 w-6 cursor-pointer rounded-full bg-black bg-opacity-10 p-1 text-white transition hover:bg-opacity-25 hover:text-white"
+        class="h-6 w-6 cursor-pointer rounded-full bg-ctp-base/10 p-1 transition hover:bg-opacity-25"
         @click="hide"
       >
         <CloseIcon />

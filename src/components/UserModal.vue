@@ -3,9 +3,9 @@
     <LoadingIcon v-if="!cachedUser" class="h-8 w-8" />
     <div
       v-if="cachedUser"
-      class="bg-dark-800 w-screen max-w-lg overflow-hidden rounded-md"
+      class="bg-ctp-crust w-screen max-w-lg overflow-hidden rounded-md"
     >
-      <div class="bg-dark-900 min-h-[6rem] w-full">
+      <div class="bg-ctp-mantle min-h-[6rem] w-full">
         <img
           v-if="cachedUser.banner"
           :src="`/api/v1/avatars/${cachedUser.banner}`"
@@ -24,23 +24,23 @@
           <div class="absolute right-0 bottom-0 flex space-x-2">
             <template v-if="!isSelf">
               <ChatBubbleLeftIcon
-                class="bg-primary-600 hover:bg-primary-700 h-8 w-8 cursor-pointer rounded-full p-2 text-white shadow-md transition"
+                class="bg-ctp-base h-8 w-8 cursor-pointer rounded-full p-2 text-ctp-subtext0 hover:bg-ctp-base/50 shadow-md transition"
                 @click="openChannel"
               />
               <UserPlusIcon
                 v-if="!friend"
-                class="bg-primary-600 hover:bg-primary-700 h-8 w-8 cursor-pointer rounded-full p-2 text-white shadow-md transition"
+                class="bg-ctp-base h-8 w-8 cursor-pointer rounded-full p-2 text-ctp-subtext0 hover:bg-ctp-base/50 shadow-md transition"
                 @click="addFriend"
               />
               <UserMinusIcon
                 v-if="friend"
-                class="bg-primary-600 hover:bg-primary-700 h-8 w-8 cursor-pointer rounded-full p-2 text-white shadow-md transition"
+                class="bg-ctp-base h-8 w-8 cursor-pointer rounded-full p-2 text-ctp-subtext0 hover:bg-ctp-base/50 shadow-md transition"
                 @click="friendRemoveModal = true"
               />
             </template>
             <template v-if="isSelf">
               <PencilIcon
-                class="bg-primary-600 hover:bg-primary-700 h-8 w-8 cursor-pointer rounded-full p-2 text-white shadow-md transition"
+                class="bg-ctp-base h-8 w-8 cursor-pointer rounded-full p-2 text-ctp-subtext0 hover:bg-ctp-base/50 shadow-md transition"
               />
               <!-- open settings to profile -->
             </template>
@@ -49,13 +49,13 @@
         <div class="flex items-center justify-between">
           <div class="min-w-0 select-text">
             <p class="truncate text-xl font-bold">{{ cachedUser.name }}</p>
-            <p class="truncate text-sm text-gray-400">
+            <p class="truncate text-sm text-ctp-subtext0">
               @{{ cachedUser.username }}
             </p>
           </div>
           <div
             v-if="cachedUser.flags"
-            class="bg-dark-600 flex space-x-2 rounded-md p-2 shadow-md"
+            class="bg-ctp-base flex space-x-2 rounded-md p-2 shadow-md"
           >
             <div
               v-if="cachedUser.flags & UserFlag.System"
@@ -102,12 +102,12 @@
           </div>
         </div>
         <div
-          class="border-dark-600 flex space-x-2 border-b text-sm text-gray-400"
+          class="border-ctp-base flex space-x-2 border-b text-sm text-ctp-subtext0"
         >
           <p
             class="-mb-px cursor-pointer px-2 pb-2 transition"
             :class="{
-              'border-b-2 border-white  text-white': tab === 'profile',
+              'border-b-2 border-text text-ctp-text': tab === 'profile',
               '': tab !== 'profile',
             }"
             @click="tab = 'profile'"
@@ -118,7 +118,7 @@
             v-if="!isSelf"
             class="-mb-px cursor-pointer px-2 pb-2 transition"
             :class="{
-              'border-b-2 border-white  text-white': tab === 'spaces',
+              'border-b-2 border-text text-ctp-text': tab === 'spaces',
               '': tab !== 'spaces',
             }"
             @click="tab = 'spaces'"
@@ -129,7 +129,8 @@
             v-if="!isSelf"
             class="-mb-px cursor-pointer px-2 pb-2 transition"
             :class="{
-              'border-b-2 border-white  text-white': tab === 'friends',
+              'border-b-2 border-text text-ctp-text': tab === 'friends',
+              '': tab !== 'friends',
             }"
             @click="tab = 'friends'"
           >
@@ -171,10 +172,12 @@
               </div>
             </div>
             <div v-if="bioHtml" class="space-y-1">
-              <p class="text-xs font-semibold text-gray-500">Bio</p>
+              <p class="text-xs font-semibold text-ctp-subtext0 uppercase">
+                Bio
+              </p>
               <!-- eslint-disable vue/no-v-html -->
               <div
-                class="select-text whitespace-pre-wrap text-sm text-gray-200"
+                class="select-text whitespace-pre-wrap text-sm"
                 v-html="bioHtml"
               />
               <!-- eslint-enable vue/no-v-html -->
