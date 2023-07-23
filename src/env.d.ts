@@ -12,19 +12,6 @@ declare module "*.vue" {
 
 // App stuff
 
-declare interface IHyalusDev {
-  store: unknown;
-  enabled: boolean;
-  stop(): void;
-  start(): void;
-  idb: {
-    keys: unknown;
-    get: unknown;
-    set: unknown;
-    del: unknown;
-  };
-}
-
 declare interface IHyalusDesktopStartupSettings {
   enabled: boolean;
   minimized: boolean;
@@ -72,7 +59,6 @@ declare interface IHyalusDesktopWin32 {
 }
 
 declare interface Window {
-  dev: IHyalusDev;
   HyalusDesktop?: IHyalusDesktop;
   IdleDetector?: typeof IdleDetector;
 }
