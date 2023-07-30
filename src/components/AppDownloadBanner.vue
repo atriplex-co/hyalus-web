@@ -1,5 +1,5 @@
 <template>
-  <div class="w-full">
+  <div v-if="!hide" class="w-full">
     <div
       class="bg-ctp-accent text-ctp-base flex h-9 items-center justify-between rounded-sm px-2 text-sm shadow-md"
     >
@@ -15,7 +15,7 @@
       </div>
       <div
         class="h-6 w-6 cursor-pointer rounded-full bg-ctp-base/10 p-1 transition hover:bg-opacity-25"
-        @click="hide"
+        @click="hide = true"
       >
         <CloseIcon />
       </div>
@@ -29,15 +29,10 @@
 
 <script lang="ts" setup>
 import CloseIcon from "../icons/CloseIcon.vue";
-import { useStore } from "../global/store";
 import DesktopIcon from "../icons/DesktopIcon.vue";
 import { ref } from "vue";
 import AppDownloadModal from "./AppDownloadModal.vue";
 
-const store = useStore();
 const appDownloadModal = ref(false);
-
-const hide = async () => {
-  await store.writeConfig("appDownloadBanner", false);
-};
+const hide = ref(false);
 </script>

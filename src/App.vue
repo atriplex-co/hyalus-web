@@ -202,7 +202,7 @@ const banner = computed(() => {
     return "emailVerify";
   }
 
-  if (!isDesktop && store.config.appDownloadBanner) {
+  if (!isDesktop) {
     return "appDownload";
   }
 
