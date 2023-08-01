@@ -36,9 +36,9 @@
         <div class="relative min-h-0 w-full flex-1">
           <div v-if="typingStatus" class="absolute z-10 w-full p-2">
             <div
-              class="dark:bg-dark-600 flex w-full items-center space-x-4 rounded-md bg-gray-100 px-4 py-2 text-sm shadow-md"
+              class="bg-ctp-surface0 flex w-full items-center space-x-4 rounded-md px-4 py-2 text-sm shadow-md"
             >
-              <PencilIcon class="h-4 w-4 text-gray-500 dark:text-gray-400" />
+              <PencilIcon class="h-4 w-4" />
               <p>{{ typingStatus }}</p>
             </div>
           </div>
