@@ -8,7 +8,7 @@ import {
   ColorTheme,
   SocketMessageType,
 } from "@/../hyalus-server/src/types";
-// import RnnoiseWasm from "@atriplex-co/hyalus-rnnoise/dist/rnnoise.wasm?url";
+import RnnoiseWasm from "../vendor/rnnoise.wasm?url";
 import RnnoiseWorker from "../shared/rnnoiseWorker?worker";
 import SoundStateUp from "../assets/sounds/state-change_confirm-up.ogg";
 import SoundStateDown from "../assets/sounds/state-change_confirm-down.ogg";
@@ -34,8 +34,6 @@ import { Socket } from "./socket";
 import { createPinia, defineStore } from "pinia";
 import axios from "axios";
 import msgpack from "msgpack-lite";
-
-const RnnoiseWasm = "TODO: fix rnnoise wasm import";
 
 export const useStore = defineStore("main", {
   state(): IState {
