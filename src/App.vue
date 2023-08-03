@@ -206,7 +206,7 @@ const banner = computed(() => {
     return "emailVerify";
   }
 
-  if (!isDesktop) {
+  if (!isDesktop && !isMobile) {
     return "appDownload";
   }
 
