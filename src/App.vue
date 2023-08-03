@@ -150,7 +150,7 @@ import SideBar from "./components/SideBar.vue";
 import { computed, ref, watch, onMounted } from "vue";
 import { useRoute, useRouter } from "vue-router";
 import UserInviteModal from "./components/UserInviteModal.vue";
-import { isDesktop } from "./global/helpers";
+import { isDesktop, isMobile } from "./global/helpers";
 import { useStore } from "./global/store";
 import AppDownloadBanner from "./components/AppDownloadBanner.vue";
 import WelcomeModal from "./components/WelcomeModal.vue";
@@ -191,6 +191,10 @@ const inApp = computed(() => {
 
 const showSideBar = computed(() => {
   if (!inAppRoutes.includes(route.name as string)) {
+    return false;
+  }
+
+  if (isMobile && !store.sideBarOpen) {
     return false;
   }
 
