@@ -54,8 +54,8 @@
 <script lang="ts" setup>
 import { ArrowUpOnSquareIcon } from "@heroicons/vue/24/outline";
 import axios from "axios";
-import { PropType, ref } from "vue";
-import { ISpace } from "../global/types";
+import { type PropType, ref } from "vue";
+import type { ISpace } from "../global/types";
 import UserAvatar from "./UserAvatar.vue";
 
 const props = defineProps({
@@ -67,6 +67,7 @@ const props = defineProps({
   },
 });
 
+// eslint-disable-next-line vue/no-setup-props-destructure
 const name = ref(props.space.name);
 
 const setAvatar = async () => {

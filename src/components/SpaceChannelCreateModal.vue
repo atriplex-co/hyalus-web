@@ -1,10 +1,5 @@
 <template>
-  <ModalBase
-    title="Create Channel"
-    submit-text="Create"
-    @submit="submit"
-    @close="$emit('close')"
-  >
+  <ModalBase title="Create Channel" submit-text="Create" @submit="submit" @close="$emit('close')">
     <template #icon>
       <PlusIcon />
     </template>
@@ -17,9 +12,7 @@
           class="flex w-full items-center space-x-3 rounded-md border bg-ctp-crust border-ctp-base p-3 shadow-sm"
           @click="type = ChannelType.SpaceText"
         >
-          <HashtagIcon
-            class="bg-ctp-base h-8 w-8 rounded-full p-2 text-ctp-subtext0"
-          />
+          <HashtagIcon class="bg-ctp-base h-8 w-8 rounded-full p-2 text-ctp-subtext0" />
           <div class="flex-1">
             <p class="font-bold">Text Channel</p>
           </div>
@@ -29,9 +22,7 @@
           class="flex w-full items-center space-x-3 rounded-md border bg-ctp-crust border-ctp-base p-3 shadow-sm"
           @click="type = ChannelType.SpaceVoice"
         >
-          <SpeakerWaveIcon
-            class="bg-ctp-base h-8 w-8 rounded-full p-2 text-ctp-subtext0"
-          />
+          <SpeakerWaveIcon class="bg-ctp-base h-8 w-8 rounded-full p-2 text-ctp-subtext0" />
           <div class="flex-1">
             <p class="font-bold">Voice Channel</p>
           </div>
@@ -43,16 +34,12 @@
 </template>
 
 <script setup lang="ts">
-import {
-  HashtagIcon,
-  PlusIcon,
-  SpeakerWaveIcon,
-} from "@heroicons/vue/20/solid";
+import { HashtagIcon, PlusIcon, SpeakerWaveIcon } from "@heroicons/vue/20/solid";
 import axios from "axios";
-import { ChannelType } from "@/../hyalus-server/src/types";
-import { PropType, ref } from "vue";
+import { ChannelType } from "@/../../hyalus-server/src/types";
+import { type PropType, ref } from "vue";
 import { prettyError } from "../global/helpers";
-import { ISpace } from "../global/types";
+import type { ISpace } from "../global/types";
 import CheckBox from "./CheckBox.vue";
 import ModalBase from "./ModalBase.vue";
 import ModalError from "./ModalError.vue";

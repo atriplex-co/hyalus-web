@@ -20,10 +20,7 @@
         <CloseIcon />
       </div>
     </div>
-    <AppDownloadModal
-      v-if="appDownloadModal"
-      @close="appDownloadModal = false"
-    />
+    <AppDownloadModal v-if="appDownloadModal" @close="appDownloadModal = false" />
   </div>
 </template>
 

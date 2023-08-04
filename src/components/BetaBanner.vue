@@ -1,8 +1,6 @@
 <template>
   <div class="w-full">
-    <div
-      class="bg-ctp-base flex h-9 items-center justify-between rounded-sm px-2 text-sm"
-    >
+    <div class="bg-ctp-base flex h-9 items-center justify-between rounded-sm px-2 text-sm">
       <div class="flex items-center space-x-2 px-1">
         <WarningIcon class="h-5 w-5" />
         <p>Hyalus is currently in beta, please report bugs &amp; issues.</p>

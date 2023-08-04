@@ -1,10 +1,5 @@
 <template>
-  <ModalBase
-    title="Create Category"
-    submit-text="Create"
-    @submit="submit"
-    @close="$emit('close')"
-  >
+  <ModalBase title="Create Category" submit-text="Create" @submit="submit" @close="$emit('close')">
     <template #icon>
       <FolderPlusIcon />
     </template>
@@ -18,10 +13,10 @@
 <script setup lang="ts">
 import { FolderPlusIcon } from "@heroicons/vue/20/solid";
 import axios from "axios";
-import { ChannelType } from "@/../hyalus-server/src/types";
-import { PropType, ref } from "vue";
+import { ChannelType } from "@/../../hyalus-server/src/types";
+import { type PropType, ref } from "vue";
 import { prettyError } from "../global/helpers";
-import { ISpace } from "../global/types";
+import type { ISpace } from "../global/types";
 import ModalBase from "./ModalBase.vue";
 import ModalError from "./ModalError.vue";
 import ModalInput from "./ModalInput.vue";

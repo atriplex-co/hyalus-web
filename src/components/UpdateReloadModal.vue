@@ -1,10 +1,5 @@
 <template>
-  <ModalBase
-    title="Reload to Update"
-    submit-text="Reload"
-    @close="$emit('close')"
-    @submit="submit"
-  >
+  <ModalBase title="Reload to Update" submit-text="Reload" @close="$emit('close')" @submit="submit">
     <template #icon>
       <RefreshIcon />
     </template>

@@ -2,10 +2,7 @@
   <tr>
     <td>
       <div class="flex items-center space-x-4">
-        <UserAvatar
-          :avatar="invite.user.avatar"
-          class="h-10 w-10 rounded-full"
-        />
+        <UserAvatar :avatar="invite.user.avatar" class="h-10 w-10 rounded-full" />
         <div>
           <p class="text-sm font-semibold">{{ invite.user.name }}</p>
           <p class="text-sm text-gray-400">@{{ invite.user.username }}</p>
@@ -31,8 +28,8 @@
 <script setup lang="ts">
 import { TrashIcon } from "@heroicons/vue/20/solid";
 import axios from "axios";
-import { PropType } from "vue";
-import { ISpace, ISpaceInvite } from "../global/types";
+import type { PropType } from "vue";
+import type { ISpace, ISpaceInvite } from "../global/types";
 import UserAvatar from "./UserAvatar.vue";
 
 const emit = defineEmits(["remove"]);
@@ -52,9 +49,7 @@ const props = defineProps({
 });
 
 const remove = async () => {
-  await axios.delete(
-    `/api/v1/spaces/${props.space.id}/invites/${props.invite.code}`,
-  );
+  await axios.delete(`/api/v1/spaces/${props.space.id}/invites/${props.invite.code}`);
   emit("remove");
 };
 </script>

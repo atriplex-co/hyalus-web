@@ -18,8 +18,7 @@
     <div
       class="min-w-0 flex-1 transition"
       :class="{
-        'text-ctp-subtext0 hover:text-ctp-text':
-          !selected && !channelState.mentionCount,
+        'text-ctp-subtext0 hover:text-ctp-text': !selected && !channelState.mentionCount,
         'text-ctp-text': selected || channelState.mentionCount,
       }"
     >
@@ -42,10 +41,10 @@
 <script lang="ts" setup>
 import UserAvatar from "./UserAvatar.vue";
 import EmptyAvatar from "./EmptyAvatar.vue";
-import { computed, PropType } from "vue";
-import { IChannel } from "../global/types";
+import { computed, type PropType } from "vue";
+import type { IChannel } from "../global/types";
 import { useRoute } from "vue-router";
-import { ChannelType, Status } from "@/../hyalus-server/src/types";
+import { ChannelType, Status } from "@/../../hyalus-server/src/types";
 import { useStore } from "../global/store";
 import { getChannelState } from "../global/helpers";
 
@@ -59,9 +58,7 @@ const props = defineProps({
 
 const selected = computed(() => {
   const route = useRoute();
-  return (
-    route.name === "channel" && route.params.channelId === props.channel.id
-  );
+  return route.name === "channel" && route.params.channelId === props.channel.id;
 });
 
 const name = computed(() => {
@@ -90,9 +87,7 @@ const avatar = computed(() => {
 
 const status = computed(() => {
   if (props.channel.type === ChannelType.DM && props.channel.members.length) {
-    const friend = store.friends.find(
-      (friend) => friend.id === props.channel.members[0].id,
-    );
+    const friend = store.friends.find((friend) => friend.id === props.channel.members[0].id);
 
     if (friend) {
       return friend.status;
@@ -110,9 +105,7 @@ const channelState = computed(() => {
 
 const description = computed(() => {
   if (props.channel.type === ChannelType.Group) {
-    return `${props.channel.members.length} member${
-      props.channel.members.length > 1 ? "s" : ""
-    }`;
+    return `${props.channel.members.length} member${props.channel.members.length > 1 ? "s" : ""}`;
   }
 
   return "";

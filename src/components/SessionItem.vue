@@ -39,8 +39,8 @@
 <script lang="ts" setup>
 import Day from "dayjs";
 import UAParser from "ua-parser-js";
-import { PropType } from "vue";
-import { ISession } from "../global/types";
+import type { PropType } from "vue";
+import type { ISession } from "../global/types";
 import axios from "axios";
 import { useStore } from "../global/store";
 import {
@@ -60,8 +60,10 @@ const props = defineProps({
 });
 
 // const createdAt = Day(props.session.createdAt).calendar();
+// eslint-disable-next-line vue/no-setup-props-destructure
 const updatedAt = Day(props.session.updatedAt).calendar();
 // const ip = props.session.ip.replace("::ffff:", "");
+// eslint-disable-next-line vue/no-setup-props-destructure
 const agentParsed = UAParser(props.session.userAgent);
 // const showIp = ref(false);
 
@@ -76,13 +78,11 @@ if (agentParsed.browser) {
   }
 }
 
-if (
-  agentParsed?.device?.type === "mobile" ||
-  agentParsed?.device?.type === "tablet"
-) {
+if (agentParsed?.device?.type === "mobile" || agentParsed?.device?.type === "tablet") {
   agentType = "mobile";
 }
 
+// eslint-disable-next-line vue/no-setup-props-destructure
 const parts = props.session.userAgent.split("Electron/");
 if (parts.length >= 2) {
   agentFormatted = `Hyalus ${parts[1].split(" ")[0]}`;

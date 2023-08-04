@@ -7,7 +7,7 @@ import {
   ColorMode,
   ColorTheme,
   SocketMessageType,
-} from "@/../hyalus-server/src/types";
+} from "@/../../hyalus-server/src/types";
 import RnnoiseWasm from "../vendor/rnnoise.wasm?url";
 import RnnoiseWorker from "../shared/rnnoiseWorker?worker";
 import SoundStateUp from "../assets/sounds/state-change_confirm-up.ogg";
@@ -17,10 +17,10 @@ import SoundNavigateBackwardMin from "../assets/sounds/navigation_backward-selec
 import SoundNavigateForward from "../assets/sounds/navigation_forward-selection.ogg";
 import SoundNavigateForwardMin from "../assets/sounds/navigation_forward-selection-minimal.ogg";
 import {
-  ICallLocalStream,
-  ICallRTCData,
-  IConfig,
-  IState,
+  type ICallLocalStream,
+  type ICallRTCData,
+  type IConfig,
+  type IState,
   SideBarState,
 } from "./types";
 import {
@@ -120,9 +120,7 @@ export const useStore = defineStore("main", {
           this.config = {
             ...this.config,
             // ...((await idbGet("config")) as IConfig),
-            ...(msgpack.decode(
-              sodium.from_base64(localStorage.config),
-            ) as IConfig),
+            ...(msgpack.decode(sodium.from_base64(localStorage.config)) as IConfig),
           };
         } catch (e) {
           console.warn(e);
@@ -143,15 +141,13 @@ export const useStore = defineStore("main", {
       )["authorization"] = sodium.to_base64(this.config.token);
 
       this.socket = new Socket();
-
       (async () => {
         if (!("getDirectory" in navigator.storage)) {
           return;
         }
 
-        const root =
-          (await navigator.storage.getDirectory()) as FileSystemDirectoryHandle &
-            AsyncIterable<[string, FileSystemFileHandle]>;
+        const root = (await navigator.storage.getDirectory()) as FileSystemDirectoryHandle &
+          AsyncIterable<[string, FileSystemFileHandle]>;
 
         for await (const [name] of root) {
           if (name.startsWith("tmp_")) {
@@ -182,26 +178,17 @@ export const useStore = defineStore("main", {
       if (k === "audioOutputGain" && this.call) {
         for (const stream of this.call.remoteStreams) {
           if (stream.gain) {
-            stream.gain.gain.value = getUserOutputGain(
-              stream.type,
-              stream.userId,
-            );
+            stream.gain.gain.value = getUserOutputGain(stream.type, stream.userId);
           }
         }
       }
 
       if (
-        [
-          "audioInput",
-          "voiceRtcEcho",
-          "voiceRtcGain",
-          "voiceRtcNoise",
-          "voiceRnnoise",
-        ].includes(k) &&
+        ["audioInput", "voiceRtcEcho", "voiceRtcGain", "voiceRtcNoise", "voiceRnnoise"].includes(
+          k,
+        ) &&
         this.call &&
-        this.call.localStreams.find(
-          (stream) => stream.type === CallStreamType.Audio,
-        )
+        this.call.localStreams.find((stream) => stream.type === CallStreamType.Audio)
       ) {
         await this.callRemoveLocalStream({
           type: CallStreamType.Audio,
@@ -216,9 +203,7 @@ export const useStore = defineStore("main", {
       if (
         ["videoInput"].includes(k) &&
         this.call &&
-        this.call.localStreams.find(
-          (stream) => stream.type === CallStreamType.Video,
-        )
+        this.call.localStreams.find((stream) => stream.type === CallStreamType.Video)
       ) {
         await this.callRemoveLocalStream({
           type: CallStreamType.Video,
@@ -251,21 +236,13 @@ export const useStore = defineStore("main", {
         }
       }
 
-      if (
-        (k.startsWith("userGain:") || k.startsWith("userMuted:")) &&
-        this.call
-      ) {
+      if ((k.startsWith("userGain:") || k.startsWith("userMuted:")) && this.call) {
         const stream = this.call.remoteStreams.find(
-          (stream) =>
-            stream.userId === k.split(":")[1] &&
-            stream.type === +k.split(":")[2],
+          (stream) => stream.userId === k.split(":")[1] && stream.type === +k.split(":")[2],
         );
 
         if (stream && stream.gain) {
-          stream.gain.gain.value = getUserOutputGain(
-            stream.type,
-            stream.userId,
-          );
+          stream.gain.gain.value = getUserOutputGain(stream.type, stream.userId);
         }
       }
 
@@ -278,13 +255,8 @@ export const useStore = defineStore("main", {
 
       return v;
     },
-    async callAddLocalStreamPeer(
-      stream: ICallLocalStream,
-      userId: string,
-    ): Promise<void> {
-      const channel = this.channels.find(
-        (channel) => channel.id === this.call?.channelId,
-      );
+    async callAddLocalStreamPeer(stream: ICallLocalStream, userId: string): Promise<void> {
+      const channel = this.channels.find((channel) => channel.id === this.call?.channelId);
 
       if (!channel) {
         console.warn("callSendLocalStream missing channel");
@@ -379,10 +351,7 @@ export const useStore = defineStore("main", {
           pc.close();
         }
 
-        if (
-          pc.connectionState === "closed" &&
-          stream.peers.find((peer2) => peer2.pc === peer.pc)
-        ) {
+        if (pc.connectionState === "closed" && stream.peers.find((peer2) => peer2.pc === peer.pc)) {
           stream.peers = stream.peers.filter((peer2) => peer2.pc !== peer.pc);
           stream.requestInit = true;
 
@@ -392,9 +361,7 @@ export const useStore = defineStore("main", {
             this.call.localStreams.find((stream2) => stream2 === stream) &&
             this.voiceStates.find(
               (state) =>
-                this.call &&
-                state.id === userId &&
-                state.channelId === this.call.channelId,
+                this.call && state.id === userId && state.channelId === this.call.channelId,
             )
           ) {
             await this.callAddLocalStreamPeer(stream, userId);
@@ -429,7 +396,6 @@ export const useStore = defineStore("main", {
         st: stream.type,
         d: pc.localDescription?.sdp,
       });
-
       (async () => {
         await new Promise((resolve) => {
           setTimeout(resolve, 10000);
@@ -467,8 +433,7 @@ export const useStore = defineStore("main", {
             googExperimentalAutoGainControl: this.config.voiceRtcGain,
             googEchoCancellation: this.config.voiceRtcEcho,
             googExperimentalEchoCancellation: this.config.voiceRtcEcho,
-            googNoiseSuppression:
-              !this.config.voiceRnnoise && this.config.voiceRtcNoise,
+            googNoiseSuppression: !this.config.voiceRnnoise && this.config.voiceRtcNoise,
             googExperimentalNoiseSuppression:
               !this.config.voiceRnnoise && this.config.voiceRtcNoise,
           },
@@ -545,11 +510,7 @@ export const useStore = defineStore("main", {
         ).getTracks()[0];
       }
 
-      if (
-        !opts.track &&
-        !opts.getTrack &&
-        opts.type === CallStreamType.DisplayVideo
-      ) {
+      if (!opts.track && !opts.getTrack && opts.type === CallStreamType.DisplayVideo) {
         const height = +this.config.videoMode.split("p")[0];
         const fps = +this.config.videoMode.split("p")[1];
         const width = {
@@ -576,9 +537,7 @@ export const useStore = defineStore("main", {
         for (const track of stream.getTracks()) {
           await this.callAddLocalStream({
             type:
-              track.kind === "video"
-                ? CallStreamType.DisplayVideo
-                : CallStreamType.DisplayAudio,
+              track.kind === "video" ? CallStreamType.DisplayVideo : CallStreamType.DisplayAudio,
             track,
             silent: track.kind !== "video",
           });
@@ -590,9 +549,7 @@ export const useStore = defineStore("main", {
         return;
       }
 
-      const channel = this.channels.find(
-        (channel) => channel.id === this.call?.channelId,
-      );
+      const channel = this.channels.find((channel) => channel.id === this.call?.channelId);
 
       if (!channel) {
         return;
@@ -610,10 +567,7 @@ export const useStore = defineStore("main", {
           data = val;
         }
 
-        if (
-          val instanceof EncodedVideoChunk ||
-          val instanceof EncodedAudioChunk
-        ) {
+        if (val instanceof EncodedVideoChunk || val instanceof EncodedAudioChunk) {
           chunk = val as EncodedMediaChunk;
           data = new Uint8Array(val.byteLength);
           val.copyTo(data);
@@ -631,11 +585,7 @@ export const useStore = defineStore("main", {
           try {
             for (let i = 0; i < data.length; i += RTCMaxMessageSize) {
               peer.dc.send(
-                new Uint8Array(
-                  data.buffer,
-                  i,
-                  Math.min(RTCMaxMessageSize, data.length - i),
-                ),
+                new Uint8Array(data.buffer, i, Math.min(RTCMaxMessageSize, data.length - i)),
               );
             }
 
@@ -665,10 +615,7 @@ export const useStore = defineStore("main", {
           return;
         }
 
-        if (
-          val instanceof AudioData &&
-          (encoder.state === "unconfigured" || stream.requestInit)
-        ) {
+        if (val instanceof AudioData && (encoder.state === "unconfigured" || stream.requestInit)) {
           let sampleRate = 48000;
           let numberOfChannels = 2;
 
@@ -711,16 +658,12 @@ export const useStore = defineStore("main", {
           let scaledHeight = val.codedHeight;
 
           if (scaledWidth > maxScaledWidth) {
-            scaledHeight = Math.floor(
-              scaledHeight * (maxScaledWidth / scaledWidth),
-            );
+            scaledHeight = Math.floor(scaledHeight * (maxScaledWidth / scaledWidth));
             scaledWidth = maxScaledWidth;
           }
 
           if (scaledHeight > maxScaledHeight) {
-            scaledWidth = Math.floor(
-              scaledWidth * (maxScaledHeight / scaledHeight),
-            );
+            scaledWidth = Math.floor(scaledWidth * (maxScaledHeight / scaledHeight));
             scaledHeight = maxScaledHeight;
           }
 
@@ -735,16 +678,10 @@ export const useStore = defineStore("main", {
             }[store.config.videoMode] || 4500000;
 
           let bitrate = store.config.videoQuality;
-          if (
-            bitrate &&
-            stream.peers.filter((peer) => peer.enabled).length &&
-            store.call
-          ) {
+          if (bitrate && stream.peers.filter((peer) => peer.enabled).length && store.call) {
             bitrate /= stream.peers.filter((peer) => peer.enabled).length;
             bitrate /= store.call.localStreams.filter((stream) =>
-              [CallStreamType.Video, CallStreamType.DisplayVideo].includes(
-                stream.type,
-              ),
+              [CallStreamType.Video, CallStreamType.DisplayVideo].includes(stream.type),
             ).length;
             bitrate = Math.floor(bitrate);
             bitrate = Math.min(bitrate, maxBitrate);
@@ -800,9 +737,7 @@ export const useStore = defineStore("main", {
               ...info.decoderConfig,
               description:
                 info.decoderConfig.description &&
-                sodium.to_base64(
-                  new Uint8Array(info.decoderConfig.description),
-                ),
+                sodium.to_base64(new Uint8Array(info.decoderConfig.description)),
             });
           }
 
@@ -826,9 +761,7 @@ export const useStore = defineStore("main", {
         !opts.submitOverride &&
         [CallStreamType.Video, CallStreamType.DisplayVideo].includes(opts.type)
       ) {
-        encoder = new VideoEncoder(
-          encoderInit as VideoEncoderInit,
-        ) as MediaEncoder;
+        encoder = new VideoEncoder(encoderInit as VideoEncoderInit) as MediaEncoder;
       }
 
       stream =
@@ -855,9 +788,7 @@ export const useStore = defineStore("main", {
 
       await callUpdatePersist();
 
-      for (const state of this.voiceStates.filter(
-        (state) => state.channelId === channel.id,
-      )) {
+      for (const state of this.voiceStates.filter((state) => state.channelId === channel.id)) {
         await this.callAddLocalStreamPeer(stream, state.id);
       }
 
@@ -894,27 +825,20 @@ export const useStore = defineStore("main", {
 
       return stream;
     },
-    async callRemoveLocalStream(opts: {
-      type: CallStreamType;
-      silent?: boolean;
-    }): Promise<void> {
+    async callRemoveLocalStream(opts: { type: CallStreamType; silent?: boolean }): Promise<void> {
       if (!this.call) {
         console.warn("callRemoveLocalStream missing call");
         return;
       }
 
-      const stream = this.call.localStreams.find(
-        (stream) => stream.type === opts.type,
-      );
+      const stream = this.call.localStreams.find((stream) => stream.type === opts.type);
 
       if (!stream) {
         console.warn("callRemoveLocalStream missing stream");
         return;
       }
 
-      this.call.localStreams = this.call.localStreams.filter(
-        (stream2) => stream2 !== stream,
-      );
+      this.call.localStreams = this.call.localStreams.filter((stream2) => stream2 !== stream);
 
       if (stream.track) {
         stream.track.stop();
@@ -938,9 +862,7 @@ export const useStore = defineStore("main", {
 
       if (
         opts.type === CallStreamType.DisplayVideo &&
-        this.call?.localStreams.find(
-          (stream) => stream.type === CallStreamType.DisplayAudio,
-        )
+        this.call?.localStreams.find((stream) => stream.type === CallStreamType.DisplayAudio)
       ) {
         await this.callRemoveLocalStream({
           type: CallStreamType.DisplayAudio,
@@ -1034,9 +956,7 @@ export const useStore = defineStore("main", {
                   }
 
                   if (
-                    store.call.localStreams.find(
-                      (stream) => stream.type === CallStreamType.Audio,
-                    )
+                    store.call.localStreams.find((stream) => stream.type === CallStreamType.Audio)
                   ) {
                     await store.callRemoveLocalStream({
                       type: CallStreamType.Audio,
@@ -1065,9 +985,7 @@ export const useStore = defineStore("main", {
 
                   if (
                     !store.call.deaf &&
-                    store.call.localStreams.find(
-                      (stream) => stream.type === CallStreamType.Audio,
-                    )
+                    store.call.localStreams.find((stream) => stream.type === CallStreamType.Audio)
                   ) {
                     await store.callRemoveLocalStream({
                       type: CallStreamType.Audio,

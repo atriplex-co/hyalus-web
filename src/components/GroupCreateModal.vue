@@ -1,10 +1,5 @@
 <template>
-  <ModalBase
-    title="Create Group"
-    submit-text="Create"
-    @close="$emit('close')"
-    @submit="submit"
-  >
+  <ModalBase title="Create Group" submit-text="Create" @close="$emit('close')" @submit="submit">
     <template #icon>
       <GroupIcon />
     </template>
@@ -22,12 +17,12 @@ import GroupIcon from "../icons/GroupIcon.vue";
 import ModalInput from "./ModalInput.vue";
 import ModalError from "./ModalError.vue";
 import InputUser from "./InputUser.vue";
-import { ref, Ref } from "vue";
+import { ref, type Ref } from "vue";
 import { prettyError } from "../global/helpers";
-import { SocketMessageType } from "@/../hyalus-server/src/types";
+import { SocketMessageType } from "@/../../hyalus-server/src/types";
 import axios from "axios";
 import { useStore } from "../global/store";
-import { IFriend } from "../global/types";
+import type { IFriend } from "../global/types";
 
 const store = useStore();
 const props = defineProps({

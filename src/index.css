@@ -12,8 +12,7 @@
 @font-face {
   font-family: "Inconsolata";
   font-weight: 100 1000;
-  src: url("./assets/fonts/Inconsolata-VariableFont_wdth,wght.woff2")
-    format("woff2");
+  src: url("./assets/fonts/Inconsolata-VariableFont_wdth,wght.woff2") format("woff2");
 }
 
 html {

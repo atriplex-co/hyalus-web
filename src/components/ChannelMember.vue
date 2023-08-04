@@ -5,11 +5,7 @@
       @click="userModal = true"
     >
       <div class="flex min-w-0 items-center space-x-3">
-        <UserAvatar
-          :avatar="member.avatar"
-          :status="status"
-          class="h-8 w-8 rounded-full"
-        />
+        <UserAvatar :avatar="member.avatar" :status="status" class="h-8 w-8 rounded-full" />
         <div class="min-w-0">
           <p
             class="truncate font-semibold"
@@ -20,26 +16,16 @@
           >
             {{ member.name }}
           </p>
-          <p class="truncate text-xs text-ctp-subtext0">
-            @{{ member.username }}
-          </p>
+          <p class="truncate text-xs text-ctp-subtext0">@{{ member.username }}</p>
         </div>
       </div>
       <CloseIcon
-        v-if="
-          channel.ownerId === store.self.id &&
-          channel.type === ChannelType.Group
-        "
+        v-if="channel.ownerId === store.self.id && channel.type === ChannelType.Group"
         class="dark:bg-dark-500 hidden h-7 w-7 flex-shrink-0 cursor-pointer rounded-full bg-gray-200 p-1.5 text-gray-500 transition hover:text-gray-800 group-hover:block dark:text-gray-400 dark:hover:text-white"
         @click.stop="groupRemoveModal = true"
       />
     </div>
-    <UserModal
-      v-if="userModal"
-      :id="member.id"
-      :space="space"
-      @close="userModal = false"
-    />
+    <UserModal v-if="userModal" :id="member.id" :space="space" @close="userModal = false" />
     <GroupRemoveModal
       v-if="groupRemoveModal && member.id !== store.self.id"
       :channel="channel"
@@ -56,15 +42,9 @@
 
 <script lang="ts" setup>
 import UserAvatar from "./UserAvatar.vue";
-import { computed, PropType, ref } from "vue";
-import {
-  IChannel,
-  IChannelMember,
-  ISelf,
-  ISpace,
-  ISpaceMember,
-} from "../global/types";
-import { ChannelType, Status } from "@/../hyalus-server/src/types";
+import { computed, type PropType, ref } from "vue";
+import type { IChannel, IChannelMember, ISelf, ISpace, ISpaceMember } from "../global/types";
+import { ChannelType, Status } from "@/../../hyalus-server/src/types";
 import { useStore } from "../global/store";
 import UserModal from "./UserModal.vue";
 import CloseIcon from "../icons/CloseIcon.vue";

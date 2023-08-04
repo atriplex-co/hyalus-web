@@ -1,21 +1,14 @@
 <template>
-  <ModalBase
-    title="Enable 2FA"
-    submit-text="Enable"
-    @submit="submit"
-    @close="$emit('close')"
-  >
+  <ModalBase title="Enable 2FA" submit-text="Enable" @submit="submit" @close="$emit('close')">
     <template #icon>
       <LockIcon />
     </template>
     <template #main>
-      <div
-        class="border-ctp-base overflow-hidden rounded-md border shadow-sm"
-      >
+      <div class="border-ctp-base overflow-hidden rounded-md border shadow-sm">
         <img
           class="h-full w-full"
           :src="qrcodeUrl"
-          style="filter:contrast(87%)invert()sepia()saturate(150%)hue-rotate(180deg)"
+          style="filter: contrast(87%) invert() sepia() saturate(150%) hue-rotate(180deg)"
         />
       </div>
       <div class="space-y-2 text-sm">
@@ -42,9 +35,7 @@
         >
           <LockIcon class="h-6 w-6" />
           <p v-if="showTotpSecretB32" class="select-all">{{ totpSecretB32 }}</p>
-          <button v-else @click="showTotpSecretB32 = true">
-            Show TOTP secret
-          </button>
+          <button v-else @click="showTotpSecretB32 = true">Show TOTP secret</button>
         </div>
       </div>
       <ModalError v-if="error" :error="error" />

@@ -6,14 +6,8 @@
         @click="menu = !menu"
       >
         <p class="font-semibold">{{ space.name }}</p>
-        <ChevronDownIcon
-          v-if="!menu"
-          class="h-4 w-4 text-ctp-subtext0 group-hover:text-ctp-text"
-        />
-        <ChevronUpIcon
-          v-if="menu"
-          class="h-4 w-4 text-ctp-subtext0 group-hover:text-ctp-text"
-        />
+        <ChevronDownIcon v-if="!menu" class="h-4 w-4 text-ctp-subtext0 group-hover:text-ctp-text" />
+        <ChevronUpIcon v-if="menu" class="h-4 w-4 text-ctp-subtext0 group-hover:text-ctp-text" />
       </div>
       <Transition
         enter-active-class="transition ease-out duration-100 origin-top"
@@ -147,11 +141,7 @@
         :channel="channel"
       />
     </div>
-    <SpaceManage
-      v-if="manageModal"
-      :space="space"
-      @close="manageModal = false"
-    />
+    <SpaceManage v-if="manageModal" :space="space" @close="manageModal = false" />
     <SpaceInviteCreateModal
       v-if="inviteCreateModal"
       :space="space"
@@ -167,21 +157,9 @@
       :space="space"
       @close="channelCreateModal = false"
     />
-    <SpaceSetAliasModal
-      v-if="setAliasModal"
-      :space="space"
-      @close="setAliasModal = false"
-    />
-    <SpaceDeleteModal
-      v-if="deleteModal"
-      :space="space"
-      @close="deleteModal = false"
-    />
-    <SpaceLeaveModal
-      v-if="leaveModal"
-      :space="space"
-      @close="leaveModal = false"
-    />
+    <SpaceSetAliasModal v-if="setAliasModal" :space="space" @close="setAliasModal = false" />
+    <SpaceDeleteModal v-if="deleteModal" :space="space" @close="deleteModal = false" />
+    <SpaceLeaveModal v-if="leaveModal" :space="space" @close="leaveModal = false" />
     <SpacePrivacySettingsModal
       v-if="privacySettingsModal"
       :space="space"
@@ -196,11 +174,11 @@
 </template>
 
 <script lang="ts" setup>
-import { computed, PropType, ref, onMounted, watch } from "vue";
-import { ISpace } from "../global/types";
+import { computed, type PropType, ref, onMounted, watch } from "vue";
+import type { ISpace } from "../global/types";
 import { ChevronDownIcon } from "@heroicons/vue/24/outline";
 import SideBarSpaceChannel from "./SideBarSpaceChannel.vue";
-import { ChannelType, SpacePermission } from "@/../hyalus-server/src/types";
+import { ChannelType, SpacePermission } from "@/../../hyalus-server/src/types";
 import {
   ArrowRightOnRectangleIcon,
   PencilSquareIcon,
@@ -352,9 +330,7 @@ const onSpaceUpdate = async () => {
     return;
   }
 
-  const scrollTop = store.config[`lastScrollTop:space:${props.space.id}`] as
-    | number
-    | undefined;
+  const scrollTop = store.config[`lastScrollTop:space:${props.space.id}`] as number | undefined;
 
   if (scrollTop) {
     channelsEl.value.scrollTop = scrollTop;
@@ -362,14 +338,10 @@ const onSpaceUpdate = async () => {
 
   const openChannel =
     store.channels.find(
-      (channel) =>
-        channel.id ===
-        store.config[`lastOpenChannelId:space:${props.space.id}`],
+      (channel) => channel.id === store.config[`lastOpenChannelId:space:${props.space.id}`],
     ) ||
     store.channels.find(
-      (channel) =>
-        channel.spaceId === props.space.id &&
-        channel.type === ChannelType.SpaceText,
+      (channel) => channel.spaceId === props.space.id && channel.type === ChannelType.SpaceText,
     );
 
   if (openChannel) {

@@ -92,10 +92,8 @@
                 <div
                   class="h-3 w-3 rounded-full"
                   :class="{
-                    'bg-gray-500 dark:bg-gray-600':
-                      usableColorMode === ColorMode.Dark,
-                    'dark:bg-dark-900 bg-black':
-                      usableColorMode === ColorMode.DarkOLED,
+                    'bg-gray-500 dark:bg-gray-600': usableColorMode === ColorMode.Dark,
+                    'dark:bg-dark-900 bg-black': usableColorMode === ColorMode.DarkOLED,
                     'bg-gray-300': usableColorMode === ColorMode.Light,
                   }"
                 />
@@ -122,7 +120,7 @@ import axios from "axios";
 import { useStore } from "../global/store";
 import UserAvatar from "./UserAvatar.vue";
 import { prettyError } from "../global/helpers";
-import { ColorMode } from "@/../hyalus-server/src/types";
+import { ColorMode } from "@/../../hyalus-server/src/types";
 import InputList from "./InputList.vue";
 import InputListItem from "./InputListItem.vue";
 

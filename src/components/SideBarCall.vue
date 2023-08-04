@@ -11,10 +11,7 @@
         <div class="min-w-0 flex-1">
           <p class="text-ctp-accent text-sm font-bold">Call Connected</p>
           <div class="flex min-w-0 space-x-1 text-xs text-ctp-subtext0">
-            <router-link
-              :to="`/channels/${channel.id}`"
-              class="block truncate hover:underline"
-            >
+            <router-link :to="`/channels/${channel.id}`" class="block truncate hover:underline">
               {{ name }}
             </router-link>
             <p class="flex-shrink-0">&bull; {{ time }}</p>
@@ -38,9 +35,7 @@
           class="h-7 w-7 rounded-full border border-ctp-mantle transition"
           :class="{
             'ring-ctp-accent ring-2': store.call.remoteStreams.find(
-              (stream) =>
-                stream.type === CallStreamType.Audio &&
-                stream.userId === user.id,
+              (stream) => stream.type === CallStreamType.Audio && stream.userId === user.id,
             )?.speaking,
           }"
         />
@@ -89,8 +84,7 @@
           class="h-10 w-10 cursor-pointer rounded-full p-3 transition"
           :class="{
             'bg-ctp-text text-ctp-base': displayVideoStream,
-            'bg-ctp-mantle hover:text-ctp-text text-ctp-subtext0':
-              !displayVideoStream,
+            'bg-ctp-mantle hover:text-ctp-text text-ctp-subtext0': !displayVideoStream,
           }"
         />
       </div>
@@ -99,8 +93,7 @@
           class="h-10 w-10 cursor-pointer rounded-full p-3 transition"
           :class="{
             'bg-ctp-text text-ctp-base': store.call.deaf,
-            'bg-ctp-mantle hover:text-ctp-text text-ctp-subtext0':
-              !store.call.deaf,
+            'bg-ctp-mantle hover:text-ctp-text text-ctp-subtext0': !store.call.deaf,
           }"
         >
           <AudioOffIcon v-if="store.call" />
@@ -108,15 +101,12 @@
         </div>
       </div>
     </div>
-    <DesktopCaptureModal
-      v-if="desktopCaptureModal"
-      @close="desktopCaptureModal = false"
-    />
+    <DesktopCaptureModal v-if="desktopCaptureModal" @close="desktopCaptureModal = false" />
   </div>
 </template>
 
 <script lang="ts" setup>
-import { CallStreamType, ChannelType } from "@/../hyalus-server/src/types";
+import { CallStreamType, ChannelType } from "@/../../hyalus-server/src/types";
 import { computed, ref, onUnmounted, watch } from "vue";
 import { isDesktop } from "../global/helpers";
 import { useStore } from "../global/store";
@@ -231,8 +221,7 @@ const voiceUsers = computed(() => {
 
   return channel.value.members.filter((member) =>
     store.voiceStates.find(
-      (state) =>
-        state.id === member.id && state.channelId === channel.value?.id,
+      (state) => state.id === member.id && state.channelId === channel.value?.id,
     ),
   );
 });

@@ -11,8 +11,7 @@
     </template>
     <template #main>
       <p class="text-ctp-accent">
-        WARNING: Spaces are currently experimental and may be wiped during
-        development!
+        WARNING: Spaces are currently experimental and may be wiped during development!
       </p>
       <ModalError v-if="error" :error="error" />
       <div v-if="code">
@@ -26,10 +25,10 @@
 <script lang="ts" setup>
 import ModalBase from "./ModalBase.vue";
 import ModalError from "./ModalError.vue";
-import { onMounted, PropType, ref } from "vue";
+import { onMounted, type PropType, ref } from "vue";
 import { prettyError } from "../global/helpers";
 import axios from "axios";
-import { ISpace } from "../global/types";
+import type { ISpace } from "../global/types";
 import { UserPlusIcon } from "@heroicons/vue/20/solid";
 
 defineEmits(["close"]);
@@ -47,12 +46,9 @@ const url = ref("");
 
 onMounted(async () => {
   try {
-    const { data } = await axios.post(
-      `/api/v1/spaces/${props.space.id}/invites`,
-      {
-        // TODO: implement expiresAt in SpaceInviteCreateModal
-      },
-    );
+    const { data } = await axios.post(`/api/v1/spaces/${props.space.id}/invites`, {
+      // TODO: implement expiresAt in SpaceInviteCreateModal
+    });
 
     code.value = data.code;
     url.value = `${location.origin}/invite/${data.code}`;

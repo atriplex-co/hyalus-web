@@ -33,12 +33,12 @@
 </template>
 
 <script lang="ts" setup>
-import { watch, ref, Ref, nextTick, PropType, computed, onMounted } from "vue";
-import { ICallTile } from "../global/types";
+import { watch, ref, type Ref, nextTick, type PropType, computed, onMounted } from "vue";
+import type { ICallTile } from "../global/types";
 import InputRange from "./InputRange.vue";
 import { useStore } from "../global/store";
 import CheckBox from "./CheckBox.vue";
-import { CallStreamType } from "@/../hyalus-server/src/types";
+import { CallStreamType } from "@/../../hyalus-server/src/types";
 import { configToComputed } from "../global/helpers";
 
 const store = useStore();
@@ -70,9 +70,7 @@ const emit = defineEmits(["close"]);
 
 const selfMute = computed({
   get() {
-    return !store.call?.localStreams.find(
-      (stream) => stream.type === CallStreamType.Audio,
-    );
+    return !store.call?.localStreams.find((stream) => stream.type === CallStreamType.Audio);
   },
   async set(val: boolean) {
     if (!val) {
@@ -101,33 +99,19 @@ if (props.tile.remoteStream?.type === CallStreamType.DisplayVideo) {
   targetAudioStream = CallStreamType.DisplayAudio;
 }
 
-const userMuted = configToComputed<boolean>(
-  `userMuted:${props.tile.user.id}:${targetAudioStream}`,
-);
-const userGain = configToComputed<number>(
-  `userGain:${props.tile.user.id}:${targetAudioStream}`,
-);
+// eslint-disable-next-line vue/no-setup-props-destructure
+const userMuted = configToComputed<boolean>(`userMuted:${props.tile.user.id}:${targetAudioStream}`);
+// eslint-disable-next-line vue/no-setup-props-destructure
+const userGain = configToComputed<number>(`userGain:${props.tile.user.id}:${targetAudioStream}`);
 
 onMounted(async () => {
   if (props.tile.user.id !== store.self?.id) {
-    if (
-      store.config[`userGain:${props.tile.user.id}:${targetAudioStream}`] ===
-      undefined
-    ) {
-      await store.writeConfig(
-        `userGain:${props.tile.user.id}:${targetAudioStream}`,
-        100,
-      );
+    if (store.config[`userGain:${props.tile.user.id}:${targetAudioStream}`] === undefined) {
+      await store.writeConfig(`userGain:${props.tile.user.id}:${targetAudioStream}`, 100);
     }
 
-    if (
-      store.config[`userMuted:${props.tile.user.id}:${targetAudioStream}`] ===
-      undefined
-    ) {
-      await store.writeConfig(
-        `userMuted:${props.tile.user.id}:${targetAudioStream}`,
-        false,
-      );
+    if (store.config[`userMuted:${props.tile.user.id}:${targetAudioStream}`] === undefined) {
+      await store.writeConfig(`userMuted:${props.tile.user.id}:${targetAudioStream}`, false);
     }
   }
 });

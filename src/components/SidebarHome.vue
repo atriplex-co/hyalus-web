@@ -39,11 +39,7 @@
       </div>
     </div>
     <div v-if="channels.length" class="flex-1 space-y-0.5 overflow-auto px-2">
-      <SideBarChannel
-        v-for="channel in channels"
-        :key="channel.id"
-        :channel="channel"
-      />
+      <SideBarChannel v-for="channel in channels" :key="channel.id" :channel="channel" />
     </div>
     <div
       v-if="!channels.length"
@@ -75,7 +71,7 @@ import SearchIcon from "../icons/SearchIcon.vue";
 import FriendsIcon from "../icons/FriendsIcon.vue";
 import SettingsIcon from "../icons/SettingsIcon.vue";
 import { SideBarState } from "../global/types";
-import { ChannelType } from "@/../hyalus-server/src/types";
+import { ChannelType } from "@/../../hyalus-server/src/types";
 import SettingsModal from "./SettingsModal.vue";
 import { SparklesIcon } from "@heroicons/vue/24/solid";
 import FriendAddModal from "./FriendAddModal.vue";
@@ -98,20 +94,15 @@ const channels = computed(() => {
 });
 
 onMounted(() => {
-  const channel = store.channels.find(
-    (channel) => channel.id === route.params.channelId,
-  );
+  const channel = store.channels.find((channel) => channel.id === route.params.channelId);
 
   if (
     !isMobile &&
-    (!channel ||
-      channel.type === ChannelType.SpaceText ||
-      channel.type === ChannelType.SpaceVoice)
+    (!channel || channel.type === ChannelType.SpaceText || channel.type === ChannelType.SpaceVoice)
   ) {
     const openChannel =
-      store.channels.find(
-        (channel) => channel.id === store.config["lastOpenChannelId:home"],
-      ) || channels.value[0];
+      store.channels.find((channel) => channel.id === store.config["lastOpenChannelId:home"]) ||
+      channels.value[0];
 
     if (openChannel) {
       router.push(`/channels/${openChannel.id}`);

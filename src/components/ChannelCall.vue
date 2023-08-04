@@ -35,8 +35,7 @@
           class="h-12 w-12 cursor-pointer rounded-full p-3.5 transition"
           :class="{
             'bg-ctp-text text-ctp-base': audioStream,
-            'bg-ctp-mantle text-ctp-overlay0 hover:text-ctp-text':
-              !audioStream,
+            'bg-ctp-mantle text-ctp-overlay0 hover:text-ctp-text': !audioStream,
           }"
         >
           <MicIcon v-if="audioStream" />
@@ -48,8 +47,7 @@
           class="h-12 w-12 cursor-pointer rounded-full p-3.5 transition"
           :class="{
             'bg-ctp-text text-ctp-base': videoStream,
-            'bg-ctp-mantle text-ctp-overlay0 hover:text-ctp-text':
-              !videoStream,
+            'bg-ctp-mantle text-ctp-overlay0 hover:text-ctp-text': !videoStream,
           }"
         >
           <VideoIcon v-if="videoStream" />
@@ -66,8 +64,7 @@
           class="h-12 w-12 cursor-pointer rounded-full p-3.5 transition"
           :class="{
             'bg-ctp-text text-ctp-base': displayVideoStream,
-            'bg-ctp-mantle text-ctp-overlay0 hover:text-ctp-text':
-              !displayVideoStream,
+            'bg-ctp-mantle text-ctp-overlay0 hover:text-ctp-text': !displayVideoStream,
           }"
         />
       </div>
@@ -76,8 +73,7 @@
           class="h-12 w-12 cursor-pointer rounded-full p-3.5 transition"
           :class="{
             'bg-ctp-text text-ctp-base': store.call.deaf,
-            'bg-ctp-mantle text-ctp-overlay0 hover:text-ctp-text':
-              !store.call.deaf,
+            'bg-ctp-mantle text-ctp-overlay0 hover:text-ctp-text': !store.call.deaf,
           }"
         >
           <AudioOffIcon v-if="store.call" />
@@ -89,10 +85,7 @@
       class="absolute left-0 bottom-0 h-px w-full cursor-ns-resize"
       @mousedown="resizeMouseDown"
     ></div>
-    <DesktopCaptureModal
-      v-if="desktopCaptureModal"
-      @close="desktopCaptureModal = false"
-    />
+    <DesktopCaptureModal v-if="desktopCaptureModal" @close="desktopCaptureModal = false" />
   </div>
 </template>
 
@@ -107,11 +100,11 @@ import MicOffIcon from "../icons/MicOffIcon.vue";
 import VideoOffIcon from "../icons/VideoOffIcon.vue";
 import AudioIcon from "../icons/AudioIcon.vue";
 import AudioOffIcon from "../icons/AudioOffIcon.vue";
-import { ref, computed, onMounted, Ref, onBeforeUnmount } from "vue";
-import { CallStreamType } from "@/../hyalus-server/src/types";
+import { ref, computed, onMounted, type Ref, onBeforeUnmount } from "vue";
+import { CallStreamType } from "@/../../hyalus-server/src/types";
 import { isDesktop } from "../global/helpers";
 import { useStore } from "../global/store";
-import { ICallTile } from "../global/types";
+import type { ICallTile } from "../global/types";
 import ChannelHeader from "./ChannelHeader.vue";
 
 const store = useStore();
@@ -147,27 +140,17 @@ const tiles = computed(() => {
 
   const tiles: ICallTile[] = [];
 
-  for (const state of store.voiceStates.filter(
-    (state) => state.channelId === channel.value?.id,
-  )) {
-    const member = channel.value.members.find(
-      (member2) => member2.id === state.id,
-    );
+  for (const state of store.voiceStates.filter((state) => state.channelId === channel.value?.id)) {
+    const member = channel.value.members.find((member2) => member2.id === state.id);
 
     if (!member) {
       continue;
     }
 
     const userTiles: ICallTile[] = [];
-    const streams = store.call.remoteStreams.filter(
-      (stream) => stream.userId === member.id,
-    );
-    const audioStream = streams.find(
-      (stream) => stream.type === CallStreamType.Audio,
-    );
-    const videoStream = streams.find(
-      (stream) => stream.type === CallStreamType.Video,
-    );
+    const streams = store.call.remoteStreams.filter((stream) => stream.userId === member.id);
+    const audioStream = streams.find((stream) => stream.type === CallStreamType.Audio);
+    const videoStream = streams.find((stream) => stream.type === CallStreamType.Video);
     const displayVideoStream = streams.find(
       (stream) => stream.type === CallStreamType.DisplayVideo,
     );
@@ -260,9 +243,7 @@ const tiles = computed(() => {
   }
 
   for (const tile of tiles) {
-    tile.id = `${tile.user.id}:${
-      tile.localStream?.type || tile.remoteStream?.type || "0"
-    }`;
+    tile.id = `${tile.user.id}:${tile.localStream?.type || tile.remoteStream?.type || "0"}`;
   }
 
   tiles.push(...selfTiles);
@@ -354,9 +335,7 @@ const updateTileBounds = () => {
   }
   let width = tileContainer.value.offsetWidth - (gap * bestOpt[0] + 1);
   let cellWidth = Math.floor(width / bestOpt[0] - gap / 2);
-  let cellHeight = Math.floor(
-    (cellWidth / targetRatioWidth) * targetRatioHeight,
-  );
+  let cellHeight = Math.floor((cellWidth / targetRatioWidth) * targetRatioHeight);
   let usedWidth = cellWidth * bestOpt[0] + gap * (bestOpt[0] - 1);
   let usedHeight = cellHeight * bestOpt.length + gap * (bestOpt.length - 1);
   let startX = Math.floor((tileContainer.value.offsetWidth - usedWidth) / 2);

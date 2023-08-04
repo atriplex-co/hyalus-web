@@ -1,8 +1,8 @@
 import {
   createRouter,
   createWebHistory,
-  NavigationGuardNext,
-  RouteLocationNormalized,
+  type NavigationGuardNext,
+  type RouteLocationNormalized,
 } from "vue-router";
 import { store } from "../global/store";
 

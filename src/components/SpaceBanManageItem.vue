@@ -38,8 +38,8 @@
 </template>
 
 <script lang="ts" setup>
-import { PropType, ref } from "vue";
-import { ISpace, ISpaceBan } from "../global/types";
+import { type PropType, ref } from "vue";
+import type { ISpace, ISpaceBan } from "../global/types";
 import { ChevronDownIcon, ChevronUpIcon } from "@heroicons/vue/24/solid";
 import UserAvatar from "./UserAvatar.vue";
 import axios from "axios";
@@ -62,9 +62,7 @@ const emit = defineEmits(["remove"]);
 const open = ref(false);
 
 const remove = async () => {
-  await axios.delete(
-    `/api/v1/spaces/${props.space.id}/bans/${props.ban.user.id}`,
-  );
+  await axios.delete(`/api/v1/spaces/${props.space.id}/bans/${props.ban.user.id}`);
 
   emit("remove");
 };

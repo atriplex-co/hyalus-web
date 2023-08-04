@@ -1,10 +1,5 @@
 <template>
-  <ModalBase
-    title="Rename Group"
-    submit-text="Rename"
-    @submit="submit"
-    @close="$emit('close')"
-  >
+  <ModalBase title="Rename Group" submit-text="Rename" @submit="submit" @close="$emit('close')">
     <template #icon>
       <PencilIcon />
     </template>
@@ -20,9 +15,9 @@ import ModalBase from "./ModalBase.vue";
 import ModalInput from "./ModalInput.vue";
 import ModalError from "./ModalError.vue";
 import PencilIcon from "../icons/PencilIcon.vue";
-import { ref, PropType } from "vue";
+import { ref, type PropType } from "vue";
 import { prettyError } from "../global/helpers";
-import { IChannel } from "../global/types";
+import type { IChannel } from "../global/types";
 import axios from "axios";
 
 const props = defineProps({
@@ -35,6 +30,7 @@ const props = defineProps({
 });
 
 const emit = defineEmits(["close"]);
+// eslint-disable-next-line vue/no-setup-props-destructure
 const name = ref(props.channel.name || "");
 const error = ref("");
 

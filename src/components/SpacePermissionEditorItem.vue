@@ -55,9 +55,9 @@
 
 <script setup lang="ts">
 import { LockClosedIcon } from "@heroicons/vue/20/solid";
-import { computed, PropType } from "vue";
+import { computed, type PropType } from "vue";
 import { checkSpacePermissions } from "../global/helpers";
-import { ISpace } from "../global/types";
+import { type ISpace } from "../global/types";
 import InputBoolean from "./InputBoolean.vue";
 
 const props = defineProps({

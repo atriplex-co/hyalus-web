@@ -8,9 +8,7 @@
       'w-full': isMobile && store.sideBarState !== SideBarState.NONE,
     }"
   >
-    <div
-      class="flex min-h-0 w-16 flex-col items-center space-y-2 bg-ctp-crust py-2"
-    >
+    <div class="flex min-h-0 w-16 flex-col items-center space-y-2 bg-ctp-crust py-2">
       <div class="relative" @mouseup="userMenu && $event.stopPropagation()">
         <UserAvatar
           :avatar="store.self.avatar"
@@ -27,21 +25,12 @@
         class="hover:text-ctp-accent dark:bg-dark-800 relative flex h-10 w-10 items-center justify-center rounded-full bg-gray-300 text-gray-500 transition hover:bg-gray-400 hover:bg-opacity-50"
         :to="`/channels/${channel.id}`"
       >
-        <UserAvatar
-          v-if="channel.type === ChannelType.DM"
-          :avatar="channel.members[0].avatar"
-        />
+        <UserAvatar v-if="channel.type === ChannelType.DM" :avatar="channel.members[0].avatar" />
         <UserAvatar
           v-if="channel.type === ChannelType.Group && channel.avatar"
           :avatar="channel.avatar"
         />
-        <p
-          v-if="
-            channel.type === ChannelType.Group &&
-            !channel.avatar &&
-            channel.name
-          "
-        >
+        <p v-if="channel.type === ChannelType.Group && !channel.avatar && channel.name">
           {{ channel.name.slice(0, 1) }}
         </p>
         <p
@@ -59,8 +48,7 @@
         class="bg-ctp-base flex h-10 w-10 items-center justify-center overflow-hidden rounded-full transition text-ctp-accent hover:bg-ctp-surface0/75"
         :class="{
           'ring-ctp-accent ring-2':
-            store.sideBarState === SideBarState.SPACE &&
-            selectedSpaceId === space.id,
+            store.sideBarState === SideBarState.SPACE && selectedSpaceId === space.id,
         }"
         @click="
           store.sideBarState = SideBarState.SPACE;
@@ -100,10 +88,7 @@
       </div>
       <SideBarCall />
     </div>
-    <UpdateReloadModal
-      v-if="updateReloadModal"
-      @close="updateReloadModal = false"
-    />
+    <UpdateReloadModal v-if="updateReloadModal" @close="updateReloadModal = false" />
     <SpaceCreateModal
       v-if="spaceCreateModal"
       @close="spaceCreateModal = false"
@@ -130,7 +115,7 @@ import PlusIcon from "../icons/PlusIcon.vue";
 import SpaceCreateModal from "./SpaceCreateModal.vue";
 import SideBarCall from "./SideBarCall.vue";
 import SideBarSpace from "./SideBarSpace.vue";
-import { ChannelType } from "@/../hyalus-server/src/types";
+import { ChannelType } from "@/../../hyalus-server/src/types";
 import SpaceJoinModal from "./SpaceJoinModal.vue";
 
 const store = useStore();
@@ -152,9 +137,7 @@ const privateChannels = computed(() => {
 
 const updateRoute = () => {
   if (route.name === "channel") {
-    const channel = store.channels.find(
-      (channel) => channel.id === route.params.channelId,
-    );
+    const channel = store.channels.find((channel) => channel.id === route.params.channelId);
 
     if (!channel) {
       return;

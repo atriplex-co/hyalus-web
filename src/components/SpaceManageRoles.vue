@@ -5,14 +5,9 @@
       <div class="w-48 space-y-2.5">
         <div class="flex items-center justify-between">
           <p class="text-sm font-semibold text-gray-400">
-            {{ space.roles.length + 1 }} Role{{
-              space.roles.length + 1 === 1 ? "" : "s"
-            }}
+            {{ space.roles.length + 1 }} Role{{ space.roles.length + 1 === 1 ? "" : "s" }}
           </p>
-          <button
-            class="h-4 w-4 transition hover:text-white"
-            @click="createModal = true"
-          >
+          <button class="h-4 w-4 transition hover:text-white" @click="createModal = true">
             <PlusIcon />
           </button>
         </div>
@@ -29,15 +24,11 @@
             @drop="onDrop($event, role)"
           >
             <div
-              v-if="
-                dropRoleId === role.id && draggedRolePosition < role.position
-              "
+              v-if="dropRoleId === role.id && draggedRolePosition < role.position"
               class="border-ctp-accent absolute bottom-0 w-full border-t-2"
             />
             <div
-              v-if="
-                dropRoleId === role.id && draggedRolePosition > role.position
-              "
+              v-if="dropRoleId === role.id && draggedRolePosition > role.position"
               class="border-ctp-accent absolute top-0 w-full border-t-2"
             />
             <button
@@ -50,11 +41,7 @@
               <div
                 class="h-2.5 w-2.5 rounded-full bg-gray-500"
                 :style="
-                  role.color
-                    ? `background: #${role.color
-                        .toString(16)
-                        .padStart(6, '0')};`
-                    : ''
+                  role.color ? `background: #${role.color.toString(16).padStart(6, '0')};` : ''
                 "
               ></div>
               <p>{{ role.name }}</p>
@@ -82,9 +69,7 @@
           />
         </div>
         <div v-if="id" class="w-full space-y-2.5">
-          <p class="text-sm font-semibold text-gray-400">
-            Color (Hex, 000000 = Default)
-          </p>
+          <p class="text-sm font-semibold text-gray-400">Color (Hex, 000000 = Default)</p>
           <input
             v-model="color"
             type="text"
@@ -239,11 +224,7 @@
         </div>
       </div>
     </div>
-    <SpaceRoleCreateModal
-      v-if="createModal"
-      :space="space"
-      @close="createModal = false"
-    />
+    <SpaceRoleCreateModal v-if="createModal" :space="space" @close="createModal = false" />
     <SpaceRoleDeleteModal
       v-if="deleteModal && selectedRole"
       :space="space"
@@ -256,8 +237,8 @@
 <script lang="ts" setup>
 import { PlusIcon } from "@heroicons/vue/20/solid";
 import axios from "axios";
-import { PropType, ref, watch, computed, onBeforeMount } from "vue";
-import { ISpace, ISpaceRole } from "../global/types";
+import { type PropType, ref, watch, computed, onBeforeMount } from "vue";
+import type { ISpace, ISpaceRole } from "../global/types";
 import InputBoolean from "./InputBoolean.vue";
 import SpacePermissionsEditor from "./SpacePermissionsEditor.vue";
 import SpaceRoleCreateModal from "./SpaceRoleCreateModal.vue";
@@ -351,9 +332,7 @@ const onDrop = async (e: DragEvent, role: ISpaceRole) => {
   dropRoleId.value = "";
 
   await axios.patch(
-    `/api/v1/spaces/${props.space.id}/roles/${e.dataTransfer.getData(
-      "text/plain",
-    )}`,
+    `/api/v1/spaces/${props.space.id}/roles/${e.dataTransfer.getData("text/plain")}`,
     {
       position: role.position,
     },

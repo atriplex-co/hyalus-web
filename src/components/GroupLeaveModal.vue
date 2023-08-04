@@ -1,10 +1,5 @@
 <template>
-  <ModalBase
-    title="Leave Group"
-    submit-text="Leave"
-    @close="$emit('close')"
-    @submit="submit"
-  >
+  <ModalBase title="Leave Group" submit-text="Leave" @close="$emit('close')" @submit="submit">
     <template #icon>
       <LogoutIcon />
     </template>
@@ -18,8 +13,8 @@
 import ModalBase from "./ModalBase.vue";
 import LogoutIcon from "../icons/LogoutIcon.vue";
 import axios from "axios";
-import { IChannel } from "../global/types";
-import { PropType } from "vue";
+import type { IChannel } from "../global/types";
+import type { PropType } from "vue";
 
 const emit = defineEmits(["close"]);
 

@@ -33,11 +33,7 @@
           <div class="flex items-center space-x-3">
             <div
               class="h-2.5 w-2.5 rounded-full bg-gray-500"
-              :style="
-                role.color
-                  ? `background: #${role.color.toString(16).padStart(6, '0')};`
-                  : ''
-              "
+              :style="role.color ? `background: #${role.color.toString(16).padStart(6, '0')};` : ''"
             ></div>
             <p>{{ role.name }}</p>
           </div>
@@ -90,19 +86,16 @@
 </template>
 
 <script lang="ts" setup>
-import { computed, PropType, ref } from "vue";
-import { ISpace, ISpaceMember } from "../global/types";
+import { computed, type PropType, ref } from "vue";
+import type { ISpace, ISpaceMember } from "../global/types";
 import { ChevronDownIcon, ChevronUpIcon } from "@heroicons/vue/24/solid";
 import UserAvatar from "./UserAvatar.vue";
 import SpaceMemberKickModal from "./SpaceMemberKickModal.vue";
 import SpaceMemberBanModal from "./SpaceMemberBanModal.vue";
 import InputBoolean from "./InputBoolean.vue";
 import axios from "axios";
-import {
-  checkSpacePermissions,
-  getSpaceMemberPosition,
-} from "../global/helpers";
-import { SpacePermission } from "@/../hyalus-server/src/types";
+import { checkSpacePermissions, getSpaceMemberPosition } from "../global/helpers";
+import { SpacePermission } from "@/../../hyalus-server/src/types";
 import { useStore } from "../global/store";
 
 const store = useStore();
@@ -134,12 +127,9 @@ const updateRole = async (id: string) => {
     roleIds.push(id);
   }
 
-  await axios.patch(
-    `/api/v1/spaces/${props.space.id}/members/${props.member.id}`,
-    {
-      roleIds,
-    },
-  );
+  await axios.patch(`/api/v1/spaces/${props.space.id}/members/${props.member.id}`, {
+    roleIds,
+  });
 };
 
 const aboveMember = computed(() => {

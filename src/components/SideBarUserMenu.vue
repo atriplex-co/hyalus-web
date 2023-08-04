@@ -102,7 +102,7 @@
 
 <script lang="ts" setup>
 import { ref, onUnmounted } from "vue";
-import { Status } from "@/../hyalus-server/src/types";
+import { Status } from "@/../../hyalus-server/src/types";
 import axios from "axios";
 import LogoutIcon from "../icons/LogoutIcon.vue";
 import LogoutModal from "./LogoutModal.vue";

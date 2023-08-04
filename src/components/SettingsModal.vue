@@ -101,10 +101,7 @@
       </div>
     </template>
     <template #right>
-      <SettingsModalAccount
-        v-if="active === 'account'"
-        @activate="active = $event"
-      />
+      <SettingsModalAccount v-if="active === 'account'" @activate="active = $event" />
       <SettingsModalSessions v-if="active === 'sessions'" />
       <SettingsModalAppearance v-if="active === 'appearance'" />
       <SettingsModalNotifications v-if="active === 'notifications'" />

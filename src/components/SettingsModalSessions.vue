@@ -8,11 +8,7 @@
       </div>
       <div v-if="sessions.length > 1" class="space-y-4">
         <p class="text-sm font-semibold">Other Devices</p>
-        <SessionItem
-          v-for="session in sessions.slice(1)"
-          :key="session.id"
-          :session="session"
-        />
+        <SessionItem v-for="session in sessions.slice(1)" :key="session.id" :session="session" />
       </div>
     </div>
   </div>
@@ -22,7 +18,7 @@
 import { onMounted, ref } from "vue";
 import { useStore } from "../global/store";
 import SessionItem from "./SessionItem.vue";
-import { ISession } from "../global/types";
+import type { ISession } from "../global/types";
 import axios from "axios";
 
 const store = useStore();

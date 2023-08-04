@@ -15,8 +15,8 @@ import {
   SocketProtocol,
   NotificationMode,
   Status,
-} from "@/../hyalus-server/src/types";
-import {
+} from "@/../../hyalus-server/src/types";
+import type {
   ICallPersist,
   ICallRTCData,
   IChannel,
@@ -373,18 +373,14 @@ export class Socket {
             if (isMobile && this.meta && this.meta.vapidPublic) {
               await Notification.requestPermission();
 
-              const { pushManager } = (
-                await navigator.serviceWorker.getRegistrations()
-              )[0];
+              const { pushManager } = (await navigator.serviceWorker.getRegistrations())[0];
 
               let sub = await pushManager.getSubscription();
 
               if (sub?.options.applicationServerKey) {
                 let subOk = true;
 
-                const localKey = new Uint8Array(
-                  sub.options.applicationServerKey,
-                );
+                const localKey = new Uint8Array(sub.options.applicationServerKey);
                 const remoteKey = sodium.from_base64(this.meta.vapidPublic);
 
                 if (localKey.length !== remoteKey.length) {
@@ -435,8 +431,7 @@ export class Socket {
 
               awayDetector.addEventListener("change", () => {
                 const away = !(
-                  awayDetector.userState === "active" &&
-                  awayDetector.screenState === "unlocked"
+                  awayDetector.userState === "active" && awayDetector.screenState === "unlocked"
                 );
 
                 if (store.away === away) {
@@ -475,15 +470,11 @@ export class Socket {
         }
 
         if (isDesktop && store.config.callPersist && !store.call) {
-          const callPersist = JSON.parse(
-            store.config.callPersist,
-          ) as ICallPersist;
+          const callPersist = JSON.parse(store.config.callPersist) as ICallPersist;
 
           if (
             +new Date() - callPersist.updated > 1000 * 60 * 5 ||
-            !store.channels.find(
-              (channel) => channel.id === callPersist.channelId,
-            )
+            !store.channels.find((channel) => channel.id === callPersist.channelId)
           ) {
             return;
           }
@@ -721,9 +712,7 @@ export class Socket {
           }[];
         };
 
-        const channel = store.channels.find(
-          (channel) => channel.id === data.id,
-        );
+        const channel = store.channels.find((channel) => channel.id === data.id);
 
         if (!channel) {
           console.warn(`SChannelUpdate for invalid channel: ${data.id}`);
@@ -754,9 +743,7 @@ export class Socket {
           id: string;
         };
 
-        store.channels = store.channels.filter(
-          (channel) => channel.id !== data.id,
-        );
+        store.channels = store.channels.filter((channel) => channel.id !== data.id);
         store.channels
           .filter((channel) => channel.parentId === data.id)
           .forEach((channel) => {
@@ -775,14 +762,10 @@ export class Socket {
           publicKey: string;
         };
 
-        const channel = store.channels.find(
-          (channel) => channel.id === data.channelId,
-        );
+        const channel = store.channels.find((channel) => channel.id === data.channelId);
 
         if (!channel) {
-          console.warn(
-            `channelUserCreate for invalid channel: ${data.channelId}`,
-          );
+          console.warn(`channelUserCreate for invalid channel: ${data.channelId}`);
           return;
         }
 
@@ -802,14 +785,10 @@ export class Socket {
           channelId: string;
         };
 
-        const channel = store.channels.find(
-          (channel) => channel.id === data.channelId,
-        );
+        const channel = store.channels.find((channel) => channel.id === data.channelId);
 
         if (!channel) {
-          console.warn(
-            `SChannelMemberUpdate for invalid channel: ${data.channelId}`,
-          );
+          console.warn(`SChannelMemberUpdate for invalid channel: ${data.channelId}`);
           return;
         }
 
@@ -827,20 +806,14 @@ export class Socket {
           id: string;
         };
 
-        const channel = store.channels.find(
-          (channel) => channel.id === data.channelId,
-        );
+        const channel = store.channels.find((channel) => channel.id === data.channelId);
 
         if (!channel) {
-          console.warn(
-            `SChannelMemberDelete for invalid channel: ${data.channelId}`,
-          );
+          console.warn(`SChannelMemberDelete for invalid channel: ${data.channelId}`);
           return;
         }
 
-        channel.members = channel.members.filter(
-          (member) => member.id !== data.id,
-        );
+        channel.members = channel.members.filter((member) => member.id !== data.id);
       }
 
       if (msg.t === SocketMessageType.SUserUpdate) {
@@ -870,9 +843,7 @@ export class Socket {
         }
 
         for (const channel of store.channels) {
-          const member = channel.members.find(
-            (member) => member.id === data.id,
-          );
+          const member = channel.members.find((member) => member.id === data.id);
 
           if (member) {
             Object.assign(
@@ -904,9 +875,7 @@ export class Socket {
           }
         }
 
-        const cachedUser = store.cachedUsers.find(
-          (user) => user.id === data.id,
-        );
+        const cachedUser = store.cachedUsers.find((user) => user.id === data.id);
 
         if (cachedUser) {
           Object.assign(
@@ -953,9 +922,7 @@ export class Socket {
           data: string | null;
         };
 
-        const channel = store.channels.find(
-          (channel) => channel.id === data.channelId,
-        );
+        const channel = store.channels.find((channel) => channel.id === data.channelId);
 
         if (!channel) {
           console.warn(`SMessageCreate for invalid channel: ${data.channelId}`);
@@ -1024,18 +991,14 @@ export class Socket {
           channelId: string;
         };
 
-        const channel = store.channels.find(
-          (channel) => channel.id === data.channelId,
-        );
+        const channel = store.channels.find((channel) => channel.id === data.channelId);
 
         if (!channel) {
           console.warn(`SMessageDelete for invalid channel: ${data.channelId}`);
           return;
         }
 
-        channel.messages = channel.messages.filter(
-          (message) => message.id !== data.id,
-        );
+        channel.messages = channel.messages.filter((message) => message.id !== data.id);
       }
 
       if (msg.t === SocketMessageType.SMessageUpdate) {
@@ -1047,19 +1010,13 @@ export class Socket {
           data?: string | null;
         };
 
-        const channel = store.channels.find(
-          (channel) => channel.id === data.channelId,
-        );
+        const channel = store.channels.find((channel) => channel.id === data.channelId);
 
         if (!channel) {
-          return console.warn(
-            `messageVerionCreate for invalid channel: ${data.channelId}`,
-          );
+          return console.warn(`messageVerionCreate for invalid channel: ${data.channelId}`);
         }
 
-        const message = channel.messages.find(
-          (message) => message.id === data.id,
-        );
+        const message = channel.messages.find((message) => message.id === data.id);
 
         if (!message) {
           return;
@@ -1072,9 +1029,7 @@ export class Socket {
         });
 
         if (!message2) {
-          console.warn(
-            `error processing message for SMessageUpdate: ${data.id}`,
-          );
+          console.warn(`error processing message for SMessageUpdate: ${data.id}`);
           return;
         }
 
@@ -1089,11 +1044,7 @@ export class Socket {
           channelId: string;
         };
 
-        if (
-          !store.friends.find(
-            (friend) => friend.id === data.userId && friend.acceptable,
-          )
-        ) {
+        if (!store.friends.find((friend) => friend.id === data.userId && friend.acceptable)) {
           console.warn(`SFileChunkRequest for non-friend: ${data.userId}`);
           return;
         }
@@ -1105,14 +1056,10 @@ export class Socket {
           return;
         }
 
-        const channel = store.channels.find(
-          (channel) => channel.id === data.channelId,
-        );
+        const channel = store.channels.find((channel) => channel.id === data.channelId);
 
         if (!channel) {
-          console.warn(
-            `fileChunkRequest for invalid channel: ${data.channelId}`,
-          );
+          console.warn(`fileChunkRequest for invalid channel: ${data.channelId}`);
           return;
         }
 
@@ -1122,8 +1069,7 @@ export class Socket {
           publicKey = store.config.publicKey;
         } else {
           publicKey =
-            channel.members.find((member) => member.id === data.userId)
-              ?.publicKey || null;
+            channel.members.find((member) => member.id === data.userId)?.publicKey || null;
         }
 
         if (!publicKey) {
@@ -1178,15 +1124,8 @@ export class Socket {
             const dataDecrypted = JSON.parse(
               sodium.to_string(
                 sodium.crypto_box_open_easy(
-                  new Uint8Array(
-                    dataBytes.buffer,
-                    sodium.crypto_box_NONCEBYTES,
-                  ),
-                  new Uint8Array(
-                    dataBytes.buffer,
-                    0,
-                    sodium.crypto_box_NONCEBYTES,
-                  ),
+                  new Uint8Array(dataBytes.buffer, sodium.crypto_box_NONCEBYTES),
+                  new Uint8Array(dataBytes.buffer, 0, sodium.crypto_box_NONCEBYTES),
                   publicKey as unknown as Uint8Array,
                   store.config.privateKey as unknown as Uint8Array,
                 ),
@@ -1205,9 +1144,7 @@ export class Socket {
             }
 
             if (dataDecrypted.t === FileChunkRTCType.ICECandidate) {
-              await pc.addIceCandidate(
-                new RTCIceCandidate(JSON.parse(dataDecrypted.d)),
-              );
+              await pc.addIceCandidate(new RTCIceCandidate(JSON.parse(dataDecrypted.d)));
             }
           },
         });
@@ -1241,13 +1178,7 @@ export class Socket {
             return;
           }
 
-          dc.send(
-            new Uint8Array(
-              chunk.buffer,
-              i,
-              Math.min(RTCMaxMessageSize, chunk.length - i),
-            ),
-          );
+          dc.send(new Uint8Array(chunk.buffer, i, Math.min(RTCMaxMessageSize, chunk.length - i)));
 
           i += RTCMaxMessageSize;
         };
@@ -1285,17 +1216,13 @@ export class Socket {
           return;
         }
 
-        const channel = store.channels.find(
-          (channel) => channel.id === store.call?.channelId,
-        );
+        const channel = store.channels.find((channel) => channel.id === store.call?.channelId);
 
         if (!channel) {
           return;
         }
 
-        const member = channel.members.find(
-          (member) => member.id === data.userId,
-        );
+        const member = channel.members.find((member) => member.id === data.userId);
 
         if (!member || !store.config.privateKey) {
           return;
@@ -1321,15 +1248,13 @@ export class Socket {
         });
 
         if (
-          [
-            CallRTCDataType.RemoteStreamOffer,
-            CallRTCDataType.RemoteStreamICECandidate,
-          ].includes(dataDecrypted.mt)
+          [CallRTCDataType.RemoteStreamOffer, CallRTCDataType.RemoteStreamICECandidate].includes(
+            dataDecrypted.mt,
+          )
         ) {
           const getStream = () => {
             return store.call?.remoteStreams.find(
-              (stream) =>
-                stream.userId === member.id && stream.type === dataDecrypted.st,
+              (stream) => stream.userId === member.id && stream.type === dataDecrypted.st,
             );
           };
 
@@ -1351,9 +1276,7 @@ export class Socket {
                 st: CallStreamType[json.st],
                 userId: member.id,
               }); // yes, there's a reason for this.
-              const nonce = sodium.randombytes_buf(
-                sodium.crypto_box_NONCEBYTES,
-              );
+              const nonce = sodium.randombytes_buf(sodium.crypto_box_NONCEBYTES);
 
               this.send({
                 t: SocketMessageType.CCallRTC,
@@ -1380,11 +1303,7 @@ export class Socket {
             let gain: GainNode | null = null;
             let decoder: MediaDecoder | null = null;
 
-            if (
-              [CallStreamType.Audio, CallStreamType.DisplayAudio].includes(
-                dataDecrypted.st,
-              )
-            ) {
+            if ([CallStreamType.Audio, CallStreamType.DisplayAudio].includes(dataDecrypted.st)) {
               const generator = new MediaStreamTrackGenerator({
                 kind: "audio",
               });
@@ -1395,9 +1314,7 @@ export class Socket {
               gain = context.createGain();
               const dest = context.createMediaStreamDestination();
 
-              context
-                .createMediaStreamSource(new MediaStream([generator]))
-                .connect(gain);
+              context.createMediaStreamSource(new MediaStream([generator])).connect(gain);
               gain.connect(dest);
               gain.gain.value = getUserOutputGain(dataDecrypted.st, member.id);
               element.srcObject = dest.stream;
@@ -1484,10 +1401,7 @@ export class Socket {
                       return;
                     }
 
-                    if (
-                      decoderConfig !== info.decoderConfig ||
-                      decoder.state === "unconfigured"
-                    ) {
+                    if (decoderConfig !== info.decoderConfig || decoder.state === "unconfigured") {
                       decoderConfig = info.decoderConfig;
                       const parsedDecoderConfig = JSON.parse(decoderConfig);
 
@@ -1630,22 +1544,18 @@ export class Socket {
         }
 
         if (
-          [
-            CallRTCDataType.LocalStreamAnswer,
-            CallRTCDataType.LocalStreamICECandidate,
-          ].includes(dataDecrypted.mt)
+          [CallRTCDataType.LocalStreamAnswer, CallRTCDataType.LocalStreamICECandidate].includes(
+            dataDecrypted.mt,
+          )
         ) {
-          const stream = store.call.localStreams.find(
-            (stream) => stream.type === dataDecrypted.st,
-          );
+          const stream = store.call.localStreams.find((stream) => stream.type === dataDecrypted.st);
 
           if (!stream) {
             console.warn("SCallRTC missing stream");
             return;
           }
 
-          const peer = stream.peers.find((peer) => peer.userId === data.userId)
-            ?.pc;
+          const peer = stream.peers.find((peer) => peer.userId === data.userId)?.pc;
 
           if (!peer) {
             console.warn("SCallRTC missing peer");
@@ -1662,9 +1572,7 @@ export class Socket {
           }
 
           if (dataDecrypted.mt === CallRTCDataType.LocalStreamICECandidate) {
-            await peer.addIceCandidate(
-              new RTCIceCandidate(JSON.parse(dataDecrypted.d)),
-            );
+            await peer.addIceCandidate(new RTCIceCandidate(JSON.parse(dataDecrypted.d)));
           }
         }
       }
@@ -1833,9 +1741,7 @@ export class Socket {
         const space = store.spaces.find((space) => space.id === data.spaceId);
 
         if (!space) {
-          return console.warn(
-            `invalid space for SSpaceMemberCreate: ${data.spaceId}`,
-          );
+          return console.warn(`invalid space for SSpaceMemberCreate: ${data.spaceId}`);
         }
 
         space.members = space.members.filter((member) => member.id !== data.id);
@@ -1861,17 +1767,13 @@ export class Socket {
         const space = store.spaces.find((space) => space.id === data.spaceId);
 
         if (!space) {
-          return console.warn(
-            `invalid space for SSpaceMemberUpdate: ${data.spaceId}`,
-          );
+          return console.warn(`invalid space for SSpaceMemberUpdate: ${data.spaceId}`);
         }
 
         const member = space.members.find((member) => member.id === data.id);
 
         if (!member) {
-          return console.warn(
-            `invalid member for SSpaceMemberUpdate: ${data.id}`,
-          );
+          return console.warn(`invalid member for SSpaceMemberUpdate: ${data.id}`);
         }
 
         Object.assign(
@@ -1891,9 +1793,7 @@ export class Socket {
         const space = store.spaces.find((space) => space.id === data.spaceId);
 
         if (!space) {
-          return console.warn(
-            `invalid space for SSpaceMemberDelete: ${data.spaceId}`,
-          );
+          return console.warn(`invalid space for SSpaceMemberDelete: ${data.spaceId}`);
         }
 
         space.members = space.members.filter((member) => member.id !== data.id);
@@ -1914,9 +1814,7 @@ export class Socket {
         const space = store.spaces.find((space) => space.id === data.spaceId);
 
         if (!space) {
-          return console.warn(
-            `invalid space for SSpaceRoleCreate: ${data.spaceId}`,
-          );
+          return console.warn(`invalid space for SSpaceRoleCreate: ${data.spaceId}`);
         }
 
         space.roles = space.roles.filter((role) => role.id !== data.id);
@@ -1947,9 +1845,7 @@ export class Socket {
         const space = store.spaces.find((space) => space.id === data.spaceId);
 
         if (!space) {
-          return console.warn(
-            `invalid space for SSpaceRoleUpdate: ${data.spaceId}`,
-          );
+          return console.warn(`invalid space for SSpaceRoleUpdate: ${data.spaceId}`);
         }
 
         const role = space.roles.find((role) => role.id === data.id);
@@ -1981,9 +1877,7 @@ export class Socket {
         const space = store.spaces.find((space) => space.id === data.spaceId);
 
         if (!space) {
-          return console.warn(
-            `invalid space for SSpaceMemberDelete: ${data.spaceId}`,
-          );
+          return console.warn(`invalid space for SSpaceMemberDelete: ${data.spaceId}`);
         }
 
         space.roles = space.roles.filter((role) => role.id !== data.id);
@@ -2001,14 +1895,10 @@ export class Socket {
           muted: boolean;
         };
 
-        const channel = store.channels.find(
-          (channel) => channel.id === data.id,
-        );
+        const channel = store.channels.find((channel) => channel.id === data.id);
 
         if (!channel) {
-          return console.warn(
-            `missing channel for SChannelStateUpdate: ${data.id}`,
-          );
+          return console.warn(`missing channel for SChannelStateUpdate: ${data.id}`);
         }
 
         const state = getChannelState(channel);
@@ -2103,9 +1993,7 @@ export class Socket {
             return;
           }
 
-          store.voiceStates = store.voiceStates.filter(
-            (state2) => state2 !== state,
-          );
+          store.voiceStates = store.voiceStates.filter((state2) => state2 !== state);
 
           if (store.call && store.call.channelId === state.channelId) {
             handleUserLeave();

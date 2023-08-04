@@ -1,9 +1,7 @@
 <template>
   <div>
     <p class="text-2xl">Keybinds</p>
-    <div
-      class="divide-y divide-ctp-surface0/50 border-t border-b border-ctp-surface0/50 mt-8"
-    >
+    <div class="divide-y divide-ctp-surface0/50 border-t border-b border-ctp-surface0/50 mt-8">
       <div
         v-if="!isDesktop"
         class="dark:bg-dark-800 my-2 flex h-12 items-center justify-between rounded-md bg-ctp-base px-3"
@@ -61,10 +59,7 @@
         <InputKeys v-model="uploadFileKeys" />
       </div>
     </div>
-    <AppDownloadModal
-      v-if="appDownloadModal"
-      @close="appDownloadModal = false"
-    />
+    <AppDownloadModal v-if="appDownloadModal" @close="appDownloadModal = false" />
   </div>
 </template>
 

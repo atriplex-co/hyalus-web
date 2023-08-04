@@ -9,15 +9,13 @@
       :autocomplete="autocomplete"
       :placeholder="placeholder"
       spellcheck="false"
-      @input="
-        $emit('update:modelValue', ($event?.target as HTMLInputElement).value)
-      "
+      @input="$emit('update:modelValue', ($event?.target as HTMLInputElement).value)"
     />
   </div>
 </template>
 
 <script lang="ts" setup>
-import { ref, Ref, onMounted } from "vue";
+import { ref, type Ref, onMounted } from "vue";
 
 const input: Ref<HTMLInputElement | null> = ref(null);
 

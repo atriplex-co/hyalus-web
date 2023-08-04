@@ -1,21 +1,11 @@
 <template>
   <ModalBase empty @close="$emit('close')">
-    <div
-      class="relative w-screen max-w-md rounded-md bg-ctp-mantle p-4"
-    >
-      <div
-        class="absolute top-4 right-4 cursor-pointer"
-        @click="$emit('close')"
-      >
+    <div class="relative w-screen max-w-md rounded-md bg-ctp-mantle p-4">
+      <div class="absolute top-4 right-4 cursor-pointer" @click="$emit('close')">
         <XMarkIcon class="h-5 w-5 text-ctp-overlay0" />
       </div>
-      <div
-        v-if="defaultDownload"
-        class="mt-8 flex w-full flex-col items-center space-y-4"
-      >
-        <div
-          class="mb-2 h-20 w-20 rounded-full bg-ctp-surface0 p-4"
-        >
+      <div v-if="defaultDownload" class="mt-8 flex w-full flex-col items-center space-y-4">
+        <div class="mb-2 h-20 w-20 rounded-full bg-ctp-surface0 p-4">
           <WindowsIcon v-if="defaultDownload.platform === 'win32'" />
           <AppleIcon v-if="defaultDownload.platform === 'osx'" />
           <LinuxIcon v-if="defaultDownload.platform === 'linux'" />
@@ -24,9 +14,7 @@
           class="bg-ctp-accent rounded-md p-2 font-medium text-ctp-base shadow-sm"
           :href="defaultDownload.url"
         >
-          <p v-if="defaultDownload.platform === 'win32'">
-            Download for Windows
-          </p>
+          <p v-if="defaultDownload.platform === 'win32'">Download for Windows</p>
           <p v-if="defaultDownload.platform === 'osx'">Download for macOS</p>
           <p v-if="defaultDownload.platform === 'linux'">Download for Linux</p>
         </a>
@@ -58,18 +46,9 @@
             rel="noopener noreferrer"
             class="flex h-10 items-center space-x-4 px-4 transition hover:bg-ctp-mantle/75"
           >
-            <WindowsIcon
-              v-if="download.platform === 'win32'"
-              class="h-4 w-4 text-ctp-subtext0"
-            />
-            <AppleIcon
-              v-if="download.platform === 'osx'"
-              class="h-4 w-4 text-ctp-subtext0"
-            />
-            <LinuxIcon
-              v-if="download.platform === 'linux'"
-              class="h-4 w-4 text-ctp-subtext0"
-            />
+            <WindowsIcon v-if="download.platform === 'win32'" class="h-4 w-4 text-ctp-subtext0" />
+            <AppleIcon v-if="download.platform === 'osx'" class="h-4 w-4 text-ctp-subtext0" />
+            <LinuxIcon v-if="download.platform === 'linux'" class="h-4 w-4 text-ctp-subtext0" />
             <p>{{ download.url.split("/").at(-1) }}</p>
           </a>
         </div>
@@ -120,9 +99,7 @@ if (navigator.userAgent.includes("Linux")) {
   platform = "linux";
 }
 
-const defaultDownload = downloads.find(
-  (download) => download.platform === platform,
-);
+const defaultDownload = downloads.find((download) => download.platform === platform);
 
 defineEmits(["close"]);
 

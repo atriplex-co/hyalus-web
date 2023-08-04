@@ -14,9 +14,7 @@
     </p> -->
     <div v-if="showDate && !embedded" class="relative py-6 px-2.5">
       <div class="border-t border-ctp-surface0"></div>
-      <div
-        class="text-xs text-ctp-subtext0 absolute top-4 w-full flex justify-center"
-      >
+      <div class="text-xs text-ctp-subtext0 absolute top-4 w-full flex justify-center">
         <p class="bg-ctp-base px-2">{{ date }}</p>
       </div>
     </div>
@@ -49,8 +47,7 @@
       class="group flex items-end space-x-2"
       :class="{
         'mx-4': !embedded,
-        'flex-row-reverse space-x-reverse':
-          store.config.adaptiveLayout && sentByMe,
+        'flex-row-reverse space-x-reverse': store.config.adaptiveLayout && sentByMe,
       }"
     >
       <div class="relative h-8 w-8">
@@ -89,10 +86,7 @@
                 {{ Day(message.createdAt).format("YYYY/MM/DD h:mm:ss A") }}
               </p>
             </div>
-            <p
-              @mouseenter="timeExpanded = true"
-              @mouseleave="timeExpanded = false"
-            >
+            <p @mouseenter="timeExpanded = true" @mouseleave="timeExpanded = false">
               {{ time }}
             </p>
           </div>
@@ -125,10 +119,7 @@
                   <div
                     class="dark:bg-dark-200 flex h-10 w-10 items-center justify-center overflow-hidden rounded-full bg-gray-300"
                   >
-                    <UserAvatar
-                      v-if="invite.space.avatar"
-                      :avatar="invite.space.avatar"
-                    />
+                    <UserAvatar v-if="invite.space.avatar" :avatar="invite.space.avatar" />
                     <p v-else>{{ invite.space.name.slice(0, 1) }}</p>
                   </div>
                   <div>
@@ -246,11 +237,7 @@
       </div>
     </div>
   </div>
-  <ImageView
-    v-if="!!previewUrl && imageView"
-    :src="previewUrl || ''"
-    @close="imageView = false"
-  />
+  <ImageView v-if="!!previewUrl && imageView" :src="previewUrl || ''" @close="imageView = false" />
   <MessageDeleteModal
     v-if="deleteModal"
     :message="message"
@@ -265,11 +252,7 @@
     :channel="channel"
     @close="editModal = false"
   />
-  <UserModal
-    v-if="userModal"
-    :id="message.author.id"
-    @close="userModal = false"
-  />
+  <UserModal v-if="userModal" :id="message.author.id" @close="userModal = false" />
 </template>
 
 <script lang="ts" setup>
@@ -292,13 +275,13 @@ import {
   ref,
   computed,
   onMounted,
-  PropType,
-  Ref,
+  type PropType,
+  type Ref,
   onUnmounted,
   onBeforeUnmount,
   watch,
 } from "vue";
-import { IChannel, IMessage, ISocketMessage, ISpace } from "../global/types";
+import type { IChannel, IMessage, ISocketMessage, ISpace } from "../global/types";
 import { idbGet, idbSet } from "../global/idb";
 import { iceServers, MaxFileSize, MaxFileChunkSize } from "../global/config";
 import {
@@ -306,7 +289,7 @@ import {
   SocketMessageType,
   FileChunkRTCType,
   SpacePermission,
-} from "@/../hyalus-server/src/types";
+} from "@/../../hyalus-server/src/types";
 import {
   crypto_box_easy,
   crypto_box_NONCEBYTES,
@@ -356,6 +339,7 @@ const props = defineProps({
 });
 const chunkThreshold = 1000 * 60 * 5;
 const userModal = ref(false);
+// eslint-disable-next-line vue/no-setup-props-destructure
 const date = Day(props.message.createdAt).format("MMMM D, YYYY");
 const time = ref("");
 const previewUrl = ref("");
@@ -384,13 +368,9 @@ const sentByMe = computed(() => {
   return props.message.author.id === store.self.id;
 });
 
-const precedingMessage = computed(
-  () => props.channel.messages[props.index - 1],
-);
+const precedingMessage = computed(() => props.channel.messages[props.index - 1]);
 
-const supersedingMessage = computed(
-  () => props.channel.messages[props.index + 1],
-);
+const supersedingMessage = computed(() => props.channel.messages[props.index + 1]);
 
 const firstInChunk = computed(() => {
   if (isEvent(props.message)) {
@@ -401,8 +381,7 @@ const firstInChunk = computed(() => {
     !precedingMessage.value ||
     isEvent(precedingMessage.value) ||
     props.message.author.id !== precedingMessage.value.author.id ||
-    +props.message.createdAt - +precedingMessage.value.createdAt >
-      chunkThreshold
+    +props.message.createdAt - +precedingMessage.value.createdAt > chunkThreshold
   );
 });
 
@@ -411,15 +390,13 @@ const lastInChunk = computed(
     !supersedingMessage.value ||
     isEvent(supersedingMessage.value) ||
     props.message.author.id !== supersedingMessage.value.author.id ||
-    +supersedingMessage.value.createdAt - +props.message.createdAt >
-      chunkThreshold,
+    +supersedingMessage.value.createdAt - +props.message.createdAt > chunkThreshold,
 );
 
 const showDate = computed(
   () =>
     !precedingMessage.value ||
-    precedingMessage.value.createdAt.toDateString() !==
-      props.message.createdAt.toDateString(),
+    precedingMessage.value.createdAt.toDateString() !== props.message.createdAt.toDateString(),
 );
 
 const isEvent = (message: IMessage) =>
@@ -514,8 +491,7 @@ const fileDownloadOld = async (save: boolean) => {
 
           dc.addEventListener("message", async ({ data }) => {
             const chunkLength =
-              packets.length &&
-              packets.map((p) => p.length).reduce((a, b) => a + b);
+              packets.length && packets.map((p) => p.length).reduce((a, b) => a + b);
 
             if (
               chunkLength > MaxFileChunkSize + 4096 ||
@@ -575,9 +551,8 @@ const fileDownloadOld = async (save: boolean) => {
               publicKey = store.config.publicKey;
             } else {
               publicKey =
-                props.channel.members.find(
-                  (member) => member.id === data.userId,
-                )?.publicKey || null;
+                props.channel.members.find((member) => member.id === data.userId)?.publicKey ||
+                null;
             }
 
             if (!publicKey) {
@@ -618,9 +593,7 @@ const fileDownloadOld = async (save: boolean) => {
             }
 
             if (dataDecrypted.t === FileChunkRTCType.ICECandidate) {
-              await pc.addIceCandidate(
-                new RTCIceCandidate(JSON.parse(dataDecrypted.d)),
-              );
+              await pc.addIceCandidate(new RTCIceCandidate(JSON.parse(dataDecrypted.d)));
             }
           },
         });
@@ -715,8 +688,7 @@ const fileDownloadOld = async (save: boolean) => {
 
           dc.addEventListener("message", async ({ data }) => {
             const chunkLength =
-              packets.length &&
-              packets.map((p) => p.length).reduce((a, b) => a + b);
+              packets.length && packets.map((p) => p.length).reduce((a, b) => a + b);
 
             if (
               chunkLength > MaxFileChunkSize + 4096 ||
@@ -779,9 +751,8 @@ const fileDownloadOld = async (save: boolean) => {
               publicKey = store.config.publicKey;
             } else {
               publicKey =
-                props.channel.members.find(
-                  (member) => member.id === data.userId,
-                )?.publicKey || null;
+                props.channel.members.find((member) => member.id === data.userId)?.publicKey ||
+                null;
             }
 
             if (!publicKey) {
@@ -822,9 +793,7 @@ const fileDownloadOld = async (save: boolean) => {
             }
 
             if (dataDecrypted.t === FileChunkRTCType.ICECandidate) {
-              await pc.addIceCandidate(
-                new RTCIceCandidate(JSON.parse(dataDecrypted.d)),
-              );
+              await pc.addIceCandidate(new RTCIceCandidate(JSON.parse(dataDecrypted.d)));
             }
           },
         });
@@ -906,8 +875,7 @@ const fileDownload = async (save: boolean) => {
   }
 
   fileDownloadActive.value = true;
-  const chunkedSize =
-    upload.value.size + Math.ceil(upload.value.size / MaxFileChunkSize) * 17;
+  const chunkedSize = upload.value.size + Math.ceil(upload.value.size / MaxFileChunkSize) * 17;
   const state = crypto_secretstream_xchacha20poly1305_init_pull(
     upload.value.header,
     upload.value.key,
@@ -968,10 +936,7 @@ const fileDownload = async (save: boolean) => {
         const pull = crypto_secretstream_xchacha20poly1305_pull(state, chunk);
         await writer.write(pull.message);
 
-        if (
-          !buf.length ||
-          (i !== chunkedSize && buf.length < MaxFileChunkSize + 17)
-        ) {
+        if (!buf.length || (i !== chunkedSize && buf.length < MaxFileChunkSize + 17)) {
           break;
         }
       }
@@ -1001,9 +966,7 @@ const delPreview = () => {
 
 const remove = async (e: MouseEvent) => {
   if (e.shiftKey) {
-    await axios.delete(
-      `/api/v1/channels/${props.channel.id}/messages/${props.message.id}`,
-    );
+    await axios.delete(`/api/v1/channels/${props.channel.id}/messages/${props.message.id}`);
   } else {
     deleteModal.value = true;
   }
@@ -1011,11 +974,9 @@ const remove = async (e: MouseEvent) => {
 
 const upload = computed(() => {
   if (
-    ![
-      MessageType.PrivateUploadOld,
-      MessageType.PrivateUpload,
-      MessageType.SpaceUpload,
-    ].includes(props.message.type) ||
+    ![MessageType.PrivateUploadOld, MessageType.PrivateUpload, MessageType.SpaceUpload].includes(
+      props.message.type,
+    ) ||
     !props.message.dataString
   ) {
     return;
@@ -1072,8 +1033,7 @@ onMounted(async () => {
 
     if (
       upload.value &&
-      ["audio", "video", "image"].indexOf(upload.value.type.split("/")[0]) !==
-        -1 &&
+      ["audio", "video", "image"].indexOf(upload.value.type.split("/")[0]) !== -1 &&
       upload.value.size < 1024 * 1024 * 10 &&
       previewUrl.value === ""
     ) {
@@ -1129,9 +1089,7 @@ const userColor = computed(() => {
     return null;
   }
 
-  const member = props.space.members.find(
-    (member) => member.id === props.message.author.id,
-  );
+  const member = props.space.members.find((member) => member.id === props.message.author.id);
   if (!member) {
     return null;
   }

@@ -22,8 +22,8 @@
 
 <script setup lang="ts">
 import axios from "axios";
-import { PropType, ref } from "vue";
-import { IChannel, ISpace } from "../global/types";
+import { type PropType, ref } from "vue";
+import type { IChannel, ISpace } from "../global/types";
 
 const props = defineProps({
   space: {
@@ -39,14 +39,12 @@ const props = defineProps({
     },
   },
 });
+// eslint-disable-next-line vue/no-setup-props-destructure
 const name = ref(props.channel.name);
 
 const save = async () => {
-  await axios.patch(
-    `/api/v1/spaces/${props.space.id}/channels.${props.channel.id}`,
-    {
-      name: name.value,
-    },
-  );
+  await axios.patch(`/api/v1/spaces/${props.space.id}/channels.${props.channel.id}`, {
+    name: name.value,
+  });
 };
 </script>

@@ -1,7 +1,5 @@
 <template>
-  <div
-    class="fixed inset-0 flex flex-col items-center justify-center space-y-4"
-  >
+  <div class="fixed inset-0 flex flex-col items-center justify-center space-y-4">
     <template v-if="mode === 0">
       <LoadingIcon class="h-10 w-10 p-1" />
       <p class="text-xl font-bold">Verifying email</p>
@@ -21,10 +19,7 @@
 import axios from "axios";
 import { onMounted, ref } from "vue";
 import { useRoute } from "vue-router";
-import {
-  CheckCircleIcon,
-  ExclamationCircleIcon,
-} from "@heroicons/vue/24/outline";
+import { CheckCircleIcon, ExclamationCircleIcon } from "@heroicons/vue/24/outline";
 import LoadingIcon from "../icons/LoadingIcon.vue";
 
 const route = useRoute();

@@ -1,10 +1,6 @@
 <template>
-  <div
-    class="dark:bg-dark-900 flex h-[30px] items-center bg-ctp-crust text-sm z-20"
-  >
-    <div
-      class="draggable flex h-full flex-1 select-none items-center justify-between px-2"
-    >
+  <div class="dark:bg-dark-900 flex h-[30px] items-center bg-ctp-crust text-sm z-20">
+    <div class="draggable flex h-full flex-1 select-none items-center justify-between px-2">
       <div class="flex items-center space-x-2">
         <AppIcon class="h-4 w-4" />
         <p>{{ title }}</p>
@@ -31,10 +27,7 @@
         @click="maximize"
       >
         <svg width="10" height="10" viewBox="0 0 10 10" fill="currentColor">
-          <path
-            d="m10-1.6667e-6v10h-10v-10zm-1.001 1.001h-7.998v7.998h7.998z"
-            stroke-width=".25"
-          />
+          <path d="m10-1.6667e-6v10h-10v-10zm-1.001 1.001h-7.998v7.998h7.998z" stroke-width=".25" />
         </svg>
       </div>
       <div

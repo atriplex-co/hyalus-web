@@ -1,7 +1,5 @@
 <template>
-  <div
-    class="relative h-2.5 min-w-0 rounded-md bg-ctp-surface0 shadow-sm"
-  >
+  <div class="relative h-2.5 min-w-0 rounded-md bg-ctp-surface0 shadow-sm">
     <div
       id="val"
       class="absolute -top-10 z-10 flex w-10 items-center justify-center rounded-md border border-ctp-surface0 bg-ctp-base py-1 px-2 text-sm shadow-sm transition"
@@ -26,7 +24,7 @@
 </template>
 
 <script lang="ts" setup>
-import { ref, Ref, computed, watch } from "vue";
+import { ref, type Ref, computed, watch } from "vue";
 
 const emit = defineEmits(["update:modelValue"]);
 
@@ -46,6 +44,7 @@ const props = defineProps({
 });
 
 const input: Ref<HTMLInputElement | null> = ref(null);
+// eslint-disable-next-line vue/no-setup-props-destructure
 const value = ref(props.modelValue.toString());
 const valueShow = ref(false);
 

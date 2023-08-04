@@ -1,10 +1,6 @@
 <template>
   <ModalBase
-    :title="
-      props.channel.type === ChannelType.SpaceCategory
-        ? 'Delete Category'
-        : 'Delete Channel'
-    "
+    :title="props.channel.type === ChannelType.SpaceCategory ? 'Delete Category' : 'Delete Channel'"
     submit-text="Delete"
     @close="$emit('close')"
     @submit="submit"
@@ -28,10 +24,10 @@
 <script setup lang="ts">
 import { TrashIcon } from "@heroicons/vue/20/solid";
 import axios from "axios";
-import { ChannelType } from "@/../hyalus-server/src/types";
-import { PropType, ref } from "vue";
+import { ChannelType } from "@/../../hyalus-server/src/types";
+import { type PropType, ref } from "vue";
 import { prettyError } from "../global/helpers";
-import { IChannel, ISpace } from "../global/types";
+import type { IChannel, ISpace } from "../global/types";
 import ModalBase from "./ModalBase.vue";
 import ModalError from "./ModalError.vue";
 
@@ -56,9 +52,7 @@ const submit = async () => {
   error.value = "";
 
   try {
-    await axios.delete(
-      `/api/v1/spaces/${props.space.id}/channels/${props.channel.id}`,
-    );
+    await axios.delete(`/api/v1/spaces/${props.space.id}/channels/${props.channel.id}`);
 
     emit("close");
   } catch (e) {

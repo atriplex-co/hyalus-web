@@ -5,8 +5,7 @@
         v-if="allowManageSpace"
         class="dark:hover:bg-dark-600 flex cursor-pointer items-center space-x-4 rounded-md py-1.5 px-3 transition hover:bg-gray-200 hover:bg-opacity-50 hover:text-gray-800 dark:hover:text-white"
         :class="{
-          'dark:bg-dark-600 bg-gray-200 text-gray-800 dark:text-white':
-            active === 'overview',
+          'dark:bg-dark-600 bg-gray-200 text-gray-800 dark:text-white': active === 'overview',
         }"
         @click="active = 'overview'"
       >
@@ -17,8 +16,7 @@
         v-if="allowManageRoles"
         class="dark:hover:bg-dark-600 flex cursor-pointer items-center space-x-4 rounded-md py-1.5 px-3 transition hover:bg-gray-200 hover:bg-opacity-50 hover:text-gray-800 dark:hover:text-white"
         :class="{
-          'dark:bg-dark-600 bg-gray-200 text-gray-800 dark:text-white':
-            active === 'roles',
+          'dark:bg-dark-600 bg-gray-200 text-gray-800 dark:text-white': active === 'roles',
         }"
         @click="active = 'roles'"
       >
@@ -29,8 +27,7 @@
         v-if="allowManageRoles"
         class="dark:hover:bg-dark-600 flex cursor-pointer items-center space-x-4 rounded-md py-1.5 px-3 transition hover:bg-gray-200 hover:bg-opacity-50 hover:text-gray-800 dark:hover:text-white"
         :class="{
-          'dark:bg-dark-600 bg-gray-200 text-gray-800 dark:text-white':
-            active === 'members',
+          'dark:bg-dark-600 bg-gray-200 text-gray-800 dark:text-white': active === 'members',
         }"
         @click="active = 'members'"
       >
@@ -41,8 +38,7 @@
         v-if="allowBanMember"
         class="dark:hover:bg-dark-600 flex cursor-pointer items-center space-x-4 rounded-md py-1.5 px-3 transition hover:bg-gray-200 hover:bg-opacity-50 hover:text-gray-800 dark:hover:text-white"
         :class="{
-          'dark:bg-dark-600 bg-gray-200 text-gray-800 dark:text-white':
-            active === 'bans',
+          'dark:bg-dark-600 bg-gray-200 text-gray-800 dark:text-white': active === 'bans',
         }"
         @click="active = 'bans'"
       >
@@ -53,8 +49,7 @@
         v-if="allowManageSpace"
         class="dark:hover:bg-dark-600 flex cursor-pointer items-center space-x-4 rounded-md py-1.5 px-3 transition hover:bg-gray-200 hover:bg-opacity-50 hover:text-gray-800 dark:hover:text-white"
         :class="{
-          'dark:bg-dark-600 bg-gray-200 text-gray-800 dark:text-white':
-            active === 'invites',
+          'dark:bg-dark-600 bg-gray-200 text-gray-800 dark:text-white': active === 'invites',
         }"
         @click="active = 'invites'"
       >
@@ -75,8 +70,7 @@
         <div class="border-dark-600 border-t"></div>
       </div>
       <div class="text-ctp-accent px-3 py-1.5 text-sm">
-        WARNING: Spaces are currently experimental and may be wiped during
-        development!
+        WARNING: Spaces are currently experimental and may be wiped during development!
       </div>
     </template>
     <template #right>
@@ -87,11 +81,7 @@
       <SpaceManageBans v-if="active === 'bans'" :space="space" />
     </template>
   </SplitModal>
-  <SpaceDeleteModal
-    v-if="deleteModal"
-    :space="space"
-    @close="deleteModal = false"
-  />
+  <SpaceDeleteModal v-if="deleteModal" :space="space" @close="deleteModal = false" />
 </template>
 
 <script lang="ts" setup>
@@ -103,17 +93,17 @@ import {
   TrashIcon,
   UsersIcon,
 } from "@heroicons/vue/24/solid";
-import { computed, PropType, ref } from "vue";
+import { computed, type PropType, ref } from "vue";
 import SplitModal from "./SplitModal.vue";
 import SpaceManageOverview from "./SpaceManageOverview.vue";
 import SpaceManageRoles from "./SpaceManageRoles.vue";
 import SpaceManageMembers from "./SpaceManageMembers.vue";
 import SpaceManageInvites from "./SpaceManageInvites.vue";
 import SpaceManageBans from "./SpaceManageBans.vue";
-import { ISpace } from "../global/types";
+import type { ISpace } from "../global/types";
 import SpaceDeleteModal from "./SpaceDeleteModal.vue";
 import { checkSpacePermissions } from "../global/helpers";
-import { SpacePermission } from "@/../hyalus-server/src/types";
+import { SpacePermission } from "@/../../hyalus-server/src/types";
 
 defineEmits(["close"]);
 

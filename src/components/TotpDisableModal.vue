@@ -1,10 +1,5 @@
 <template>
-  <ModalBase
-    title="Disable 2FA"
-    submit-text="Disable"
-    @submit="submit"
-    @close="$emit('close')"
-  >
+  <ModalBase title="Disable 2FA" submit-text="Disable" @submit="submit" @close="$emit('close')">
     <template #icon>
       <LockIcon />
     </template>

@@ -69,38 +69,28 @@
         store.config.colorMode === ColorMode.Light &&
         store.config.colorTheme === ColorTheme.Flamingo,
       'hyalus-accent-light-pink':
-        store.config.colorMode === ColorMode.Light &&
-        store.config.colorTheme === ColorTheme.Pink,
+        store.config.colorMode === ColorMode.Light && store.config.colorTheme === ColorTheme.Pink,
       'hyalus-accent-light-mauve':
-        store.config.colorMode === ColorMode.Light &&
-        store.config.colorTheme === ColorTheme.Mauve,
+        store.config.colorMode === ColorMode.Light && store.config.colorTheme === ColorTheme.Mauve,
       'hyalus-accent-light-red':
-        store.config.colorMode === ColorMode.Light &&
-        store.config.colorTheme === ColorTheme.Red,
+        store.config.colorMode === ColorMode.Light && store.config.colorTheme === ColorTheme.Red,
       'hyalus-accent-light-maroon':
-        store.config.colorMode === ColorMode.Light &&
-        store.config.colorTheme === ColorTheme.Maroon,
+        store.config.colorMode === ColorMode.Light && store.config.colorTheme === ColorTheme.Maroon,
       'hyalus-accent-light-peach':
-        store.config.colorMode === ColorMode.Light &&
-        store.config.colorTheme === ColorTheme.Peach,
+        store.config.colorMode === ColorMode.Light && store.config.colorTheme === ColorTheme.Peach,
       'hyalus-accent-light-yellow':
-        store.config.colorMode === ColorMode.Light &&
-        store.config.colorTheme === ColorTheme.Yellow,
+        store.config.colorMode === ColorMode.Light && store.config.colorTheme === ColorTheme.Yellow,
       'hyalus-accent-light-green':
-        store.config.colorMode === ColorMode.Light &&
-        store.config.colorTheme === ColorTheme.Green,
+        store.config.colorMode === ColorMode.Light && store.config.colorTheme === ColorTheme.Green,
       'hyalus-accent-light-teal':
-        store.config.colorMode === ColorMode.Light &&
-        store.config.colorTheme === ColorTheme.Teal,
+        store.config.colorMode === ColorMode.Light && store.config.colorTheme === ColorTheme.Teal,
       'hyalus-accent-light-sky':
-        store.config.colorMode === ColorMode.Light &&
-        store.config.colorTheme === ColorTheme.Sky,
+        store.config.colorMode === ColorMode.Light && store.config.colorTheme === ColorTheme.Sky,
       'hyalus-accent-light-sapphire':
         store.config.colorMode === ColorMode.Light &&
         store.config.colorTheme === ColorTheme.Sapphire,
       'hyalus-accent-light-blue':
-        store.config.colorMode === ColorMode.Light &&
-        store.config.colorTheme === ColorTheme.Blue,
+        store.config.colorMode === ColorMode.Light && store.config.colorTheme === ColorTheme.Blue,
       'hyalus-accent-light-lavender':
         store.config.colorMode === ColorMode.Light &&
         store.config.colorTheme === ColorTheme.Lavender,
@@ -156,8 +146,7 @@ import AppDownloadBanner from "./components/AppDownloadBanner.vue";
 import WelcomeModal from "./components/WelcomeModal.vue";
 import EmailVerifyBanner from "./components/EmailVerifyBanner.vue";
 import SettingsModal from "./components/SettingsModal.vue";
-import { ColorMode, ColorTheme } from "hyalus-server/src/types";
-// import { ColorTheme, ColorMode } from "@/../hyalus-server/src/types";
+import { ColorMode, ColorTheme } from "@/../../hyalus-server/src/types";
 
 const store = useStore();
 const router = useRouter();
@@ -217,9 +206,7 @@ const fontScaleEl = document.createElement("style");
 document.body.appendChild(fontScaleEl);
 
 const updateFontScale = () => {
-  fontScaleEl.innerText = `:root{font-size:${
-    (store.config.fontScale / 100) * 16
-  }px}`;
+  fontScaleEl.innerText = `:root{font-size:${(store.config.fontScale / 100) * 16}px}`;
 };
 
 updateFontScale();

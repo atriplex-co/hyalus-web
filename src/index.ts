@@ -11,7 +11,7 @@ import DayDuration from "dayjs/plugin/duration";
 import DayRelativeTime from "dayjs/plugin/relativeTime";
 import DayLocalizedFormat from "dayjs/plugin/localizedFormat";
 import DayISOWeek from "dayjs/plugin/isoWeek";
-import { ColorMode } from "@/../hyalus-server/src/types";
+import { ColorMode } from "@/../../hyalus-server/src/types";
 
 if (!isMobile) {
   document.querySelector("link[rel='manifest']")?.remove(); // prevent PWA from being installed on desktop.

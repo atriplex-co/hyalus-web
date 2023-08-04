@@ -1,10 +1,7 @@
 <template>
   <ModalBase :empty="true" @close="$emit('close')">
     <LoadingIcon v-if="!cachedUser" class="h-8 w-8" />
-    <div
-      v-if="cachedUser"
-      class="bg-ctp-crust w-screen max-w-lg overflow-hidden rounded-md"
-    >
+    <div v-if="cachedUser" class="bg-ctp-crust w-screen max-w-lg overflow-hidden rounded-md">
       <div class="bg-ctp-mantle min-h-[6rem] w-full">
         <img
           v-if="cachedUser.banner"
@@ -49,14 +46,9 @@
         <div class="flex items-center justify-between">
           <div class="min-w-0 select-text">
             <p class="truncate text-xl font-bold">{{ cachedUser.name }}</p>
-            <p class="truncate text-sm text-ctp-subtext0">
-              @{{ cachedUser.username }}
-            </p>
+            <p class="truncate text-sm text-ctp-subtext0">@{{ cachedUser.username }}</p>
           </div>
-          <div
-            v-if="cachedUser.flags"
-            class="bg-ctp-base flex space-x-2 rounded-md p-2 shadow-md"
-          >
+          <div v-if="cachedUser.flags" class="bg-ctp-base flex space-x-2 rounded-md p-2 shadow-md">
             <div
               v-if="cachedUser.flags & UserFlag.System"
               class="h-4 w-4 text-blue-400"
@@ -92,18 +84,12 @@
             >
               <SparklesIcon />
             </div>
-            <div
-              v-if="cachedUser.flags & UserFlag.Bot"
-              class="h-4 w-4 text-teal-400"
-              title="Bot"
-            >
+            <div v-if="cachedUser.flags & UserFlag.Bot" class="h-4 w-4 text-teal-400" title="Bot">
               <RobotIcon />
             </div>
           </div>
         </div>
-        <div
-          class="border-ctp-base flex space-x-2 border-b text-sm text-ctp-subtext0"
-        >
+        <div class="border-ctp-base flex space-x-2 border-b text-sm text-ctp-subtext0">
           <p
             class="-mb-px cursor-pointer px-2 pb-2 transition"
             :class="{
@@ -140,9 +126,7 @@
         <div class="h-48 space-y-4 overflow-auto">
           <template v-if="tab === 'profile'">
             <div v-if="space" class="space-y-2">
-              <p class="text-xs font-semibold text-gray-500">
-                Roles ({{ space.name }})
-              </p>
+              <p class="text-xs font-semibold text-gray-500">Roles ({{ space.name }})</p>
               <div class="flex flex-wrap gap-2">
                 <div
                   v-for="role in spaceRoles"
@@ -155,11 +139,7 @@
                       'bg-gray-500': !role.color,
                     }"
                     :style="
-                      role.color
-                        ? `background: #${role.color
-                            .toString(16)
-                            .padStart(6, '0')};`
-                        : ''
+                      role.color ? `background: #${role.color.toString(16).padStart(6, '0')};` : ''
                     "
                   ></div>
                   <p>{{ role.name }}</p>
@@ -172,14 +152,9 @@
               </div>
             </div>
             <div v-if="bioHtml" class="space-y-1">
-              <p class="text-xs font-semibold text-ctp-subtext0 uppercase">
-                Bio
-              </p>
+              <p class="text-xs font-semibold text-ctp-subtext0 uppercase">Bio</p>
               <!-- eslint-disable vue/no-v-html -->
-              <div
-                class="select-text whitespace-pre-wrap text-sm"
-                v-html="bioHtml"
-              />
+              <div class="select-text whitespace-pre-wrap text-sm" v-html="bioHtml" />
               <!-- eslint-enable vue/no-v-html -->
             </div>
             <div
@@ -207,19 +182,14 @@
                 <div
                   class="dark:bg-dark-200 flex h-10 w-10 items-center justify-center overflow-hidden rounded-full bg-gray-300"
                 >
-                  <UserAvatar
-                    v-if="mutualSpace.avatar"
-                    :avatar="mutualSpace.avatar"
-                  />
+                  <UserAvatar v-if="mutualSpace.avatar" :avatar="mutualSpace.avatar" />
                   <p v-else>{{ mutualSpace.name.slice(0, 1) }}</p>
                 </div>
                 <div>
                   <p class="text-semibold">
                     {{ mutualSpace.name }}
                   </p>
-                  <p class="text-xs text-gray-400">
-                    {{ mutualSpace.members.length }} Members
-                  </p>
+                  <p class="text-xs text-gray-400">{{ mutualSpace.members.length }} Members</p>
                 </div>
               </div>
             </div>
@@ -245,8 +215,8 @@
 </template>
 
 <script lang="ts" setup>
-import { onMounted, PropType, ref, Ref, computed } from "vue";
-import { ICachedUser, ISpace } from "../global/types";
+import { onMounted, type PropType, ref, type Ref, computed } from "vue";
+import type { ICachedUser, ISpace } from "../global/types";
 import { getCachedUser } from "../global/helpers";
 import UserAvatar from "./UserAvatar.vue";
 import {
@@ -260,21 +230,14 @@ import {
   BeakerIcon,
 } from "@heroicons/vue/20/solid";
 import { useStore } from "../global/store";
-import { ChannelType, Status, UserFlag } from "@/../hyalus-server/src/types";
+import { ChannelType, Status, UserFlag } from "@/../../hyalus-server/src/types";
 import { useRouter } from "vue-router";
 import ModalBase from "./ModalBase.vue";
-import {
-  FaceFrownIcon,
-  InformationCircleIcon,
-  XCircleIcon,
-} from "@heroicons/vue/24/outline";
+import { FaceFrownIcon, InformationCircleIcon, XCircleIcon } from "@heroicons/vue/24/outline";
 import FriendRemoveModal from "./FriendRemoveModal.vue";
 import axios from "axios";
 import LoadingIcon from "../icons/LoadingIcon.vue";
-import {
-  ServerStackIcon,
-  WrenchScrewdriverIcon,
-} from "@heroicons/vue/20/solid";
+import { ServerStackIcon, WrenchScrewdriverIcon } from "@heroicons/vue/20/solid";
 import RobotIcon from "../icons/RobotIcon.vue";
 import { messageFormatter } from "../global/config";
 
@@ -352,15 +315,12 @@ const status = computed(() => {
 });
 
 const mutualSpaces = computed(() => {
-  return store.spaces.filter((space) =>
-    space.members.find((member) => member.id === props.id),
-  );
+  return store.spaces.filter((space) => space.members.find((member) => member.id === props.id));
 });
 
 const openChannel = () => {
   const channel = store.channels.find(
-    (channel) =>
-      channel.type === ChannelType.DM && channel.members[0].id === props.id,
+    (channel) => channel.type === ChannelType.DM && channel.members[0].id === props.id,
   );
 
   if (channel) {

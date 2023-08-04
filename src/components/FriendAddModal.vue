@@ -1,10 +1,5 @@
 <template>
-  <ModalBase
-    title="Add Friend"
-    submit-text="Add"
-    @submit="submit"
-    @close="$emit('close')"
-  >
+  <ModalBase title="Add Friend" submit-text="Add" @submit="submit" @close="$emit('close')">
     <template #icon>
       <UserAddIcon />
     </template>

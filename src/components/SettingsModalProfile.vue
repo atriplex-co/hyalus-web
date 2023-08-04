@@ -17,8 +17,7 @@
             <div
               class="absolute inset-0 flex items-center justify-center transition text-ctp-overlay0 hover:text-ctp-text"
               :class="{
-                'opacity-0 hover:opacity-100 hover:bg-ctp-crust/50':
-                  store.self.avatar,
+                'opacity-0 hover:opacity-100 hover:bg-ctp-crust/50': store.self.avatar,
               }"
             >
               <ArrowUpOnSquareIcon class="h-5 w-5" />
@@ -46,8 +45,7 @@
             <div
               class="absolute inset-0 flex items-center justify-center transition text-ctp-overlay0 hover:text-ctp-text"
               :class="{
-                'opacity-0 hover:opacity-100 hover:bg-ctp-crust/50':
-                  store.self.banner,
+                'opacity-0 hover:opacity-100 hover:bg-ctp-crust/50': store.self.banner,
               }"
             >
               <ArrowUpOnSquareIcon class="h-5 w-5" />

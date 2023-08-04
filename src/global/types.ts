@@ -9,7 +9,7 @@ import {
   SpaceChannelOverrideType,
   NotificationMode,
   Status,
-} from "@/../hyalus-server/src/types";
+} from "@/../../hyalus-server/src/types";
 import JMuxer from "jmuxer";
 import { Socket } from "./socket";
 

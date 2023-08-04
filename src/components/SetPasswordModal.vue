@@ -1,10 +1,5 @@
 <template>
-  <ModalBase
-    title="Change Password"
-    submit-text="Change"
-    @submit="submit"
-    @close="$emit('close')"
-  >
+  <ModalBase title="Change Password" submit-text="Change" @submit="submit" @close="$emit('close')">
     <template #icon>
       <KeyIcon />
     </template>
@@ -100,17 +95,11 @@ const submit = async () => {
     sodium.crypto_pwhash_ALG_ARGON2ID13,
   );
 
-  const newEncryptedPrivateKeyNonce = sodium.randombytes_buf(
-    sodium.crypto_secretbox_NONCEBYTES,
-  );
+  const newEncryptedPrivateKeyNonce = sodium.randombytes_buf(sodium.crypto_secretbox_NONCEBYTES);
 
   const newEncryptedPrivateKey = new Uint8Array([
     ...newEncryptedPrivateKeyNonce,
-    ...sodium.crypto_secretbox_easy(
-      store.config.privateKey,
-      newEncryptedPrivateKeyNonce,
-      symKey,
-    ),
+    ...sodium.crypto_secretbox_easy(store.config.privateKey, newEncryptedPrivateKeyNonce, symKey),
   ]);
 
   try {

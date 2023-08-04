@@ -5,8 +5,7 @@
         v-if="allowManageChannels"
         class="dark:hover:bg-dark-600 flex cursor-pointer items-center space-x-4 rounded-md py-1.5 px-3 transition hover:bg-gray-200 hover:bg-opacity-50 hover:text-gray-800 dark:hover:text-white"
         :class="{
-          'dark:bg-dark-600 bg-gray-200 text-gray-800 dark:text-white':
-            active === 'overview',
+          'dark:bg-dark-600 bg-gray-200 text-gray-800 dark:text-white': active === 'overview',
         }"
         @click="active = 'overview'"
       >
@@ -17,8 +16,7 @@
         v-if="allowManageRoles"
         class="dark:hover:bg-dark-600 flex cursor-pointer items-center space-x-4 rounded-md py-1.5 px-3 transition hover:bg-gray-200 hover:bg-opacity-50 hover:text-gray-800 dark:hover:text-white"
         :class="{
-          'dark:bg-dark-600 bg-gray-200 text-gray-800 dark:text-white':
-            active === 'permissions',
+          'dark:bg-dark-600 bg-gray-200 text-gray-800 dark:text-white': active === 'permissions',
         }"
         @click="active = 'permissions'"
       >
@@ -38,11 +36,7 @@
       </div>
     </template>
     <template #right>
-      <SpaceChannelManageOverview
-        v-if="active === 'overview'"
-        :space="space"
-        :channel="channel"
-      />
+      <SpaceChannelManageOverview v-if="active === 'overview'" :space="space" :channel="channel" />
       <SpaceChannelManagePermissions
         v-if="active === 'permissions'"
         :space="space"
@@ -64,10 +58,10 @@ import {
   InformationCircleIcon,
   TrashIcon,
 } from "@heroicons/vue/24/solid";
-import { ChannelType, SpacePermission } from "@/../hyalus-server/src/types";
-import { computed, PropType, ref } from "vue";
+import { ChannelType, SpacePermission } from "@/../../hyalus-server/src/types";
+import { computed, type PropType, ref } from "vue";
 import { checkSpacePermissions } from "../global/helpers";
-import { IChannel, ISpace } from "../global/types";
+import type { IChannel, ISpace } from "../global/types";
 import SpaceChannelDeleteModal from "./SpaceChannelDeleteModal.vue";
 import SpaceChannelManageOverview from "./SpaceChannelManageOverview.vue";
 import SpaceChannelManagePermissions from "./SpaceChannelManagePermissions.vue";

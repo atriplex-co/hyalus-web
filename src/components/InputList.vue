@@ -10,9 +10,7 @@
       <div class="flex items-center space-x-2">
         <slot name="selected" />
       </div>
-      <ArrowDownIcon
-        class="h-4 w-4 text-ctp-subtext0 group-hover:text-ctp-text"
-      />
+      <ArrowDownIcon class="h-4 w-4 text-ctp-subtext0 group-hover:text-ctp-text" />
     </div>
     <div class="relative z-20">
       <transition
@@ -36,7 +34,7 @@
 
 <script lang="ts" setup>
 import ArrowDownIcon from "../icons/ArrowDownIcon.vue";
-import { onBeforeUnmount, ref, Ref } from "vue";
+import { onBeforeUnmount, ref, type Ref } from "vue";
 
 const open = ref(false);
 const root: Ref<HTMLDivElement | null> = ref(null);

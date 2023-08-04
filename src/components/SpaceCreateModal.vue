@@ -1,17 +1,11 @@
 <template>
-  <ModalBase
-    title="Create Space"
-    submit-text="Create"
-    @submit="submit"
-    @close="$emit('close')"
-  >
+  <ModalBase title="Create Space" submit-text="Create" @submit="submit" @close="$emit('close')">
     <template #icon>
       <PlusIcon />
     </template>
     <template #main>
       <p class="text-ctp-accent">
-        WARNING: Spaces are currently experimental and may be wiped during
-        development!
+        WARNING: Spaces are currently experimental and may be wiped during development!
       </p>
       <ModalError v-if="error" :error="error" />
       <ModalInput v-model="name" type="text" label="Name" autofocus />
@@ -39,7 +33,7 @@ import { prettyError } from "../global/helpers";
 import PlusIcon from "../icons/PlusIcon.vue";
 import axios from "axios";
 import { useStore } from "../global/store";
-import { SocketMessageType } from "@/../hyalus-server/src/types";
+import { SocketMessageType } from "@/../../hyalus-server/src/types";
 
 const store = useStore();
 const emit = defineEmits(["close", "join"]);

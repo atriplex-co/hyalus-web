@@ -3,9 +3,9 @@ import {
   MessageType,
   PushProtocol,
   SocketMessageType,
-} from "@/../hyalus-server/src/types";
+} from "@/../../hyalus-server/src/types";
 import { idbGet } from "../global/idb";
-import { IConfig } from "../global/types";
+import type { IConfig } from "../global/types";
 import sodium from "libsodium-wrappers";
 import ImageIcon from "../assets/images/icon-background.png";
 import { cleanupOutdatedCaches, precacheAndRoute } from "workbox-precaching";
@@ -72,22 +72,14 @@ self.addEventListener("push", (e: PushEvent) => {
 
       const messageKeyDecrypted = sodium.crypto_box_open_easy(
         new Uint8Array(messageKey.buffer, sodium.crypto_secretbox_NONCEBYTES),
-        new Uint8Array(
-          messageKey.buffer,
-          0,
-          sodium.crypto_secretbox_NONCEBYTES,
-        ),
+        new Uint8Array(messageKey.buffer, 0, sodium.crypto_secretbox_NONCEBYTES),
         sodium.from_base64(extra.user.publicKey),
         config.privateKey,
       );
 
       const messageDataDecrypted = sodium.crypto_secretbox_open_easy(
         new Uint8Array(messageData.buffer, sodium.crypto_secretbox_NONCEBYTES),
-        new Uint8Array(
-          messageData.buffer,
-          0,
-          sodium.crypto_secretbox_NONCEBYTES,
-        ),
+        new Uint8Array(messageData.buffer, 0, sodium.crypto_secretbox_NONCEBYTES),
         messageKeyDecrypted,
         "text",
       );

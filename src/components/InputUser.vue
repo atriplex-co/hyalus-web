@@ -10,11 +10,7 @@
       />
       <div class="h-48 overflow-auto">
         <div v-if="users.length" class="space-y-3 p-3">
-          <div
-            v-for="user in shownUsers"
-            :key="user.id"
-            class="flex items-center justify-between"
-          >
+          <div v-for="user in shownUsers" :key="user.id" class="flex items-center justify-between">
             <div class="flex items-center space-x-4">
               <UserAvatar :avatar="user.avatar" class="h-8 w-8 rounded-full" />
               <div>
@@ -41,8 +37,8 @@
 import CheckBox from "./CheckBox.vue";
 import GroupIcon from "../icons/GroupIcon.vue";
 import UserAvatar from "./UserAvatar.vue";
-import { ref, computed, PropType } from "vue";
-import { IChannelMember, IFriend } from "../global/types";
+import { ref, computed, type PropType } from "vue";
+import type { IChannelMember, IFriend } from "../global/types";
 
 const props = defineProps({
   users: {

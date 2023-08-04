@@ -1,10 +1,5 @@
 <template>
-  <ModalBase
-    title="Log Out"
-    submit-text="Log Out"
-    @close="$emit('close')"
-    @submit="submit"
-  >
+  <ModalBase title="Log Out" submit-text="Log Out" @close="$emit('close')" @submit="submit">
     <template #icon>
       <LogoutIcon />
     </template>

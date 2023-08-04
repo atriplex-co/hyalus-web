@@ -27,11 +27,11 @@ import ModalBase from "./ModalBase.vue";
 import ModalInput from "./ModalInput.vue";
 import ModalError from "./ModalError.vue";
 import IdentityIcon from "../icons/IdentityIcon.vue";
-import { PropType, ref } from "vue";
+import { type PropType, ref } from "vue";
 import { prettyError } from "../global/helpers";
 import axios from "axios";
 import { useStore } from "../global/store";
-import { ISpace } from "../global/types";
+import type { ISpace } from "../global/types";
 
 const store = useStore();
 const props = defineProps({
@@ -46,10 +46,8 @@ const props = defineProps({
   },
 });
 const emit = defineEmits(["close"]);
-const alias = ref(
-  props.space.members.find((member) => member.id === store.self?.id)?.alias ||
-    "",
-);
+// eslint-disable-next-line vue/no-setup-props-destructure
+const alias = ref(props.space.members.find((member) => member.id === store.self?.id)?.alias || "");
 const error = ref("");
 
 const submit = async () => {

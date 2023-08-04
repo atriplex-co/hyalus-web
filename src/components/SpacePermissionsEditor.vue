@@ -1,9 +1,7 @@
 <template>
   <div class="w-full space-y-4 text-sm">
     <div v-if="showGeneral" class="space-y-2">
-      <div class="text-sm font-semibold text-gray-400">
-        Permissions (General)
-      </div>
+      <div class="text-sm font-semibold text-gray-400">Permissions (General)</div>
       <SpacePermissionEditorItem
         name="ViewChannels"
         :permission="SpacePermission.ViewChannels"
@@ -43,9 +41,7 @@
     </div>
 
     <div v-if="showMembers" class="space-y-2">
-      <div class="text-sm font-semibold text-gray-400">
-        Permissions (Members)
-      </div>
+      <div class="text-sm font-semibold text-gray-400">Permissions (Members)</div>
       <SpacePermissionEditorItem
         name="CreateInvite"
         :permission="SpacePermission.CreateInvite"
@@ -94,9 +90,7 @@
     </div>
 
     <div v-if="showChannels" class="space-y-2">
-      <div class="text-sm font-semibold text-gray-400">
-        Permissions (Channels)
-      </div>
+      <div class="text-sm font-semibold text-gray-400">Permissions (Channels)</div>
       <SpacePermissionEditorItem
         name="ViewChannels"
         :permission="SpacePermission.ViewChannels"
@@ -127,9 +121,7 @@
     </div>
 
     <div v-if="showTextChannels" class="space-y-2">
-      <div class="text-sm font-semibold text-gray-400">
-        Permissions (Text Channels)
-      </div>
+      <div class="text-sm font-semibold text-gray-400">Permissions (Text Channels)</div>
       <SpacePermissionEditorItem
         name="CreateMessage"
         :permission="SpacePermission.CreateMessage"
@@ -187,9 +179,7 @@
     </div>
 
     <div v-if="showVoiceChannels" class="space-y-2">
-      <div class="text-sm font-semibold text-gray-400">
-        Permissions (Voice Channels)
-      </div>
+      <div class="text-sm font-semibold text-gray-400">Permissions (Voice Channels)</div>
       <SpacePermissionEditorItem
         name="VoiceConnect"
         :permission="SpacePermission.VoiceConnect"
@@ -285,9 +275,9 @@
 </template>
 
 <script setup lang="ts">
-import { SpacePermission } from "@/../hyalus-server/src/types";
-import { PropType } from "vue";
-import { ISpace } from "../global/types";
+import { SpacePermission } from "@/../../hyalus-server/src/types";
+import type { PropType } from "vue";
+import type { ISpace } from "../global/types";
 import SpacePermissionEditorItem from "./SpacePermissionEditorItem.vue";
 
 defineProps({

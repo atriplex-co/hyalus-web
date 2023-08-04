@@ -7,10 +7,10 @@ import {
   SpaceChannelOverrideType,
   SpacePermission,
   Status,
-} from "@/../hyalus-server/src/types";
+} from "@/../../hyalus-server/src/types";
 import SoundNotification from "../assets/sounds/notification_simple-01.ogg";
 import ImageIcon from "../assets/images/icon-background.png";
-import {
+import type {
   ICallPersist,
   IChannel,
   IChannelMember,
@@ -84,11 +84,9 @@ export const processMessage = async (opts: {
 
   if (
     data &&
-    [
-      MessageType.PrivateText,
-      MessageType.PrivateUpload,
-      MessageType.PrivateUploadOld,
-    ].includes(opts.type)
+    [MessageType.PrivateText, MessageType.PrivateUpload, MessageType.PrivateUploadOld].includes(
+      opts.type,
+    )
   ) {
     const msg = msgpack.decode(data);
     data = msg.data;
@@ -107,16 +105,12 @@ export const processMessage = async (opts: {
     if (opts.author.id === store.self.id) {
       publicKey = store.config.publicKey;
     } else {
-      const member =
-        opts.channel.members.find((member) => member.id === opts.author.id) ||
-        null;
+      const member = opts.channel.members.find((member) => member.id === opts.author.id) || null;
       publicKey = member?.publicKey || null;
     }
 
     if (!publicKey) {
-      console.warn(
-        `processMessageVersions for invalid member: ${opts.author.name}`,
-      );
+      console.warn(`processMessageVersions for invalid member: ${opts.author.name}`);
       return;
     }
 
@@ -144,9 +138,7 @@ export const processMessage = async (opts: {
       if (store.self && dataString === store.self?.id) {
         target = store.self;
       } else {
-        target = opts.channel.members.find(
-          (member) => member.id === dataString,
-        );
+        target = opts.channel.members.find((member) => member.id === dataString);
       }
 
       if (!target && dataString) {
@@ -192,10 +184,7 @@ export const processMessage = async (opts: {
     }
   }
 
-  if (
-    dataString &&
-    [MessageType.PrivateText, MessageType.SpaceText].includes(opts.type)
-  ) {
+  if (dataString && [MessageType.PrivateText, MessageType.SpaceText].includes(opts.type)) {
     dataFormatted = messageFormatter.render(dataString).trim();
   }
 
@@ -212,11 +201,7 @@ export const processMessage = async (opts: {
   };
 };
 
-export const notifySend = (opts: {
-  icon: string;
-  title: string;
-  body: string;
-}) => {
+export const notifySend = (opts: { icon: string; title: string; body: string }) => {
   if (store.self?.preferredStatus === Status.Busy) {
     return;
   }
@@ -286,12 +271,8 @@ export const updateIcon = async () => {
   // TODO: re-enable dynamic icon support
 };
 
-export const getCachedUser = async (
-  id: string,
-): Promise<ICachedUser | null> => {
-  let user: ICachedUser | undefined = store.cachedUsers.find(
-    (cachedUser) => cachedUser.id === id,
-  );
+export const getCachedUser = async (id: string): Promise<ICachedUser | null> => {
+  let user: ICachedUser | undefined = store.cachedUsers.find((cachedUser) => cachedUser.id === id);
 
   if (user && +new Date() - +user.time > 30 * 60 * 1000) {
     store.cachedUsers = store.cachedUsers.filter((user2) => user2 !== user);
@@ -316,12 +297,8 @@ export const getCachedUser = async (
   }
 };
 
-export const getCachedUserByUsername = async (
-  username: string,
-): Promise<ICachedUser | null> => {
-  const cachedUser = store.cachedUsers.find(
-    (cachedUser) => cachedUser.username === username,
-  );
+export const getCachedUserByUsername = async (username: string): Promise<ICachedUser | null> => {
+  const cachedUser = store.cachedUsers.find((cachedUser) => cachedUser.username === username);
 
   if (cachedUser) {
     return cachedUser;
@@ -344,16 +321,10 @@ export const getUserOutputGain = (type: CallStreamType, userId: string) => {
     userGainDefault = 70;
   }
 
-  const userGain =
-    (store.config[`userGain:${userId}:${type}`] as number) ?? userGainDefault;
-  const userMuted =
-    (store.config[`userMuted:${userId}:${type}`] as boolean) ?? false;
+  const userGain = (store.config[`userGain:${userId}:${type}`] as number) ?? userGainDefault;
+  const userMuted = (store.config[`userMuted:${userId}:${type}`] as boolean) ?? false;
 
-  return (
-    (store.config.audioOutputGain / 100) *
-    (userGain / 100) *
-    (userMuted ? 0 : 1)
-  );
+  return (store.config.audioOutputGain / 100) * (userGain / 100) * (userMuted ? 0 : 1);
 };
 
 export const checkSpacePermissions = (opts: {
@@ -378,9 +349,7 @@ export const checkSpacePermissions = (opts: {
   }
 
   const member = space.members.find(({ id }) => id === opts.memberId);
-  const channel = store.channels.find(
-    (channel) => channel.id === opts.channelId,
-  );
+  const channel = store.channels.find((channel) => channel.id === opts.channelId);
 
   if (!member) {
     console.warn(`checkSpacePermissions: missing member ${opts.memberId}`);
@@ -409,9 +378,7 @@ export const checkSpacePermissions = (opts: {
     let overrides = channel.overrides;
 
     if (!overrides.length && channel.parentId) {
-      const parent = store.channels.find(
-        (channel2) => channel2.id === channel.parentId,
-      );
+      const parent = store.channels.find((channel2) => channel2.id === channel.parentId);
 
       if (parent) {
         overrides = parent.overrides;
@@ -475,10 +442,7 @@ export const cleanObject = <T>(val: T): T => {
   return val;
 };
 
-export const getSpaceMemberPosition = (opts: {
-  spaceId: string;
-  memberId: string;
-}) => {
+export const getSpaceMemberPosition = (opts: { spaceId: string; memberId: string }) => {
   const space = store.spaces.find((space) => space.id === opts.spaceId);
 
   if (!space) {

@@ -31,14 +31,7 @@ export const messageFormatter = new MarkdownIt("zero", {
     return "";
   },
 })
-  .enable([
-    "emphasis",
-    "strikethrough",
-    "backticks",
-    "fence",
-    "linkify",
-    "block",
-  ])
+  .enable(["emphasis", "strikethrough", "backticks", "fence", "linkify", "block"])
   .use(MarkdownItEmoji)
   .use(MarkdownItLinkAttr, {
     attrs: {

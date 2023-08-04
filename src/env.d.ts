@@ -48,10 +48,7 @@ declare interface IHyalusDesktop {
 }
 
 declare interface IHyalusDesktopWin32 {
-  startCapture(
-    opts: HyalusWin32CaptureOpts,
-    cb: (data?: HyalusWin32CaptureData) => void,
-  ): void;
+  startCapture(opts: HyalusWin32CaptureOpts, cb: (data?: HyalusWin32CaptureData) => void): void;
   stopCapture(): void;
   msgCapture(msg: string): void;
   startEvents(cb: (e: string) => void): void;

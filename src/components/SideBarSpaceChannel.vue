@@ -65,18 +65,13 @@
 </template>
 
 <script lang="ts" setup>
-import {
-  CogIcon,
-  HashtagIcon,
-  PlusIcon,
-  SpeakerWaveIcon,
-} from "@heroicons/vue/20/solid";
-import { ChannelType, SpacePermission } from "@/../hyalus-server/src/types";
-import { computed, PropType, ref } from "vue";
+import { CogIcon, HashtagIcon, PlusIcon, SpeakerWaveIcon } from "@heroicons/vue/20/solid";
+import { ChannelType, SpacePermission } from "@/../../hyalus-server/src/types";
+import { computed, type PropType, ref } from "vue";
 import { useRoute, useRouter } from "vue-router";
 import { checkSpacePermissions } from "../global/helpers";
 import { useStore } from "../global/store";
-import { IChannel, ISpace } from "../global/types";
+import type { IChannel, ISpace } from "../global/types";
 import SpaceChannelCreateModal from "./SpaceChannelCreateModal.vue";
 import SpaceChannelManage from "./SpaceChannelManage.vue";
 

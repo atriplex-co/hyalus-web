@@ -1,10 +1,5 @@
 <template>
-  <ModalBase
-    title="Invite Friends"
-    submit-text="Invite"
-    @close="$emit('close')"
-    @submit="submit"
-  >
+  <ModalBase title="Invite Friends" submit-text="Invite" @close="$emit('close')" @submit="submit">
     <template #icon>
       <UserAddIcon />
     </template>
@@ -20,8 +15,8 @@ import ModalBase from "./ModalBase.vue";
 import ModalError from "./ModalError.vue";
 import InputUser from "./InputUser.vue";
 import UserAddIcon from "../icons/UserAddIcon.vue";
-import { ref, PropType } from "vue";
-import { IChannel } from "../global/types";
+import { ref, type PropType } from "vue";
+import type { IChannel } from "../global/types";
 import { prettyError } from "../global/helpers";
 import axios from "axios";
 import { useStore } from "../global/store";
@@ -41,8 +36,7 @@ const members = ref(
   store.friends
     .filter(
       (friend) =>
-        friend.accepted &&
-        !props.channel.members.find((member) => member.id === friend.id),
+        friend.accepted && !props.channel.members.find((member) => member.id === friend.id),
     )
     .map((friend) => ({
       ...friend,
@@ -53,9 +47,7 @@ const members = ref(
 const submit = async () => {
   try {
     await axios.post(`/api/v1/channels/${props.channel.id}/members`, {
-      userIds: members.value
-        .filter((friend) => friend.selected)
-        .map((friend) => friend.id),
+      userIds: members.value.filter((friend) => friend.selected).map((friend) => friend.id),
     });
   } catch (e) {
     error.value = prettyError(e);

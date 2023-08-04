@@ -33,9 +33,8 @@ const formatKeys = (keys: string[]) => {
   return keys.map((k) => `${k[0].toUpperCase()}${k.slice(1)}`).join(" + ");
 };
 
-const formatted = ref(
-  props.modelValue ? formatKeys(props.modelValue.split("+")) : "None",
-);
+// eslint-disable-next-line vue/no-setup-props-destructure
+const formatted = ref(props.modelValue ? formatKeys(props.modelValue.split("+")) : "None");
 
 const emit = defineEmits(["update:modelValue"]);
 

@@ -48,11 +48,7 @@
             class="flex h-full min-w-0 flex-1 flex-col overflow-auto"
             @scroll="scrollUpdated = true"
           >
-            <div
-              id="messageListBefore"
-              ref="messageListBefore"
-              class="flex-1 pt-16"
-            ></div>
+            <div id="messageListBefore" ref="messageListBefore" class="flex-1 pt-16"></div>
             <div class="space-y-1">
               <MessageItem
                 v-for="[k, message] in Object.entries(channel.messages)"
@@ -63,11 +59,7 @@
                 :space="space"
               />
             </div>
-            <div
-              id="messageListAfter"
-              ref="messageListAfter"
-              class="pb-4"
-            ></div>
+            <div id="messageListAfter" ref="messageListAfter" class="pb-4"></div>
           </div>
         </div>
         <div
@@ -98,9 +90,7 @@
         </div>
       </div>
       <ChannelMemberList
-        v-if="
-          store.config.showChannelMembers && channel.type !== ChannelType.DM
-        "
+        v-if="store.config.showChannelMembers && channel.type !== ChannelType.DM"
         :channel="channel"
         :space="space"
       />
@@ -113,27 +103,15 @@ import PaperclipIcon from "../icons/PaperclipIcon.vue";
 import AirplaneIcon from "../icons/AirplaneIcon.vue";
 import MessageItem from "../components/MessageItem.vue";
 import PencilIcon from "../icons/PencilIcon.vue";
-import {
-  ref,
-  computed,
-  onMounted,
-  onUnmounted,
-  Ref,
-  nextTick,
-  watch,
-} from "vue";
+import { ref, computed, onMounted, onUnmounted, type Ref, nextTick, watch } from "vue";
 import { useRoute, useRouter } from "vue-router";
-import {
-  checkSpacePermissions,
-  getChannelState,
-  processMessage,
-} from "../global/helpers";
+import { checkSpacePermissions, getChannelState, processMessage } from "../global/helpers";
 import {
   ChannelType,
   MessageType,
   SocketMessageType,
   SpacePermission,
-} from "@/../hyalus-server/src/types";
+} from "@/../../hyalus-server/src/types";
 import sodium from "libsodium-wrappers";
 import ChannelCall from "../components/ChannelCall.vue";
 import { MaxFileSize, MaxFileChunkSize } from "../global/config";
@@ -157,9 +135,7 @@ const scrollUpdated = ref(false); // make sure chat is scrolled down when initia
 let updateTypingStatusTimeout = 0;
 
 const channel = computed(() => {
-  return store.channels.find(
-    (channel) => channel.id === route.params.channelId,
-  );
+  return store.channels.find((channel) => channel.id === route.params.channelId);
 });
 
 const space = computed(() => {
@@ -245,9 +221,7 @@ const getMessages = async () => {
     }[];
   } = await axios.get(
     `/api/v1/channels/${channelVal.id}/messages${
-      channelVal.messages.length
-        ? `?before=${+sortedMessages[0].createdAt}`
-        : ""
+      channelVal.messages.length ? `?before=${+sortedMessages[0].createdAt}` : ""
     }`,
   );
 
@@ -260,10 +234,7 @@ const getMessages = async () => {
       channel: channelVal,
     });
 
-    if (
-      !processedMessage ||
-      channelVal.messages.find(({ id }) => id === processedMessage.id)
-    ) {
+    if (!processedMessage || channelVal.messages.find(({ id }) => id === processedMessage.id)) {
       continue;
     }
 
@@ -275,18 +246,12 @@ const getMessages = async () => {
   await nextTick();
 
   if (messageList.value && beforeScrollHeight) {
-    messageList.value.scrollTop +=
-      messageList.value.scrollHeight - beforeScrollHeight;
+    messageList.value.scrollTop += messageList.value.scrollHeight - beforeScrollHeight;
   }
 };
 
 const packMessage = (input: string | Uint8Array) => {
-  if (
-    !channel.value ||
-    !store.self ||
-    !store.config.publicKey ||
-    !store.config.privateKey
-  ) {
+  if (!channel.value || !store.self || !store.config.publicKey || !store.config.privateKey) {
     return "";
   }
 
@@ -298,40 +263,23 @@ const packMessage = (input: string | Uint8Array) => {
     const nonce = sodium.randombytes_buf(sodium.crypto_secretbox_NONCEBYTES);
 
     for (const member of channel.value.members) {
-      const userKeyNonce = sodium.randombytes_buf(
-        sodium.crypto_secretbox_NONCEBYTES,
-      );
+      const userKeyNonce = sodium.randombytes_buf(sodium.crypto_secretbox_NONCEBYTES);
 
       keys[member.id] = new Uint8Array([
         ...userKeyNonce,
-        ...sodium.crypto_box_easy(
-          key,
-          userKeyNonce,
-          member.publicKey,
-          store.config.privateKey,
-        ),
+        ...sodium.crypto_box_easy(key, userKeyNonce, member.publicKey, store.config.privateKey),
       ]);
     }
 
-    const selfKeyNonce = sodium.randombytes_buf(
-      sodium.crypto_secretbox_NONCEBYTES,
-    );
+    const selfKeyNonce = sodium.randombytes_buf(sodium.crypto_secretbox_NONCEBYTES);
 
     keys[store.self.id] = new Uint8Array([
       ...selfKeyNonce,
-      ...sodium.crypto_box_easy(
-        key,
-        selfKeyNonce,
-        store.config.publicKey,
-        store.config.privateKey,
-      ),
+      ...sodium.crypto_box_easy(key, selfKeyNonce, store.config.publicKey, store.config.privateKey),
     ]);
 
     data = msgpack.encode({
-      data: new Uint8Array([
-        ...nonce,
-        ...sodium.crypto_secretbox_easy(input, nonce, key),
-      ]),
+      data: new Uint8Array([...nonce, ...sodium.crypto_secretbox_easy(input, nonce, key)]),
       keys,
     });
   }
@@ -393,8 +341,7 @@ const uploadFile = async (file: File) => {
   }
 
   const key = sodium.crypto_secretstream_xchacha20poly1305_keygen();
-  const { state, header } =
-    sodium.crypto_secretstream_xchacha20poly1305_init_push(key);
+  const { state, header } = sodium.crypto_secretstream_xchacha20poly1305_init_push(key);
   const reader = new FileReader();
   const root = await navigator.storage.getDirectory();
   const output = await root.getFileHandle(`tmp_${+new Date()}`, {
@@ -414,10 +361,7 @@ const uploadFile = async (file: File) => {
       await new Promise((cb) => {
         reader.onload = () => cb(new Uint8Array(reader.result as ArrayBuffer));
         reader.readAsArrayBuffer(
-          file.slice(
-            i * MaxFileChunkSize,
-            i * MaxFileChunkSize + MaxFileChunkSize,
-          ),
+          file.slice(i * MaxFileChunkSize, i * MaxFileChunkSize + MaxFileChunkSize),
         );
       }),
       "",

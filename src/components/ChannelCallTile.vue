@@ -7,15 +7,9 @@
       'ring-ctp-accent ring ring-opacity-75': speaking,
       'bg-black':
         isFullscreen ||
-        (stream &&
-          [CallStreamType.Video, CallStreamType.DisplayVideo].includes(
-            stream?.type,
-          )),
+        (stream && [CallStreamType.Video, CallStreamType.DisplayVideo].includes(stream?.type)),
       'bg-ctp-mantle':
-        !stream ||
-        ![CallStreamType.Video, CallStreamType.DisplayVideo].includes(
-          stream?.type,
-        ),
+        !stream || ![CallStreamType.Video, CallStreamType.DisplayVideo].includes(stream?.type),
     }"
     @mousemove="resetControlsTimeout"
     @fullscreenchange="updateIsFullscreen"
@@ -27,27 +21,15 @@
     @dblclick="expand"
   >
     <video
-      v-if="
-        stream &&
-        [CallStreamType.Video, CallStreamType.DisplayVideo].includes(
-          stream.type,
-        )
-      "
+      v-if="stream && [CallStreamType.Video, CallStreamType.DisplayVideo].includes(stream.type)"
       ref="video"
       class="h-full w-full"
       poster="../assets/images/call-video-loading.gif"
       autoplay
       muted
     ></video>
-    <UserAvatar
-      v-else
-      :avatar="tile.user.avatar"
-      class="h-24 w-24 rounded-full shadow-lg"
-    />
-    <div
-      v-if="controls"
-      class="absolute bottom-0 flex h-8 w-full items-end justify-between"
-    >
+    <UserAvatar v-else :avatar="tile.user.avatar" class="h-24 w-24 rounded-full shadow-lg" />
+    <div v-if="controls" class="absolute bottom-0 flex h-8 w-full items-end justify-between">
       <div
         class="m-2 flex h-full items-center space-x-2 overflow-hidden rounded-md bg-black bg-opacity-25 px-2 backdrop-blur"
       >
@@ -73,17 +55,9 @@
 import UserAvatar from "./UserAvatar.vue";
 import DisplayIcon from "../icons/DisplayIcon.vue";
 import MicOffIcon from "../icons/MicOffIcon.vue";
-import {
-  ref,
-  PropType,
-  Ref,
-  computed,
-  onMounted,
-  onBeforeUnmount,
-  watch,
-} from "vue";
-import { ICallTile } from "../global/types";
-import { CallStreamType } from "@/../hyalus-server/src/types";
+import { ref, type PropType, type Ref, computed, onMounted, onBeforeUnmount, watch } from "vue";
+import type { ICallTile } from "../global/types";
+import { CallStreamType } from "@/../../hyalus-server/src/types";
 import ChannelCallTileMenu from "./ChannelCallTileMenu.vue";
 import { useStore } from "../global/store";
 import JMuxer from "jmuxer";
@@ -156,14 +130,10 @@ const muted = computed(() => {
   }
 
   if (props.tile.user === store.self) {
-    return !store.call.localStreams.find(
-      (stream) => stream.type === CallStreamType.Audio,
-    );
+    return !store.call.localStreams.find((stream) => stream.type === CallStreamType.Audio);
   } else {
     return !store.call.remoteStreams.find(
-      (stream) =>
-        stream.userId === props.tile.user.id &&
-        stream.type === CallStreamType.Audio,
+      (stream) => stream.userId === props.tile.user.id && stream.type === CallStreamType.Audio,
     );
   }
 });
@@ -187,11 +157,7 @@ const speaking = computed(() => {
 });
 
 const ensureStreamEnabled = async () => {
-  if (
-    video.value &&
-    props.tile.localStream &&
-    props.tile.localStream.getTrack
-  ) {
+  if (video.value && props.tile.localStream && props.tile.localStream.getTrack) {
     if (!track) {
       track = await props.tile.localStream.getTrack();
     }

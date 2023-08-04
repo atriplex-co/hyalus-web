@@ -47,20 +47,16 @@
     </div>
   </div>
   <UserModal v-if="userModal" :id="friend.id" @close="userModal = false" />
-  <FriendRemoveModal
-    v-if="removeModal"
-    :friend="friend"
-    @close="removeModal = false"
-  />
+  <FriendRemoveModal v-if="removeModal" :friend="friend" @close="removeModal = false" />
 </template>
 
 <script lang="ts" setup>
 import UserAvatar from "./UserAvatar.vue";
 import CheckIcon from "../icons/CheckIcon.vue";
 import CloseIcon from "../icons/CloseIcon.vue";
-import { PropType, ref } from "vue";
-import { IFriend } from "../global/types";
-import { SocketMessageType } from "@/../hyalus-server/src/types";
+import { type PropType, ref } from "vue";
+import type { IFriend } from "../global/types";
+import { SocketMessageType } from "@/../../hyalus-server/src/types";
 import axios from "axios";
 import { useStore } from "../global/store";
 import UserModal from "./UserModal.vue";

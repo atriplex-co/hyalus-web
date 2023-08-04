@@ -10,10 +10,7 @@
         leave-from-class="opacity-100"
         leave-to-class="opacity-0"
       >
-        <div
-          v-if="ready1 && backdrop"
-          class="fixed inset-0 z-40 bg-black bg-opacity-60"
-        />
+        <div v-if="ready1 && backdrop" class="fixed inset-0 z-40 bg-black bg-opacity-60" />
       </transition>
       <div
         v-if="ready1"
@@ -54,9 +51,7 @@
                   <slot name="main" />
                 </form>
               </div>
-              <div
-                class="flex items-center justify-between space-x-2 bg-ctp-crust p-4 text-sm"
-              >
+              <div class="flex items-center justify-between space-x-2 bg-ctp-crust p-4 text-sm">
                 <div class="flex-1">
                   <slot name="submit" />
                 </div>

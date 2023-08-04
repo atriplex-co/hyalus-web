@@ -1,10 +1,5 @@
 <template>
-  <ModalBase
-    title="Delete Message"
-    submit-text="Delete"
-    @submit="submit"
-    @close="$emit('close')"
-  >
+  <ModalBase title="Delete Message" submit-text="Delete" @submit="submit" @close="$emit('close')">
     <template #icon>
       <TrashIcon />
     </template>
@@ -27,9 +22,9 @@
 import ModalBase from "./ModalBase.vue";
 import ModalError from "./ModalError.vue";
 import TrashIcon from "../icons/TrashIcon.vue";
-import { ref, PropType, Ref, onMounted } from "vue";
+import { ref, type PropType, type Ref, onMounted } from "vue";
 import { prettyError } from "../global/helpers";
-import { IMessage, IChannel } from "../global/types";
+import type { IMessage, IChannel } from "../global/types";
 import axios from "axios";
 
 const props = defineProps({
@@ -52,9 +47,7 @@ const error = ref("");
 
 const submit = async () => {
   try {
-    await axios.delete(
-      `/api/v1/channels/${props.channel.id}/messages/${props.message.id}`,
-    );
+    await axios.delete(`/api/v1/channels/${props.channel.id}/messages/${props.message.id}`);
   } catch (e) {
     error.value = prettyError(e);
     return;

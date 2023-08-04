@@ -47,8 +47,8 @@
 
 <script lang="ts" setup>
 import UserIcon from "../icons/UserIcon.vue";
-import { PropType, ref } from "vue";
-import { Status } from "@/../hyalus-server/src/types";
+import { type PropType, ref } from "vue";
+import { Status } from "@/../../hyalus-server/src/types";
 
 const animate = ref(false);
 const animateReady = ref(false);

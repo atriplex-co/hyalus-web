@@ -1,9 +1,7 @@
 <template>
   <div>
     <p class="text-2xl">Audio & Video</p>
-    <div
-      class="divide-y divide-ctp-surface0/50 border-t border-b border-ctp-surface0/50 mt-8"
-    >
+    <div class="divide-y divide-ctp-surface0/50 border-t border-b border-ctp-surface0/50 mt-8">
       <div class="flex h-16 items-center justify-between">
         <p class="font-bold">Audio Output</p>
         <InputList>
@@ -48,12 +46,7 @@
       </div>
       <div class="flex h-16 items-center justify-between">
         <p class="font-bold">Audio Input Sensitivity</p>
-        <InputRange
-          v-model="audioInputTrigger"
-          min="0"
-          max="100"
-          class="w-96"
-        />
+        <InputRange v-model="audioInputTrigger" min="0" max="100" class="w-96" />
       </div>
       <div class="flex min-h-[4rem] items-center justify-between">
         <p class="font-bold">Audio Test</p>
@@ -100,11 +93,7 @@
             {{ videoMode }}
           </template>
           <template #items>
-            <InputListItem
-              v-for="mode in usableVideoModes"
-              :key="mode"
-              @click="videoMode = mode"
-            >
+            <InputListItem v-for="mode in usableVideoModes" :key="mode" @click="videoMode = mode">
               {{ mode }}
             </InputListItem>
           </template>
@@ -115,9 +104,7 @@
         <InputList>
           <template #selected>
             {{
-              usableVideoQualities.find(
-                (videoQuality2) => videoQuality2.val === videoQuality,
-              )?.name
+              usableVideoQualities.find((videoQuality2) => videoQuality2.val === videoQuality)?.name
             }}
           </template>
           <template #items>
@@ -154,20 +141,13 @@ import InputRange from "../components/InputRange.vue";
 import InputList from "../components/InputList.vue";
 import InputListItem from "../components/InputListItem.vue";
 import InputBoolean from "../components/InputBoolean.vue";
-import { computed, onMounted, ref, Ref, onUnmounted } from "vue";
+import { computed, onMounted, ref, type Ref, onUnmounted } from "vue";
 import { configToComputed, isDesktop } from "../global/helpers";
 import { useStore } from "../global/store";
 
 const store = useStore();
 
-const usableVideoModes = [
-  "480p30",
-  "480p60",
-  "720p30",
-  "720p60",
-  "1080p30",
-  "1080p60",
-];
+const usableVideoModes = ["480p30", "480p60", "720p30", "720p60", "1080p30", "1080p60"];
 
 const usableVideoQualities = [
   { name: "Auto", val: 0 },
@@ -189,9 +169,7 @@ const usableVideoInputs: Ref<MediaDeviceInfo[]> = ref([]);
 
 const audioOutput = computed({
   get() {
-    const device = usableAudioOutputs.value.find(
-      (d) => d.deviceId === store.config.audioOutput,
-    );
+    const device = usableAudioOutputs.value.find((d) => d.deviceId === store.config.audioOutput);
 
     if (device) {
       return device.label;
@@ -206,9 +184,7 @@ const audioOutput = computed({
 
 const audioInput = computed({
   get() {
-    const device = usableAudioInputs.value.find(
-      (d) => d.deviceId === store.config.audioInput,
-    );
+    const device = usableAudioInputs.value.find((d) => d.deviceId === store.config.audioInput);
 
     if (device) {
       return device.label;
@@ -223,9 +199,7 @@ const audioInput = computed({
 
 const videoInput = computed({
   get() {
-    const device = usableVideoInputs.value.find(
-      (d) => d.deviceId === store.config.videoInput,
-    );
+    const device = usableVideoInputs.value.find((d) => d.deviceId === store.config.videoInput);
 
     if (device) {
       return device.label;
@@ -340,9 +314,7 @@ onMounted(async () => {
   }
 
   const devices = (await navigator.mediaDevices.enumerateDevices()).filter(
-    (d) =>
-      !d.label.startsWith("Default -") &&
-      !d.label.startsWith("Communications -"),
+    (d) => !d.label.startsWith("Default -") && !d.label.startsWith("Communications -"),
   );
 
   usableAudioOutputs.value = devices.filter((d) => d.kind === "audiooutput");

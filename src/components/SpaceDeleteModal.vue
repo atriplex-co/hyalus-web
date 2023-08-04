@@ -33,12 +33,12 @@
 import ModalBase from "./ModalBase.vue";
 import ModalInput from "./ModalInput.vue";
 import ModalError from "./ModalError.vue";
-import { PropType, ref } from "vue";
+import { type PropType, ref } from "vue";
 import { prettyError } from "../global/helpers";
 import axios from "axios";
 import { useStore } from "../global/store";
 import { TrashIcon } from "@heroicons/vue/24/solid";
-import { ISpace } from "../global/types";
+import type { ISpace } from "../global/types";
 import sodium from "libsodium-wrappers";
 
 const store = useStore();

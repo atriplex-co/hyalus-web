@@ -1,10 +1,5 @@
 <template>
-  <ModalBase
-    title="Share Screen"
-    submit-text="Share"
-    @submit="submit"
-    @close="$emit('close')"
-  >
+  <ModalBase title="Share Screen" submit-text="Share" @submit="submit" @close="$emit('close')">
     <template #icon>
       <DisplayIcon />
     </template>
@@ -62,9 +57,9 @@
 import ModalBase from "./ModalBase.vue";
 import DisplayIcon from "../icons/DisplayIcon.vue";
 import InputBoolean from "./InputBoolean.vue";
-import { onMounted, onUnmounted, ref, Ref } from "vue";
-import { CallStreamType } from "@/../hyalus-server/src/types";
-import { ICallLocalStream } from "../global/types";
+import { onMounted, onUnmounted, ref, type Ref } from "vue";
+import { CallStreamType } from "@/../../hyalus-server/src/types";
+import type { ICallLocalStream } from "../global/types";
 import { useStore } from "../global/store";
 import LoadingIcon from "../icons/LoadingIcon.vue";
 
@@ -114,10 +109,7 @@ const debugForceLegacy = ref(false);
 //   return gl.getParameter(ext.UNMASKED_RENDERER_WEBGL);
 // };
 
-const getNormalStream = async (
-  sourceId: string,
-  audio: boolean,
-): Promise<MediaStream> => {
+const getNormalStream = async (sourceId: string, audio: boolean): Promise<MediaStream> => {
   return await navigator.mediaDevices.getUserMedia({
     video: {
       mandatory: {
@@ -141,10 +133,7 @@ const startNormalCapture = async (audio: boolean) => {
 
   for (const track of stream.getTracks()) {
     await store.callAddLocalStream({
-      type:
-        track.kind === "video"
-          ? CallStreamType.DisplayVideo
-          : CallStreamType.DisplayAudio,
+      type: track.kind === "video" ? CallStreamType.DisplayVideo : CallStreamType.DisplayAudio,
       track,
       silent: track.kind !== "video",
     });
@@ -196,9 +185,7 @@ const startWin32Capture = async (audio: boolean, video: boolean) => {
       if (!data) {
         if (
           video &&
-          store.call?.localStreams.find(
-            (stream) => stream.type === CallStreamType.DisplayVideo,
-          )
+          store.call?.localStreams.find((stream) => stream.type === CallStreamType.DisplayVideo)
         ) {
           await store.callRemoveLocalStream({
             type: CallStreamType.DisplayVideo,
@@ -207,9 +194,7 @@ const startWin32Capture = async (audio: boolean, video: boolean) => {
 
         if (
           audio &&
-          store.call?.localStreams.find(
-            (stream) => stream.type === CallStreamType.DisplayAudio,
-          )
+          store.call?.localStreams.find((stream) => stream.type === CallStreamType.DisplayAudio)
         ) {
           await store.callRemoveLocalStream({
             type: CallStreamType.DisplayAudio,
@@ -250,16 +235,10 @@ const startWin32Capture = async (audio: boolean, video: boolean) => {
             }[store.config.videoMode] || 4500000;
 
           let bitrate = store.config.videoQuality;
-          if (
-            bitrate &&
-            videoStream.peers.filter((peer) => peer.enabled).length &&
-            store.call
-          ) {
+          if (bitrate && videoStream.peers.filter((peer) => peer.enabled).length && store.call) {
             bitrate /= videoStream.peers.filter((peer) => peer.enabled).length;
             bitrate /= store.call.localStreams.filter((stream) =>
-              [CallStreamType.Video, CallStreamType.DisplayVideo].includes(
-                stream.type,
-              ),
+              [CallStreamType.Video, CallStreamType.DisplayVideo].includes(stream.type),
             ).length;
             bitrate = Math.floor(bitrate);
             bitrate = Math.min(bitrate, maxBitrate);

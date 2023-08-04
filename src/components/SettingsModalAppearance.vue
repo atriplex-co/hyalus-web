@@ -1,9 +1,7 @@
 <template>
   <div>
     <p class="text-2xl">Appearance</p>
-    <div
-      class="divide-y divide-ctp-surface0/50 border-t border-b border-ctp-surface0/50 mt-8"
-    >
+    <div class="divide-y divide-ctp-surface0/50 border-t border-b border-ctp-surface0/50 mt-8">
       <div class="flex h-16 items-center justify-between">
         <p class="font-bold">Font Scale</p>
         <InputList>
@@ -120,7 +118,7 @@ import InputList from "../components/InputList.vue";
 import InputListItem from "../components/InputListItem.vue";
 import InputBoolean from "../components/InputBoolean.vue";
 import { configToComputed } from "../global/helpers";
-import { ColorMode, ColorTheme } from "@/../hyalus-server/src/types";
+import { ColorMode, ColorTheme } from "@/../../hyalus-server/src/types";
 import { useStore } from "../global/store";
 import { computed } from "vue";
 import axios from "axios";
@@ -146,9 +144,7 @@ const usableColorThemes = [
   ColorTheme.Lavender,
 ];
 
-const usableFontScales = [
-  50, 67, 75, 80, 90, 100, 110, 125, 133, 140, 150, 175, 200,
-];
+const usableFontScales = [50, 67, 75, 80, 90, 100, 110, 125, 133, 140, 150, 175, 200];
 
 const adaptiveLayout = configToComputed<boolean>("adaptiveLayout");
 const fontScale = configToComputed<number>("fontScale");

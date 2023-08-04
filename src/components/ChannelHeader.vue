@@ -69,12 +69,7 @@
         <div
           v-if="channel.type !== ChannelType.DM"
           class="bg-ctp-surface0 h-8 w-8 cursor-pointer rounded-full p-2 transition hover:text-ctp-text"
-          @click="
-            store.writeConfig(
-              'showChannelMembers',
-              !store.config.showChannelMembers,
-            )
-          "
+          @click="store.writeConfig('showChannelMembers', !store.config.showChannelMembers)"
         >
           <UsersIcon />
         </div>
@@ -95,21 +90,16 @@
 
 <script lang="ts" setup>
 import axios from "axios";
-import { CallStreamType, ChannelType } from "@/../hyalus-server/src/types";
-import { computed, PropType, ref } from "vue";
+import { CallStreamType, ChannelType } from "@/../../hyalus-server/src/types";
+import { computed, type PropType, ref } from "vue";
 import { isMobile } from "../global/helpers";
 import { useStore } from "../global/store";
-import { IChannel, ISpace } from "../global/types";
+import type { IChannel, ISpace } from "../global/types";
 import ArrowLeftIcon from "../icons/ArrowLeftIcon.vue";
 import UserAvatar from "./UserAvatar.vue";
 import PhoneIcon from "../icons/PhoneIcon.vue";
 import VideoIcon from "../icons/VideoIcon.vue";
-import {
-  SpeakerWaveIcon,
-  UserGroupIcon,
-  AtSymbolIcon,
-  HashtagIcon,
-} from "@heroicons/vue/24/solid";
+import { SpeakerWaveIcon, UserGroupIcon, AtSymbolIcon, HashtagIcon } from "@heroicons/vue/24/solid";
 import { UserPlusIcon, UsersIcon } from "@heroicons/vue/20/solid";
 import GroupCreateModal from "./GroupCreateModal.vue";
 import GroupAddModal from "./GroupAddModal.vue";

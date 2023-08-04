@@ -1,10 +1,6 @@
 <template>
   <div>
-    <svg
-      xmlns="http://www.w3.org/2000/svg"
-      viewBox="0 0 20 20"
-      fill="currentColor"
-    >
+    <svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 20 20" fill="currentColor">
       <path d="M13 7H7v6h6V7z" />
       <path
         fill-rule="evenodd"

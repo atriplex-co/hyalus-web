@@ -14,17 +14,11 @@
 </template>
 
 <script lang="ts" setup>
-import { computed, PropType } from "vue";
-import {
-  IChannel,
-  IChannelMember,
-  ISelf,
-  ISpace,
-  ISpaceMember,
-} from "../global/types";
+import { computed, type PropType } from "vue";
+import type { IChannel, IChannelMember, ISelf, ISpace, ISpaceMember } from "../global/types";
 import { useStore } from "../global/store";
 import ChannelMemberListGroup from "./ChannelMemberListGroup.vue";
-import { Status } from "@/../hyalus-server/src/types";
+import { Status } from "@/../../hyalus-server/src/types";
 
 defineEmits(["close"]);
 const store = useStore();
@@ -66,9 +60,7 @@ const groups = computed<IChannelMemberGroup[]>(() => {
         (member) =>
           member.roleIds.includes(role.id) &&
           member.status !== Status.Offline &&
-          !groups.find((group) =>
-            group.members.find((member2) => member2.id === member.id),
-          ),
+          !groups.find((group) => group.members.find((member2) => member2.id === member.id)),
       );
 
       if (!members.length) {
@@ -78,35 +70,27 @@ const groups = computed<IChannelMemberGroup[]>(() => {
       groups.push({
         id: role.id,
         name: role.name,
-        members: members.sort((a, b) =>
-          a.name.toLowerCase() > b.name.toLowerCase() ? 1 : -1,
-        ),
+        members: members.sort((a, b) => (a.name.toLowerCase() > b.name.toLowerCase() ? 1 : -1)),
       });
     }
 
     const onlineUsers = props.space.members.filter(
       (member) =>
         member.status !== Status.Offline &&
-        !groups.find((group) =>
-          group.members.find((member2) => member2.id === member.id),
-        ),
+        !groups.find((group) => group.members.find((member2) => member2.id === member.id)),
     );
 
     if (onlineUsers.length) {
       groups.push({
         id: "online",
         name: "Online",
-        members: onlineUsers.sort((a, b) =>
-          a.name.toLowerCase() > b.name.toLowerCase() ? 1 : -1,
-        ),
+        members: onlineUsers.sort((a, b) => (a.name.toLowerCase() > b.name.toLowerCase() ? 1 : -1)),
       });
     }
 
     const offlineUsers = props.space.members.filter(
       (member) =>
-        !groups.find((group) =>
-          group.members.find((member2) => member2.id === member.id),
-        ),
+        !groups.find((group) => group.members.find((member2) => member2.id === member.id)),
     );
 
     if (offlineUsers.length) {

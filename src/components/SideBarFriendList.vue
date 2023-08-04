@@ -9,11 +9,7 @@
       </div>
     </div>
     <div class="flex-1 space-y-0.5 overflow-auto px-2">
-      <SideBarFriend
-        v-for="friend in friends"
-        :key="friend.id"
-        :friend="friend"
-      />
+      <SideBarFriend v-for="friend in friends" :key="friend.id" :friend="friend" />
     </div>
     <FriendAddModal v-if="friendAddModal" @close="friendAddModal = false" />
   </div>

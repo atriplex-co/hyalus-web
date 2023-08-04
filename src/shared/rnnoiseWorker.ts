@@ -25,7 +25,6 @@ registerProcessor(
 
       if (init.processorOptions.wasm) {
         this.wasmEnabled = true;
-
         (async () => {
           const { instance } = await WebAssembly.instantiate(
             init.processorOptions.wasm as Uint8Array,

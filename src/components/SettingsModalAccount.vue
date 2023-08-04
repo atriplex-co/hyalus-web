@@ -15,8 +15,7 @@
           <div
             class="absolute inset-0 flex items-center justify-center transition hover:text-ctp-text"
             :class="{
-              'opacity-0 hover:opacity-100 hover:bg-ctp-crust/50':
-                store.self.avatar,
+              'opacity-0 hover:opacity-100 hover:bg-ctp-crust/50': store.self.avatar,
             }"
           >
             <ArrowUpOnSquareIcon class="h-5 w-5" />
@@ -27,7 +26,7 @@
           <p class="text-sm text-ctp-subtext0">@{{ store.self.username }}</p>
         </div>
       </div>
-      <p 
+      <p
         class="cursor-pointer rounded-md px-4 py-2.5 text-sm transition bg-ctp-surface0/50 hover:bg-ctp-base"
         @click="$emit('activate', 'profile')"
       >
@@ -82,9 +81,7 @@
           <LockClosedIcon class="h-5 w-5" />
           <div>
             <p class="text-xs font-semibold uppercase">Password</p>
-            <p class="-mb-0.5 text-sm">
-              Updated {{ store.self.authKeyUpdatedAt.toISOString() }}
-            </p>
+            <p class="-mb-0.5 text-sm">Updated {{ store.self.authKeyUpdatedAt.toISOString() }}</p>
           </div>
         </div>
         <PencilIcon class="h-4 w-4" />
@@ -105,24 +102,12 @@
         <PencilIcon class="h-4 w-4" />
       </div>
     </div>
-    <SetUsernameModal
-      v-if="setUsernameModal"
-      @close="setUsernameModal = false"
-    />
+    <SetUsernameModal v-if="setUsernameModal" @close="setUsernameModal = false" />
     <SetEmailModal v-if="setEmailModal" @close="setEmailModal = false" />
     <SetPhoneModal v-if="setPhoneModal" @close="setPhoneModal = false" />
-    <SetPasswordModal
-      v-if="setPasswordModal"
-      @close="setPasswordModal = false"
-    />
-    <TotpEnableModal
-      v-if="!store.self.totpEnabled && totpModal"
-      @close="totpModal = false"
-    />
-    <TotpDisableModal
-      v-if="store.self.totpEnabled && totpModal"
-      @close="totpModal = false"
-    />
+    <SetPasswordModal v-if="setPasswordModal" @close="setPasswordModal = false" />
+    <TotpEnableModal v-if="!store.self.totpEnabled && totpModal" @close="totpModal = false" />
+    <TotpDisableModal v-if="store.self.totpEnabled && totpModal" @close="totpModal = false" />
   </div>
 </template>
 

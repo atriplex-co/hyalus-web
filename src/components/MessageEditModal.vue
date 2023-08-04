@@ -27,9 +27,9 @@
 <script lang="ts" setup>
 import ModalBase from "./ModalBase.vue";
 import ModalError from "./ModalError.vue";
-import { ref, PropType, Ref, onMounted } from "vue";
+import { ref, type PropType, type Ref, onMounted } from "vue";
 import { prettyError } from "../global/helpers";
-import { IMessage, IChannel } from "../global/types";
+import type { IMessage, IChannel } from "../global/types";
 import sodium from "libsodium-wrappers";
 import PencilIcon from "../icons/PencilIcon.vue";
 import axios from "axios";
@@ -53,6 +53,7 @@ const props = defineProps({
 });
 const emit = defineEmits(["close"]);
 const messageBox: Ref<HTMLTextAreaElement | null> = ref(null);
+// eslint-disable-next-line vue/no-setup-props-destructure
 const messageBoxText = ref(props.message.dataString || "");
 const error = ref("");
 
@@ -71,24 +72,15 @@ const messageBoxSubmit = async () => {
       const keys: Record<string, Uint8Array> = {};
 
       for (const member of props.channel.members) {
-        const userKeyNonce = sodium.randombytes_buf(
-          sodium.crypto_secretbox_NONCEBYTES,
-        );
+        const userKeyNonce = sodium.randombytes_buf(sodium.crypto_secretbox_NONCEBYTES);
 
         keys[member.id] = new Uint8Array([
           ...userKeyNonce,
-          ...sodium.crypto_box_easy(
-            key,
-            userKeyNonce,
-            member.publicKey,
-            store.config.privateKey,
-          ),
+          ...sodium.crypto_box_easy(key, userKeyNonce, member.publicKey, store.config.privateKey),
         ]);
       }
 
-      const selfKeyNonce = sodium.randombytes_buf(
-        sodium.crypto_secretbox_NONCEBYTES,
-      );
+      const selfKeyNonce = sodium.randombytes_buf(sodium.crypto_secretbox_NONCEBYTES);
 
       keys[store.self.id] = new Uint8Array([
         ...selfKeyNonce,
@@ -100,24 +92,16 @@ const messageBoxSubmit = async () => {
         ),
       ]);
 
-      await axios.patch(
-        `/api/v1/channels/${props.channel.id}/messages/${props.message.id}`,
-        {
-          data: sodium.to_base64(
-            msgpack.encode({
-              data: new Uint8Array([
-                ...nonce,
-                ...sodium.crypto_secretbox_easy(data, nonce, key),
-              ]),
-              keys,
-            }),
-          ),
-        },
-      );
+      await axios.patch(`/api/v1/channels/${props.channel.id}/messages/${props.message.id}`, {
+        data: sodium.to_base64(
+          msgpack.encode({
+            data: new Uint8Array([...nonce, ...sodium.crypto_secretbox_easy(data, nonce, key)]),
+            keys,
+          }),
+        ),
+      });
     } else {
-      await axios.delete(
-        `/api/v1/channels/${props.channel.id}/messages/${props.message.id}`,
-      );
+      await axios.delete(`/api/v1/channels/${props.channel.id}/messages/${props.message.id}`);
     }
   } catch (e) {
     error.value = prettyError(e);

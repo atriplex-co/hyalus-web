@@ -8,8 +8,7 @@
       <router-link
         class="flex cursor-pointer items-center space-x-4 rounded-md py-1.5 px-3 transition hover:bg-gray-200 hover:bg-opacity-50 hover:text-gray-800 dark:hover:bg-gray-800 dark:hover:bg-opacity-50 dark:hover:text-white"
         :class="{
-          'bg-gray-200 text-gray-800 dark:bg-gray-800 dark:text-white':
-            active === 'account',
+          'bg-gray-200 text-gray-800 dark:bg-gray-800 dark:text-white': active === 'account',
         }"
         to="/settings/account"
         @click="active = 'account'"
@@ -20,8 +19,7 @@
       <router-link
         class="flex cursor-pointer items-center space-x-4 rounded-md py-1.5 px-3 transition hover:bg-gray-200 hover:bg-opacity-50 hover:text-gray-800 dark:hover:bg-gray-800 dark:hover:bg-opacity-50 dark:hover:text-white"
         :class="{
-          'bg-gray-200 text-gray-800 dark:bg-gray-800 dark:text-white':
-            active === 'appearance',
+          'bg-gray-200 text-gray-800 dark:bg-gray-800 dark:text-white': active === 'appearance',
         }"
         to="/settings/appearance"
         @click="active = 'appearance'"
@@ -32,8 +30,7 @@
       <router-link
         class="flex cursor-pointer items-center space-x-4 rounded-md py-1.5 px-3 transition hover:bg-gray-200 hover:bg-opacity-50 hover:text-gray-800 dark:hover:bg-gray-800 dark:hover:bg-opacity-50 dark:hover:text-white"
         :class="{
-          'bg-gray-200 text-gray-800 dark:bg-gray-800 dark:text-white':
-            active === 'notifications',
+          'bg-gray-200 text-gray-800 dark:bg-gray-800 dark:text-white': active === 'notifications',
         }"
         to="/settings/notifications"
         @click="active = 'notifications'"
@@ -44,8 +41,7 @@
       <router-link
         class="flex cursor-pointer items-center space-x-4 rounded-md py-1.5 px-3 transition hover:bg-gray-200 hover:bg-opacity-50 hover:text-gray-800 dark:hover:bg-gray-800 dark:hover:bg-opacity-50 dark:hover:text-white"
         :class="{
-          'bg-gray-200 text-gray-800 dark:bg-gray-800 dark:text-white':
-            active === 'media',
+          'bg-gray-200 text-gray-800 dark:bg-gray-800 dark:text-white': active === 'media',
         }"
         to="/settings/media"
         @click="active = 'media'"
@@ -56,8 +52,7 @@
       <router-link
         class="flex cursor-pointer items-center space-x-4 rounded-md py-1.5 px-3 transition hover:bg-gray-200 hover:bg-opacity-50 hover:text-gray-800 dark:hover:bg-gray-800 dark:hover:bg-opacity-50 dark:hover:text-white"
         :class="{
-          'bg-gray-200 text-gray-800 dark:bg-gray-800 dark:text-white':
-            active === 'keyboard',
+          'bg-gray-200 text-gray-800 dark:bg-gray-800 dark:text-white': active === 'keyboard',
         }"
         to="/settings/keyboard"
         @click="active = 'keyboard'"
@@ -69,8 +64,7 @@
         v-if="isDesktop"
         class="flex cursor-pointer items-center space-x-4 rounded-md py-1.5 px-3 transition hover:bg-gray-200 hover:bg-opacity-50 hover:text-gray-800 dark:hover:bg-gray-800 dark:hover:bg-opacity-50 dark:hover:text-white"
         :class="{
-          'bg-gray-200 text-gray-800 dark:bg-gray-800 dark:text-white':
-            active === 'desktop',
+          'bg-gray-200 text-gray-800 dark:bg-gray-800 dark:text-white': active === 'desktop',
         }"
         to="/settings/desktop"
         @click="active = 'desktop'"

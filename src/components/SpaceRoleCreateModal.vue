@@ -1,10 +1,5 @@
 <template>
-  <ModalBase
-    title="Create Role"
-    submit-text="Create"
-    @submit="submit"
-    @close="$emit('close')"
-  >
+  <ModalBase title="Create Role" submit-text="Create" @submit="submit" @close="$emit('close')">
     <template #icon>
       <PlusIcon />
     </template>
@@ -19,11 +14,11 @@
 import ModalBase from "./ModalBase.vue";
 import ModalInput from "./ModalInput.vue";
 import ModalError from "./ModalError.vue";
-import { PropType, ref } from "vue";
+import { type PropType, ref } from "vue";
 import { prettyError } from "../global/helpers";
 import axios from "axios";
 import { PlusIcon } from "@heroicons/vue/20/solid";
-import { ISpace } from "../global/types";
+import type { ISpace } from "../global/types";
 
 const emit = defineEmits(["close"]);
 const props = defineProps({

@@ -4,9 +4,7 @@
     <div class="mt-8 space-y-4">
       <div class="flex items-center justify-between">
         <p class="text-sm font-semibold text-gray-400">
-          {{ space.members.length }} Member{{
-            space.members.length === 1 ? "" : "s"
-          }}
+          {{ space.members.length }} Member{{ space.members.length === 1 ? "" : "s" }}
         </p>
         <input
           type="text"
@@ -32,8 +30,8 @@
 </template>
 
 <script lang="ts" setup>
-import { PropType } from "vue";
-import { ISpace } from "../global/types";
+import type { PropType } from "vue";
+import type { ISpace } from "../global/types";
 import SpaceMemberManageItem from "./SpaceMemberManageItem.vue";
 
 defineProps({

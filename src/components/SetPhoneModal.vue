@@ -1,10 +1,5 @@
 <template>
-  <ModalBase
-    title="Change Phone"
-    submit-text="Change"
-    @submit="submit"
-    @close="$emit('close')"
-  >
+  <ModalBase title="Change Phone" submit-text="Change" @submit="submit" @close="$emit('close')">
     <template #icon>
       <PhoneIcon />
     </template>

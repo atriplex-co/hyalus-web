@@ -246,16 +246,10 @@ const submit = async () => {
         sodium.crypto_pwhash_ALG_ARGON2ID13,
       );
       const { publicKey, privateKey } = sodium.crypto_box_keypair();
-      const encryptedPrivateKeyNonce = sodium.randombytes_buf(
-        sodium.crypto_secretbox_NONCEBYTES,
-      );
+      const encryptedPrivateKeyNonce = sodium.randombytes_buf(sodium.crypto_secretbox_NONCEBYTES);
       const encryptedPrivateKey = new Uint8Array([
         ...encryptedPrivateKeyNonce,
-        ...sodium.crypto_secretbox_easy(
-          privateKey,
-          encryptedPrivateKeyNonce,
-          symKey,
-        ),
+        ...sodium.crypto_secretbox_easy(privateKey, encryptedPrivateKeyNonce, symKey),
       ]);
 
       const {

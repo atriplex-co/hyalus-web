@@ -9,9 +9,7 @@
       <div class="5 w-48 space-y-2">
         <div class="flex items-center justify-between">
           <p class="text-sm font-semibold text-gray-400">
-            {{ channel.overrides.length }} Override{{
-              channel.overrides.length !== 1 ? "s" : ""
-            }}
+            {{ channel.overrides.length }} Override{{ channel.overrides.length !== 1 ? "s" : "" }}
           </p>
           <div class="relative">
             <PlusIcon
@@ -33,11 +31,7 @@
                   <div
                     class="h-2.5 w-2.5 rounded-full bg-gray-500"
                     :style="
-                      role.color
-                        ? `background: #${role.color
-                            .toString(16)
-                            .padStart(6, '0')};`
-                        : ''
+                      role.color ? `background: #${role.color.toString(16).padStart(6, '0')};` : ''
                     "
                   ></div>
                   <p>{{ role.name }}</p>
@@ -75,9 +69,7 @@
               class="h-2.5 w-2.5 rounded-full bg-gray-500"
               :style="
                 override.role.color
-                  ? `background: #${override.role.color
-                      .toString(16)
-                      .padStart(6, '0')};`
+                  ? `background: #${override.role.color.toString(16).padStart(6, '0')};`
                   : ''
               "
             ></div>
@@ -111,14 +103,10 @@
         <SpacePermissionsEditor
           :show-channels="true"
           :show-text-channels="
-            [ChannelType.SpaceCategory, ChannelType.SpaceText].includes(
-              channel.type,
-            )
+            [ChannelType.SpaceCategory, ChannelType.SpaceText].includes(channel.type)
           "
           :show-voice-channels="
-            [ChannelType.SpaceCategory, ChannelType.SpaceVoice].includes(
-              channel.type,
-            )
+            [ChannelType.SpaceCategory, ChannelType.SpaceVoice].includes(channel.type)
           "
           :space="space"
           :allow="allow"
@@ -143,26 +131,16 @@
         </div>
       </div>
     </div>
-    <SpaceChannelSyncModal
-      v-if="syncModal"
-      :channel="channel"
-      @close="syncModal = false"
-    />
+    <SpaceChannelSyncModal v-if="syncModal" :channel="channel" @close="syncModal = false" />
   </div>
 </template>
 
 <script setup lang="ts">
 import { PlusIcon } from "@heroicons/vue/20/solid";
 import axios from "axios";
-import { ChannelType, SpaceChannelOverrideType } from "@/../hyalus-server/src/types";
-import { computed, PropType, ref, watch } from "vue";
-import {
-  IChannel,
-  IChannelOverride,
-  ISpace,
-  ISpaceMember,
-  ISpaceRole,
-} from "../global/types";
+import { ChannelType, SpaceChannelOverrideType } from "@/../../hyalus-server/src/types";
+import { computed, type PropType, ref, watch } from "vue";
+import type { IChannel, IChannelOverride, ISpace, ISpaceMember, ISpaceRole } from "../global/types";
 import InputBoolean from "./InputBoolean.vue";
 import SpaceChannelSyncModal from "./SpaceChannelSyncModal.vue";
 import SpacePermissionsEditor from "./SpacePermissionsEditor.vue";
@@ -210,9 +188,7 @@ const roleOverrides = computed(() =>
       override: IChannelOverride;
       role: ISpaceRole;
     }[]
-  ).sort((a, b) =>
-    (a.role?.position ?? 0) > (b.role?.position ?? 0) ? 1 : -1,
-  ),
+  ).sort((a, b) => ((a.role?.position ?? 0) > (b.role?.position ?? 0) ? 1 : -1)),
 );
 const memberOverrides = computed(() =>
   (
@@ -220,9 +196,7 @@ const memberOverrides = computed(() =>
       .filter((override) => override.type === SpaceChannelOverrideType.Member)
       .map((override) => ({
         override,
-        member: props.space.members.find(
-          (member) => member.id === override.scope,
-        ),
+        member: props.space.members.find((member) => member.id === override.scope),
       }))
       .filter((override) => override.member) as {
       override: IChannelOverride;
@@ -232,23 +206,18 @@ const memberOverrides = computed(() =>
 );
 
 const save = async () => {
-  await axios.post(
-    `/api/v1/spaces/${props.space.id}/channels/${props.channel.id}/overrides`,
-    {
-      type: type.value,
-      scope: scope.value,
-      allow: allow.value,
-      deny: deny.value,
-    },
-  );
+  await axios.post(`/api/v1/spaces/${props.space.id}/channels/${props.channel.id}/overrides`, {
+    type: type.value,
+    scope: scope.value,
+    allow: allow.value,
+    deny: deny.value,
+  });
 };
 
 const update = () => {
   const override =
     props.channel.overrides.find((override) => override.id === id.value) ??
-    props.channel.overrides.find(
-      (override) => override.type === SpaceChannelOverrideType.Everyone,
-    );
+    props.channel.overrides.find((override) => override.type === SpaceChannelOverrideType.Everyone);
   if (override) {
     type.value = override.type;
     scope.value = override.scope;
@@ -265,15 +234,12 @@ const update = () => {
 
 const create = async (type: SpaceChannelOverrideType, scope: string) => {
   createModal.value = false;
-  await axios.post(
-    `/api/v1/spaces/${props.space.id}/channels/${props.channel.id}/overrides`,
-    {
-      type,
-      scope,
-      allow: 0,
-      deny: 0,
-    },
-  ); // TODO: error handling in SplitModals
+  await axios.post(`/api/v1/spaces/${props.space.id}/channels/${props.channel.id}/overrides`, {
+    type,
+    scope,
+    allow: 0,
+    deny: 0,
+  }); // TODO: error handling in SplitModals
 };
 
 const openOverride = roleOverrides.value[0];
