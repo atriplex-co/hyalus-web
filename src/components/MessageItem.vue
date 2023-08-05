@@ -1177,7 +1177,7 @@ const useInvite = async () => {
 
 <style>
 pre {
-  @apply border-ctp-accent bg-ctp-crust -m-1.5 whitespace-pre-wrap rounded-md p-2;
+  @apply border-ctp-accent bg-ctp-crust -m-1.5 whitespace-pre-wrap rounded-md p-2 text-ctp-text;
 }
 
 pre + * {
