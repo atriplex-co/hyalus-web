@@ -9,12 +9,12 @@
         <p>User</p>
         <div
           v-if="user"
-          class="dark:bg-dark-900 dark:border-dark-600 flex w-full items-center space-x-4 rounded-md border border-gray-200 bg-gray-100 px-4 py-2"
+          class="flex w-full items-center space-x-3 rounded-md border border-ctp-base bg-ctp-crust px-3 py-2"
         >
           <UserAvatar :avatar="user.avatar" class="h-8 w-8 rounded-full" />
           <div>
             <p class="text-sm font-bold">{{ user.name }}</p>
-            <p class="text-sm text-gray-500 dark:text-gray-400">@{{ user.username }}</p>
+            <p class="text-sm text-ctp-subtext0">@{{ user.username }}</p>
           </div>
         </div>
       </div>
