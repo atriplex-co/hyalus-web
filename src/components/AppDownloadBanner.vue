@@ -1,5 +1,5 @@
 <template>
-  <div v-if="!hide" class="w-full">
+  <div v-if="show" class="w-full">
     <div
       class="bg-ctp-accent text-ctp-base flex h-9 items-center justify-between rounded-sm px-2 text-sm shadow-md"
     >
@@ -15,7 +15,7 @@
       </div>
       <div
         class="h-6 w-6 cursor-pointer rounded-full bg-ctp-base/10 p-1 transition hover:bg-opacity-25"
-        @click="hide = true"
+        @click="hide"
       >
         <CloseIcon />
       </div>
@@ -29,7 +29,17 @@ import CloseIcon from "../icons/CloseIcon.vue";
 import DesktopIcon from "../icons/DesktopIcon.vue";
 import { ref } from "vue";
 import AppDownloadModal from "./AppDownloadModal.vue";
+import { useStore } from "@/global/store";
 
+const store = useStore();
 const appDownloadModal = ref(false);
-const hide = ref(false);
+const show = ref(true);
+
+const hide = (e: MouseEvent) => {
+  if (e.shiftKey) {
+    store.writeConfig("appDownloadBanner", false);
+  }
+
+  show.value = false;
+};
 </script>

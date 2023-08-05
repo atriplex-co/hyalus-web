@@ -195,7 +195,7 @@ const banner = computed(() => {
     return "emailVerify";
   }
 
-  if (!isDesktop && !isMobile) {
+  if (!isDesktop && !isMobile && store.config.appDownloadBanner) {
     return "appDownload";
   }
 
