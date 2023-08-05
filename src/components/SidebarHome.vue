@@ -38,7 +38,7 @@
         <SettingsIcon class="h-4 w-4" />
       </div>
     </div>
-    <div v-if="channels.length" class="flex-1 space-y-0.5 overflow-auto px-2">
+    <div v-if="channels.length" class="flex-1 space-y-0.5 overflow-auto px-2 pb-2">
       <SideBarChannel v-for="channel in channels" :key="channel.id" :channel="channel" />
     </div>
     <div
