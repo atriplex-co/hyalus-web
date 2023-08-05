@@ -146,11 +146,11 @@
               <div v-if="!previewUrl" class="flex items-center space-x-2 p-2">
                 <div
                   v-if="!embedded"
-                  class="h-8 w-8 rounded-full p-2"
+                  class="h-8 w-8 rounded-full p-2 text-ctp-surface0"
                   :class="{
                     'cursor-pointer': !fileDownloadActive,
                     'bg-black/10': sentByMe,
-                    'bg-ctp-accent text-ctp-surface0': !sentByMe,
+                    'bg-ctp-accent': !sentByMe,
                   }"
                   @click="fileDownload(true)"
                 >
