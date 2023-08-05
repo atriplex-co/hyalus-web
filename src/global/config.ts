@@ -2,6 +2,7 @@ import MarkdownIt from "markdown-it";
 import MarkdownItEmoji from "markdown-it-emoji";
 import MarkdownItLinkAttr from "markdown-it-link-attributes";
 import highlight from "highlight.js";
+import type Renderer from "markdown-it/lib/renderer";
 
 export const RTCMaxMessageSize = 1024 * 256;
 export const MaxFileSize = 1024 * 1024 * 50;
@@ -31,7 +32,7 @@ export const messageFormatter = new MarkdownIt("zero", {
     return "";
   },
 })
-  .enable(["emphasis", "strikethrough", "backticks", "fence", "linkify", "block"])
+  .enable(["emphasis", "strikethrough", "backticks", "fence", "linkify", "block", "escape"])
   .use(MarkdownItEmoji)
   .use(MarkdownItLinkAttr, {
     attrs: {
@@ -39,4 +40,16 @@ export const messageFormatter = new MarkdownIt("zero", {
       rel: "noopener noreferrer",
       class: "underline font-medium",
     },
+  })
+  .use((md) => {
+    const renderEm: Renderer.RenderRule = (tokens, idx, opts, _, self) => {
+      const token = tokens[idx];
+      if (token.markup === "__") {
+        token.tag = "u";
+      }
+      return self.renderToken(tokens, idx, opts);
+    };
+
+    md.renderer.rules.strong_open = renderEm;
+    md.renderer.rules.strong_close = renderEm;
   });
