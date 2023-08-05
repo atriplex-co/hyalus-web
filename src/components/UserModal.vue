@@ -159,18 +159,18 @@
             </div>
             <div
               v-if="!cachedUser.bio && !space"
-              class="flex h-full w-full flex-col items-center justify-center space-y-4 text-sm text-gray-400"
+              class="flex h-full w-full flex-col items-center justify-center space-y-4 text-sm text-ctp-subtext0"
             >
-              <InformationCircleIcon class="h-8 w-8" />
+              <InformationCircleIcon class="h-8 w-8 -mt-6" />
               <p>Nothing to see here.</p>
             </div>
           </template>
           <template v-if="tab === 'spaces'">
             <div
               v-if="!mutualSpaces.length"
-              class="flex h-full w-full flex-col items-center justify-center space-y-4 text-sm text-gray-400"
+              class="flex h-full w-full flex-col items-center justify-center space-y-4 text-sm text-ctp-subtext0"
             >
-              <XCircleIcon class="h-8 w-8" />
+              <XCircleIcon class="h-8 w-8 -mt-6" />
               <p>No mutual spaces.</p>
             </div>
             <div v-if="mutualSpaces.length" class="space-y-2">
@@ -196,9 +196,9 @@
           </template>
           <template v-if="tab === 'friends'">
             <div
-              class="flex h-full w-full flex-col items-center justify-center space-y-4 text-sm text-gray-400"
+              class="flex h-full w-full flex-col items-center justify-center space-y-4 text-sm text-ctp-subtext0"
             >
-              <FaceFrownIcon class="h-8 w-8" />
+              <FaceFrownIcon class="h-8 w-8 -mt-6" />
               <p>This doesn't actually work yet.</p>
               <!-- TODO:: mutual friends UI -->
             </div>
