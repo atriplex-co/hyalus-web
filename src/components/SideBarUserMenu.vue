@@ -55,7 +55,7 @@
         "
       >
         <div class="flex h-4 w-4 items-center justify-center">
-          <div class="h-2.5 w-2.5 rounded-full bg-ctp-peach" />
+          <div class="h-2.5 w-2.5 rounded-full bg-ctp-yellow" />
         </div>
         <p>Away</p>
       </div>
