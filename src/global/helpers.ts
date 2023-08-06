@@ -202,11 +202,17 @@ export const processMessage = async (opts: {
 };
 
 export const notifySend = (opts: { icon: string; title: string; body: string }) => {
-  if (store.self?.preferredStatus === Status.Busy) {
+  if (
+    store.self!.preferredStatus === Status.Busy ||
+    (store.config.streamerModeEnabled && store.config.streamerModeDisableNotifications)
+  ) {
     return;
   }
 
-  if (store.config.notifySound) {
+  if (
+    store.config.notifySound &&
+    !(store.config.streamerModeEnabled && store.config.streamerModeDisableSounds)
+  ) {
     playSound(SoundNotification);
   }
 

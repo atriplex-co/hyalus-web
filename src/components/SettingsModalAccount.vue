@@ -1,5 +1,7 @@
 <template>
-  <div v-if="store.self">
+  <div
+    v-if="store.self && !(store.config.streamerModeEnabled && store.config.streamerModeHideAccount)"
+  >
     <p class="text-2xl">Account</p>
     <div class="mt-8 flex items-center justify-between">
       <div class="flex items-center space-x-4">
@@ -109,6 +111,10 @@
     <TotpEnableModal v-if="!store.self.totpEnabled && totpModal" @close="totpModal = false" />
     <TotpDisableModal v-if="store.self.totpEnabled && totpModal" @close="totpModal = false" />
   </div>
+  <div v-else class="h-full flex items-center justify-center flex-col space-y-4 text-ctp-subtext0">
+    <TvIcon class="w-10 h-10" />
+    <p>Streamer Mode Enabled</p>
+  </div>
 </template>
 
 <script lang="ts" setup>
@@ -120,6 +126,7 @@ import {
   PencilIcon,
   PhoneIcon,
   ShieldCheckIcon,
+  TvIcon,
 } from "@heroicons/vue/24/solid";
 import axios from "axios";
 import { ref } from "vue";

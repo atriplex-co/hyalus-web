@@ -83,6 +83,17 @@
         <p>Desktop App</p>
       </div>
       <div
+        v-if="isDesktop"
+        class="flex cursor-pointer items-center space-x-4 rounded-md py-1.5 px-3 transition hover:bg-ctp-base/50"
+        :class="{
+          'text-ctp-text bg-ctp-base': active === 'streamerMode',
+        }"
+        @click="active = 'streamerMode'"
+      >
+        <TvIcon class="h-5 w-5" />
+        <p>Streamer Mode</p>
+      </div>
+      <div
         class="flex cursor-pointer items-center space-x-4 rounded-md py-1.5 px-3 transition hover:bg-ctp-base/50"
         :class="{
           'text-ctp-text bg-ctp-base': active === 'changelog',
@@ -110,6 +121,7 @@
       <SettingsModalChangelog v-if="active === 'changelog'" />
       <SettingsModalDesktop v-if="active === 'desktop'" />
       <SettingsModalProfile v-if="active === 'profile'" />
+      <SettingsModalStreamerMode v-if="active === 'streamerMode'" />
     </template>
   </SplitModal>
   <LogoutModal v-if="logoutModal" @close="logoutModal = false" />
@@ -124,6 +136,7 @@ import {
   CpuChipIcon,
   EyeIcon,
   IdentificationIcon,
+  TvIcon,
   UserIcon,
   VideoCameraIcon,
 } from "@heroicons/vue/24/solid";
@@ -140,6 +153,7 @@ import SettingsModalChangelog from "./SettingsModalChangelog.vue";
 import SettingsModalKeybinds from "./SettingsModalKeybinds.vue";
 import SettingsModalDesktop from "./SettingsModalDesktop.vue";
 import SettingsModalProfile from "./SettingsModalProfile.vue";
+import SettingsModalStreamerMode from "./SettingsModalStreamerMode.vue";
 import SplitModal from "./SplitModal.vue";
 
 const active = ref("account");

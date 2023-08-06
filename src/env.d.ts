@@ -45,6 +45,7 @@ declare interface IHyalusDesktop {
   checkForUpdates(): Promise<void>;
   setBoostrapConfig(config: string): void;
   getBoostrapConfig(): string;
+  setContentProtection(v: boolean): Promise<void>;
 }
 
 declare interface IHyalusDesktopWin32 {

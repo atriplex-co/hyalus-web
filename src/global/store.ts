@@ -34,6 +34,7 @@ import { Socket } from "./socket";
 import { createPinia, defineStore } from "pinia";
 import axios from "axios";
 import msgpack from "msgpack-lite";
+import { watch } from "vue";
 
 export const useStore = defineStore("main", {
   state(): IState {
@@ -78,6 +79,13 @@ export const useStore = defineStore("main", {
         callPersist: null,
         appDownloadBanner: true,
         showChannelMembers: true,
+        streamerModeEnabled: false,
+        streamerModeAuto: true,
+        streamerModeHideWindow: true,
+        streamerModeHideAccount: true,
+        streamerModeHideInviteLinks: true,
+        streamerModeDisableNotifications: true,
+        streamerModeDisableSounds: true,
       },
       updateAvailable: false,
       updateRequired: false,
@@ -126,6 +134,36 @@ export const useStore = defineStore("main", {
           console.warn(e);
           console.warn("error loading config");
         }
+      }
+
+      if (this.config.streamerModeAuto && this.config.streamerModeEnabled) {
+        await this.writeConfig("streamerModeEnabled", false);
+      }
+
+      if (window.HyalusDesktop && window.HyalusDesktop.win32) {
+        const updateContentProtection = async () => {
+          if (this.config.streamerModeEnabled && this.config.streamerModeHideWindow) {
+            await window.HyalusDesktop!.setContentProtection(true);
+          } else {
+            await window.HyalusDesktop!.setContentProtection(false);
+          }
+        };
+
+        await updateContentProtection();
+        watch(
+          () => [this.config.streamerModeEnabled, this.config.streamerModeHideWindow],
+          updateContentProtection,
+        );
+
+        window.HyalusDesktop.win32.startEvents((e: string) => {
+          if (e === "streamer_mode_enable" && this.config.streamerModeAuto) {
+            this.config.streamerModeEnabled = true;
+          }
+
+          if (e === "streamer_mode_disable" && this.config.streamerModeAuto) {
+            this.config.streamerModeEnabled = false;
+          }
+        });
       }
 
       await updateIcon();

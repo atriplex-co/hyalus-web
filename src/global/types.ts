@@ -75,6 +75,13 @@ export interface _IConfig {
   uploadFileKeys: string;
   appDownloadBanner: boolean;
   showChannelMembers: boolean;
+  streamerModeEnabled: boolean;
+  streamerModeAuto: boolean;
+  streamerModeHideWindow: boolean;
+  streamerModeHideAccount: boolean;
+  streamerModeHideInviteLinks: boolean;
+  streamerModeDisableNotifications: boolean;
+  streamerModeDisableSounds: boolean;
 }
 
 export interface ICachedUser {

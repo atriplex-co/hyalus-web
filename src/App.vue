@@ -106,6 +106,7 @@
       >
         <EmailVerifyBanner v-if="banner === 'emailVerify'" />
         <AppDownloadBanner v-if="banner === 'appDownload'" />
+        <StreamerModeBanner v-if="banner === 'streamerMode'" />
         <div class="flex min-h-0 flex-1">
           <SideBar v-if="showSideBar" />
           <router-view v-slot="{ Component }">
@@ -147,6 +148,7 @@ import WelcomeModal from "./components/WelcomeModal.vue";
 import EmailVerifyBanner from "./components/EmailVerifyBanner.vue";
 import SettingsModal from "./components/SettingsModal.vue";
 import { ColorMode, ColorTheme } from "@/../../hyalus-server/src/types";
+import StreamerModeBanner from "./components/StreamerModeBanner.vue";
 
 const store = useStore();
 const router = useRouter();
@@ -191,6 +193,10 @@ const showSideBar = computed(() => {
 });
 
 const banner = computed(() => {
+  if (store.config.streamerModeEnabled) {
+    return "streamerMode";
+  }
+
   if (store.self && !store.self.emailVerified) {
     return "emailVerify";
   }
