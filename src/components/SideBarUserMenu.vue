@@ -9,17 +9,17 @@
   >
     <div
       v-if="store.self && show"
-      class="absolute z-10 my-1 w-48 select-none overflow-hidden rounded-md bg-ctp-base p-2 text-sm shadow-lg shadow-[#00000044]"
+      class="absolute z-10 my-1 w-48 select-none overflow-hidden rounded-md bg-ctp-base p-2 text-sm shadow-lg shadow-[#00000040]"
       @mouseup.stop
     >
       <div class="flex items-center justify-between">
         <div class="min-w-0 p-2">
           <p class="font-bold">{{ store.self.name }}</p>
-          <p class="truncate text-xs text-gray-600 dark:text-gray-400">
+          <p class="truncate text-xs text-ctp-subtext0">
             @{{ store.self.username }}
           </p>
         </div>
-        <div
+        <button
           @click="
             if ($event.shiftKey) {
               router.push(`/settings/account`);
@@ -30,62 +30,62 @@
           "
         >
           <SettingsIcon
-            class="bg-dark-800 h-8 w-8 rounded-full p-2 text-gray-400 transition hover:text-white"
+            class="bg-ctp-surface0 hover:bg-ctp-surface0/50 h-8 w-8 rounded-full p-2 transition text-ctp-subtext0 hover:text-ctp-text"
           />
-        </div>
+        </button>
       </div>
-      <div class="dark:border-dark-800 my-1 border-t border-gray-100"></div>
+      <div class="my-1 border-t border-ctp-surface0"></div>
       <div
-        class="dark:hover:bg-dark-800 flex cursor-pointer items-center space-x-3 rounded-md p-2 transition hover:bg-gray-100"
+        class="flex cursor-pointer items-center space-x-3 rounded-md p-2 transition hover:bg-ctp-surface0/50"
         @click="
           setStatus(Status.Online);
           $emit('close');
         "
       >
         <div class="flex h-4 w-4 items-center justify-center">
-          <div class="h-2.5 w-2.5 rounded-full bg-ctp-accent" />
+          <div class="h-2.5 w-2.5 rounded-full bg-ctp-green" />
         </div>
         <p>Online</p>
       </div>
       <div
-        class="dark:hover:bg-dark-800 flex cursor-pointer items-center space-x-3 rounded-md p-2 transition hover:bg-gray-100"
+        class="flex cursor-pointer items-center space-x-3 rounded-md p-2 transition hover:bg-ctp-surface0/50"
         @click="
           setStatus(Status.Away);
           $emit('close');
         "
       >
         <div class="flex h-4 w-4 items-center justify-center">
-          <div class="h-2.5 w-2.5 rounded-full bg-amber-500" />
+          <div class="h-2.5 w-2.5 rounded-full bg-ctp-peach" />
         </div>
         <p>Away</p>
       </div>
       <div
-        class="dark:hover:bg-dark-800 flex cursor-pointer items-center space-x-3 rounded-md p-2 transition hover:bg-gray-100"
+        class="flex cursor-pointer items-center space-x-3 rounded-md p-2 transition hover:bg-ctp-surface0/50"
         @click="
           setStatus(Status.Busy);
           $emit('close');
         "
       >
         <div class="flex h-4 w-4 items-center justify-center">
-          <div class="h-2.5 w-2.5 rounded-full bg-rose-500" />
+          <div class="h-2.5 w-2.5 rounded-full bg-ctp-red" />
         </div>
         <p>Busy</p>
       </div>
       <div
-        class="dark:hover:bg-dark-800 flex cursor-pointer items-center space-x-3 rounded-md p-2 transition hover:bg-gray-100"
+        class="flex cursor-pointer items-center space-x-3 rounded-md p-2 transition hover:bg-ctp-surface0/50"
         @click="
           setStatus(Status.Offline);
           $emit('close');
         "
       >
         <div class="flex h-4 w-4 items-center justify-center">
-          <div class="h-2.5 w-2.5 rounded-full bg-gray-400" />
+          <div class="h-2.5 w-2.5 rounded-full bg-ctp-subtext0" />
         </div>
         <p>Invisible</p>
       </div>
-      <div class="dark:border-dark-800 my-1 border-t border-gray-100"></div>
+      <div class="my-1 border-t border-ctp-surface0"></div>
       <div
-        class="dark:hover:bg-dark-800 flex cursor-pointer items-center space-x-3 rounded-md p-2 transition hover:bg-gray-100"
+        class="flex cursor-pointer items-center space-x-3 rounded-md p-2 transition hover:bg-ctp-surface0/50"
         @click="
           logoutModal = true;
           $emit('close');

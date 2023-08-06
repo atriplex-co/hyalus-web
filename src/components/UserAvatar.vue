@@ -4,7 +4,7 @@
     :class="{
       'border-2 p-px': status !== undefined,
       'border-ctp-green': status === Status.Online,
-      'border-ctp-yellow': status === Status.Away,
+      'border-ctp-peach': status === Status.Away,
       'border-ctp-red': status === Status.Busy,
       'border-ctp-surface0': status === Status.Offline,
     }"
