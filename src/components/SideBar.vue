@@ -22,7 +22,7 @@
       <router-link
         v-for="channel in privateChannels"
         :key="channel.id"
-        class="hover:text-ctp-accent dark:bg-dark-800 relative flex h-10 w-10 items-center justify-center rounded-full bg-gray-300 text-gray-500 transition hover:bg-gray-400 hover:bg-opacity-50"
+        class="relative flex h-10 w-10 items-center justify-center rounded-full bg-ctp-accent hover:bg-ctp-accent/75 text-ctp-base transition"
         :to="`/channels/${channel.id}`"
       >
         <UserAvatar v-if="channel.type === ChannelType.DM" :avatar="channel.members[0].avatar" />
@@ -130,9 +130,9 @@ const selectedSpace = computed(() => {
   return store.spaces.find((space) => space.id === selectedSpaceId.value);
 });
 const privateChannels = computed(() => {
-  return store.channels.filter(
-    (channel) => !channel.spaceId && getChannelState(channel).mentionCount,
-  );
+  return store.channels
+    .filter((channel) => !channel.spaceId && getChannelState(channel).mentionCount)
+    .sort((a, b) => (a.activeAt > b.activeAt ? -1 : 1));
 });
 
 const updateRoute = () => {
