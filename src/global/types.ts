@@ -367,3 +367,16 @@ export interface ISpaceInvite {
     flags: number;
   };
 }
+
+export enum SettingsPage {
+  Account,
+  Profile,
+  Sessions,
+  Appearance,
+  Notifications,
+  AudioVideo,
+  Keybinds,
+  Changelog,
+  Desktop,
+  StreamerMode,
+}

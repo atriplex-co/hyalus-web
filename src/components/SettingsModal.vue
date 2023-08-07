@@ -4,9 +4,9 @@
       <div
         class="flex cursor-pointer items-center space-x-4 rounded-md py-1.5 px-3 transition hover:bg-ctp-base/50"
         :class="{
-          'text-ctp-text bg-ctp-base': active === 'account',
+          'text-ctp-text bg-ctp-base': page === SettingsPage.Account,
         }"
-        @click="active = 'account'"
+        @click="page = SettingsPage.Account"
       >
         <UserIcon class="h-5 w-5" />
         <p>Account</p>
@@ -14,9 +14,9 @@
       <div
         class="flex cursor-pointer items-center space-x-4 rounded-md py-1.5 px-3 transition hover:bg-ctp-base/50"
         :class="{
-          'text-ctp-text bg-ctp-base': active === 'profile',
+          'text-ctp-text bg-ctp-base': page === SettingsPage.Profile,
         }"
-        @click="active = 'profile'"
+        @click="page = SettingsPage.Profile"
       >
         <IdentificationIcon class="h-5 w-5" />
         <p>Profile</p>
@@ -24,9 +24,9 @@
       <div
         class="flex cursor-pointer items-center space-x-4 rounded-md py-1.5 px-3 transition hover:bg-ctp-base/50"
         :class="{
-          'text-ctp-text bg-ctp-base': active === 'sessions',
+          'text-ctp-text bg-ctp-base': page === SettingsPage.Sessions,
         }"
-        @click="active = 'sessions'"
+        @click="page = SettingsPage.Sessions"
       >
         <ComputerDesktopIcon class="h-5 w-5" />
         <p>Sessions</p>
@@ -34,9 +34,9 @@
       <div
         class="flex cursor-pointer items-center space-x-4 rounded-md py-1.5 px-3 transition hover:bg-ctp-base/50"
         :class="{
-          'text-ctp-text bg-ctp-base': active === 'appearance',
+          'text-ctp-text bg-ctp-base': page === SettingsPage.Appearance,
         }"
-        @click="active = 'appearance'"
+        @click="page = SettingsPage.Appearance"
       >
         <EyeIcon class="h-5 w-5" />
         <p>Appearance</p>
@@ -44,9 +44,9 @@
       <div
         class="flex cursor-pointer items-center space-x-4 rounded-md py-1.5 px-3 transition hover:bg-ctp-base/50"
         :class="{
-          'text-ctp-text bg-ctp-base': active === 'notifications',
+          'text-ctp-text bg-ctp-base': page === SettingsPage.Notifications,
         }"
-        @click="active = 'notifications'"
+        @click="page = SettingsPage.Notifications"
       >
         <BellIcon class="h-5 w-5" />
         <p>Notifications</p>
@@ -54,9 +54,9 @@
       <div
         class="flex cursor-pointer items-center space-x-4 rounded-md py-1.5 px-3 transition hover:bg-ctp-base/50"
         :class="{
-          'text-ctp-text bg-ctp-base': active === 'av',
+          'text-ctp-text bg-ctp-base': page === SettingsPage.AudioVideo,
         }"
-        @click="active = 'av'"
+        @click="page = SettingsPage.AudioVideo"
       >
         <VideoCameraIcon class="h-5 w-5" />
         <p>Audio &amp; Video</p>
@@ -64,9 +64,9 @@
       <div
         class="flex cursor-pointer items-center space-x-4 rounded-md py-1.5 px-3 transition hover:bg-ctp-base/50"
         :class="{
-          'text-ctp-text bg-ctp-base': active === 'keybinds',
+          'text-ctp-text bg-ctp-base': page === SettingsPage.Keybinds,
         }"
-        @click="active = 'keybinds'"
+        @click="page = SettingsPage.Keybinds"
       >
         <KeyboardIcon class="h-5 w-5" />
         <p>Keybinds</p>
@@ -75,9 +75,9 @@
         v-if="isDesktop"
         class="flex cursor-pointer items-center space-x-4 rounded-md py-1.5 px-3 transition hover:bg-ctp-base/50"
         :class="{
-          'text-ctp-text bg-ctp-base': active === 'desktop',
+          'text-ctp-text bg-ctp-base': page === SettingsPage.Desktop,
         }"
-        @click="active = 'desktop'"
+        @click="page = SettingsPage.Desktop"
       >
         <CpuChipIcon class="h-5 w-5" />
         <p>Desktop App</p>
@@ -86,9 +86,9 @@
         v-if="isDesktop"
         class="flex cursor-pointer items-center space-x-4 rounded-md py-1.5 px-3 transition hover:bg-ctp-base/50"
         :class="{
-          'text-ctp-text bg-ctp-base': active === 'streamerMode',
+          'text-ctp-text bg-ctp-base': page === SettingsPage.StreamerMode,
         }"
-        @click="active = 'streamerMode'"
+        @click="page = SettingsPage.StreamerMode"
       >
         <TvIcon class="h-5 w-5" />
         <p>Streamer Mode</p>
@@ -96,9 +96,9 @@
       <div
         class="flex cursor-pointer items-center space-x-4 rounded-md py-1.5 px-3 transition hover:bg-ctp-base/50"
         :class="{
-          'text-ctp-text bg-ctp-base': active === 'changelog',
+          'text-ctp-text bg-ctp-base': page === SettingsPage.Changelog,
         }"
-        @click="active = 'changelog'"
+        @click="page = SettingsPage.Changelog"
       >
         <ArrowPathIcon class="h-5 w-5" />
         <p>Changelog</p>
@@ -112,16 +112,16 @@
       </div>
     </template>
     <template #right>
-      <SettingsModalAccount v-if="active === 'account'" @activate="active = $event" />
-      <SettingsModalSessions v-if="active === 'sessions'" />
-      <SettingsModalAppearance v-if="active === 'appearance'" />
-      <SettingsModalNotifications v-if="active === 'notifications'" />
-      <SettingsModalAudioVideo v-if="active === 'av'" />
-      <SettingsModalKeybinds v-if="active === 'keybinds'" />
-      <SettingsModalChangelog v-if="active === 'changelog'" />
-      <SettingsModalDesktop v-if="active === 'desktop'" />
-      <SettingsModalProfile v-if="active === 'profile'" />
-      <SettingsModalStreamerMode v-if="active === 'streamerMode'" />
+      <SettingsModalAccount v-if="page === SettingsPage.Account" @activate="page = $event" />
+      <SettingsModalSessions v-if="page === SettingsPage.Sessions" />
+      <SettingsModalAppearance v-if="page === SettingsPage.Appearance" />
+      <SettingsModalNotifications v-if="page === SettingsPage.Notifications" />
+      <SettingsModalAudioVideo v-if="page === SettingsPage.AudioVideo" />
+      <SettingsModalKeybinds v-if="page === SettingsPage.Keybinds" />
+      <SettingsModalChangelog v-if="page === SettingsPage.Changelog" />
+      <SettingsModalDesktop v-if="page === SettingsPage.Desktop" />
+      <SettingsModalProfile v-if="page === SettingsPage.Profile" />
+      <SettingsModalStreamerMode v-if="page === SettingsPage.StreamerMode" />
     </template>
   </SplitModal>
   <LogoutModal v-if="logoutModal" @close="logoutModal = false" />
@@ -140,7 +140,7 @@ import {
   UserIcon,
   VideoCameraIcon,
 } from "@heroicons/vue/24/solid";
-import { ref } from "vue";
+import { ref, type PropType } from "vue";
 import { isDesktop } from "../global/helpers";
 import KeyboardIcon from "../icons/KeyboardIcon.vue";
 import LogoutModal from "./LogoutModal.vue";
@@ -155,11 +155,20 @@ import SettingsModalDesktop from "./SettingsModalDesktop.vue";
 import SettingsModalProfile from "./SettingsModalProfile.vue";
 import SettingsModalStreamerMode from "./SettingsModalStreamerMode.vue";
 import SplitModal from "./SplitModal.vue";
+import { SettingsPage } from "../global/types";
 
-const active = ref("account");
 const logoutModal = ref(false);
 
 defineEmits(["close"]);
+const props = defineProps({
+  openTo: {
+    type: Number as PropType<SettingsPage>,
+    default: SettingsPage.Account,
+  },
+});
+
+// eslint-disable-next-line vue/no-setup-props-destructure
+const page = ref(props.openTo);
 </script>
 
 <style scoped>

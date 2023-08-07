@@ -37,9 +37,9 @@
             </template>
             <template v-if="isSelf">
               <PencilIcon
+                @click="settingsModal = true"
                 class="bg-ctp-base h-8 w-8 cursor-pointer rounded-full p-2 text-ctp-subtext0 hover:bg-ctp-base/50 shadow-md transition"
               />
-              <!-- open settings to profile -->
             </template>
           </div>
         </div>
@@ -212,11 +212,12 @@
     :friend="friend"
     @close="friendRemoveModal = false"
   />
+  <SettingsModal v-if="settingsModal" :openTo="SettingsPage.Profile" />
 </template>
 
 <script lang="ts" setup>
 import { onMounted, type PropType, ref, type Ref, computed } from "vue";
-import type { ICachedUser, ISpace } from "../global/types";
+import { SettingsPage, type ICachedUser, type ISpace } from "../global/types";
 import { getCachedUser } from "../global/helpers";
 import UserAvatar from "./UserAvatar.vue";
 import {
@@ -240,6 +241,7 @@ import LoadingIcon from "../icons/LoadingIcon.vue";
 import { ServerStackIcon, WrenchScrewdriverIcon } from "@heroicons/vue/20/solid";
 import RobotIcon from "../icons/RobotIcon.vue";
 import { messageFormatter } from "../global/config";
+import SettingsModal from "./SettingsModal.vue";
 
 const store = useStore();
 const router = useRouter();
@@ -257,6 +259,7 @@ const props = defineProps({
 const cachedUser: Ref<ICachedUser | null> = ref(null);
 const tab = ref("profile");
 const friendRemoveModal = ref(false);
+const settingsModal = ref(false);
 
 onMounted(async () => {
   cachedUser.value = await getCachedUser(props.id);
