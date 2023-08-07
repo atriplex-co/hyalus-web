@@ -212,7 +212,7 @@
     :friend="friend"
     @close="friendRemoveModal = false"
   />
-  <SettingsModal v-if="settingsModal" :openTo="SettingsPage.Profile" />
+  <SettingsModal v-if="settingsModal" :openTo="SettingsPage.Profile" @close="settingsModal = false" />
 </template>
 
 <script lang="ts" setup>
