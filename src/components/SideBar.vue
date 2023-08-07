@@ -19,26 +19,38 @@
         />
         <SideBarUserMenu :show="userMenu" @close="userMenu = false" />
       </div>
-      <router-link
-        v-for="channel in privateChannels"
-        :key="channel.id"
-        class="relative flex h-10 w-10 items-center justify-center rounded-full bg-ctp-accent hover:bg-ctp-accent/75 text-ctp-base transition"
-        :to="`/channels/${channel.id}`"
+      <TransitionGroup
+        enter-from-class="opacity-0 scale-0 h-0"
+        enter-to-class="opacity-100 scale-100 h-10"
+        enter-active-class="transition-all duration-100 transform ease-in-out overflow-hidden"
+        leave-from-class="opacity-100 scale-100 h-10"
+        leave-to-class="opacity-0 scale-0 h-0"
+        leave-active-class="transition-all duration-100 transform ease-in-out overflow-hidden"
       >
-        <UserAvatar v-if="channel.type === ChannelType.DM" :avatar="channel.members[0].avatar" />
-        <UserAvatar
-          v-if="channel.type === ChannelType.Group && channel.avatar"
-          :avatar="channel.avatar"
-        />
-        <p v-if="channel.type === ChannelType.Group && !channel.avatar && channel.name">
-          {{ channel.name.slice(0, 1) }}
-        </p>
-        <p
-          class="bg-ctp-accent ring-ctp-crust absolute bottom-0 right-0 h-4 min-w-[1rem] rounded-full px-1 text-center text-xs font-bold text-ctp-base ring-2"
-        >
-          {{ getChannelState(channel).mentionCount }}
-        </p>
-      </router-link>
+        <div v-for="channel in privateChannels" :key="channel.id">
+          <router-link
+            class="relative flex h-10 w-10 items-center justify-center rounded-full bg-ctp-accent hover:bg-ctp-accent/75 text-ctp-base transition"
+            :to="`/channels/${channel.id}`"
+          >
+            <UserAvatar
+              v-if="channel.type === ChannelType.DM"
+              :avatar="channel.members[0].avatar"
+            />
+            <UserAvatar
+              v-if="channel.type === ChannelType.Group && channel.avatar"
+              :avatar="channel.avatar"
+            />
+            <p v-if="channel.type === ChannelType.Group && !channel.avatar && channel.name">
+              {{ channel.name.slice(0, 1) }}
+            </p>
+            <p
+              class="bg-ctp-accent ring-ctp-crust absolute bottom-0 right-0 h-4 min-w-[1rem] rounded-full px-1 text-center text-xs font-bold text-ctp-base ring-2"
+            >
+              {{ getChannelState(channel).mentionCount }}
+            </p>
+          </router-link>
+        </div>
+      </TransitionGroup>
       <div class="w-full px-3">
         <div class="border-ctp-base -mt-px border-t"></div>
       </div>
