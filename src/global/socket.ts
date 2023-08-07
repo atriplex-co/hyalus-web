@@ -581,7 +581,7 @@ export class Socket {
 
         if (data.acceptable) {
           notifySend({
-            icon: await notifyGetAvatarUrl(data.avatar),
+            icon: notifyGetAvatarUrl(data.avatar),
             title: data.name,
             body: `${data.name} sent a friend request`,
           });

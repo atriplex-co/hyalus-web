@@ -234,7 +234,7 @@ export const notifyGetAvatarUrl = (avatar: string | null): string => {
     return ImageIcon;
   }
 
-  return `/api/v1/avatars/${avatar.split("+")[0]}`;
+  return `${location.origin}/api/v1/avatars/${avatar.split("+")[0]}`;
 };
 
 export const callUpdatePersist = async () => {
