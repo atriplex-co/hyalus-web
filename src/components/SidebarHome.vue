@@ -63,7 +63,7 @@
 <script lang="ts" setup>
 import SideBarChannel from "./SideBarChannel.vue";
 import GroupCreateModal from "./GroupCreateModal.vue";
-import { ref, computed, onMounted } from "vue";
+import { ref, computed, onMounted, onUnmounted } from "vue";
 import { useRoute, useRouter } from "vue-router";
 import { isMobile } from "../global/helpers";
 import { useStore } from "../global/store";
@@ -110,5 +110,37 @@ onMounted(() => {
       router.push("/app");
     }
   }
+});
+
+const keydownHandler = (e: KeyboardEvent) => {
+  const channel = channels.value.find((channel) => channel.id === route.params.channelId);
+  if (!channel || channels.value.length < 2) {
+    return;
+  }
+  const index = channels.value.indexOf(channel);
+
+  if (e.altKey && e.key == "ArrowDown") {
+    if (index < channels.value.length - 1) {
+      router.push(`/channels/${channels.value[index + 1].id}`);
+    } else {
+      router.push(`/channels/${channels.value[0].id}`);
+    }
+  }
+
+  if (e.altKey && e.key == "ArrowUp") {
+    if (index > 0) {
+      router.push(`/channels/${channels.value[index - 1].id}`);
+    } else {
+      router.push(`/channels/${channels.value[channels.value.length - 1].id}`);
+    }
+  }
+};
+
+onMounted(() => {
+  addEventListener("keydown", keydownHandler);
+});
+
+onUnmounted(() => {
+  removeEventListener("keydown", keydownHandler);
 });
 </script>
