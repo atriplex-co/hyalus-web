@@ -50,7 +50,7 @@ export const getWorkerUrl = (val: new () => Worker) => {
   return String(val).split('("')[1].split('"')[0].replace("?worker_file", "");
 };
 
-export const processMessage = async (opts: {
+interface IMessageRaw {
   channel: IChannel;
   id: string;
   author: {
@@ -63,7 +63,10 @@ export const processMessage = async (opts: {
   createdAt: number | Date;
   updatedAt: number | Date;
   data?: Uint8Array | string | null;
-}): Promise<IMessage | undefined> => {
+  parent?: IMessageRaw;
+}
+
+export const processMessage = async (opts: IMessageRaw): Promise<IMessage | undefined> => {
   let publicKey: Uint8Array | null = null;
   let dataString: string | null = null;
   let dataFormatted: string | null = null;
@@ -198,6 +201,7 @@ export const processMessage = async (opts: {
     dataString,
     dataFormatted,
     key,
+    parent: opts.parent && (await processMessage(opts.parent)),
   };
 };
 

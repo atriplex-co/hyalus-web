@@ -920,6 +920,19 @@ export class Socket {
             avatar: string | null;
           };
           data: string | null;
+          parent?: {
+            id: string;
+            type: MessageType;
+            createdAt: number;
+            updatedAt: number;
+            author: {
+              id: string;
+              name: string;
+              username: string;
+              avatar: string | null;
+            };
+            data: string | null;
+          };
         };
 
         const channel = store.channels.find((channel) => channel.id === data.channelId);
@@ -932,6 +945,10 @@ export class Socket {
         const message = await processMessage({
           ...data,
           channel,
+          parent: data.parent && {
+            ...data.parent,
+            channel,
+          },
         });
 
         if (!message || !store.self) {
@@ -1013,19 +1030,20 @@ export class Socket {
         const channel = store.channels.find((channel) => channel.id === data.channelId);
 
         if (!channel) {
-          return console.warn(`messageVerionCreate for invalid channel: ${data.channelId}`);
+          return console.warn(`SMessageUpdate for invalid channel: ${data.channelId}`);
         }
 
         const message = channel.messages.find((message) => message.id === data.id);
 
         if (!message) {
-          return;
+          return console.warn(`SMessageUpdate for invalid message: ${data.id}`);
         }
 
         const message2 = await processMessage({
           channel,
           ...message,
           ...data,
+          parent: undefined, // this is shitty and messy
         });
 
         if (!message2) {
@@ -1033,7 +1051,9 @@ export class Socket {
           return;
         }
 
-        Object.assign(message, message2);
+        Object.assign(message, message2, {
+          parent: message.parent,
+        });
       }
 
       if (msg.t === SocketMessageType.SFileChunkRequest) {

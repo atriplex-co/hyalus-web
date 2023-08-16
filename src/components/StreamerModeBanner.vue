@@ -22,7 +22,11 @@
       </div>
     </div>
   </div>
-  <SettingsModal v-if="settingsModal" :openTo="SettingsPage.StreamerMode" @close="settingsModal = false" />
+  <SettingsModal
+    v-if="settingsModal"
+    :openTo="SettingsPage.StreamerMode"
+    @close="settingsModal = false"
+  />
 </template>
 
 <script lang="ts" setup>

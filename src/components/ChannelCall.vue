@@ -50,8 +50,8 @@
             'bg-ctp-mantle text-ctp-overlay0 hover:text-ctp-text': !videoStream,
           }"
         >
-          <VideoIcon v-if="videoStream" />
-          <VideoOffIcon v-else />
+          <VideoCameraIcon v-if="videoStream" />
+          <VideoCameraSlashIcon v-else />
         </div>
       </div>
       <div @click="stop">
@@ -60,7 +60,7 @@
         />
       </div>
       <div @click="toggleStream(CallStreamType.DisplayVideo)($event)">
-        <DisplayIcon
+        <ComputerDesktopIcon
           class="h-12 w-12 cursor-pointer rounded-full p-3.5 transition"
           :class="{
             'bg-ctp-text text-ctp-base': displayVideoStream,
@@ -76,8 +76,8 @@
             'bg-ctp-mantle text-ctp-overlay0 hover:text-ctp-text': !store.call.deaf,
           }"
         >
-          <AudioOffIcon v-if="store.call" />
-          <AudioIcon v-else />
+          <SpeakerXMarkIcon v-if="store.call.deaf" />
+          <SpeakerWaveIcon v-else />
         </div>
       </div>
     </div>
@@ -90,22 +90,24 @@
 </template>
 
 <script lang="ts" setup>
-import VideoIcon from "../icons/VideoIcon.vue";
-import DisplayIcon from "../icons/DisplayIcon.vue";
 import DesktopCaptureModal from "./DesktopCaptureModal.vue";
 import ChannelCallTile from "./ChannelCallTile.vue";
 import CallEndIcon from "../icons/CallEndIcon.vue";
 import MicIcon from "../icons/MicIcon.vue";
 import MicOffIcon from "../icons/MicOffIcon.vue";
-import VideoOffIcon from "../icons/VideoOffIcon.vue";
-import AudioIcon from "../icons/AudioIcon.vue";
-import AudioOffIcon from "../icons/AudioOffIcon.vue";
 import { ref, computed, onMounted, type Ref, onBeforeUnmount } from "vue";
 import { CallStreamType } from "@/../../hyalus-server/src/types";
 import { isDesktop } from "../global/helpers";
 import { useStore } from "../global/store";
 import type { ICallTile } from "../global/types";
 import ChannelHeader from "./ChannelHeader.vue";
+import {
+  ComputerDesktopIcon,
+  SpeakerWaveIcon,
+  SpeakerXMarkIcon,
+  VideoCameraIcon,
+  VideoCameraSlashIcon,
+} from "@heroicons/vue/20/solid";
 
 const store = useStore();
 

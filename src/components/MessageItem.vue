@@ -6,16 +6,30 @@
       'pt-3': firstInChunk && !showDate && !embedded,
     }"
   >
-    <!-- <p
-      v-if="showDate && !embedded"
-      class="mt-4 mb-2 border-t border-ctp-surface0/50 py-4 text-center text-xs text-ctp-subtext0"
-    >
-      {{ date }}
-    </p> -->
     <div v-if="showDate && !embedded" class="relative py-6 px-2.5">
       <div class="border-t border-ctp-surface0"></div>
       <div class="text-xs text-ctp-subtext0 absolute top-4 w-full flex justify-center">
         <p class="bg-ctp-base px-2">{{ date }}</p>
+      </div>
+    </div>
+    <div v-if="message.parent" class="px-5 text-xs pb-2 flex items-center space-x-1.5">
+      <div class="w-6 relative flex-shrink-0">
+        <div
+          class="absolute left-2 w-4 h-10 border-ctp-surface0 border-t-2 border-l-2 rounded-tl-lg"
+        ></div>
+      </div>
+      <div class="bg-ctp-surface0 flex items-center rounded-md p-1.5 space-x-1.5 min-w-0">
+        <div
+          class="flex items-center cursor-pointer space-x-1.5 transition"
+          @click="parentUserModal = true"
+        >
+          <UserAvatar class="w-4 h-4" :avatar="message.parent.author.avatar" />
+          <p class="text-ctp-white">{{ message.parent.author.name }}</p>
+        </div>
+        <div
+          class="flex-1 text-ctp-subtext0 truncate flex space-x-2"
+          v-html="message.parent.dataFormatted"
+        ></div>
       </div>
     </div>
     <div
@@ -211,14 +225,21 @@
             }"
           >
             <div
-              v-if="editable"
+              v-if="canReply"
+              class="h-4 w-4 cursor-pointer transition hover:text-ctp-text"
+              @click="reply"
+            >
+              <ArrowUturnLeftIcon />
+            </div>
+            <div
+              v-if="canEdit"
               class="h-4 w-4 cursor-pointer transition hover:text-ctp-text"
               @click="editModal = true"
             >
               <PencilIcon />
             </div>
             <div
-              v-if="removable"
+              v-if="canRemove"
               class="h-4 w-4 cursor-pointer transition hover:text-ctp-text"
               @click="remove"
             >
@@ -253,6 +274,11 @@
     @close="editModal = false"
   />
   <UserModal v-if="userModal" :id="message.author.id" @close="userModal = false" />
+  <UserModal
+    v-if="message.parent && parentUserModal"
+    :id="message.parent.author.id"
+    @close="parentUserModal = false"
+  />
 </template>
 
 <script lang="ts" setup>
@@ -260,7 +286,6 @@ import UserAvatar from "./UserAvatar.vue";
 import ImageView from "./ImageView.vue";
 import MessageDeleteModal from "./MessageDeleteModal.vue";
 import MessageEditModal from "./MessageEditModal.vue";
-import TrashIcon from "../icons/TrashIcon.vue";
 import FriendsIcon from "../icons/FriendsIcon.vue";
 import GroupIcon from "../icons/GroupIcon.vue";
 import UserAddIcon from "../icons/UserAddIcon.vue";
@@ -268,7 +293,6 @@ import UserRemoveIcon from "../icons/UserRemoveIcon.vue";
 import LogoutIcon from "../icons/LogoutIcon.vue";
 import DownloadIcon from "../icons/DownloadIcon.vue";
 import LoadingIcon from "../icons/LoadingIcon.vue";
-import PencilIcon from "../icons/PencilIcon.vue";
 import PhotographIcon from "../icons/PhotographIcon.vue";
 import Day from "dayjs";
 import {
@@ -307,6 +331,7 @@ import { useStore } from "../global/store";
 import Promise from "bluebird";
 import UserModal from "./UserModal.vue";
 import { checkSpacePermissions } from "../global/helpers";
+import { ArrowUturnLeftIcon, PencilIcon, TrashIcon } from "@heroicons/vue/20/solid";
 
 const store = useStore();
 const props = defineProps({
@@ -337,8 +362,10 @@ const props = defineProps({
     default: 0,
   },
 });
+const emit = defineEmits(["reply"]);
 const chunkThreshold = 1000 * 60 * 5;
 const userModal = ref(false);
+const parentUserModal = ref(false);
 // eslint-disable-next-line vue/no-setup-props-destructure
 const date = Day(props.message.createdAt).format("MMMM D, YYYY");
 const time = ref("");
@@ -381,7 +408,8 @@ const firstInChunk = computed(() => {
     !precedingMessage.value ||
     isEvent(precedingMessage.value) ||
     props.message.author.id !== precedingMessage.value.author.id ||
-    +props.message.createdAt - +precedingMessage.value.createdAt > chunkThreshold
+    +props.message.createdAt - +precedingMessage.value.createdAt > chunkThreshold ||
+    props.message.parent
   );
 });
 
@@ -390,7 +418,8 @@ const lastInChunk = computed(
     !supersedingMessage.value ||
     isEvent(supersedingMessage.value) ||
     props.message.author.id !== supersedingMessage.value.author.id ||
-    +supersedingMessage.value.createdAt - +props.message.createdAt > chunkThreshold,
+    +supersedingMessage.value.createdAt - +props.message.createdAt > chunkThreshold ||
+    (supersedingMessage.value && supersedingMessage.value.parent),
 );
 
 const showDate = computed(
@@ -1061,7 +1090,7 @@ const getTime = () => {
   return time.format("M/D/YY"); // 9/5/22
 };
 
-const removable = computed(() => {
+const canRemove = computed(() => {
   return (
     sentByMe.value ||
     (props.channel.spaceId &&
@@ -1073,7 +1102,7 @@ const removable = computed(() => {
   );
 });
 
-const editable = computed(() => {
+const canEdit = computed(() => {
   return (
     sentByMe.value &&
     [
@@ -1082,6 +1111,14 @@ const editable = computed(() => {
       MessageType.SpaceText,
     ].includes(props.message.type)
   );
+});
+
+const canReply = computed(() => {
+  return [
+    // repliable message types:
+    MessageType.PrivateText,
+    MessageType.SpaceText,
+  ].includes(props.message.type);
 });
 
 const userColor = computed(() => {
@@ -1172,6 +1209,10 @@ const useInvite = async () => {
   await axios.post(`/api/v1/spaces/use-invite`, {
     code: invite.value.code,
   });
+};
+
+const reply = () => {
+  emit("reply", props.message);
 };
 </script>
 

@@ -259,6 +259,7 @@ export interface IMessage {
   dataString: string | null;
   dataFormatted: string | null;
   key: Uint8Array | null;
+  parent?: IMessage;
 }
 
 export interface IMessageAuthor {

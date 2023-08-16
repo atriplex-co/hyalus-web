@@ -54,3 +54,8 @@ addEventListener("keydown", async (e: KeyboardEvent) => {
     await store.writeConfig("colorMode", ColorMode.Light);
   }
 });
+
+if (import.meta.env.DEV) {
+  const _window = window as Record<string, any>;
+  _window.store = store;
+}

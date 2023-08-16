@@ -57,34 +57,54 @@
                 :message="message"
                 :channel="channel"
                 :space="space"
+                @reply="replyMessage = $event"
               />
             </div>
             <div id="messageListAfter" ref="messageListAfter" class="pb-4"></div>
           </div>
         </div>
-        <div
-          v-if="writable"
-          class="bg-ctp-mantle m-4 mt-0 flex items-center space-x-4 rounded-md py-2 px-4 shadow-lg"
-        >
-          <textarea
-            ref="messageBox"
-            v-model="messageBoxText"
-            rows="1"
-            :placeholder="`Message ${name}`"
-            class="max-h-32 flex-1 resize-none border-transparent bg-transparent text-sm outline-none placeholder:text-ctp-overlay0 focus:border-transparent dark:placeholder:text-gray-500"
-            @input="messageBoxInput"
-            @keydown="messageBoxKeydown"
-          />
-          <div class="flex space-x-2 text-gray-400">
-            <div @click="attachFile">
-              <PaperclipIcon
-                class="h-8 w-8 cursor-pointer rounded-full bg-ctp-surface0 text-ctp-subtext0 p-2 transition hover:text-ctp-text"
-              />
+        <div class="bg-ctp-mantle shadow-lg rounded-md m-4 mt-0">
+          <div
+            v-if="replyMessage"
+            class="text-sm py-2 px-4 border-b border-ctp-base flex items-center justify-between min-w-0 space-x-2"
+          >
+            <div class="flex items-center space-x-2 min-w-0">
+              <p class="text-ctp-subtext0">Replying to</p>
+              <div class="flex items-center space-x-1">
+                <UserAvatar class="w-5 h-5" :avatar="replyMessage.author.avatar" />
+                <p class="text-ctp-white">{{ replyMessage.author.name }}</p>
+              </div>
+              <div
+                class="flex-1 text-ctp-subtext0 truncate flex space-x-2"
+                v-html="replyMessage.dataFormatted"
+              ></div>
             </div>
-            <div @click="messageBoxSubmit">
-              <AirplaneIcon
-                class="h-8 w-8 cursor-pointer rounded-full bg-ctp-surface0 text-ctp-subtext0 p-2 transition hover:text-ctp-text"
-              />
+            <XMarkIcon
+              class="text-ctp-subtext0 hover:text-ctp-text transition w-5 h-5 cursor-pointer flex-shrink-0"
+              @click="replyMessage = null"
+            />
+          </div>
+          <div v-if="writable" class="flex items-center space-x-4 py-2 px-4">
+            <textarea
+              ref="messageBox"
+              v-model="messageBoxText"
+              rows="1"
+              :placeholder="`Message ${name}`"
+              class="max-h-32 flex-1 resize-none border-transparent bg-transparent text-sm outline-none placeholder:text-ctp-overlay0 focus:border-transparent dark:placeholder:text-gray-500"
+              @input="messageBoxInput"
+              @keydown="messageBoxKeydown"
+            />
+            <div class="flex space-x-2 text-ctp-subtext0">
+              <div @click="attachFile">
+                <PaperClipIcon
+                  class="h-8 w-8 cursor-pointer rounded-full bg-ctp-surface0 p-2 transition hover:text-ctp-text"
+                />
+              </div>
+              <div @click="messageBoxSubmit">
+                <PaperAirplaneIcon
+                  class="h-8 w-8 cursor-pointer rounded-full bg-ctp-surface0 p-2 transition hover:text-ctp-text"
+                />
+              </div>
             </div>
           </div>
         </div>
@@ -99,10 +119,7 @@
 </template>
 
 <script lang="ts" setup>
-import PaperclipIcon from "../icons/PaperclipIcon.vue";
-import AirplaneIcon from "../icons/AirplaneIcon.vue";
 import MessageItem from "../components/MessageItem.vue";
-import PencilIcon from "../icons/PencilIcon.vue";
 import { ref, computed, onMounted, onUnmounted, type Ref, nextTick, watch } from "vue";
 import { useRoute, useRouter } from "vue-router";
 import { checkSpacePermissions, getChannelState, processMessage } from "../global/helpers";
@@ -120,6 +137,9 @@ import { useStore } from "../global/store";
 import ChannelHeader from "../components/ChannelHeader.vue";
 import msgpack from "msgpack-lite";
 import ChannelMemberList from "../components/ChannelMemberList.vue";
+import type { IMessage } from "@/global/types";
+import { PaperAirplaneIcon, PaperClipIcon, PencilIcon, XMarkIcon } from "@heroicons/vue/20/solid";
+import UserAvatar from "@/components/UserAvatar.vue";
 
 const store = useStore();
 const route = useRoute();
@@ -133,6 +153,7 @@ const typingStatus = ref("");
 let lastTyping = 0;
 const scrollUpdated = ref(false); // make sure chat is scrolled down when initially loaded.
 let updateTypingStatusTimeout = 0;
+const replyMessage: Ref<IMessage | null> = ref(null);
 
 const channel = computed(() => {
   return store.channels.find((channel) => channel.id === route.params.channelId);
@@ -218,6 +239,19 @@ const getMessages = async () => {
         avatar: string | null;
       };
       data: string | null;
+      parent?: {
+        id: string;
+        type: MessageType;
+        createdAt: number;
+        updatedAt: number;
+        author: {
+          id: string;
+          name: string;
+          username: string;
+          avatar: string | null;
+        };
+        data: string | null;
+      };
     }[];
   } = await axios.get(
     `/api/v1/channels/${channelVal.id}/messages${
@@ -232,6 +266,10 @@ const getMessages = async () => {
     const processedMessage = await processMessage({
       ...message,
       channel: channelVal,
+      parent: message.parent && {
+        ...message.parent,
+        channel: channelVal,
+      },
     });
 
     if (!processedMessage || channelVal.messages.find(({ id }) => id === processedMessage.id)) {
@@ -299,7 +337,16 @@ const messageBoxSubmit = async () => {
 
   await axios.post(`/api/v1/channels/${channel.value.id}/messages`, {
     data: packMessage(data),
+    ...(replyMessage.value
+      ? {
+          parentId: replyMessage.value.id,
+        }
+      : {}),
   });
+
+  if (replyMessage.value) {
+    replyMessage.value = null;
+  }
 };
 
 const messageBoxInput = async () => {
