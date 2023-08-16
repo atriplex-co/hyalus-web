@@ -26,8 +26,9 @@
             <div
               class="h-3 w-3 rounded-full"
               :class="{
-                'bg-[#282839]': colorMode === ColorMode.Dark,
-                'bg-[#0c0c0c]': colorMode === ColorMode.DarkOLED,
+                'bg-[#2d2d2d]': colorMode === ColorMode.Dark,
+                'bg-[#000000]': colorMode === ColorMode.DarkOLED,
+                'bg-[#282839]': colorMode === ColorMode.DarkMocha,
                 'bg-[#dce0e8]': colorMode === ColorMode.Light,
               }"
             />
@@ -44,8 +45,9 @@
               <div
                 class="h-3 w-3 rounded-full"
                 :class="{
-                  'bg-[#282839]': usableColorMode === ColorMode.Dark,
-                  'bg-[#0c0c0c]': usableColorMode === ColorMode.DarkOLED,
+                  'bg-[#2d2d2d]': usableColorMode === ColorMode.Dark,
+                  'bg-[#000000]': usableColorMode === ColorMode.DarkOLED,
+                  'bg-[#282839]': usableColorMode === ColorMode.DarkMocha,
                   'bg-[#dce0e8]': usableColorMode === ColorMode.Light,
                 }"
               />
@@ -123,29 +125,15 @@ import { useStore } from "../global/store";
 import { computed } from "vue";
 import axios from "axios";
 
-const store = useStore();
-
-const usableColorModes = [ColorMode.Light, ColorMode.Dark, ColorMode.DarkOLED];
-
-const usableColorThemes = [
-  ColorTheme.Rosewater,
-  ColorTheme.Flamingo,
-  ColorTheme.Pink,
-  ColorTheme.Mauve,
-  ColorTheme.Red,
-  ColorTheme.Maroon,
-  ColorTheme.Peach,
-  ColorTheme.Yellow,
-  ColorTheme.Green,
-  ColorTheme.Teal,
-  ColorTheme.Sky,
-  ColorTheme.Sapphire,
-  ColorTheme.Blue,
-  ColorTheme.Lavender,
-];
-
+const usableColorModes = Object.values(ColorMode).filter(
+  (v) => typeof v === "number",
+) as ColorMode[];
+const usableColorThemes = Object.values(ColorTheme).filter(
+  (v) => typeof v === "number",
+) as ColorTheme[];
 const usableFontScales = [50, 67, 75, 80, 90, 100, 110, 125, 133, 140, 150, 175, 200];
 
+const store = useStore();
 const adaptiveLayout = configToComputed<boolean>("adaptiveLayout");
 const fontScale = configToComputed<number>("fontScale");
 const grayscale = configToComputed<boolean>("grayscale");
@@ -192,6 +180,7 @@ const formatColorMode = (val: ColorMode) => {
     [ColorMode.Light + ""]: "Light",
     [ColorMode.Dark + ""]: "Dark",
     [ColorMode.DarkOLED + ""]: "Dark (OLED)",
+    [ColorMode.DarkMocha + ""]: "Dark (Mocha)",
   }[val + ""];
 };
 </script>

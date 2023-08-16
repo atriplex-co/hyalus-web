@@ -6,61 +6,76 @@
       'hyalus-mode-light': store.config.colorMode === ColorMode.Light,
       'hyalus-mode-dark': store.config.colorMode === ColorMode.Dark,
       'hyalus-mode-oled': store.config.colorMode === ColorMode.DarkOLED,
+      'hyalus-mode-night': store.config.colorMode === ColorMode.DarkMocha,
       'hyalus-accent-dark-rosewater':
         (store.config.colorMode === ColorMode.Dark ||
-          store.config.colorMode === ColorMode.DarkOLED) &&
+          store.config.colorMode === ColorMode.DarkOLED ||
+          store.config.colorMode === ColorMode.DarkMocha) &&
         store.config.colorTheme === ColorTheme.Rosewater,
       'hyalus-accent-dark-flamingo':
         (store.config.colorMode === ColorMode.Dark ||
-          store.config.colorMode === ColorMode.DarkOLED) &&
+          store.config.colorMode === ColorMode.DarkOLED ||
+          store.config.colorMode === ColorMode.DarkMocha) &&
         store.config.colorTheme === ColorTheme.Flamingo,
       'hyalus-accent-dark-pink':
         (store.config.colorMode === ColorMode.Dark ||
-          store.config.colorMode === ColorMode.DarkOLED) &&
+          store.config.colorMode === ColorMode.DarkOLED ||
+          store.config.colorMode === ColorMode.DarkMocha) &&
         store.config.colorTheme === ColorTheme.Pink,
       'hyalus-accent-dark-mauve':
         (store.config.colorMode === ColorMode.Dark ||
-          store.config.colorMode === ColorMode.DarkOLED) &&
+          store.config.colorMode === ColorMode.DarkOLED ||
+          store.config.colorMode === ColorMode.DarkMocha) &&
         store.config.colorTheme === ColorTheme.Mauve,
       'hyalus-accent-dark-red':
         (store.config.colorMode === ColorMode.Dark ||
-          store.config.colorMode === ColorMode.DarkOLED) &&
+          store.config.colorMode === ColorMode.DarkOLED ||
+          store.config.colorMode === ColorMode.DarkMocha) &&
         store.config.colorTheme === ColorTheme.Red,
       'hyalus-accent-dark-maroon':
         (store.config.colorMode === ColorMode.Dark ||
-          store.config.colorMode === ColorMode.DarkOLED) &&
+          store.config.colorMode === ColorMode.DarkOLED ||
+          store.config.colorMode === ColorMode.DarkMocha) &&
         store.config.colorTheme === ColorTheme.Maroon,
       'hyalus-accent-dark-peach':
         (store.config.colorMode === ColorMode.Dark ||
-          store.config.colorMode === ColorMode.DarkOLED) &&
+          store.config.colorMode === ColorMode.DarkOLED ||
+          store.config.colorMode === ColorMode.DarkMocha) &&
         store.config.colorTheme === ColorTheme.Peach,
       'hyalus-accent-dark-yellow':
         (store.config.colorMode === ColorMode.Dark ||
-          store.config.colorMode === ColorMode.DarkOLED) &&
+          store.config.colorMode === ColorMode.DarkOLED ||
+          store.config.colorMode === ColorMode.DarkMocha) &&
         store.config.colorTheme === ColorTheme.Yellow,
       'hyalus-accent-dark-green':
         (store.config.colorMode === ColorMode.Dark ||
-          store.config.colorMode === ColorMode.DarkOLED) &&
+          store.config.colorMode === ColorMode.DarkOLED ||
+          store.config.colorMode === ColorMode.DarkMocha) &&
         store.config.colorTheme === ColorTheme.Green,
       'hyalus-accent-dark-teal':
         (store.config.colorMode === ColorMode.Dark ||
-          store.config.colorMode === ColorMode.DarkOLED) &&
+          store.config.colorMode === ColorMode.DarkOLED ||
+          store.config.colorMode === ColorMode.DarkMocha) &&
         store.config.colorTheme === ColorTheme.Teal,
       'hyalus-accent-dark-sky':
         (store.config.colorMode === ColorMode.Dark ||
-          store.config.colorMode === ColorMode.DarkOLED) &&
+          store.config.colorMode === ColorMode.DarkOLED ||
+          store.config.colorMode === ColorMode.DarkMocha) &&
         store.config.colorTheme === ColorTheme.Sky,
       'hyalus-accent-dark-sapphire':
         (store.config.colorMode === ColorMode.Dark ||
-          store.config.colorMode === ColorMode.DarkOLED) &&
+          store.config.colorMode === ColorMode.DarkOLED ||
+          store.config.colorMode === ColorMode.DarkMocha) &&
         store.config.colorTheme === ColorTheme.Sapphire,
       'hyalus-accent-dark-blue':
         (store.config.colorMode === ColorMode.Dark ||
-          store.config.colorMode === ColorMode.DarkOLED) &&
+          store.config.colorMode === ColorMode.DarkOLED ||
+          store.config.colorMode === ColorMode.DarkMocha) &&
         store.config.colorTheme === ColorTheme.Blue,
       'hyalus-accent-dark-lavender':
         (store.config.colorMode === ColorMode.Dark ||
-          store.config.colorMode === ColorMode.DarkOLED) &&
+          store.config.colorMode === ColorMode.DarkOLED ||
+          store.config.colorMode === ColorMode.DarkMocha) &&
         store.config.colorTheme === ColorTheme.Lavender,
       'hyalus-accent-light-rosewater':
         store.config.colorMode === ColorMode.Light &&
@@ -277,6 +292,34 @@ addEventListener("keydown", (e: KeyboardEvent) => {
   --ctp-lavender: 114 135 253;
 }
 .hyalus-mode-dark {
+  --ctp-text: 215 215 215;
+  --ctp-subtext1: 190 190 190;
+  --ctp-subtext0: 170 170 170;
+  --ctp-overlay2: 150 150 150;
+  --ctp-overlay1: 130 130 130;
+  --ctp-overlay0: 110 110 110;
+  --ctp-surface2: 80 80 80;
+  --ctp-surface1: 60 60 60;
+  --ctp-surface0: 40 40 40;
+  --ctp-base: 22 22 22;
+  --ctp-mantle: 18 18 18;
+  --ctp-crust: 12 12 12;
+  --ctp-rosewater: 245 224 220;
+  --ctp-flamingo: 242 205 205;
+  --ctp-pink: 245 194 231;
+  --ctp-mauve: 203 166 247;
+  --ctp-red: 243 139 168;
+  --ctp-maroon: 235 160 172;
+  --ctp-peach: 250 179 135;
+  --ctp-yellow: 249 226 175;
+  --ctp-green: 166 227 161;
+  --ctp-teal: 148 226 213;
+  --ctp-sky: 137 220 235;
+  --ctp-sapphire: 116 199 236;
+  --ctp-blue: 137 180 250;
+  --ctp-lavender: 180 190 254;
+}
+.hyalus-mode-night {
   --ctp-text: 205 214 244;
   --ctp-subtext1: 186 194 222;
   --ctp-subtext0: 166 173 200;
