@@ -26,14 +26,7 @@
       </div>
       <div
         class="bg-ctp-crust flex h-8 w-8 flex-shrink-0 cursor-pointer items-center justify-center rounded-md text-ctp-overlay0 transition hover:text-ctp-text dark:text-gray-400 dark:hover:text-white"
-        to="/settings/account"
-        @click="
-          if ($event.shiftKey) {
-            router.push(`/settings/account`);
-          } else {
-            settingsModal = true;
-          }
-        "
+        @click="settingsModal = true"
       >
         <SettingsIcon class="h-4 w-4" />
       </div>

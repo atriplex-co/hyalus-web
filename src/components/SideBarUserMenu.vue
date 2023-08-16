@@ -15,17 +15,11 @@
       <div class="flex items-center justify-between">
         <div class="min-w-0 p-2">
           <p class="font-bold">{{ store.self.name }}</p>
-          <p class="truncate text-xs text-ctp-subtext0">
-            @{{ store.self.username }}
-          </p>
+          <p class="truncate text-xs text-ctp-subtext0">@{{ store.self.username }}</p>
         </div>
         <button
           @click="
-            if ($event.shiftKey) {
-              router.push(`/settings/account`);
-            } else {
-              settingsModal = true;
-            }
+            settingsModal = true;
             $emit('close');
           "
         >
@@ -107,12 +101,10 @@ import axios from "axios";
 import LogoutIcon from "../icons/LogoutIcon.vue";
 import LogoutModal from "./LogoutModal.vue";
 import SettingsIcon from "../icons/SettingsIcon.vue";
-import { useRouter } from "vue-router";
 import SettingsModal from "./SettingsModal.vue";
 import { useStore } from "../global/store";
 
 const store = useStore();
-const router = useRouter();
 const emit = defineEmits(["close"]);
 const logoutModal = ref(false);
 const settingsModal = ref(false);

@@ -139,7 +139,7 @@ import LoadingView from "./views/LoadingView.vue";
 import UpdateRequiredView from "./views/UpdateRequiredView.vue";
 import SideBar from "./components/SideBar.vue";
 import { computed, ref, watch, onMounted } from "vue";
-import { useRoute, useRouter } from "vue-router";
+import { useRoute } from "vue-router";
 import UserInviteModal from "./components/UserInviteModal.vue";
 import { isDesktop, isMobile } from "./global/helpers";
 import { useStore } from "./global/store";
@@ -151,7 +151,6 @@ import { ColorMode, ColorTheme } from "@/../../hyalus-server/src/types";
 import StreamerModeBanner from "./components/StreamerModeBanner.vue";
 
 const store = useStore();
-const router = useRouter();
 
 const welcomeModal = ref(false);
 const settingsModal = ref(false);
@@ -241,11 +240,6 @@ onMounted(async () => {
 });
 
 addEventListener("keydown", (e: KeyboardEvent) => {
-  if (e.ctrlKey && e.altKey && e.key === ",") {
-    router.push("/settings/account");
-    return;
-  }
-
   if (e.ctrlKey && e.key === ",") {
     settingsModal.value = true;
     return;
