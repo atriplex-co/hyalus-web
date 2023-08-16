@@ -122,6 +122,17 @@
           >
             Mutual Friends
           </p>
+          <p
+            v-if="!isSelf"
+            class="-mb-px cursor-pointer px-2 pb-2 transition"
+            :class="{
+              'border-b-2 border-text text-ctp-text': tab === 'groups',
+              '': tab !== 'groups',
+            }"
+            @click="tab = 'groups'"
+          >
+            Mutual Groups
+          </p>
         </div>
         <div class="h-48 space-y-4 overflow-auto">
           <template v-if="tab === 'profile'">
@@ -177,19 +188,19 @@
               <div
                 v-for="mutualSpace in mutualSpaces"
                 :key="mutualSpace.id"
-                class="bg-dark-600 flex items-center space-x-3 rounded-md p-3"
+                class="bg-ctp-base flex items-center space-x-2 rounded-md p-2"
               >
                 <div
-                  class="dark:bg-dark-200 flex h-10 w-10 items-center justify-center overflow-hidden rounded-full bg-gray-300"
+                  class="flex h-8 w-8 items-center justify-center overflow-hidden rounded-full bg-ctp-surface0"
                 >
                   <UserAvatar v-if="mutualSpace.avatar" :avatar="mutualSpace.avatar" />
                   <p v-else>{{ mutualSpace.name.slice(0, 1) }}</p>
                 </div>
                 <div>
-                  <p class="text-semibold">
+                  <p class="text-sm">
                     {{ mutualSpace.name }}
                   </p>
-                  <p class="text-xs text-gray-400">{{ mutualSpace.members.length }} Members</p>
+                  <p class="text-xs text-ctp-subtext0">{{ mutualSpace.members.length }} Members</p>
                 </div>
               </div>
             </div>
@@ -201,6 +212,37 @@
               <FaceFrownIcon class="h-8 w-8 -mt-6" />
               <p>This doesn't actually work yet.</p>
               <!-- TODO:: mutual friends UI -->
+            </div>
+          </template>
+          <template v-if="tab === 'groups'">
+            <div
+              v-if="!mutualGroups.length"
+              class="flex h-full w-full flex-col items-center justify-center space-y-4 text-sm text-ctp-subtext0"
+            >
+              <XCircleIcon class="h-8 w-8 -mt-6" />
+              <p>No mutual groups.</p>
+            </div>
+            <div v-if="mutualGroups.length" class="space-y-2">
+              <div
+                v-for="mutualGroup in mutualGroups"
+                :key="mutualGroup.id"
+                class="bg-ctp-base flex items-center space-x-2 rounded-md p-2"
+              >
+                <div
+                  class="flex h-8 w-8 items-center justify-center overflow-hidden rounded-full bg-ctp-surface0"
+                >
+                  <UserAvatar v-if="mutualGroup.avatar" :avatar="mutualGroup.avatar" />
+                  <p v-else>{{ mutualGroup.name!.slice(0, 1) }}</p>
+                </div>
+                <div>
+                  <p class="text-sm">
+                    {{ mutualGroup.name }}
+                  </p>
+                  <p class="text-xs text-ctp-subtext0">
+                    {{ mutualGroup.members.length + 1 }} Members
+                  </p>
+                </div>
+              </div>
             </div>
           </template>
         </div>
@@ -323,6 +365,14 @@ const status = computed(() => {
 
 const mutualSpaces = computed(() => {
   return store.spaces.filter((space) => space.members.find((member) => member.id === props.id));
+});
+
+const mutualGroups = computed(() => {
+  return store.channels.filter(
+    (channel) =>
+      channel.type === ChannelType.Group &&
+      channel.members.find((member) => member.id === props.id),
+  );
 });
 
 const openChannel = () => {
