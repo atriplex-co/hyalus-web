@@ -90,7 +90,6 @@
     >
       <div class="min-h-0 flex-1">
         <SidebarHome v-if="store.sideBarState == SideBarState.HOME" />
-        <SideBarSettings v-if="store.sideBarState === SideBarState.SETTINGS" />
         <SideBarFriendList v-if="store.sideBarState === SideBarState.FRIENDS" />
         <SideBarSpace
           v-if="store.sideBarState === SideBarState.SPACE && selectedSpace"
@@ -113,7 +112,6 @@
 import UserAvatar from "./UserAvatar.vue";
 import RefreshIcon from "../icons/RefreshIcon.vue";
 import SidebarHome from "./SidebarHome.vue";
-import SideBarSettings from "./SideBarSettings.vue";
 import SideBarFriendList from "./SideBarFriendList.vue";
 import SideBarUserMenu from "./SideBarUserMenu.vue";
 import UpdateReloadModal from "./UpdateReloadModal.vue";
