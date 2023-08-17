@@ -518,6 +518,13 @@ const updateLastChannel = async () => {
   }
 
   await store.writeConfig(k, channel.value.id);
+  await store.writeConfig(
+    "recentChannelIds",
+    [
+      channel.value.id,
+      ...store.config.recentChannelIds.filter((id) => id !== channel.value!.id),
+    ].slice(0, 10),
+  );
 };
 
 const updateTypingStatus = () => {

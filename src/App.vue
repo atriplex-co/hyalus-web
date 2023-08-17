@@ -145,6 +145,7 @@
     <!-- DON'T REMOVE THIS! -->
     <!-- this is here to keep some random css classes from being puregd. -->
     <p class="hidden font-medium underline"></p>
+    <QuickSwitcher v-if="quickSwitcher" @close="quickSwitcher = false" />
   </div>
 </template>
 
@@ -164,12 +165,14 @@ import EmailVerifyBanner from "./components/EmailVerifyBanner.vue";
 import SettingsModal from "./components/SettingsModal.vue";
 import { ColorMode, ColorTheme } from "@/../../hyalus-server/src/types";
 import StreamerModeBanner from "./components/StreamerModeBanner.vue";
+import QuickSwitcher from "./components/QuickSwitcher.vue";
 
 const store = useStore();
 
 const welcomeModal = ref(false);
 const settingsModal = ref(false);
 const desktopUpdating = ref(isDesktop);
+const quickSwitcher = ref(false);
 
 const inAppRoutes = [
   "app",
@@ -256,8 +259,13 @@ onMounted(async () => {
 
 addEventListener("keydown", (e: KeyboardEvent) => {
   if (e.ctrlKey && e.key === ",") {
+    e.preventDefault();
     settingsModal.value = true;
-    return;
+  }
+
+  if (e.ctrlKey && e.key === "k") {
+    e.preventDefault();
+    quickSwitcher.value = true;
   }
 });
 </script>

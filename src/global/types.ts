@@ -82,6 +82,7 @@ export interface _IConfig {
   streamerModeHideInviteLinks: boolean;
   streamerModeDisableNotifications: boolean;
   streamerModeDisableSounds: boolean;
+  recentChannelIds: string[];
 }
 
 export interface ICachedUser {

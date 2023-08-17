@@ -86,6 +86,7 @@ export const useStore = defineStore("main", {
         streamerModeHideInviteLinks: true,
         streamerModeDisableNotifications: true,
         streamerModeDisableSounds: true,
+        recentChannelIds: [],
       },
       updateAvailable: false,
       updateRequired: false,
