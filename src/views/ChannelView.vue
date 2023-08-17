@@ -634,6 +634,16 @@ watch(
   },
 );
 
+const keydownHandler = (e: KeyboardEvent) => {
+  if (e.key === "Escape") {
+    replyMessage.value = null;
+  }
+};
+addEventListener("keydown", keydownHandler);
+onUnmounted(() => {
+  removeEventListener("keydown", keydownHandler);
+});
+
 store.sideBarOpen = false;
 </script>
 
