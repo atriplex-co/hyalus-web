@@ -8,6 +8,6 @@
     "paths": {
       "@/*": ["./src/*"]
     },
-    "lib": ["ESNext", "WebWorker"]
+    "lib": ["WebWorker", "ESNext"]
   }
 }
