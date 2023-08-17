@@ -115,6 +115,11 @@
         :space="space"
       />
     </div>
+    <MessageEditModal
+      v-if="messageBeingEdited"
+      :message="messageBeingEdited"
+      @close="messageBeingEdited = null"
+    />
   </div>
 </template>
 
@@ -140,6 +145,7 @@ import ChannelMemberList from "../components/ChannelMemberList.vue";
 import type { IMessage } from "@/global/types";
 import { PaperAirplaneIcon, PaperClipIcon, PencilIcon, XMarkIcon } from "@heroicons/vue/20/solid";
 import UserAvatar from "@/components/UserAvatar.vue";
+import MessageEditModal from "@/components/MessageEditModal.vue";
 
 const store = useStore();
 const route = useRoute();
@@ -154,6 +160,7 @@ let lastTyping = 0;
 const scrollUpdated = ref(false); // make sure chat is scrolled down when initially loaded.
 let updateTypingStatusTimeout = 0;
 const replyMessage: Ref<IMessage | null> = ref(null);
+const messageBeingEdited: Ref<IMessage | null> = ref(null);
 
 const channel = computed(() => {
   return store.channels.find((channel) => channel.id === route.params.channelId);
@@ -374,6 +381,21 @@ const messageBoxKeydown = (e: KeyboardEvent) => {
   if (e.code === "Enter" && !e.shiftKey) {
     e.preventDefault();
     messageBoxSubmit();
+  }
+
+  if (e.code === "ArrowUp" && !messageBoxText.value) {
+    const message = channel.value!.messages.toReversed().find(
+      (message) =>
+        message.author.id === store.self!.id &&
+        [
+          //editable Message types:
+          MessageType.PrivateText,
+          MessageType.SpaceText,
+        ].includes(message.type),
+    );
+    if (message) {
+      messageBeingEdited.value = message;
+    }
   }
 };
 
