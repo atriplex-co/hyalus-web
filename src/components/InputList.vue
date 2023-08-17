@@ -1,7 +1,7 @@
 <template>
   <div ref="root" class="cursor-pointer" @click="open = !open">
     <div
-      class="flex w-96 items-center justify-between border border-ctp-surface0/50 bg-ctp-crust px-2 py-1 shadow-sm transition hover:border-ctp-surface0 dark:bg-gray-800 dark:bg-opacity-50 group"
+      class="flex w-96 items-center justify-between border border-ctp-surface0/50 bg-ctp-crust px-2 py-1 shadow-sm transition hover:border-ctp-surface0 group"
       :class="{
         'rounded-md': !open,
         'rounded-t-md': open,

@@ -4,7 +4,7 @@
     <div class="border-ctp-base bg-ctp-crust rounded-md border shadow-sm">
       <input
         v-model="search"
-        class="border-ctp-base ring-ctp-accent -mt-px w-full rounded-sm border bg-transparent px-4 py-2 transition focus:outline-none focus:ring placeholder:text-ctp-overlay0 text-ctp-subtext0"
+        class="border-ctp-base ring-ctp-accent -mt-px w-full rounded-sm border bg-transparent px-4 py-2 transition focus:outline-none focus:ring-2 placeholder:text-ctp-overlay0 text-ctp-subtext0"
         type="text"
         placeholder="Search for friends"
       />

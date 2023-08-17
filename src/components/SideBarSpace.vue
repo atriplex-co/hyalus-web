@@ -2,7 +2,7 @@
   <div v-if="store.self" class="flex h-full flex-col">
     <div class="relative">
       <div
-        class="bg-dark-700 relative flex h-14 cursor-pointer items-center justify-between px-4 shadow-md transition hover:bg-ctp-surface0/50 group"
+        class="relative flex h-14 cursor-pointer items-center justify-between px-4 shadow-ctp-crust/50 shadow-md transition hover:bg-ctp-surface0/50 group"
         @click="menu = !menu"
       >
         <p class="font-semibold">{{ space.name }}</p>

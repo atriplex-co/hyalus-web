@@ -65,14 +65,14 @@
         <input
           v-model="name"
           type="text"
-          class="ring-ctp-accent w-full resize-none rounded-md bg-ctp-crust border border-ctp-base px-3 py-2 text-ctp-subtext0 shadow-sm transition focus:outline-none focus:ring"
+          class="ring-ctp-accent w-full resize-none rounded-md bg-ctp-crust border border-ctp-base px-3 py-2 text-ctp-subtext0 shadow-sm transition focus:outline-none focus:ring-2"
         />
       </div>
       <div class="space-y-2.5">
         <p class="text-sm font-semibold">Bio</p>
         <textarea
           v-model="bio"
-          class="ring-ctp-accent h-64 w-full resize-none rounded-md bg-ctp-crust border border-ctp-base px-3 py-2 text-ctp-subtext0 shadow-sm transition focus:outline-none focus:ring"
+          class="ring-ctp-accent h-64 w-full resize-none rounded-md bg-ctp-crust border border-ctp-base px-3 py-2 text-ctp-subtext0 shadow-sm transition focus:outline-none focus:ring-2"
         />
       </div>
       <button

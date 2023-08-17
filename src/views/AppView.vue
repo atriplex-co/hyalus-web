@@ -1,5 +1,5 @@
 <template>
-  <div class="dark:bg-dark-900 flex flex-1 flex-col items-center justify-center">
+  <div class="flex flex-1 flex-col items-center justify-center">
     <AppIcon class="h-24 w-24 opacity-10 grayscale filter" />
   </div>
 </template>

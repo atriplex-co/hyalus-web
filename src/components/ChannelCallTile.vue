@@ -37,7 +37,7 @@
         <MicOffIcon v-if="muted" class="h-4 w-4 flex-shrink-0" />
         <DisplayIcon
           v-if="stream?.type === CallStreamType.DisplayVideo"
-          class="h-4 w-4 flex-shrink-0 text-gray-300"
+          class="h-4 w-4 flex-shrink-0 text-ctp-subtext0"
         />
       </div>
     </div>

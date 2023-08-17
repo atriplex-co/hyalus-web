@@ -4,7 +4,7 @@
     <div class="mt-8 flex min-h-0 space-x-4">
       <div class="w-48 space-y-2.5">
         <div class="flex items-center justify-between">
-          <p class="text-sm font-semibold text-gray-400">
+          <p class="text-sm font-semibold text-ctp-subtext0">
             {{ space.roles.length + 1 }} Role{{ space.roles.length + 1 === 1 ? "" : "s" }}
           </p>
           <button class="h-4 w-4 transition hover:text-white" @click="createModal = true">
@@ -32,9 +32,9 @@
               class="border-ctp-accent absolute top-0 w-full border-t-2"
             />
             <button
-              class="hover:bg-dark-800 flex w-full items-center space-x-2 rounded-md py-1.5 px-2 text-sm transition"
+              class="hover:bg-ctp-surface0/25 flex w-full items-center space-x-2 rounded-md py-1.5 px-2 text-sm transition"
               :class="{
-                'bg-dark-800': id === role.id,
+                'bg-ctp-surface0/50': id === role.id,
               }"
               @click="id = role.id"
             >
@@ -48,9 +48,9 @@
             </button>
           </div>
           <button
-            class="hover:bg-dark-800 flex w-full items-center space-x-2 rounded-md py-1.5 px-2 text-sm transition"
+            class="hover:bg-ctp-surface0/25 flex w-full items-center space-x-2 rounded-md py-1.5 px-2 text-sm transition"
             :class="{
-              'bg-dark-800': id === '',
+              'bg-ctp-surface0/50': id === '',
             }"
             @click="id = ''"
           >
@@ -61,29 +61,29 @@
       </div>
       <div class="flex-1 space-y-4 overflow-auto">
         <div v-if="id" class="w-full space-y-2.5">
-          <p class="text-sm font-semibold text-gray-400">Name</p>
+          <p class="text-sm font-semibold text-ctp-subtext0">Name</p>
           <input
             v-model="name"
             type="text"
-            class="ring-ctp-accent dark:border-dark-500 dark:bg-dark-800 w-full resize-none rounded-md border border-gray-200 bg-gray-100 px-3 py-2 text-gray-600 shadow-sm transition focus:outline-none focus:ring dark:text-gray-400"
+            class="ring-ctp-accent w-full resize-none rounded-md bg-ctp-crust border border-ctp-base px-3 py-2 text-ctp-subtext0 shadow-sm transition focus:outline-none focus:ring-2"
           />
         </div>
         <div v-if="id" class="w-full space-y-2.5">
-          <p class="text-sm font-semibold text-gray-400">Color (Hex, 000000 = Default)</p>
+          <p class="text-sm font-semibold text-ctp-subtext0">Color (Hex, 000000 = Default)</p>
           <input
             v-model="color"
             type="text"
-            class="ring-ctp-accent dark:border-dark-500 dark:bg-dark-800 w-full resize-none rounded-md border border-gray-200 bg-gray-100 px-3 py-2 text-gray-600 shadow-sm transition focus:outline-none focus:ring dark:text-gray-400"
+            class="ring-ctp-accent w-full resize-none rounded-md bg-ctp-crust border border-ctp-base px-3 py-2 text-ctp-subtext0 shadow-sm transition focus:outline-none focus:ring-2"
           />
           <div
-            class="bg-dark-800 border-dark-500 flex items-center justify-center space-x-4 border p-2"
+            class="bg-ctp-base border-ctp-surface0 flex items-center justify-center space-x-4 border p-2 rounded-md"
           >
             <div
               class="h-10 w-10 rounded-full"
               :class="{
-                'bg-gray-500': !color,
+                'bg-ctp-text': color == '000000',
               }"
-              :style="color ? `background: #${color};` : ''"
+              :style="color !== '000000' ? `background: #${color};` : ''"
             ></div>
             <div class="space-y-2">
               <div class="flex w-full space-x-2">
@@ -190,11 +190,11 @@
           </div>
         </div>
         <div v-if="id" class="flex w-full items-center justify-between">
-          <p class="text-sm font-semibold text-gray-400">Seperate</p>
+          <p class="text-sm font-semibold text-ctp-subtext0">Seperate</p>
           <InputBoolean v-model="seperate" />
         </div>
         <div v-if="id" class="flex w-full items-center justify-between">
-          <p class="text-sm font-semibold text-gray-400">Mentionable</p>
+          <p class="text-sm font-semibold text-ctp-subtext0">Mentionable</p>
           <InputBoolean v-model="mentionable" />
         </div>
         <SpacePermissionsEditor
@@ -209,14 +209,14 @@
         />
         <div class="space-x-4">
           <button
-            class="bg-dark-400 hover:bg-dark-200 rounded-md py-2 px-6 text-sm transition"
+            class="bg-ctp-surface0/50 hover:bg-ctp-base rounded-md py-2 px-6 text-sm transition"
             @click="save"
           >
             Save
           </button>
           <button
             v-if="id"
-            class="bg-dark-400 hover:bg-dark-200 rounded-md py-2 px-6 text-sm transition"
+            class="bg-ctp-surface0/50 hover:bg-ctp-base rounded-md py-2 px-6 text-sm transition"
             @click="deleteModal = true"
           >
             Delete

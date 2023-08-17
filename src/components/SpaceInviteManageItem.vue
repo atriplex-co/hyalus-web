@@ -5,7 +5,7 @@
         <UserAvatar :avatar="invite.user.avatar" class="h-10 w-10 rounded-full" />
         <div>
           <p class="text-sm font-semibold">{{ invite.user.name }}</p>
-          <p class="text-sm text-gray-400">@{{ invite.user.username }}</p>
+          <p class="text-sm text-ctp-subtext0">@{{ invite.user.username }}</p>
         </div>
       </div>
     </td>
@@ -16,7 +16,7 @@
     <td>{{ invite.expiresAt ? invite.expiresAt.toISOString() : "N/A" }}</td>
     <td>
       <button
-        class="bg-dark-400 h-8 w-8 rounded-full p-2 text-gray-400 transition hover:text-white"
+        class="bg-ctp-surface0 hover:bg-ctp-surface0/50 h-8 w-8 rounded-full p-2 text-ctp-subtext0 transition"
         @click="remove"
       >
         <TrashIcon />

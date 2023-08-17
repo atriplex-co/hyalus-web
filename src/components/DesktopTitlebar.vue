@@ -1,17 +1,10 @@
 <template>
-  <div class="dark:bg-dark-900 flex h-[30px] items-center bg-ctp-crust text-sm z-20">
+  <div class="flex h-[30px] items-center bg-ctp-crust text-sm z-20">
     <div class="draggable flex h-full flex-1 select-none items-center justify-between px-2">
       <div class="flex items-center space-x-2">
         <AppIcon class="h-4 w-4" />
         <p>{{ title }}</p>
       </div>
-      <!-- TODO: show git commit for testers maybe? -->
-      <!-- <p
-        v-if="gitBranch === 'dev'"
-        class="bg-dark-600 rounded-full px-2 font-bold text-gray-400"
-      >
-        Dev ({{ gitCommitHash }})
-      </p> -->
     </div>
     <div class="flex h-full items-center text-ctp-overlay0">
       <div

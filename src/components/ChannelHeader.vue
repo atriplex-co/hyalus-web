@@ -4,7 +4,7 @@
       <div class="flex w-full min-w-0 items-center space-x-2">
         <router-link
           v-if="isMobile"
-          class="ml-2 h-8 w-8 rounded-full bg-gray-600 p-1.5 text-gray-300 transition hover:bg-gray-500"
+          class="ml-2 h-8 w-8 rounded-full bg-ctp-surface0 p-1.5 text-ctp-subtext0 hover:text-ctp-text transition hover:bg-ctp-surface0/50"
           to="/app"
         >
           <ArrowLeftIcon />
@@ -23,7 +23,7 @@
           >
             <input
               v-model="name"
-              class="hover:border-dark-400 focus:border-dark-400 -ml-2 w-full max-w-full truncate rounded-md border border-transparent bg-transparent py-1 px-2 transition focus:bg-gray-900"
+              class="hover:border-ctp-surface0/50 focus:border-ctp-surface0 -ml-2 w-full max-w-full truncate rounded-lg border border-transparent bg-transparent py-1 px-2 transition focus:bg-ctp-mantle"
             />
           </form>
           <p v-else class="truncate">
@@ -188,7 +188,7 @@ const voiceUsersShown = computed(() =>
   voiceUsers.value.slice(0, voiceUsers.value.length > 4 ? 3 : 4),
 );
 
-let newName = "";
+let newName = props.channel.name ?? "";
 
 const name = computed({
   get(): string {

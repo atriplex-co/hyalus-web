@@ -1,7 +1,7 @@
 <template>
   <div class="w-full space-y-4 text-sm">
     <div v-if="showGeneral" class="space-y-2">
-      <div class="text-sm font-semibold text-gray-400">Permissions (General)</div>
+      <div class="text-sm font-semibold">Permissions (General)</div>
       <SpacePermissionEditorItem
         name="ViewChannels"
         :permission="SpacePermission.ViewChannels"
@@ -41,7 +41,7 @@
     </div>
 
     <div v-if="showMembers" class="space-y-2">
-      <div class="text-sm font-semibold text-gray-400">Permissions (Members)</div>
+      <div class="text-sm font-semibold">Permissions (Members)</div>
       <SpacePermissionEditorItem
         name="CreateInvite"
         :permission="SpacePermission.CreateInvite"
@@ -90,7 +90,7 @@
     </div>
 
     <div v-if="showChannels" class="space-y-2">
-      <div class="text-sm font-semibold text-gray-400">Permissions (Channels)</div>
+      <div class="text-sm font-semibold">Permissions (Channels)</div>
       <SpacePermissionEditorItem
         name="ViewChannels"
         :permission="SpacePermission.ViewChannels"
@@ -121,7 +121,7 @@
     </div>
 
     <div v-if="showTextChannels" class="space-y-2">
-      <div class="text-sm font-semibold text-gray-400">Permissions (Text Channels)</div>
+      <div class="text-sm font-semibold">Permissions (Text Channels)</div>
       <SpacePermissionEditorItem
         name="CreateMessage"
         :permission="SpacePermission.CreateMessage"
@@ -179,7 +179,7 @@
     </div>
 
     <div v-if="showVoiceChannels" class="space-y-2">
-      <div class="text-sm font-semibold text-gray-400">Permissions (Voice Channels)</div>
+      <div class="text-sm font-semibold">Permissions (Voice Channels)</div>
       <SpacePermissionEditorItem
         name="VoiceConnect"
         :permission="SpacePermission.VoiceConnect"
@@ -255,7 +255,7 @@
     </div>
 
     <div v-if="showSpecial" class="space-y-2">
-      <p class="text-sm font-semibold text-gray-400">Permissions (Special)</p>
+      <p class="text-sm font-semibold">Permissions (Special)</p>
       <SpacePermissionEditorItem
         name="Admin"
         :permission="SpacePermission.Admin"
@@ -267,7 +267,7 @@
       />
     </div>
 
-    <div class="flex space-x-2 text-sm font-semibold text-gray-400">
+    <div class="flex space-x-2 text-sm font-semibold">
       <p v-if="allow !== null">Allow: +{{ allow }}</p>
       <p v-if="deny !== null">Deny: +{{ deny }}</p>
     </div>

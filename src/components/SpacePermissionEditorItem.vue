@@ -1,5 +1,5 @@
 <template>
-  <div class="flex h-6 items-center justify-between">
+  <div class="flex h-6 items-center justify-between text-ctp-subtext0">
     <p>{{ name }} ({{ permission }})</p>
     <InputBoolean
       v-if="allowed && deny === null"
@@ -8,53 +8,55 @@
     />
     <div
       v-if="allowed && deny !== null"
-      class="dark:bg-dark-800 dark:border-dark-600 divide-dark-600 flex divide-x overflow-hidden rounded-md border border-gray-200 bg-white shadow-sm"
+      class="divide-ctp-base flex divide-x overflow-hidden rounded-md border border-ctp-base bg-ctp-crust shadow-sm"
     >
       <div
         class="flex h-6 w-6 items-center justify-center"
         :class="{
-          'bg-red-500': deny & permission,
+          'bg-ctp-red text-ctp-base': deny & permission,
         }"
         @click="
           $emit('update:allow', allow & ~permission);
           $emit('update:deny', deny | permission);
         "
       >
-        <p>-</p>
+        <!-- <p>-</p> -->
+        <MinusIcon class="w-4 h-4" />
       </div>
       <div
         class="flex h-6 w-6 items-center justify-center"
         :class="{
-          'bg-dark-400': !(allow & permission) && !(deny & permission),
+          'bg-ctp-surface0/50': !(allow & permission) && !(deny & permission),
         }"
         @click="
           $emit('update:allow', allow & ~permission);
           $emit('update:deny', deny & ~permission);
         "
       >
-        <p>/</p>
+        <p class="font-bold">/</p>
       </div>
       <div
         class="flex h-6 w-6 items-center justify-center"
         :class="{
-          'bg-ctp-accent': allow & permission,
+          'bg-ctp-green text-ctp-base': allow & permission,
         }"
         @click="
           $emit('update:allow', allow | permission);
           $emit('update:deny', deny & ~permission);
         "
       >
-        <p>+</p>
+        <!-- <p>+</p> -->
+        <PlusIcon class="w-4 h-4" />
       </div>
     </div>
     <div v-if="!allowed" class="flex h-6 w-6 items-center justify-center">
-      <LockClosedIcon class="h-4 w-4 text-gray-400" />
+      <LockClosedIcon class="h-4 w-4 text-ctp-subtext0" />
     </div>
   </div>
 </template>
 
 <script setup lang="ts">
-import { LockClosedIcon } from "@heroicons/vue/20/solid";
+import { LockClosedIcon, MinusIcon, PlusIcon } from "@heroicons/vue/20/solid";
 import { computed, type PropType } from "vue";
 import { checkSpacePermissions } from "../global/helpers";
 import { type ISpace } from "../global/types";

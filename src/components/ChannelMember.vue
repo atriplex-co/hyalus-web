@@ -21,7 +21,7 @@
       </div>
       <CloseIcon
         v-if="channel.ownerId === store.self.id && channel.type === ChannelType.Group"
-        class="dark:bg-dark-500 hidden h-7 w-7 flex-shrink-0 cursor-pointer rounded-full bg-gray-200 p-1.5 text-gray-500 transition hover:text-gray-800 group-hover:block dark:text-gray-400 dark:hover:text-white"
+        class="hidden h-7 w-7 flex-shrink-0 cursor-pointer rounded-full bg-gray-200 p-1.5 text-gray-500 transition hover:text-gray-800 group-hover:block"
         @click.stop="groupRemoveModal = true"
       />
     </div>

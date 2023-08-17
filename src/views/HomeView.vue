@@ -14,7 +14,7 @@
               Download
             </button>
             <router-link
-              class="bg-dark-700 rounded-md py-2.5 px-3.5 text-ctp-subtext0 transition bg-ctp-base hover:bg-ctp-base/75"
+              class="rounded-md py-2.5 px-3.5 text-ctp-subtext0 transition bg-ctp-base hover:bg-ctp-base/75"
               to="/app"
             >
               Open Web App

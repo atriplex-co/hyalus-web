@@ -16,7 +16,7 @@
         />
         <div>
           <p class="text-sm font-semibold">{{ member.name }}</p>
-          <p class="text-sm text-gray-400">@{{ member.username }}</p>
+          <p class="text-sm text-ctp-subtext0">@{{ member.username }}</p>
         </div>
       </div>
       <ChevronDownIcon v-if="!open" class="h-5 w-5 text-gray-500" />
@@ -24,7 +24,7 @@
     </div>
     <div v-if="open" class="space-y-4 px-3 pb-3">
       <div class="space-y-2.5">
-        <p class="text-sm font-semibold text-gray-400">Roles</p>
+        <p class="text-sm font-semibold text-ctp-subtext0">Roles</p>
         <div
           v-for="role in space.roles"
           :key="role.id"
@@ -44,25 +44,25 @@
         </div>
       </div>
       <div v-if="aboveMember" class="space-y-2.5">
-        <p class="text-sm font-semibold text-gray-400">Actions</p>
+        <p class="text-sm font-semibold text-ctp-subtext0">Actions</p>
         <div class="flex space-x-4">
           <button
             v-if="allowKickMember"
-            class="bg-ctp-base hover:bg-ctp-base block rounded-md py-1.5 px-3 text-sm text-white transition"
+            class="bg-ctp-surface0 hover:bg-ctp-surface0/50 block rounded-md py-1.5 px-3 text-sm transition"
             @click="kickModal = true"
           >
             Kick Member
           </button>
           <button
             v-if="allowBanMember"
-            class="bg-ctp-base hover:bg-ctp-base block rounded-md py-1.5 px-3 text-sm text-white transition"
+            class="bg-ctp-surface0 hover:bg-ctp-surface0/50 block rounded-md py-1.5 px-3 text-sm transition"
             @click="banModal = true"
           >
             Ban Member
           </button>
           <button
             v-if="allowManageAliases"
-            class="bg-ctp-base hover:bg-ctp-base block rounded-md py-1.5 px-3 text-sm text-white transition"
+            class="bg-ctp-surface0 hover:bg-ctp-surface0/50 block rounded-md py-1.5 px-3 text-sm transition"
             @click="aliasModal = true"
           >
             Change Nickname

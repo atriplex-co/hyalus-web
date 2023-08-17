@@ -12,23 +12,23 @@
         <UserAvatar :avatar="ban.user.avatar" class="h-10 w-10 rounded-full" />
         <div>
           <p class="text-sm font-semibold">{{ ban.user.name }}</p>
-          <p class="text-sm text-gray-400">@{{ ban.user.username }}</p>
+          <p class="text-sm text-ctp-subtext0">@{{ ban.user.username }}</p>
         </div>
       </div>
       <ChevronDownIcon v-if="!open" class="h-5 w-5 text-gray-500" />
       <ChevronUpIcon v-if="open" class="h-5 w-5 text-gray-500" />
     </div>
-    <div v-if="open" class="space-y-3 px-3 pb-3">
+    <div v-if="open" class="space-y-3 px-3 pb-3 text-sm">
       <div>
-        <p class="text-sm font-semibold text-gray-400">Time</p>
+        <p class="font-semibold text-ctp-subtext0">Time</p>
         <p>{{ ban.createdAt.toISOString() }}</p>
       </div>
       <div>
-        <p class="text-sm font-semibold text-gray-400">Reason</p>
+        <p class="font-semibold text-ctp-subtext0">Reason</p>
         <p>{{ ban.reason || "N/A" }}</p>
       </div>
       <button
-        class="block rounded-md bg-red-500 py-1.5 px-3 text-sm text-white transition hover:bg-red-600"
+        class="block rounded-md bg-ctp-red py-1.5 px-3 text-sm text-ctp-base transition hover:bg-ctp-red/75"
         @click="remove"
       >
         Remove

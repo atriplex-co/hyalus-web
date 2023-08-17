@@ -30,7 +30,7 @@
               <p v-if="mode === 'register'" class="text-sm">Email</p>
               <input
                 v-model="email"
-                class="ring-ctp-accent bg-ctp-mantle w-full rounded-md border border-ctp-base px-3 py-2 text-ctp-subtext0 shadow-sm transition focus:outline-none focus:ring dark:text-gray-400"
+                class="ring-ctp-accent bg-ctp-mantle w-full rounded-md border border-ctp-base px-3 py-2 text-ctp-subtext0 shadow-sm transition focus:outline-none focus:ring-2"
                 type="text"
                 autocomplete="username"
               />
@@ -39,7 +39,7 @@
               <p class="text-sm">Password</p>
               <input
                 v-model="password"
-                class="ring-ctp-accent bg-ctp-mantle w-full rounded-md border border-ctp-base px-3 py-2 text-ctp-subtext0 shadow-sm transition focus:outline-none focus:ring dark:text-gray-400"
+                class="ring-ctp-accent bg-ctp-mantle w-full rounded-md border border-ctp-base px-3 py-2 text-ctp-subtext0 shadow-sm transition focus:outline-none focus:ring-2"
                 type="password"
                 autocomplete="current-password"
               />
@@ -48,7 +48,7 @@
               <p class="text-sm">Confirm password</p>
               <input
                 v-model="passwordConfirm"
-                class="ring-ctp-accent bg-ctp-mantle w-full rounded-md border border-ctp-base px-3 py-2 text-ctp-subtext0 shadow-sm transition focus:outline-none focus:ring dark:text-gray-400"
+                class="ring-ctp-accent bg-ctp-mantle w-full rounded-md border border-ctp-base px-3 py-2 text-ctp-subtext0 shadow-sm transition focus:outline-none focus:ring-2"
                 type="password"
                 autocomplete="current-password"
               />
@@ -57,7 +57,7 @@
               <p class="text-sm">Code</p>
               <input
                 v-model="totpCode"
-                class="ring-ctp-accent bg-ctp-mantle w-full rounded-md border border-ctp-base px-3 py-2 text-ctp-subtext0 shadow-sm transition focus:outline-none focus:ring dark:text-gray-400"
+                class="ring-ctp-accent bg-ctp-mantle w-full rounded-md border border-ctp-base px-3 py-2 text-ctp-subtext0 shadow-sm transition focus:outline-none focus:ring-2"
                 type="totpCode"
                 autocomplete="current-password"
                 autofocus

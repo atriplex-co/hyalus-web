@@ -1,7 +1,7 @@
 <template>
   <div
     v-if="channel"
-    class="dark:bg-dark-700 flex min-h-0 min-w-0 flex-1 flex-col"
+    class="flex min-h-0 min-w-0 flex-1 flex-col"
     @paste="processFiles($event.clipboardData)"
     @drop.prevent="processFiles($event.dataTransfer)"
     @dragover.prevent
@@ -9,7 +9,7 @@
     @dragsend.prevent
   >
     <div
-      class="relative z-10 min-h-[56px] w-full bg-ctp-base shadow-md"
+      class="relative z-10 min-h-[56px] w-full bg-ctp-base shadow-md shadow-ctp-crust/50"
       :class="{
         'bg-black': inVoice,
       }"
@@ -90,7 +90,7 @@
               v-model="messageBoxText"
               rows="1"
               :placeholder="`Message ${name}`"
-              class="max-h-32 flex-1 resize-none border-transparent bg-transparent text-sm outline-none placeholder:text-ctp-overlay0 focus:border-transparent dark:placeholder:text-gray-500"
+              class="max-h-32 flex-1 resize-none border-transparent bg-transparent text-sm outline-none placeholder:text-ctp-overlay0 focus:border-transparent:text-gray-500"
               @input="messageBoxInput"
               @keydown="messageBoxKeydown"
             />

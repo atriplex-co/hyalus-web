@@ -8,7 +8,7 @@
     @click="toggleRecord"
   >
     <p>{{ modelValue || "None" }}</p>
-    <StopIcon v-if="record" class="h-4 w-4 text-gray-400" />
+    <StopIcon v-if="record" class="h-4 w-4 text-ctp-subtext0" />
   </div>
 </template>
 

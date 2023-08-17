@@ -4,14 +4,14 @@
     <div class="divide-y divide-ctp-surface0/50 border-t border-b border-ctp-surface0/50 mt-8">
       <div
         v-if="!isDesktop"
-        class="dark:bg-dark-800 my-2 flex h-12 items-center justify-between rounded-md bg-ctp-base px-3"
+        class="my-2 flex h-12 items-center justify-between rounded-md bg-ctp-base px-3"
       >
         <div class="flex items-center space-x-3">
           <WarningIcon class="h-6 w-6" />
           <p>Keyboard shortcuts require the desktop app.</p>
         </div>
         <div
-          class="dark:bg-dark-500 h-8 w-8 cursor-pointer rounded-full p-1.5 transition bg-ctp-surface0 hover:bg-ctp-surface0/50"
+          class="h-8 w-8 cursor-pointer rounded-full p-1.5 transition bg-ctp-surface0 hover:bg-ctp-surface0/50"
           @click="appDownloadModal = true"
         >
           <DownloadIcon />

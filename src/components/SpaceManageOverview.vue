@@ -4,9 +4,9 @@
     <div class="mt-8 space-y-4">
       <div class="flex space-x-8">
         <div class="space-y-2.5">
-          <p class="text-sm font-semibold text-gray-400">Avatar</p>
+          <p class="text-sm font-semibold">Avatar</p>
           <div
-            class="ring-ctp-accent dark:border-dark-500 transition-gray-400 dark:bg-dark-800 relative h-32 w-32 cursor-pointer overflow-hidden rounded-full border border-gray-200 bg-gray-100 text-gray-600 shadow-sm transition"
+          class="ring-ctp-accent transition-gray-400 relative h-32 w-32 cursor-pointer overflow-hidden rounded-full bg-ctp-crust shadow-sm transition"
             @click="setAvatar"
           >
             <UserAvatar
@@ -15,10 +15,9 @@
               class="h-full w-full cursor-pointer rounded-full"
             />
             <div
-              class="absolute inset-0 flex items-center justify-center transition hover:text-black dark:hover:text-white"
+            class="absolute inset-0 flex items-center justify-center transition text-ctp-overlay0 hover:text-ctp-text"
               :class="{
-                'hover:bg-dark-800 text-white opacity-0 hover:bg-opacity-50 hover:opacity-100':
-                  space.avatar,
+                'opacity-0 hover:opacity-100 hover:bg-ctp-crust/50': space.avatar,
               }"
             >
               <ArrowUpOnSquareIcon class="h-5 w-5" />
@@ -34,15 +33,15 @@
         </div>
       </div>
       <div class="w-full space-y-2.5">
-        <p class="text-sm font-semibold text-gray-400">Name</p>
+        <p class="text-sm font-semibold">Name</p>
         <input
           v-model="name"
           type="text"
-          class="ring-ctp-accent dark:border-dark-500 dark:bg-dark-800 w-full resize-none rounded-md border border-gray-200 bg-gray-100 px-3 py-2 text-gray-600 shadow-sm transition focus:outline-none focus:ring dark:text-gray-400"
+          class="ring-ctp-accent w-full resize-none rounded-md bg-ctp-crust border border-ctp-base px-3 py-2 text-ctp-subtext0 shadow-sm transition focus:outline-none focus:ring-2"
         />
       </div>
       <button
-        class="bg-dark-400 hover:bg-dark-200 rounded-md py-2 px-6 text-sm transition"
+      class="bg-ctp-surface0/50 hover:bg-ctp-base rounded-md py-2 px-6 text-sm transition"
         @click="save"
       >
         Save

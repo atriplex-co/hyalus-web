@@ -3,9 +3,9 @@
     <template #left>
       <div
         v-if="allowManageChannels"
-        class="dark:hover:bg-dark-600 flex cursor-pointer items-center space-x-4 rounded-md py-1.5 px-3 transition hover:bg-gray-200 hover:bg-opacity-50 hover:text-gray-800 dark:hover:text-white"
+        class="flex cursor-pointer items-center space-x-4 rounded-md py-1.5 px-3 transition hover:bg-ctp-base/50"
         :class="{
-          'dark:bg-dark-600 bg-gray-200 text-gray-800 dark:text-white': active === 'overview',
+          'text-ctp-text bg-ctp-base': active === 'overview',
         }"
         @click="active = 'overview'"
       >
@@ -14,9 +14,9 @@
       </div>
       <div
         v-if="allowManageRoles"
-        class="dark:hover:bg-dark-600 flex cursor-pointer items-center space-x-4 rounded-md py-1.5 px-3 transition hover:bg-gray-200 hover:bg-opacity-50 hover:text-gray-800 dark:hover:text-white"
+        class="flex cursor-pointer items-center space-x-4 rounded-md py-1.5 px-3 transition hover:bg-ctp-base/50"
         :class="{
-          'dark:bg-dark-600 bg-gray-200 text-gray-800 dark:text-white': active === 'permissions',
+          'text-ctp-text bg-ctp-base': active === 'permissions',
         }"
         @click="active = 'permissions'"
       >
@@ -24,10 +24,10 @@
         <p>Permissions</p>
       </div>
       <div class="py-2 px-3">
-        <div class="border-dark-600 border-t"></div>
+        <div class="border-ctp-base border-t"></div>
       </div>
       <div
-        class="flex cursor-pointer items-center space-x-4 rounded-md py-1.5 px-3 transition hover:bg-red-500 hover:text-white"
+        class="flex cursor-pointer items-center space-x-4 rounded-md py-1.5 px-3 transition hover:bg-ctp-red hover:text-ctp-base"
         @click="deleteModal = true"
       >
         <TrashIcon class="h-5 w-5" />

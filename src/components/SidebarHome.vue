@@ -2,7 +2,7 @@
   <div class="flex h-full w-full flex-col">
     <div class="flex h-14 items-center space-x-2 p-2">
       <div
-        class="bg-ctp-crust flex h-8 w-full items-center space-x-3 overflow-hidden rounded-md px-3 dark:text-gray-400"
+        class="bg-ctp-crust flex h-8 w-full items-center space-x-3 overflow-hidden rounded-md px-3"
       >
         <input
           type="text"
@@ -13,7 +13,7 @@
       </div>
       <div
         to="/friends"
-        class="bg-ctp-crust relative flex h-8 w-8 flex-shrink-0 cursor-pointer items-center justify-center rounded-md text-ctp-overlay0 transition hover:text-ctp-text dark:text-gray-400 dark:hover:text-white"
+        class="bg-ctp-crust relative flex h-8 w-8 flex-shrink-0 cursor-pointer items-center justify-center rounded-md text-ctp-overlay0 transition hover:text-ctp-text:text-white"
         @click="store.sideBarState = SideBarState.FRIENDS"
       >
         <FriendsIcon class="h-4 w-4" />
@@ -25,7 +25,7 @@
         </div>
       </div>
       <div
-        class="bg-ctp-crust flex h-8 w-8 flex-shrink-0 cursor-pointer items-center justify-center rounded-md text-ctp-overlay0 transition hover:text-ctp-text dark:text-gray-400 dark:hover:text-white"
+        class="bg-ctp-crust flex h-8 w-8 flex-shrink-0 cursor-pointer items-center justify-center rounded-md text-ctp-overlay0 transition hover:text-ctp-text:text-white"
         @click="settingsModal = true"
       >
         <SettingsIcon class="h-4 w-4" />
@@ -38,10 +38,10 @@
       v-if="!channels.length"
       class="flex flex-1 flex-col items-center justify-center space-y-4 text-sm text-ctp-subtext0"
     >
-      <SparklesIcon class="bg-dark-600 h-12 w-12 rounded-full p-2" />
+      <SparklesIcon class="bg-ctp-surface0/75 h-12 w-12 rounded-full p-3" />
       <p>Welcome to Hyalus!</p>
       <button
-        class="bg-ctp-surface0/50 text-ctp-accent hover:bg-ctp-base rounded-md p-1.5 transition"
+        class="bg-ctp-surface0/75 text-ctp-accent hover:bg-ctp-surface0/50 rounded-md p-1.5 transition"
         @click="friendAddModal = true"
       >
         Add Friend

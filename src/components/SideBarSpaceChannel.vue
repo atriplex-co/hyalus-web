@@ -31,7 +31,7 @@
     class="group flex cursor-pointer items-center justify-between rounded-md p-1.5 text-sm transition hover:bg-ctp-surface0/75 hover:text-ctp-text"
     :class="{
       'text-ctp-subtext0': route.path !== `/channels/${channel.id}`,
-      'bg-ctp-surface0': route.path === `/channels/${channel.id}`,
+      'bg-ctp-surface0/50': route.path === `/channels/${channel.id}`,
     }"
     @click="click"
   >

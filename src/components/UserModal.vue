@@ -137,12 +137,12 @@
         <div class="h-48 space-y-4 overflow-auto">
           <template v-if="tab === 'profile'">
             <div v-if="space" class="space-y-2">
-              <p class="text-xs font-semibold text-gray-500">Roles ({{ space.name }})</p>
+              <p class="text-xs font-semibold text-ctp-subtext0">Roles ({{ space.name }})</p>
               <div class="flex flex-wrap gap-2">
                 <div
                   v-for="role in spaceRoles"
                   :key="role.id"
-                  class="bg-dark-600 flex h-6 items-center space-x-2 rounded-md px-2 text-xs"
+                  class="bg-ctp-base flex h-6 items-center space-x-2 rounded-md px-2 text-xs"
                 >
                   <div
                     class="h-2.5 w-2.5 rounded-full"
@@ -156,7 +156,7 @@
                   <p>{{ role.name }}</p>
                 </div>
                 <div
-                  class="bg-dark-600 flex h-6 w-6 cursor-pointer items-center justify-center rounded-md text-gray-400 transition hover:text-white"
+                  class="bg-ctp-base flex h-6 w-6 cursor-pointer items-center justify-center rounded-md text-ctp-subtext0 transition hover:text-white"
                 >
                   <PlusIcon class="h-4 w-4" />
                 </div>

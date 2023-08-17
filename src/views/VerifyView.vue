@@ -9,7 +9,7 @@
       <p class="text-xl font-bold">Email verified</p>
     </template>
     <template v-if="mode === 2">
-      <ExclamationCircleIcon class="h-10 w-10 text-red-500" />
+      <ExclamationCircleIcon class="h-10 w-10 text-ctp-500" />
       <p class="text-xl font-bold">Invalid verification link</p>
     </template>
   </div>

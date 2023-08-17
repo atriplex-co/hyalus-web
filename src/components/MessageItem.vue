@@ -131,7 +131,7 @@
               >
                 <div class="flex items-center space-x-3">
                   <div
-                    class="dark:bg-dark-200 flex h-10 w-10 items-center justify-center overflow-hidden rounded-full bg-gray-300"
+                    class="flex h-10 w-10 items-center justify-center overflow-hidden rounded-full bg-gray-300"
                   >
                     <UserAvatar v-if="invite.space.avatar" :avatar="invite.space.avatar" />
                     <p v-else>{{ invite.space.name.slice(0, 1) }}</p>
@@ -204,7 +204,7 @@
                 />
                 <div
                   v-if="upload.type.split('/')[0] === 'audio'"
-                  class="overflow-hidden rounded-md bg-[#f1f3f4] grayscale filter dark:contrast-[85.5%] dark:invert"
+                  class="overflow-hidden rounded-md bg-[#f1f3f4] grayscale filter[85.5%]"
                 >
                   <audio
                     ref="previewEl"

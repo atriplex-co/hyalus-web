@@ -1,9 +1,9 @@
 <template>
   <div
-    class="fixed inset-0 flex h-full w-full flex-col items-center justify-center space-y-8 bg-white dark:bg-gray-900"
+    class="fixed inset-0 flex h-full w-full flex-col items-center justify-center space-y-8 bg-white"
   >
     <div class="flex flex-col items-center space-y-4">
-      <RefreshIcon class="h-20 w-20 text-gray-400" />
+      <RefreshIcon class="h-20 w-20 text-ctp-subtext0" />
       <p class="text-2xl font-bold">Hyalus needs an update</p>
     </div>
     <div

@@ -6,17 +6,17 @@
     </div>
     <div v-if="ready" class="mt-8 space-y-4">
       <div class="flex items-center justify-between">
-        <p class="text-sm font-semibold text-gray-400">
+        <p class="text-sm font-semibold text-ctp-subtext0">
           {{ invites.length }} Invite{{ invites.length === 1 ? "" : "s" }}
         </p>
         <input
           type="text"
-          class="ring-ctp-accent dark:border-dark-500 w-[50%] resize-none rounded-md border border-gray-200 bg-gray-100 px-2 py-1 text-gray-600 shadow-sm transition placeholder:text-gray-600 focus:outline-none focus:ring dark:bg-gray-900 dark:text-gray-400"
+          class="ring-ctp-accent w-[50%] resize-none rounded-md border bg-ctp-crust border-ctp-base px-2 py-1 text-ctp-subtext0 shadow-sm transition placeholder:text-ctp-overlay0 focus:outline-none focus:ring-2"
           placeholder="Search Invites"
         />
       </div>
       <table
-        class="divide-dark-500 border-dark-500 w-full table-auto divide-y border-t border-b text-sm"
+        class="divide-ctp-surface0/50 border-ctp-surface0/50 w-full table-auto divide-y border-t border-b text-sm"
       >
         <thead>
           <tr>
@@ -27,7 +27,7 @@
             <td class="w-8"></td>
           </tr>
         </thead>
-        <tbody class="divide-dark-500 divide-y">
+        <tbody class="divide-ctp-surface0/50 divide-y">
           <SpaceInviteManageItem
             v-for="invite in invites"
             :key="invite.code"

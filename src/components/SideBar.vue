@@ -52,7 +52,7 @@
         </div>
       </TransitionGroup>
       <div class="w-full px-3">
-        <div class="border-ctp-base -mt-px border-t"></div>
+        <div class="border-ctp-surface0/50 -mt-px border-t"></div>
       </div>
       <button
         v-for="space in store.spaces"

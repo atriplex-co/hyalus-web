@@ -8,7 +8,7 @@
     <div v-if="!sync" class="mt-8 flex space-x-4">
       <div class="5 w-48 space-y-2">
         <div class="flex items-center justify-between">
-          <p class="text-sm font-semibold text-gray-400">
+          <p class="text-sm font-semibold text-ctp-subtext0">
             {{ channel.overrides.length }} Override{{ channel.overrides.length !== 1 ? "s" : "" }}
           </p>
           <div class="relative">
@@ -21,11 +21,11 @@
               class="absolute right-0 top-6 h-64 w-48 overflow-auto rounded-md bg-gray-900 p-1.5 shadow-md"
             >
               <div>
-                <p class="p-1.5 text-sm font-semibold text-gray-400">Roles</p>
+                <p class="p-1.5 text-sm font-semibold text-ctp-subtext0">Roles</p>
                 <div
                   v-for="role in space.roles"
                   :key="role.id"
-                  class="hover:bg-dark-800 flex cursor-pointer items-center space-x-2 rounded-md py-1.5 px-2 text-sm"
+                  class="hover:bg-ctp-surface0/50 transition flex cursor-pointer items-center space-x-2 rounded-md py-1.5 px-2 text-sm"
                   @click="create(SpaceChannelOverrideType.Role, role.id)"
                 >
                   <div
@@ -38,17 +38,17 @@
                 </div>
               </div>
               <div>
-                <p class="p-1.5 text-sm font-semibold text-gray-400">Members</p>
+                <p class="p-1.5 text-sm font-semibold text-ctp-subtext0">Members</p>
                 <div
                   v-for="member in space.members"
                   :key="member.id"
-                  class="hover:bg-dark-800 flex cursor-pointer items-center space-x-3 rounded-md py-1.5 px-2 text-sm"
+                  class="hover:bg-ctp-surface0/50 transition flex cursor-pointer items-center space-x-3 rounded-md py-1.5 px-2 text-sm"
                   @click="create(SpaceChannelOverrideType.Member, member.id)"
                 >
                   <UserAvatar :avatar="member.avatar" class="h-6 w-6" />
                   <div>
                     <p>{{ member.name }}</p>
-                    <p class="text-xs text-gray-400">@{{ member.username }}</p>
+                    <p class="text-xs text-ctp-subtext0">@{{ member.username }}</p>
                   </div>
                 </div>
               </div>
@@ -59,9 +59,9 @@
           <button
             v-for="override in roleOverrides"
             :key="override.override.id"
-            class="hover:bg-dark-800 flex w-full items-center space-x-2 rounded-md py-1.5 px-2 text-sm transition"
+            class="hover:bg-ctp-surface0/25 flex w-full items-center space-x-2 rounded-md py-1.5 px-2 text-sm transition"
             :class="{
-              'bg-dark-800': id === override.override.id,
+              'bg-ctp-surface0/50': id === override.override.id,
             }"
             @click="id = override.override.id"
           >
@@ -76,9 +76,9 @@
             <p>{{ override.role.name }}</p>
           </button>
           <button
-            class="hover:bg-dark-800 flex w-full items-center space-x-2 rounded-md py-1.5 px-2 text-sm transition"
+            class="hover:bg-ctp-surface0/25 flex w-full items-center space-x-2 rounded-md py-1.5 px-2 text-sm transition"
             :class="{
-              'bg-dark-800': id === '',
+              'bg-ctp-surface0/50': id === '',
             }"
             @click="id = ''"
           >
@@ -88,9 +88,9 @@
           <button
             v-for="override in memberOverrides"
             :key="override.override.id"
-            class="hover:bg-dark-800 flex w-full items-center space-x-2 rounded-md py-1.5 px-2 text-sm transition"
+            class="hover:bg-ctp-surface0/25 flex w-full items-center space-x-2 rounded-md py-1.5 px-2 text-sm transition"
             :class="{
-              'bg-dark-800': id === override.override.id,
+              'bg-ctp-surface0/50': id === override.override.id,
             }"
             @click="id = override.override.id"
           >
@@ -116,14 +116,14 @@
         />
         <div class="space-x-4">
           <button
-            class="bg-dark-400 hover:bg-dark-200 rounded-md py-2 px-6 text-sm transition"
+            class="bg-ctp-surface0/50 hover:bg-ctp-base rounded-md py-2 px-6 text-sm transition"
             @click="save"
           >
             Save
           </button>
           <button
             v-if="id"
-            class="bg-dark-400 hover:bg-dark-200 rounded-md py-2 px-6 text-sm transition"
+            class="bg-ctp-surface0/50 hover:bg-ctp-base rounded-md py-2 px-6 text-sm transition"
             @click="deleteModal = true"
           >
             Delete

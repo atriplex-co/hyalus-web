@@ -37,7 +37,7 @@
           <div class="relative">
             <input
               v-model="username"
-              class="ring-ctp-accent w-full rounded-md border border-ctp-base bg-ctp-crust px-4 py-2 pl-11 text-ctp-subtext0 shadow-sm transition focus:outline-none focus:ring dark:text-gray-400"
+              class="ring-ctp-accent w-full rounded-md border border-ctp-base bg-ctp-crust px-4 py-2 pl-11 text-ctp-subtext0 shadow-sm transition focus:outline-none focus:ring-2"
               type="text"
               spellcheck="false"
               @input="usernameEdited = true"
@@ -74,8 +74,8 @@
               <div
                 class="h-3 w-3 rounded-full"
                 :class="{
-                  'bg-gray-500 dark:bg-gray-600': colorMode === ColorMode.Dark,
-                  'dark:bg-dark-900 bg-black': colorMode === ColorMode.DarkOLED,
+                  'bg-gray-500': colorMode === ColorMode.Dark,
+                  'bg-black': colorMode === ColorMode.DarkOLED,
                   'bg-gray-300': colorMode === ColorMode.Light,
                 }"
               />
@@ -92,8 +92,8 @@
                 <div
                   class="h-3 w-3 rounded-full"
                   :class="{
-                    'bg-gray-500 dark:bg-gray-600': usableColorMode === ColorMode.Dark,
-                    'dark:bg-dark-900 bg-black': usableColorMode === ColorMode.DarkOLED,
+                    'bg-gray-500': usableColorMode === ColorMode.Dark,
+                    'bg-black': usableColorMode === ColorMode.DarkOLED,
                     'bg-gray-300': usableColorMode === ColorMode.Light,
                   }"
                 />
