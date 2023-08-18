@@ -6,7 +6,7 @@
         <div class="space-y-2.5">
           <p class="text-sm font-semibold">Avatar</p>
           <div
-          class="ring-ctp-accent transition-gray-400 relative h-32 w-32 cursor-pointer overflow-hidden rounded-full bg-ctp-crust shadow-sm transition"
+            class="transition-gray-400 relative h-32 w-32 cursor-pointer overflow-hidden rounded-full bg-ctp-crust shadow-sm ring-ctp-accent transition"
             @click="setAvatar"
           >
             <UserAvatar
@@ -15,9 +15,9 @@
               class="h-full w-full cursor-pointer rounded-full"
             />
             <div
-            class="absolute inset-0 flex items-center justify-center transition text-ctp-overlay0 hover:text-ctp-text"
+              class="absolute inset-0 flex items-center justify-center text-ctp-overlay0 transition hover:text-ctp-text"
               :class="{
-                'opacity-0 hover:opacity-100 hover:bg-ctp-crust/50': space.avatar,
+                'opacity-0 hover:bg-ctp-crust/50 hover:opacity-100': space.avatar,
               }"
             >
               <ArrowUpOnSquareIcon class="h-5 w-5" />
@@ -25,7 +25,7 @@
           </div>
           <button
             v-if="space.avatar"
-            class="text-ctp-accent hover:text-ctp-accent mx-auto block text-xs transition"
+            class="mx-auto block text-xs text-ctp-accent transition hover:text-ctp-accent"
             @click="deleteAvatar"
           >
             Remove
@@ -37,11 +37,11 @@
         <input
           v-model="name"
           type="text"
-          class="ring-ctp-accent w-full resize-none rounded-md bg-ctp-crust border border-ctp-base px-3 py-2 text-ctp-subtext0 shadow-sm transition focus:outline-none focus:ring-2"
+          class="w-full resize-none rounded-md border border-ctp-base bg-ctp-crust px-3 py-2 text-ctp-subtext0 shadow-sm ring-ctp-accent transition focus:outline-none focus:ring-2"
         />
       </div>
       <button
-      class="bg-ctp-surface0/50 hover:bg-ctp-base rounded-md py-2 px-6 text-sm transition"
+        class="rounded-md bg-ctp-surface0/50 px-6 py-2 text-sm transition hover:bg-ctp-base"
         @click="save"
       >
         Save

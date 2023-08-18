@@ -1,6 +1,6 @@
 <template>
   <router-link
-    class="hover:bg-ctp-base flex h-12 w-full cursor-pointer items-center space-x-3 rounded-md p-1.5 transition"
+    class="flex h-12 w-full cursor-pointer items-center space-x-3 rounded-md p-1.5 transition hover:bg-ctp-base"
     :class="{
       'bg-ctp-base': selected,
     }"

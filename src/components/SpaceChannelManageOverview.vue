@@ -7,11 +7,11 @@
         <input
           v-model="name"
           type="text"
-          class="ring-ctp-accent w-full resize-none rounded-md bg-ctp-crust border border-ctp-base px-3 py-2 text-ctp-subtext0 shadow-sm transition focus:outline-none focus:ring-2"
+          class="w-full resize-none rounded-md border border-ctp-base bg-ctp-crust px-3 py-2 text-ctp-subtext0 shadow-sm ring-ctp-accent transition focus:outline-none focus:ring-2"
         />
       </div>
       <button
-      class="bg-ctp-surface0/50 hover:bg-ctp-base rounded-md py-2 px-6 text-sm transition"
+        class="rounded-md bg-ctp-surface0/50 px-6 py-2 text-sm transition hover:bg-ctp-base"
         @click="save"
       >
         Save

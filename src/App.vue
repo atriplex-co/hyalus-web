@@ -111,7 +111,7 @@
         store.config.colorTheme === ColorTheme.Lavender,
     }"
   >
-    <div class="bg-ctp-base flex h-full min-h-0 flex-col text-ctp-text">
+    <div class="flex h-full min-h-0 flex-col bg-ctp-base text-ctp-text">
       <div id="app-inner"></div>
       <DesktopTitlebar v-if="isDesktop" />
       <router-view v-if="!inApp && !desktopUpdating" />

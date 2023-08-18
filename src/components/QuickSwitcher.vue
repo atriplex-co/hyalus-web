@@ -1,9 +1,9 @@
 <template>
   <ModalBase empty @close="$emit('close')">
-    <div class="bg-ctp-mantle p-4 max-w-xl w-screen rounded-md shadow-md space-y-4 h-96 min-h-0">
+    <div class="h-96 min-h-0 w-screen max-w-xl space-y-4 rounded-md bg-ctp-mantle p-4 shadow-md">
       <input
         type="text"
-        class="border-ctp-base bg-ctp-crust w-full p-4 rounded-md focus:ring-2 ring-ctp-accent transition"
+        class="w-full rounded-md border-ctp-base bg-ctp-crust p-4 ring-ctp-accent transition focus:ring-2"
         ref="inputEl"
         @input="onInput"
         @keydown="onKeydown"

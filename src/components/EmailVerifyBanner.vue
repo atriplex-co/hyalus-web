@@ -1,7 +1,7 @@
 <template>
   <div class="w-full">
     <div
-      class="bg-ctp-accent text-ctp-base flex h-9 items-center justify-between rounded-sm px-2 text-sm"
+      class="flex h-9 items-center justify-between rounded-sm bg-ctp-accent px-2 text-sm text-ctp-base"
     >
       <div class="flex items-center space-x-2 px-1">
         <EnvelopeIcon class="h-5 w-5" />

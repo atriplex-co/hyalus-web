@@ -25,14 +25,14 @@
           >
             <div
               v-if="dropRoleId === role.id && draggedRolePosition < role.position"
-              class="border-ctp-accent absolute bottom-0 w-full border-t-2"
+              class="absolute bottom-0 w-full border-t-2 border-ctp-accent"
             />
             <div
               v-if="dropRoleId === role.id && draggedRolePosition > role.position"
-              class="border-ctp-accent absolute top-0 w-full border-t-2"
+              class="absolute top-0 w-full border-t-2 border-ctp-accent"
             />
             <button
-              class="hover:bg-ctp-surface0/25 flex w-full items-center space-x-2 rounded-md py-1.5 px-2 text-sm transition"
+              class="flex w-full items-center space-x-2 rounded-md px-2 py-1.5 text-sm transition hover:bg-ctp-surface0/25"
               :class="{
                 'bg-ctp-surface0/50': id === role.id,
               }"
@@ -48,7 +48,7 @@
             </button>
           </div>
           <button
-            class="hover:bg-ctp-surface0/25 flex w-full items-center space-x-2 rounded-md py-1.5 px-2 text-sm transition"
+            class="flex w-full items-center space-x-2 rounded-md px-2 py-1.5 text-sm transition hover:bg-ctp-surface0/25"
             :class="{
               'bg-ctp-surface0/50': id === '',
             }"
@@ -65,7 +65,7 @@
           <input
             v-model="name"
             type="text"
-            class="ring-ctp-accent w-full resize-none rounded-md bg-ctp-crust border border-ctp-base px-3 py-2 text-ctp-subtext0 shadow-sm transition focus:outline-none focus:ring-2"
+            class="w-full resize-none rounded-md border border-ctp-base bg-ctp-crust px-3 py-2 text-ctp-subtext0 shadow-sm ring-ctp-accent transition focus:outline-none focus:ring-2"
           />
         </div>
         <div v-if="id" class="w-full space-y-2.5">
@@ -73,10 +73,10 @@
           <input
             v-model="color"
             type="text"
-            class="ring-ctp-accent w-full resize-none rounded-md bg-ctp-crust border border-ctp-base px-3 py-2 text-ctp-subtext0 shadow-sm transition focus:outline-none focus:ring-2"
+            class="w-full resize-none rounded-md border border-ctp-base bg-ctp-crust px-3 py-2 text-ctp-subtext0 shadow-sm ring-ctp-accent transition focus:outline-none focus:ring-2"
           />
           <div
-            class="bg-ctp-base border-ctp-surface0 flex items-center justify-center space-x-4 border p-2 rounded-md"
+            class="flex items-center justify-center space-x-4 rounded-md border border-ctp-surface0 bg-ctp-base p-2"
           >
             <div
               class="h-10 w-10 rounded-full"
@@ -209,14 +209,14 @@
         />
         <div class="space-x-4">
           <button
-            class="bg-ctp-surface0/50 hover:bg-ctp-base rounded-md py-2 px-6 text-sm transition"
+            class="rounded-md bg-ctp-surface0/50 px-6 py-2 text-sm transition hover:bg-ctp-base"
             @click="save"
           >
             Save
           </button>
           <button
             v-if="id"
-            class="bg-ctp-surface0/50 hover:bg-ctp-base rounded-md py-2 px-6 text-sm transition"
+            class="rounded-md bg-ctp-surface0/50 px-6 py-2 text-sm transition hover:bg-ctp-base"
             @click="deleteModal = true"
           >
             Delete

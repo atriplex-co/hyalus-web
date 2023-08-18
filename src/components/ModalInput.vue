@@ -3,7 +3,7 @@
     <p>{{ label }}</p>
     <input
       ref="input"
-      class="ring-ctp-accent border-ctp-base w-full rounded-md border bg-ctp-crust px-3 py-2 text-ctp-subtext0 shadow-sm transition focus:outline-none focus:ring-2"
+      class="w-full rounded-md border border-ctp-base bg-ctp-crust px-3 py-2 text-ctp-subtext0 shadow-sm ring-ctp-accent transition focus:outline-none focus:ring-2"
       :type="type"
       :value="modelValue"
       :autocomplete="autocomplete"

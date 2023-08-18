@@ -6,8 +6,8 @@
         'pt-[30px]': isDesktop,
       }"
     >
-      <div class="bg-ctp-crust w-[50%]"></div>
-      <div class="bg-ctp-mantle w-[50%]"></div>
+      <div class="w-[50%] bg-ctp-crust"></div>
+      <div class="w-[50%] bg-ctp-mantle"></div>
     </div>
     <div
       class="fixed inset-0 flex justify-center"
@@ -15,10 +15,10 @@
         'pt-[30px]': isDesktop,
       }"
     >
-      <div class="bg-ctp-crust w-56 space-y-0.5 pr-4 pt-16 text-ctp-subtext0">
+      <div class="w-56 space-y-0.5 bg-ctp-crust pr-4 pt-16 text-ctp-subtext0">
         <slot name="left"></slot>
       </div>
-      <div id="main" class="bg-ctp-mantle flex space-x-4 overflow-auto px-8">
+      <div id="main" class="flex space-x-4 overflow-auto bg-ctp-mantle px-8">
         <div class="w-screen max-w-2xl pt-16">
           <transition
             enter-active-class="transition transform duration-75 ease-out"

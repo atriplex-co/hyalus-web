@@ -4,12 +4,12 @@
       <div class="flex w-full min-w-0 items-center space-x-2">
         <router-link
           v-if="isMobile"
-          class="ml-2 h-8 w-8 rounded-full bg-ctp-surface0 p-1.5 text-ctp-subtext0 hover:text-ctp-text transition hover:bg-ctp-surface0/50"
+          class="ml-2 h-8 w-8 rounded-full bg-ctp-surface0 p-1.5 text-ctp-subtext0 transition hover:bg-ctp-surface0/50 hover:text-ctp-text"
           to="/app"
         >
           <ArrowLeftIcon />
         </router-link>
-        <div class="bg-ctp-surface0 h-8 w-8 rounded-full p-2">
+        <div class="h-8 w-8 rounded-full bg-ctp-surface0 p-2">
           <AtSymbolIcon v-if="channel.type === ChannelType.DM" />
           <UserGroupIcon v-if="channel.type === ChannelType.Group" />
           <HashtagIcon v-if="channel.type === ChannelType.SpaceText" />
@@ -23,7 +23,7 @@
           >
             <input
               v-model="name"
-              class="hover:border-ctp-surface0/50 focus:border-ctp-surface0 -ml-2 w-full max-w-full truncate rounded-lg border border-transparent bg-transparent py-1 px-2 transition focus:bg-ctp-mantle"
+              class="-ml-2 w-full max-w-full truncate rounded-lg border border-transparent bg-transparent px-2 py-1 transition hover:border-ctp-surface0/50 focus:border-ctp-surface0 focus:bg-ctp-mantle"
             />
           </form>
           <p v-else class="truncate">
@@ -42,25 +42,25 @@
             />
             <div
               v-if="voiceUsers.length !== voiceUsersShown.length"
-              class="bg-ctp-base flex h-7 w-7 items-center justify-center rounded-full border border-gray-900 text-xs font-bold text-white"
+              class="flex h-7 w-7 items-center justify-center rounded-full border border-gray-900 bg-ctp-base text-xs font-bold text-white"
             >
               <p>+{{ voiceUsers.length - voiceUsersShown.length }}</p>
             </div>
           </div>
           <div
-            class="bg-ctp-surface0 h-8 w-8 cursor-pointer rounded-full p-2 transition hover:text-ctp-text"
+            class="h-8 w-8 cursor-pointer rounded-full bg-ctp-surface0 p-2 transition hover:text-ctp-text"
             @click="callStart"
           >
             <PhoneIcon />
           </div>
           <div
-            class="bg-ctp-surface0 h-8 w-8 cursor-pointer rounded-full p-2 transition hover:text-ctp-text"
+            class="h-8 w-8 cursor-pointer rounded-full bg-ctp-surface0 p-2 transition hover:text-ctp-text"
             @click="callStartWithVideo"
           >
             <VideoIcon />
           </div>
           <div
-            class="bg-ctp-surface0 h-8 w-8 cursor-pointer rounded-full p-2 transition hover:text-ctp-text"
+            class="h-8 w-8 cursor-pointer rounded-full bg-ctp-surface0 p-2 transition hover:text-ctp-text"
             @click="inviteModal = true"
           >
             <UserPlusIcon />
@@ -68,7 +68,7 @@
         </template>
         <div
           v-if="channel.type !== ChannelType.DM"
-          class="bg-ctp-surface0 h-8 w-8 cursor-pointer rounded-full p-2 transition hover:text-ctp-text"
+          class="h-8 w-8 cursor-pointer rounded-full bg-ctp-surface0 p-2 transition hover:text-ctp-text"
           @click="store.writeConfig('showChannelMembers', !store.config.showChannelMembers)"
         >
           <UsersIcon />

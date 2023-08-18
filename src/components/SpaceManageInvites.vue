@@ -11,12 +11,12 @@
         </p>
         <input
           type="text"
-          class="ring-ctp-accent w-[50%] resize-none rounded-md border bg-ctp-crust border-ctp-base px-2 py-1 text-ctp-subtext0 shadow-sm transition placeholder:text-ctp-overlay0 focus:outline-none focus:ring-2"
+          class="w-[50%] resize-none rounded-md border border-ctp-base bg-ctp-crust px-2 py-1 text-ctp-subtext0 shadow-sm ring-ctp-accent transition placeholder:text-ctp-overlay0 focus:outline-none focus:ring-2"
           placeholder="Search Invites"
         />
       </div>
       <table
-        class="divide-ctp-surface0/50 border-ctp-surface0/50 w-full table-auto divide-y border-t border-b text-sm"
+        class="w-full table-auto divide-y divide-ctp-surface0/50 border-b border-t border-ctp-surface0/50 text-sm"
       >
         <thead>
           <tr>
@@ -27,7 +27,7 @@
             <td class="w-8"></td>
           </tr>
         </thead>
-        <tbody class="divide-ctp-surface0/50 divide-y">
+        <tbody class="divide-y divide-ctp-surface0/50">
           <SpaceInviteManageItem
             v-for="invite in invites"
             :key="invite.code"

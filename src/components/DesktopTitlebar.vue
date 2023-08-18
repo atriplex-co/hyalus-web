@@ -1,5 +1,5 @@
 <template>
-  <div class="flex h-[30px] items-center bg-ctp-crust text-sm z-20">
+  <div class="z-20 flex h-[30px] items-center bg-ctp-crust text-sm">
     <div class="draggable flex h-full flex-1 select-none items-center justify-between px-2">
       <div class="flex items-center space-x-2">
         <AppIcon class="h-4 w-4" />
@@ -8,7 +8,7 @@
     </div>
     <div class="flex h-full items-center text-ctp-overlay0">
       <div
-        class="hover:bg-ctp-mantle hover:text-ctp-text flex h-full w-10 items-center justify-center p-2 transition"
+        class="flex h-full w-10 items-center justify-center p-2 transition hover:bg-ctp-mantle hover:text-ctp-text"
         @click="minimize"
       >
         <svg width="11" height="1" viewBox="0 0 11 1" fill="currentColor">
@@ -16,7 +16,7 @@
         </svg>
       </div>
       <div
-        class="hover:bg-ctp-mantle hover:text-ctp-text flex h-full w-10 items-center justify-center p-2 transition"
+        class="flex h-full w-10 items-center justify-center p-2 transition hover:bg-ctp-mantle hover:text-ctp-text"
         @click="maximize"
       >
         <svg width="10" height="10" viewBox="0 0 10 10" fill="currentColor">
@@ -24,7 +24,7 @@
         </svg>
       </div>
       <div
-        class="hover:bg-ctp-mantle hover:text-ctp-text flex h-full w-10 items-center justify-center p-2 transition"
+        class="flex h-full w-10 items-center justify-center p-2 transition hover:bg-ctp-mantle hover:text-ctp-text"
         @click="close"
       >
         <svg width="12" height="12" viewBox="0 0 12 12" fill="currentColor">

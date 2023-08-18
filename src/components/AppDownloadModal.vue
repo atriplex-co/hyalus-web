@@ -1,7 +1,7 @@
 <template>
   <ModalBase empty @close="$emit('close')">
     <div class="relative w-screen max-w-md rounded-md bg-ctp-mantle p-4">
-      <div class="absolute top-4 right-4 cursor-pointer" @click="$emit('close')">
+      <div class="absolute right-4 top-4 cursor-pointer" @click="$emit('close')">
         <XMarkIcon class="h-5 w-5 text-ctp-overlay0" />
       </div>
       <div v-if="defaultDownload" class="mt-8 flex w-full flex-col items-center space-y-4">
@@ -11,7 +11,7 @@
           <LinuxIcon v-if="defaultDownload.platform === 'linux'" />
         </div>
         <a
-          class="bg-ctp-accent rounded-md p-2 font-medium text-ctp-base shadow-sm"
+          class="rounded-md bg-ctp-accent p-2 font-medium text-ctp-base shadow-sm"
           :href="defaultDownload.url"
         >
           <p v-if="defaultDownload.platform === 'win32'">Download for Windows</p>
@@ -36,7 +36,7 @@
         }"
       >
         <div
-          class="col flex w-full flex-col divide-y rounded-md border border-ctp-base divide-ctp-base text-sm shadow-sm bg-ctp-crust"
+          class="col flex w-full flex-col divide-y divide-ctp-base rounded-md border border-ctp-base bg-ctp-crust text-sm shadow-sm"
         >
           <a
             v-for="download in downloads"

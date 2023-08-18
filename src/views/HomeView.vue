@@ -8,13 +8,13 @@
           <p class="mt-2 text-lg text-ctp-subtext0">It's a messaging app.</p>
           <div class="mt-8 flex space-x-4 text-sm">
             <button
-              class="bg-ctp-accent text-ctp-base hover:bg-ctp-accent/75 rounded-md py-2.5 px-3.5 transition"
+              class="rounded-md bg-ctp-accent px-3.5 py-2.5 text-ctp-base transition hover:bg-ctp-accent/75"
               @click="appDownloadModal = true"
             >
               Download
             </button>
             <router-link
-              class="rounded-md py-2.5 px-3.5 text-ctp-subtext0 transition bg-ctp-base hover:bg-ctp-base/75"
+              class="rounded-md bg-ctp-base px-3.5 py-2.5 text-ctp-subtext0 transition hover:bg-ctp-base/75"
               to="/app"
             >
               Open Web App
@@ -24,7 +24,7 @@
         <img src="../assets/images/Chat-bro.png" class="max-w-md" />
       </div>
     </div>
-    <div class="bg-ctp-mantle flex flex-col items-center py-20">
+    <div class="flex flex-col items-center bg-ctp-mantle py-20">
       <p class="text-3xl font-bold">A better chat app</p>
       <p class="mt-4 text-lg text-ctp-subtext0">
         See why Hyalus is the best thing since sliced bread.
@@ -32,9 +32,9 @@
       <div class="mt-20 space-y-16">
         <div class="flex space-x-12">
           <div
-            class="bg-ctp-base flex h-48 w-80 flex-col items-center rounded-md px-8 text-center shadow-md"
+            class="flex h-48 w-80 flex-col items-center rounded-md bg-ctp-base px-8 text-center shadow-md"
           >
-            <div class="-mt-6 h-12 w-12 rounded-md bg-ctp-accent text-ctp-surface0 p-3 shadow-sm">
+            <div class="-mt-6 h-12 w-12 rounded-md bg-ctp-accent p-3 text-ctp-surface0 shadow-sm">
               <LockIcon />
             </div>
             <p class="mt-8 text-2xl font-bold">Secure</p>
@@ -43,9 +43,9 @@
             </p>
           </div>
           <div
-            class="bg-ctp-base flex h-48 w-80 flex-col items-center rounded-md px-8 text-center shadow-md"
+            class="flex h-48 w-80 flex-col items-center rounded-md bg-ctp-base px-8 text-center shadow-md"
           >
-            <div class="-mt-6 h-12 w-12 rounded-md bg-ctp-accent text-ctp-surface0 p-3 shadow-sm">
+            <div class="-mt-6 h-12 w-12 rounded-md bg-ctp-accent p-3 text-ctp-surface0 shadow-sm">
               <svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 20 20" fill="currentColor">
                 <path
                   d="M11 17a1 1 0 001.447.894l4-2A1 1 0 0017 15V9.236a1 1 0 00-1.447-.894l-4 2a1 1 0 00-.553.894V17zM15.211 6.276a1 1 0 000-1.788l-4.764-2.382a1 1 0 00-.894 0L4.789 4.488a1 1 0 000 1.788l4.764 2.382a1 1 0 00.894 0l4.764-2.382zM4.447 8.342A1 1 0 003 9.236V15a1 1 0 00.553.894l4 2A1 1 0 009 17v-5.764a1 1 0 00-.553-.894l-4-2z"
@@ -56,9 +56,9 @@
             <p class="mt-4 text-ctp-subtext0">Desktop app support for Windows, macOS, and Linux.</p>
           </div>
           <div
-            class="bg-ctp-base flex h-48 w-80 flex-col items-center rounded-md px-8 text-center shadow-md"
+            class="flex h-48 w-80 flex-col items-center rounded-md bg-ctp-base px-8 text-center shadow-md"
           >
-            <div class="-mt-6 h-12 w-12 rounded-md bg-ctp-accent text-ctp-surface0 p-3 shadow-sm">
+            <div class="-mt-6 h-12 w-12 rounded-md bg-ctp-accent p-3 text-ctp-surface0 shadow-sm">
               <svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 20 20" fill="currentColor">
                 <path d="M13 7H7v6h6V7z" />
                 <path
@@ -76,9 +76,9 @@
         </div>
         <div class="flex space-x-12">
           <div
-            class="bg-ctp-base flex h-48 w-80 flex-col items-center rounded-md px-8 text-center shadow-md"
+            class="flex h-48 w-80 flex-col items-center rounded-md bg-ctp-base px-8 text-center shadow-md"
           >
-            <div class="-mt-6 h-12 w-12 rounded-md bg-ctp-accent text-ctp-surface0 p-3 shadow-sm">
+            <div class="-mt-6 h-12 w-12 rounded-md bg-ctp-accent p-3 text-ctp-surface0 shadow-sm">
               <DesktopIcon />
             </div>
             <p class="mt-8 text-2xl font-bold">Screenshare</p>
@@ -87,9 +87,9 @@
             </p>
           </div>
           <div
-            class="bg-ctp-base flex h-48 w-80 flex-col items-center rounded-md px-8 text-center shadow-md"
+            class="flex h-48 w-80 flex-col items-center rounded-md bg-ctp-base px-8 text-center shadow-md"
           >
-            <div class="-mt-6 h-12 w-12 rounded-md bg-ctp-accent text-ctp-surface0 p-3 shadow-sm">
+            <div class="-mt-6 h-12 w-12 rounded-md bg-ctp-accent p-3 text-ctp-surface0 shadow-sm">
               <svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 20 20" fill="currentColor">
                 <path
                   fill-rule="evenodd"
@@ -100,16 +100,16 @@
             </div>
             <div class="mt-8 flex items-center space-x-2">
               <p class="text-2xl font-bold">Servers</p>
-              <p class="bg-ctp-surface0 rounded-md py-1 px-2 text-xs text-ctp-subtext0">WIP</p>
+              <p class="rounded-md bg-ctp-surface0 px-2 py-1 text-xs text-ctp-subtext0">WIP</p>
             </div>
             <p class="mt-4 text-ctp-subtext0">
               Organized and customizable spaces for clubs & communities.
             </p>
           </div>
           <div
-            class="bg-ctp-base flex h-48 w-80 flex-col items-center rounded-md px-8 text-center shadow-md"
+            class="flex h-48 w-80 flex-col items-center rounded-md bg-ctp-base px-8 text-center shadow-md"
           >
-            <div class="-mt-6 h-12 w-12 rounded-md bg-ctp-accent text-ctp-surface0 p-3 shadow-sm">
+            <div class="-mt-6 h-12 w-12 rounded-md bg-ctp-accent p-3 text-ctp-surface0 shadow-sm">
               <svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 20 20" fill="currentColor">
                 <path
                   fill-rule="evenodd"

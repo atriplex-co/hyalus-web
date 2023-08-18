@@ -19,7 +19,7 @@
           <div
             v-for="source in sources"
             :key="source.id"
-            class="flex min-w-0 cursor-pointer flex-col items-center space-y-3 rounded-md px-3 py-2 hover:bg-ctp-mantle/50 text-ctp-subtext0"
+            class="flex min-w-0 cursor-pointer flex-col items-center space-y-3 rounded-md px-3 py-2 text-ctp-subtext0 hover:bg-ctp-mantle/50"
             :class="{
               'bg-ctp-mantle': selectedSourceId === source.id,
             }"

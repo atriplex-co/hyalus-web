@@ -29,7 +29,7 @@
       >
         <div v-for="channel in privateChannels" :key="channel.id">
           <router-link
-            class="relative flex h-10 w-10 items-center justify-center rounded-full bg-ctp-accent hover:bg-ctp-accent/75 text-ctp-base transition"
+            class="relative flex h-10 w-10 items-center justify-center rounded-full bg-ctp-accent text-ctp-base transition hover:bg-ctp-accent/75"
             :to="`/channels/${channel.id}`"
           >
             <UserAvatar
@@ -44,7 +44,7 @@
               {{ channel.name.slice(0, 1) }}
             </p>
             <p
-              class="bg-ctp-accent ring-ctp-crust absolute bottom-0 right-0 h-4 min-w-[1rem] rounded-full px-1 text-center text-xs font-bold text-ctp-base ring-2"
+              class="absolute bottom-0 right-0 h-4 min-w-[1rem] rounded-full bg-ctp-accent px-1 text-center text-xs font-bold text-ctp-base ring-2 ring-ctp-crust"
             >
               {{ getChannelState(channel).mentionCount }}
             </p>
@@ -52,14 +52,14 @@
         </div>
       </TransitionGroup>
       <div class="w-full px-3">
-        <div class="border-ctp-surface0/50 -mt-px border-t"></div>
+        <div class="-mt-px border-t border-ctp-surface0/50"></div>
       </div>
       <button
         v-for="space in store.spaces"
         :key="space.id"
-        class="bg-ctp-base flex h-10 w-10 items-center justify-center overflow-hidden rounded-full transition text-ctp-accent hover:bg-ctp-surface0/75"
+        class="flex h-10 w-10 items-center justify-center overflow-hidden rounded-full bg-ctp-base text-ctp-accent transition hover:bg-ctp-surface0/75"
         :class="{
-          'ring-ctp-accent ring-2':
+          'ring-2 ring-ctp-accent':
             store.sideBarState === SideBarState.SPACE && selectedSpaceId === space.id,
         }"
         @click="
@@ -71,14 +71,14 @@
         <p v-else>{{ space.name.slice(0, 1) }}</p>
       </button>
       <button
-        class="bg-ctp-base hover:bg-ctp-surface0/75 text-ctp-accent flex h-10 w-10 items-center justify-center rounded-full transition"
+        class="flex h-10 w-10 items-center justify-center rounded-full bg-ctp-base text-ctp-accent transition hover:bg-ctp-surface0/75"
         @click="spaceCreateModal = true"
       >
         <PlusIcon class="h-5 w-5" />
       </button>
       <button
         v-if="store.updateAvailable"
-        class="bg-ctp-base hover:bg-ctp-surface0/75 text-ctp-accent flex h-10 w-10 items-center justify-center rounded-full transition"
+        class="flex h-10 w-10 items-center justify-center rounded-full bg-ctp-base text-ctp-accent transition hover:bg-ctp-surface0/75"
         @click="updateReloadModal = true"
       >
         <RefreshIcon class="h-5 w-5" />

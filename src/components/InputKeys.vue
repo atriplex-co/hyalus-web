@@ -1,6 +1,6 @@
 <template>
   <div
-    class="flex w-96 cursor-pointer items-center justify-between rounded-md border px-2 py-1 transition bg-ctp-crust"
+    class="flex w-96 cursor-pointer items-center justify-between rounded-md border bg-ctp-crust px-2 py-1 transition"
     :class="{
       'border-ctp-surface0/50 hover:border-ctp-surface0': !record,
       'border-ctp-accent hover:border-ctp-accent/50': record,

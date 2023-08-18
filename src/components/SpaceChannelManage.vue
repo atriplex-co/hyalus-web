@@ -3,9 +3,9 @@
     <template #left>
       <div
         v-if="allowManageChannels"
-        class="flex cursor-pointer items-center space-x-4 rounded-md py-1.5 px-3 transition hover:bg-ctp-base/50"
+        class="flex cursor-pointer items-center space-x-4 rounded-md px-3 py-1.5 transition hover:bg-ctp-base/50"
         :class="{
-          'text-ctp-text bg-ctp-base': active === 'overview',
+          'bg-ctp-base text-ctp-text': active === 'overview',
         }"
         @click="active = 'overview'"
       >
@@ -14,20 +14,20 @@
       </div>
       <div
         v-if="allowManageRoles"
-        class="flex cursor-pointer items-center space-x-4 rounded-md py-1.5 px-3 transition hover:bg-ctp-base/50"
+        class="flex cursor-pointer items-center space-x-4 rounded-md px-3 py-1.5 transition hover:bg-ctp-base/50"
         :class="{
-          'text-ctp-text bg-ctp-base': active === 'permissions',
+          'bg-ctp-base text-ctp-text': active === 'permissions',
         }"
         @click="active = 'permissions'"
       >
         <ClipboardDocumentCheckIcon class="h-5 w-5" />
         <p>Permissions</p>
       </div>
-      <div class="py-2 px-3">
-        <div class="border-ctp-base border-t"></div>
+      <div class="px-3 py-2">
+        <div class="border-t border-ctp-base"></div>
       </div>
       <div
-        class="flex cursor-pointer items-center space-x-4 rounded-md py-1.5 px-3 transition hover:bg-ctp-red hover:text-ctp-base"
+        class="flex cursor-pointer items-center space-x-4 rounded-md px-3 py-1.5 transition hover:bg-ctp-red hover:text-ctp-base"
         @click="deleteModal = true"
       >
         <TrashIcon class="h-5 w-5" />

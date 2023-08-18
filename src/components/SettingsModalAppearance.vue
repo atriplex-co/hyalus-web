@@ -1,7 +1,7 @@
 <template>
   <div>
     <p class="text-2xl">Appearance</p>
-    <div class="divide-y divide-ctp-surface0/50 border-t border-b border-ctp-surface0/50 mt-8">
+    <div class="mt-8 divide-y divide-ctp-surface0/50 border-b border-t border-ctp-surface0/50">
       <div class="flex h-16 items-center justify-between">
         <p class="font-bold">Font Scale</p>
         <InputList>
@@ -62,7 +62,7 @@
         <p class="font-bold">Color Theme</p>
         <InputList>
           <template #selected>
-            <div class="bg-ctp-accent h-3 w-3 rounded-full" />
+            <div class="h-3 w-3 rounded-full bg-ctp-accent" />
             <p>
               {{ formatColorTheme(colorTheme) }}
             </p>

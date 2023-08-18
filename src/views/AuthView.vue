@@ -20,7 +20,7 @@
           <div class="space-y-4">
             <div
               v-if="error"
-              class="-mt-2 flex items-center space-x-3 rounded-md p-4 text-sm shadow-sm bg-ctp-mantle"
+              class="-mt-2 flex items-center space-x-3 rounded-md bg-ctp-mantle p-4 text-sm shadow-sm"
             >
               <ErrorIcon class="h-5 w-5" />
               <p class="flex-1">{{ error }}</p>
@@ -30,7 +30,7 @@
               <p v-if="mode === 'register'" class="text-sm">Email</p>
               <input
                 v-model="email"
-                class="ring-ctp-accent bg-ctp-mantle w-full rounded-md border border-ctp-base px-3 py-2 text-ctp-subtext0 shadow-sm transition focus:outline-none focus:ring-2"
+                class="w-full rounded-md border border-ctp-base bg-ctp-mantle px-3 py-2 text-ctp-subtext0 shadow-sm ring-ctp-accent transition focus:outline-none focus:ring-2"
                 type="text"
                 autocomplete="username"
               />
@@ -39,7 +39,7 @@
               <p class="text-sm">Password</p>
               <input
                 v-model="password"
-                class="ring-ctp-accent bg-ctp-mantle w-full rounded-md border border-ctp-base px-3 py-2 text-ctp-subtext0 shadow-sm transition focus:outline-none focus:ring-2"
+                class="w-full rounded-md border border-ctp-base bg-ctp-mantle px-3 py-2 text-ctp-subtext0 shadow-sm ring-ctp-accent transition focus:outline-none focus:ring-2"
                 type="password"
                 autocomplete="current-password"
               />
@@ -48,7 +48,7 @@
               <p class="text-sm">Confirm password</p>
               <input
                 v-model="passwordConfirm"
-                class="ring-ctp-accent bg-ctp-mantle w-full rounded-md border border-ctp-base px-3 py-2 text-ctp-subtext0 shadow-sm transition focus:outline-none focus:ring-2"
+                class="w-full rounded-md border border-ctp-base bg-ctp-mantle px-3 py-2 text-ctp-subtext0 shadow-sm ring-ctp-accent transition focus:outline-none focus:ring-2"
                 type="password"
                 autocomplete="current-password"
               />
@@ -57,7 +57,7 @@
               <p class="text-sm">Code</p>
               <input
                 v-model="totpCode"
-                class="ring-ctp-accent bg-ctp-mantle w-full rounded-md border border-ctp-base px-3 py-2 text-ctp-subtext0 shadow-sm transition focus:outline-none focus:ring-2"
+                class="w-full rounded-md border border-ctp-base bg-ctp-mantle px-3 py-2 text-ctp-subtext0 shadow-sm ring-ctp-accent transition focus:outline-none focus:ring-2"
                 type="totpCode"
                 autocomplete="current-password"
                 autofocus
@@ -66,7 +66,7 @@
           </div>
           <div class="flex flex-col items-center space-y-6">
             <button
-              class="bg-ctp-accent hover:bg-ctp-accent/75 w-full rounded-md py-2.5 text-sm text-ctp-base font-medium transition focus:outline-none"
+              class="w-full rounded-md bg-ctp-accent py-2.5 text-sm font-medium text-ctp-base transition hover:bg-ctp-accent/75 focus:outline-none"
             >
               <template v-if="ready">
                 <p v-if="mode === 'login'">Sign in</p>
@@ -78,7 +78,7 @@
             <div class="space-y-4 text-sm">
               <button
                 v-if="mode === 'login'"
-                class="text-ctp-accent hover:text-ctp-accent transition"
+                class="text-ctp-accent transition hover:text-ctp-accent"
                 @click="
                   error = '';
                   mode = 'register';
@@ -88,7 +88,7 @@
               </button>
               <button
                 v-if="mode === 'register'"
-                class="text-ctp-accent hover:text-ctp-accent transition"
+                class="text-ctp-accent transition hover:text-ctp-accent"
                 @click="
                   error = '';
                   mode = 'login';
@@ -98,7 +98,7 @@
               </button>
               <button
                 v-if="mode === 'loginTotp'"
-                class="text-ctp-accent hover:text-ctp-accent transition"
+                class="text-ctp-accent transition hover:text-ctp-accent"
                 @click="
                   error = '';
                   mode = 'login';

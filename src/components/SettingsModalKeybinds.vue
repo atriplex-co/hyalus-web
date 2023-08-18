@@ -1,7 +1,7 @@
 <template>
   <div>
     <p class="text-2xl">Keybinds</p>
-    <div class="divide-y divide-ctp-surface0/50 border-t border-b border-ctp-surface0/50 mt-8">
+    <div class="mt-8 divide-y divide-ctp-surface0/50 border-b border-t border-ctp-surface0/50">
       <div
         v-if="!isDesktop"
         class="my-2 flex h-12 items-center justify-between rounded-md bg-ctp-base px-3"
@@ -11,7 +11,7 @@
           <p>Keyboard shortcuts require the desktop app.</p>
         </div>
         <div
-          class="h-8 w-8 cursor-pointer rounded-full p-1.5 transition bg-ctp-surface0 hover:bg-ctp-surface0/50"
+          class="h-8 w-8 cursor-pointer rounded-full bg-ctp-surface0 p-1.5 transition hover:bg-ctp-surface0/50"
           @click="appDownloadModal = true"
         >
           <DownloadIcon />

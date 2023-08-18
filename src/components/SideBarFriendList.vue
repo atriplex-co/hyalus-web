@@ -4,7 +4,7 @@
       <p class="text-lg font-bold">Friends</p>
       <div @click="friendAddModal = true">
         <UserAddIcon
-          class="bg-ctp-accent text-ctp-base hover:bg-ctp-accent/75 h-8 w-8 cursor-pointer rounded-full p-2 transition"
+          class="h-8 w-8 cursor-pointer rounded-full bg-ctp-accent p-2 text-ctp-base transition hover:bg-ctp-accent/75"
         />
       </div>
     </div>

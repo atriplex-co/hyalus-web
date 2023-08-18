@@ -2,7 +2,7 @@
   <div class="flex h-full w-full flex-col">
     <div class="flex h-14 items-center space-x-2 p-2">
       <div
-        class="bg-ctp-crust flex h-8 w-full items-center space-x-3 overflow-hidden rounded-md px-3"
+        class="flex h-8 w-full items-center space-x-3 overflow-hidden rounded-md bg-ctp-crust px-3"
       >
         <input
           type="text"
@@ -13,19 +13,19 @@
       </div>
       <div
         to="/friends"
-        class="bg-ctp-crust relative flex h-8 w-8 flex-shrink-0 cursor-pointer items-center justify-center rounded-md text-ctp-overlay0 transition hover:text-ctp-text:text-white"
+        class="hover:text-ctp-text:text-white relative flex h-8 w-8 flex-shrink-0 cursor-pointer items-center justify-center rounded-md bg-ctp-crust text-ctp-overlay0 transition"
         @click="store.sideBarState = SideBarState.FRIENDS"
       >
         <FriendsIcon class="h-4 w-4" />
         <div
           v-if="acceptableFriendsCount"
-          class="bg-ctp-accent absolute -top-1 -right-1 rounded-full px-1 text-center text-xs font-bold text-ctp-base"
+          class="absolute -right-1 -top-1 rounded-full bg-ctp-accent px-1 text-center text-xs font-bold text-ctp-base"
         >
           {{ acceptableFriendsCount }}
         </div>
       </div>
       <div
-        class="bg-ctp-crust flex h-8 w-8 flex-shrink-0 cursor-pointer items-center justify-center rounded-md text-ctp-overlay0 transition hover:text-ctp-text:text-white"
+        class="hover:text-ctp-text:text-white flex h-8 w-8 flex-shrink-0 cursor-pointer items-center justify-center rounded-md bg-ctp-crust text-ctp-overlay0 transition"
         @click="settingsModal = true"
       >
         <SettingsIcon class="h-4 w-4" />
@@ -38,10 +38,10 @@
       v-if="!channels.length"
       class="flex flex-1 flex-col items-center justify-center space-y-4 text-sm text-ctp-subtext0"
     >
-      <SparklesIcon class="bg-ctp-surface0/75 h-12 w-12 rounded-full p-3" />
+      <SparklesIcon class="h-12 w-12 rounded-full bg-ctp-surface0/75 p-3" />
       <p>Welcome to Hyalus!</p>
       <button
-        class="bg-ctp-surface0/75 text-ctp-accent hover:bg-ctp-surface0/50 rounded-md p-1.5 transition"
+        class="rounded-md bg-ctp-surface0/75 p-1.5 text-ctp-accent transition hover:bg-ctp-surface0/50"
         @click="friendAddModal = true"
       >
         Add Friend

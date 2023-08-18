@@ -28,7 +28,7 @@
         <p>{{ ban.reason || "N/A" }}</p>
       </div>
       <button
-        class="block rounded-md bg-ctp-red py-1.5 px-3 text-sm text-ctp-base transition hover:bg-ctp-red/75"
+        class="block rounded-md bg-ctp-red px-3 py-1.5 text-sm text-ctp-base transition hover:bg-ctp-red/75"
         @click="remove"
       >
         Remove

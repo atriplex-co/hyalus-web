@@ -45,7 +45,7 @@
     <div class="items-center opacity-0 transition group-hover:opacity-100">
       <CogIcon
         v-if="allowManageChannels || allowManageRoles"
-        class="hover:text-ctp-accent h-4 w-4 cursor-pointer transition"
+        class="h-4 w-4 cursor-pointer transition hover:text-ctp-accent"
         @click="manageModal = true"
       />
     </div>

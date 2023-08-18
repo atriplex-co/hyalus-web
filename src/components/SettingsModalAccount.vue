@@ -6,7 +6,7 @@
     <div class="mt-8 flex items-center justify-between">
       <div class="flex items-center space-x-4">
         <div
-          class="ring-ctp-accent transition-gray-400 relative h-16 w-16 cursor-pointer overflow-hidden rounded-full bg-ctp-crust text-ctp-overlay0 shadow-sm transition"
+          class="transition-gray-400 relative h-16 w-16 cursor-pointer overflow-hidden rounded-full bg-ctp-crust text-ctp-overlay0 shadow-sm ring-ctp-accent transition"
           @click="setAvatar"
         >
           <UserAvatar
@@ -17,7 +17,7 @@
           <div
             class="absolute inset-0 flex items-center justify-center transition hover:text-ctp-text"
             :class="{
-              'opacity-0 hover:opacity-100 hover:bg-ctp-crust/50': store.self.avatar,
+              'opacity-0 hover:bg-ctp-crust/50 hover:opacity-100': store.self.avatar,
             }"
           >
             <ArrowUpOnSquareIcon class="h-5 w-5" />
@@ -29,7 +29,7 @@
         </div>
       </div>
       <p
-        class="cursor-pointer rounded-md px-4 py-2.5 text-sm transition bg-ctp-surface0/50 hover:bg-ctp-base"
+        class="cursor-pointer rounded-md bg-ctp-surface0/50 px-4 py-2.5 text-sm transition hover:bg-ctp-base"
         @click="$emit('activate', 'profile')"
       >
         Edit Profile
@@ -37,7 +37,7 @@
     </div>
     <div class="mt-8 space-y-4">
       <div
-        class="bg-ctp-surface0/50 hover:bg-ctp-base flex cursor-pointer items-center justify-between rounded-md py-3 px-4 transition"
+        class="flex cursor-pointer items-center justify-between rounded-md bg-ctp-surface0/50 px-4 py-3 transition hover:bg-ctp-base"
         @click="setUsernameModal = true"
       >
         <div class="flex items-center space-x-4">
@@ -50,7 +50,7 @@
         <PencilIcon class="h-4 w-4" />
       </div>
       <div
-        class="bg-ctp-surface0/50 hover:bg-ctp-base flex cursor-pointer items-center justify-between rounded-md py-3 px-4 transition"
+        class="flex cursor-pointer items-center justify-between rounded-md bg-ctp-surface0/50 px-4 py-3 transition hover:bg-ctp-base"
         @click="setEmailModal = true"
       >
         <div class="flex items-center space-x-4">
@@ -63,7 +63,7 @@
         <PencilIcon class="h-4 w-4" />
       </div>
       <div
-        class="bg-ctp-surface0/50 hover:bg-ctp-base flex cursor-pointer items-center justify-between rounded-md py-3 px-4 transition"
+        class="flex cursor-pointer items-center justify-between rounded-md bg-ctp-surface0/50 px-4 py-3 transition hover:bg-ctp-base"
         @click="setPhoneModal = true"
       >
         <div class="flex items-center space-x-4">
@@ -76,7 +76,7 @@
         <PencilIcon class="h-4 w-4" />
       </div>
       <div
-        class="bg-ctp-surface0/50 hover:bg-ctp-base flex cursor-pointer items-center justify-between rounded-md py-3 px-4 transition"
+        class="flex cursor-pointer items-center justify-between rounded-md bg-ctp-surface0/50 px-4 py-3 transition hover:bg-ctp-base"
         @click="setPasswordModal = true"
       >
         <div class="flex items-center space-x-4">
@@ -89,7 +89,7 @@
         <PencilIcon class="h-4 w-4" />
       </div>
       <div
-        class="bg-ctp-surface0/50 hover:bg-ctp-base flex cursor-pointer items-center justify-between rounded-md py-3 px-4 transition"
+        class="flex cursor-pointer items-center justify-between rounded-md bg-ctp-surface0/50 px-4 py-3 transition hover:bg-ctp-base"
         @click="totpModal = true"
       >
         <div class="flex items-center space-x-4">
@@ -111,8 +111,8 @@
     <TotpEnableModal v-if="!store.self.totpEnabled && totpModal" @close="totpModal = false" />
     <TotpDisableModal v-if="store.self.totpEnabled && totpModal" @close="totpModal = false" />
   </div>
-  <div v-else class="h-full flex items-center justify-center flex-col space-y-4 text-ctp-subtext0">
-    <TvIcon class="w-10 h-10" />
+  <div v-else class="flex h-full flex-col items-center justify-center space-y-4 text-ctp-subtext0">
+    <TvIcon class="h-10 w-10" />
     <p>Streamer Mode Enabled</p>
   </div>
 </template>

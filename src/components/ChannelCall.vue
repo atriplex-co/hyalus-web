@@ -1,7 +1,7 @@
 <template>
   <div
     v-if="store.call"
-    class="bg-ctp-crust top-0 flex flex-col"
+    class="top-0 flex flex-col bg-ctp-crust"
     :style="`height: ${resizeHeight}px;`"
     @mouseenter="controls = true"
     @mouseleave="controls = false"
@@ -56,7 +56,7 @@
       </div>
       <div @click="stop">
         <CallEndIcon
-          class="bg-ctp-red hover:bg-ctp-red/75 h-12 w-12 cursor-pointer rounded-full p-3 text-ctp-base transition"
+          class="h-12 w-12 cursor-pointer rounded-full bg-ctp-red p-3 text-ctp-base transition hover:bg-ctp-red/75"
         />
       </div>
       <div @click="toggleStream(CallStreamType.DisplayVideo)($event)">
@@ -82,7 +82,7 @@
       </div>
     </div>
     <div
-      class="absolute left-0 bottom-0 h-px w-full cursor-ns-resize"
+      class="absolute bottom-0 left-0 h-px w-full cursor-ns-resize"
       @mousedown="resizeMouseDown"
     ></div>
     <DesktopCaptureModal v-if="desktopCaptureModal" @close="desktopCaptureModal = false" />

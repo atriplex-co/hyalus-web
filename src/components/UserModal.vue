@@ -1,8 +1,8 @@
 <template>
   <ModalBase :empty="true" @close="$emit('close')">
     <LoadingIcon v-if="!cachedUser" class="h-8 w-8" />
-    <div v-if="cachedUser" class="bg-ctp-crust w-screen max-w-lg overflow-hidden rounded-md">
-      <div class="bg-ctp-mantle min-h-[6rem] w-full">
+    <div v-if="cachedUser" class="w-screen max-w-lg overflow-hidden rounded-md bg-ctp-crust">
+      <div class="min-h-[6rem] w-full bg-ctp-mantle">
         <img
           v-if="cachedUser.banner"
           :src="`/api/v1/avatars/${cachedUser.banner}`"
@@ -18,27 +18,27 @@
               class="h-24 w-24 rounded-full backdrop-blur"
             />
           </div>
-          <div class="absolute right-0 bottom-0 flex space-x-2">
+          <div class="absolute bottom-0 right-0 flex space-x-2">
             <template v-if="!isSelf">
               <ChatBubbleLeftIcon
-                class="bg-ctp-base h-8 w-8 cursor-pointer rounded-full p-2 text-ctp-subtext0 hover:bg-ctp-base/50 shadow-md transition"
+                class="h-8 w-8 cursor-pointer rounded-full bg-ctp-base p-2 text-ctp-subtext0 shadow-md transition hover:bg-ctp-base/50"
                 @click="openChannel"
               />
               <UserPlusIcon
                 v-if="!friend"
-                class="bg-ctp-base h-8 w-8 cursor-pointer rounded-full p-2 text-ctp-subtext0 hover:bg-ctp-base/50 shadow-md transition"
+                class="h-8 w-8 cursor-pointer rounded-full bg-ctp-base p-2 text-ctp-subtext0 shadow-md transition hover:bg-ctp-base/50"
                 @click="addFriend"
               />
               <UserMinusIcon
                 v-if="friend"
-                class="bg-ctp-base h-8 w-8 cursor-pointer rounded-full p-2 text-ctp-subtext0 hover:bg-ctp-base/50 shadow-md transition"
+                class="h-8 w-8 cursor-pointer rounded-full bg-ctp-base p-2 text-ctp-subtext0 shadow-md transition hover:bg-ctp-base/50"
                 @click="friendRemoveModal = true"
               />
             </template>
             <template v-if="isSelf">
               <PencilIcon
                 @click="settingsModal = true"
-                class="bg-ctp-base h-8 w-8 cursor-pointer rounded-full p-2 text-ctp-subtext0 hover:bg-ctp-base/50 shadow-md transition"
+                class="h-8 w-8 cursor-pointer rounded-full bg-ctp-base p-2 text-ctp-subtext0 shadow-md transition hover:bg-ctp-base/50"
               />
             </template>
           </div>
@@ -48,7 +48,7 @@
             <p class="truncate text-xl font-bold">{{ cachedUser.name }}</p>
             <p class="truncate text-sm text-ctp-subtext0">@{{ cachedUser.username }}</p>
           </div>
-          <div v-if="cachedUser.flags" class="bg-ctp-base flex space-x-2 rounded-md p-2 shadow-md">
+          <div v-if="cachedUser.flags" class="flex space-x-2 rounded-md bg-ctp-base p-2 shadow-md">
             <div
               v-if="cachedUser.flags & UserFlag.System"
               class="h-4 w-4 text-blue-400"
@@ -89,11 +89,11 @@
             </div>
           </div>
         </div>
-        <div class="border-ctp-base flex space-x-2 border-b text-sm text-ctp-subtext0">
+        <div class="flex space-x-2 border-b border-ctp-base text-sm text-ctp-subtext0">
           <p
             class="-mb-px cursor-pointer px-2 pb-2 transition"
             :class="{
-              'border-b-2 border-text text-ctp-text': tab === 'profile',
+              'border-text border-b-2 text-ctp-text': tab === 'profile',
               '': tab !== 'profile',
             }"
             @click="tab = 'profile'"
@@ -104,7 +104,7 @@
             v-if="!isSelf"
             class="-mb-px cursor-pointer px-2 pb-2 transition"
             :class="{
-              'border-b-2 border-text text-ctp-text': tab === 'spaces',
+              'border-text border-b-2 text-ctp-text': tab === 'spaces',
               '': tab !== 'spaces',
             }"
             @click="tab = 'spaces'"
@@ -115,7 +115,7 @@
             v-if="!isSelf"
             class="-mb-px cursor-pointer px-2 pb-2 transition"
             :class="{
-              'border-b-2 border-text text-ctp-text': tab === 'friends',
+              'border-text border-b-2 text-ctp-text': tab === 'friends',
               '': tab !== 'friends',
             }"
             @click="tab = 'friends'"
@@ -126,7 +126,7 @@
             v-if="!isSelf"
             class="-mb-px cursor-pointer px-2 pb-2 transition"
             :class="{
-              'border-b-2 border-text text-ctp-text': tab === 'groups',
+              'border-text border-b-2 text-ctp-text': tab === 'groups',
               '': tab !== 'groups',
             }"
             @click="tab = 'groups'"
@@ -142,7 +142,7 @@
                 <div
                   v-for="role in spaceRoles"
                   :key="role.id"
-                  class="bg-ctp-base flex h-6 items-center space-x-2 rounded-md px-2 text-xs"
+                  class="flex h-6 items-center space-x-2 rounded-md bg-ctp-base px-2 text-xs"
                 >
                   <div
                     class="h-2.5 w-2.5 rounded-full"
@@ -156,14 +156,14 @@
                   <p>{{ role.name }}</p>
                 </div>
                 <div
-                  class="bg-ctp-base flex h-6 w-6 cursor-pointer items-center justify-center rounded-md text-ctp-subtext0 transition hover:text-white"
+                  class="flex h-6 w-6 cursor-pointer items-center justify-center rounded-md bg-ctp-base text-ctp-subtext0 transition hover:text-white"
                 >
                   <PlusIcon class="h-4 w-4" />
                 </div>
               </div>
             </div>
             <div v-if="bioHtml" class="space-y-1">
-              <p class="text-xs font-semibold text-ctp-subtext0 uppercase">Bio</p>
+              <p class="text-xs font-semibold uppercase text-ctp-subtext0">Bio</p>
               <!-- eslint-disable vue/no-v-html -->
               <div class="select-text whitespace-pre-wrap text-sm" v-html="bioHtml" />
               <!-- eslint-enable vue/no-v-html -->
@@ -172,7 +172,7 @@
               v-if="!cachedUser.bio && !space"
               class="flex h-full w-full flex-col items-center justify-center space-y-4 text-sm text-ctp-subtext0"
             >
-              <InformationCircleIcon class="h-8 w-8 -mt-6" />
+              <InformationCircleIcon class="-mt-6 h-8 w-8" />
               <p>Nothing to see here.</p>
             </div>
           </template>
@@ -181,14 +181,14 @@
               v-if="!mutualSpaces.length"
               class="flex h-full w-full flex-col items-center justify-center space-y-4 text-sm text-ctp-subtext0"
             >
-              <XCircleIcon class="h-8 w-8 -mt-6" />
+              <XCircleIcon class="-mt-6 h-8 w-8" />
               <p>No mutual spaces.</p>
             </div>
             <div v-if="mutualSpaces.length" class="space-y-2">
               <div
                 v-for="mutualSpace in mutualSpaces"
                 :key="mutualSpace.id"
-                class="bg-ctp-base flex items-center space-x-2 rounded-md p-2"
+                class="flex items-center space-x-2 rounded-md bg-ctp-base p-2"
               >
                 <div
                   class="flex h-8 w-8 items-center justify-center overflow-hidden rounded-full bg-ctp-surface0"
@@ -209,7 +209,7 @@
             <div
               class="flex h-full w-full flex-col items-center justify-center space-y-4 text-sm text-ctp-subtext0"
             >
-              <FaceFrownIcon class="h-8 w-8 -mt-6" />
+              <FaceFrownIcon class="-mt-6 h-8 w-8" />
               <p>This doesn't actually work yet.</p>
               <!-- TODO:: mutual friends UI -->
             </div>
@@ -219,14 +219,14 @@
               v-if="!mutualGroups.length"
               class="flex h-full w-full flex-col items-center justify-center space-y-4 text-sm text-ctp-subtext0"
             >
-              <XCircleIcon class="h-8 w-8 -mt-6" />
+              <XCircleIcon class="-mt-6 h-8 w-8" />
               <p>No mutual groups.</p>
             </div>
             <div v-if="mutualGroups.length" class="space-y-2">
               <div
                 v-for="mutualGroup in mutualGroups"
                 :key="mutualGroup.id"
-                class="bg-ctp-base flex items-center space-x-2 rounded-md p-2"
+                class="flex items-center space-x-2 rounded-md bg-ctp-base p-2"
               >
                 <div
                   class="flex h-8 w-8 items-center justify-center overflow-hidden rounded-full bg-ctp-surface0"

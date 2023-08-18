@@ -9,7 +9,7 @@
         <p>Are you sure you want to delete this message?</p>
         <div
           ref="container"
-          class="max-h-48 w-full overflow-auto overflow-x-hidden rounded-md border p-2 shadow-sm border-ctp-base bg-ctp-crust"
+          class="max-h-48 w-full overflow-auto overflow-x-hidden rounded-md border border-ctp-base bg-ctp-crust p-2 shadow-sm"
         >
           <slot />
         </div>

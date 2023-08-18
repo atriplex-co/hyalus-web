@@ -16,7 +16,7 @@
     <td>{{ invite.expiresAt ? invite.expiresAt.toISOString() : "N/A" }}</td>
     <td>
       <button
-        class="bg-ctp-surface0 hover:bg-ctp-surface0/50 h-8 w-8 rounded-full p-2 text-ctp-subtext0 transition"
+        class="h-8 w-8 rounded-full bg-ctp-surface0 p-2 text-ctp-subtext0 transition hover:bg-ctp-surface0/50"
         @click="remove"
       >
         <TrashIcon />

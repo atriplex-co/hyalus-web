@@ -58,13 +58,13 @@
                 <div class="flex items-center">
                   <p
                     v-if="!required"
-                    class="cursor-pointer px-4 py-2 transition text-ctp-subtext0 hover:text-ctp-text"
+                    class="cursor-pointer px-4 py-2 text-ctp-subtext0 transition hover:text-ctp-text"
                     @click="$emit('close')"
                   >
                     {{ cancelText }}
                   </p>
                   <p
-                    class="bg-ctp-accent hover:bg-ctp-accent/75 cursor-pointer rounded-md px-4 py-2 text-ctp-base shadow-sm transition"
+                    class="cursor-pointer rounded-md bg-ctp-accent px-4 py-2 text-ctp-base shadow-sm transition hover:bg-ctp-accent/75"
                     @click="$emit('submit')"
                   >
                     {{ submitText }}

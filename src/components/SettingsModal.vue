@@ -2,9 +2,9 @@
   <SplitModal @close="$emit('close')">
     <template #left>
       <div
-        class="flex cursor-pointer items-center space-x-4 rounded-md py-1.5 px-3 transition hover:bg-ctp-base/50"
+        class="flex cursor-pointer items-center space-x-4 rounded-md px-3 py-1.5 transition hover:bg-ctp-base/50"
         :class="{
-          'text-ctp-text bg-ctp-base': page === SettingsPage.Account,
+          'bg-ctp-base text-ctp-text': page === SettingsPage.Account,
         }"
         @click="page = SettingsPage.Account"
       >
@@ -12,9 +12,9 @@
         <p>Account</p>
       </div>
       <div
-        class="flex cursor-pointer items-center space-x-4 rounded-md py-1.5 px-3 transition hover:bg-ctp-base/50"
+        class="flex cursor-pointer items-center space-x-4 rounded-md px-3 py-1.5 transition hover:bg-ctp-base/50"
         :class="{
-          'text-ctp-text bg-ctp-base': page === SettingsPage.Profile,
+          'bg-ctp-base text-ctp-text': page === SettingsPage.Profile,
         }"
         @click="page = SettingsPage.Profile"
       >
@@ -22,9 +22,9 @@
         <p>Profile</p>
       </div>
       <div
-        class="flex cursor-pointer items-center space-x-4 rounded-md py-1.5 px-3 transition hover:bg-ctp-base/50"
+        class="flex cursor-pointer items-center space-x-4 rounded-md px-3 py-1.5 transition hover:bg-ctp-base/50"
         :class="{
-          'text-ctp-text bg-ctp-base': page === SettingsPage.Sessions,
+          'bg-ctp-base text-ctp-text': page === SettingsPage.Sessions,
         }"
         @click="page = SettingsPage.Sessions"
       >
@@ -32,9 +32,9 @@
         <p>Sessions</p>
       </div>
       <div
-        class="flex cursor-pointer items-center space-x-4 rounded-md py-1.5 px-3 transition hover:bg-ctp-base/50"
+        class="flex cursor-pointer items-center space-x-4 rounded-md px-3 py-1.5 transition hover:bg-ctp-base/50"
         :class="{
-          'text-ctp-text bg-ctp-base': page === SettingsPage.Appearance,
+          'bg-ctp-base text-ctp-text': page === SettingsPage.Appearance,
         }"
         @click="page = SettingsPage.Appearance"
       >
@@ -42,9 +42,9 @@
         <p>Appearance</p>
       </div>
       <div
-        class="flex cursor-pointer items-center space-x-4 rounded-md py-1.5 px-3 transition hover:bg-ctp-base/50"
+        class="flex cursor-pointer items-center space-x-4 rounded-md px-3 py-1.5 transition hover:bg-ctp-base/50"
         :class="{
-          'text-ctp-text bg-ctp-base': page === SettingsPage.Notifications,
+          'bg-ctp-base text-ctp-text': page === SettingsPage.Notifications,
         }"
         @click="page = SettingsPage.Notifications"
       >
@@ -52,9 +52,9 @@
         <p>Notifications</p>
       </div>
       <div
-        class="flex cursor-pointer items-center space-x-4 rounded-md py-1.5 px-3 transition hover:bg-ctp-base/50"
+        class="flex cursor-pointer items-center space-x-4 rounded-md px-3 py-1.5 transition hover:bg-ctp-base/50"
         :class="{
-          'text-ctp-text bg-ctp-base': page === SettingsPage.AudioVideo,
+          'bg-ctp-base text-ctp-text': page === SettingsPage.AudioVideo,
         }"
         @click="page = SettingsPage.AudioVideo"
       >
@@ -62,9 +62,9 @@
         <p>Audio &amp; Video</p>
       </div>
       <div
-        class="flex cursor-pointer items-center space-x-4 rounded-md py-1.5 px-3 transition hover:bg-ctp-base/50"
+        class="flex cursor-pointer items-center space-x-4 rounded-md px-3 py-1.5 transition hover:bg-ctp-base/50"
         :class="{
-          'text-ctp-text bg-ctp-base': page === SettingsPage.Keybinds,
+          'bg-ctp-base text-ctp-text': page === SettingsPage.Keybinds,
         }"
         @click="page = SettingsPage.Keybinds"
       >
@@ -73,9 +73,9 @@
       </div>
       <div
         v-if="isDesktop"
-        class="flex cursor-pointer items-center space-x-4 rounded-md py-1.5 px-3 transition hover:bg-ctp-base/50"
+        class="flex cursor-pointer items-center space-x-4 rounded-md px-3 py-1.5 transition hover:bg-ctp-base/50"
         :class="{
-          'text-ctp-text bg-ctp-base': page === SettingsPage.Desktop,
+          'bg-ctp-base text-ctp-text': page === SettingsPage.Desktop,
         }"
         @click="page = SettingsPage.Desktop"
       >
@@ -84,9 +84,9 @@
       </div>
       <div
         v-if="isDesktop"
-        class="flex cursor-pointer items-center space-x-4 rounded-md py-1.5 px-3 transition hover:bg-ctp-base/50"
+        class="flex cursor-pointer items-center space-x-4 rounded-md px-3 py-1.5 transition hover:bg-ctp-base/50"
         :class="{
-          'text-ctp-text bg-ctp-base': page === SettingsPage.StreamerMode,
+          'bg-ctp-base text-ctp-text': page === SettingsPage.StreamerMode,
         }"
         @click="page = SettingsPage.StreamerMode"
       >
@@ -94,9 +94,9 @@
         <p>Streamer Mode</p>
       </div>
       <div
-        class="flex cursor-pointer items-center space-x-4 rounded-md py-1.5 px-3 transition hover:bg-ctp-base/50"
+        class="flex cursor-pointer items-center space-x-4 rounded-md px-3 py-1.5 transition hover:bg-ctp-base/50"
         :class="{
-          'text-ctp-text bg-ctp-base': page === SettingsPage.Changelog,
+          'bg-ctp-base text-ctp-text': page === SettingsPage.Changelog,
         }"
         @click="page = SettingsPage.Changelog"
       >
@@ -104,7 +104,7 @@
         <p>Changelog</p>
       </div>
       <div
-        class="flex cursor-pointer items-center space-x-4 rounded-md py-1.5 px-3 transition hover:bg-ctp-base/50"
+        class="flex cursor-pointer items-center space-x-4 rounded-md px-3 py-1.5 transition hover:bg-ctp-base/50"
         @click="logoutModal = true"
       >
         <ArrowLeftOnRectangleIcon class="h-5 w-5" />

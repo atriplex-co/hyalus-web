@@ -8,7 +8,7 @@
     />
     <div
       v-if="allowed && deny !== null"
-      class="divide-ctp-base flex divide-x overflow-hidden rounded-md border border-ctp-base bg-ctp-crust shadow-sm"
+      class="flex divide-x divide-ctp-base overflow-hidden rounded-md border border-ctp-base bg-ctp-crust shadow-sm"
     >
       <div
         class="flex h-6 w-6 items-center justify-center"
@@ -21,7 +21,7 @@
         "
       >
         <!-- <p>-</p> -->
-        <MinusIcon class="w-4 h-4" />
+        <MinusIcon class="h-4 w-4" />
       </div>
       <div
         class="flex h-6 w-6 items-center justify-center"
@@ -46,7 +46,7 @@
         "
       >
         <!-- <p>+</p> -->
-        <PlusIcon class="w-4 h-4" />
+        <PlusIcon class="h-4 w-4" />
       </div>
     </div>
     <div v-if="!allowed" class="flex h-6 w-6 items-center justify-center">

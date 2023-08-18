@@ -14,7 +14,7 @@
         <ModalError v-if="error" :error="error" />
         <p>Get started by setting up your account.</p>
         <div
-          class="ring-ctp-accent transition relative h-16 w-16 cursor-pointer overflow-hidden rounded-full shadow-sm bg-ctp-crust"
+          class="relative h-16 w-16 cursor-pointer overflow-hidden rounded-full bg-ctp-crust shadow-sm ring-ctp-accent transition"
           @click="setAvatar"
         >
           <UserAvatar
@@ -23,7 +23,7 @@
             class="h-16 w-16 cursor-pointer rounded-full"
           />
           <div
-            class="absolute inset-0 flex items-center justify-center text-ctp-subtext0 hover:text-ctp-text transition hover:bg-ctp-crust/50"
+            class="absolute inset-0 flex items-center justify-center text-ctp-subtext0 transition hover:bg-ctp-crust/50 hover:text-ctp-text"
             :class="{
               'opacity-0 hover:opacity-100': store.self.avatar,
             }"
@@ -37,17 +37,17 @@
           <div class="relative">
             <input
               v-model="username"
-              class="ring-ctp-accent w-full rounded-md border border-ctp-base bg-ctp-crust px-4 py-2 pl-11 text-ctp-subtext0 shadow-sm transition focus:outline-none focus:ring-2"
+              class="w-full rounded-md border border-ctp-base bg-ctp-crust px-4 py-2 pl-11 text-ctp-subtext0 shadow-sm ring-ctp-accent transition focus:outline-none focus:ring-2"
               type="text"
               spellcheck="false"
               @input="usernameEdited = true"
             />
             <div
-              class="absolute left-0 top-0 ml-1 -mt-px flex h-full items-center border-r px-2 text-ctp-subtext0 border-ctp-base"
+              class="absolute left-0 top-0 -mt-px ml-1 flex h-full items-center border-r border-ctp-base px-2 text-ctp-subtext0"
             >
               <p>@</p>
             </div>
-            <div class="absolute top-0 right-0 h-full py-2 px-3">
+            <div class="absolute right-0 top-0 h-full px-3 py-2">
               <div
                 v-if="usernameCheckOk === 1"
                 class="flex h-full items-center space-x-1 rounded-md bg-ctp-accent px-1 text-xs text-ctp-base"

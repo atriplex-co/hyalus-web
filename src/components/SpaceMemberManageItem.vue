@@ -48,21 +48,21 @@
         <div class="flex space-x-4">
           <button
             v-if="allowKickMember"
-            class="bg-ctp-surface0 hover:bg-ctp-surface0/50 block rounded-md py-1.5 px-3 text-sm transition"
+            class="block rounded-md bg-ctp-surface0 px-3 py-1.5 text-sm transition hover:bg-ctp-surface0/50"
             @click="kickModal = true"
           >
             Kick Member
           </button>
           <button
             v-if="allowBanMember"
-            class="bg-ctp-surface0 hover:bg-ctp-surface0/50 block rounded-md py-1.5 px-3 text-sm transition"
+            class="block rounded-md bg-ctp-surface0 px-3 py-1.5 text-sm transition hover:bg-ctp-surface0/50"
             @click="banModal = true"
           >
             Ban Member
           </button>
           <button
             v-if="allowManageAliases"
-            class="bg-ctp-surface0 hover:bg-ctp-surface0/50 block rounded-md py-1.5 px-3 text-sm transition"
+            class="block rounded-md bg-ctp-surface0 px-3 py-1.5 text-sm transition hover:bg-ctp-surface0/50"
             @click="aliasModal = true"
           >
             Change Nickname

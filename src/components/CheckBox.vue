@@ -1,7 +1,7 @@
 <template>
   <div
     :class="[
-      'rounded-md transition duration-100 border border-ctp-surface0',
+      'rounded-md border border-ctp-surface0 transition duration-100',
       {
         'text-transparent': !modelValue,
       },

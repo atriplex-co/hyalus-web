@@ -1,24 +1,24 @@
 <template>
   <div
-    class="flex items-center text-sm justify-between px-2 -mx-1 rounded-md"
+    class="-mx-1 flex items-center justify-between rounded-md px-2 text-sm"
     :class="{
       'bg-ctp-surface0/50': selected,
     }"
   >
-    <div class="flex items-center space-x-2 h-8">
+    <div class="flex h-8 items-center space-x-2">
       <UserAvatar
-        class="w-5 h-5"
+        class="h-5 w-5"
         :avatar="channel.members[0].avatar"
         v-if="channel.type === ChannelType.DM"
       />
       <UserAvatar
-        class="w-5 h-5"
+        class="h-5 w-5"
         :avatar="channel.members[0].avatar"
         v-if="channel.type !== ChannelType.DM && channel.avatar"
       />
       <div
         v-if="channel.type !== ChannelType.DM && !channel.avatar && channel.name"
-        class="h-5 w-5 rounded-full bg-ctp-surface0 flex items-center justify-center text-xs"
+        class="flex h-5 w-5 items-center justify-center rounded-full bg-ctp-surface0 text-xs"
       >
         <p>{{ channel.name.slice(0, 1) }}</p>
       </div>

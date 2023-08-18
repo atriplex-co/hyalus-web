@@ -1,7 +1,7 @@
 <template>
   <div v-if="show" class="w-full">
     <div
-      class="bg-ctp-accent text-ctp-base flex h-9 items-center justify-between rounded-sm px-2 text-sm shadow-md"
+      class="flex h-9 items-center justify-between rounded-sm bg-ctp-accent px-2 text-sm text-ctp-base shadow-md"
     >
       <div class="flex items-center space-x-2 px-1">
         <ComputerDesktopIcon class="h-5 w-5" />

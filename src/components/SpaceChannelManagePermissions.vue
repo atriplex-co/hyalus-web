@@ -25,7 +25,7 @@
                 <div
                   v-for="role in space.roles"
                   :key="role.id"
-                  class="hover:bg-ctp-surface0/50 transition flex cursor-pointer items-center space-x-2 rounded-md py-1.5 px-2 text-sm"
+                  class="flex cursor-pointer items-center space-x-2 rounded-md px-2 py-1.5 text-sm transition hover:bg-ctp-surface0/50"
                   @click="create(SpaceChannelOverrideType.Role, role.id)"
                 >
                   <div
@@ -42,7 +42,7 @@
                 <div
                   v-for="member in space.members"
                   :key="member.id"
-                  class="hover:bg-ctp-surface0/50 transition flex cursor-pointer items-center space-x-3 rounded-md py-1.5 px-2 text-sm"
+                  class="flex cursor-pointer items-center space-x-3 rounded-md px-2 py-1.5 text-sm transition hover:bg-ctp-surface0/50"
                   @click="create(SpaceChannelOverrideType.Member, member.id)"
                 >
                   <UserAvatar :avatar="member.avatar" class="h-6 w-6" />
@@ -59,7 +59,7 @@
           <button
             v-for="override in roleOverrides"
             :key="override.override.id"
-            class="hover:bg-ctp-surface0/25 flex w-full items-center space-x-2 rounded-md py-1.5 px-2 text-sm transition"
+            class="flex w-full items-center space-x-2 rounded-md px-2 py-1.5 text-sm transition hover:bg-ctp-surface0/25"
             :class="{
               'bg-ctp-surface0/50': id === override.override.id,
             }"
@@ -76,7 +76,7 @@
             <p>{{ override.role.name }}</p>
           </button>
           <button
-            class="hover:bg-ctp-surface0/25 flex w-full items-center space-x-2 rounded-md py-1.5 px-2 text-sm transition"
+            class="flex w-full items-center space-x-2 rounded-md px-2 py-1.5 text-sm transition hover:bg-ctp-surface0/25"
             :class="{
               'bg-ctp-surface0/50': id === '',
             }"
@@ -88,7 +88,7 @@
           <button
             v-for="override in memberOverrides"
             :key="override.override.id"
-            class="hover:bg-ctp-surface0/25 flex w-full items-center space-x-2 rounded-md py-1.5 px-2 text-sm transition"
+            class="flex w-full items-center space-x-2 rounded-md px-2 py-1.5 text-sm transition hover:bg-ctp-surface0/25"
             :class="{
               'bg-ctp-surface0/50': id === override.override.id,
             }"
@@ -116,14 +116,14 @@
         />
         <div class="space-x-4">
           <button
-            class="bg-ctp-surface0/50 hover:bg-ctp-base rounded-md py-2 px-6 text-sm transition"
+            class="rounded-md bg-ctp-surface0/50 px-6 py-2 text-sm transition hover:bg-ctp-base"
             @click="save"
           >
             Save
           </button>
           <button
             v-if="id"
-            class="bg-ctp-surface0/50 hover:bg-ctp-base rounded-md py-2 px-6 text-sm transition"
+            class="rounded-md bg-ctp-surface0/50 px-6 py-2 text-sm transition hover:bg-ctp-base"
             @click="deleteModal = true"
           >
             Delete

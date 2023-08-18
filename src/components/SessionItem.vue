@@ -28,7 +28,7 @@
     </div>
     <button
       v-if="session.id !== store.self.currentSessionId"
-      class="bg-ctp-surface0 h-8 w-8 rounded-full p-2 transition text-ctp-subtext0 hover:text-ctp-white hover:bg-ctp-surface0/50"
+      class="hover:text-ctp-white h-8 w-8 rounded-full bg-ctp-surface0 p-2 text-ctp-subtext0 transition hover:bg-ctp-surface0/50"
       @click="del"
     >
       <TrashIcon />

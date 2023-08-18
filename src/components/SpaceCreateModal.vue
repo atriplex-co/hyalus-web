@@ -12,7 +12,7 @@
     </template>
     <template #submit>
       <button
-        class="bg-ctp-base hover:bg-ctp-base:bg-dark-400 cursor-pointer rounded-md px-4 py-2 text-ctp-subtext0 shadow-sm transition hover:text-white"
+        class="hover:bg-ctp-base:bg-dark-400 cursor-pointer rounded-md bg-ctp-base px-4 py-2 text-ctp-subtext0 shadow-sm transition hover:text-white"
         @click="
           $emit('close');
           $emit('join');

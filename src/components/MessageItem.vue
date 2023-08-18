@@ -6,28 +6,28 @@
       'pt-3': firstInChunk && !showDate && !embedded,
     }"
   >
-    <div v-if="showDate && !embedded" class="relative py-6 px-2.5">
+    <div v-if="showDate && !embedded" class="relative px-2.5 py-6">
       <div class="border-t border-ctp-surface0"></div>
-      <div class="text-xs text-ctp-subtext0 absolute top-4 w-full flex justify-center">
+      <div class="absolute top-4 flex w-full justify-center text-xs text-ctp-subtext0">
         <p class="bg-ctp-base px-2">{{ date }}</p>
       </div>
     </div>
-    <div v-if="message.parent" class="px-5 text-xs pb-2 flex items-center space-x-1.5">
-      <div class="w-6 relative flex-shrink-0">
+    <div v-if="message.parent" class="flex items-center space-x-1.5 px-5 pb-2 text-xs">
+      <div class="relative w-6 flex-shrink-0">
         <div
-          class="absolute left-2 w-4 h-10 border-ctp-surface0 border-t-2 border-l-2 rounded-tl-lg"
+          class="absolute left-2 h-10 w-4 rounded-tl-lg border-l-2 border-t-2 border-ctp-surface0"
         ></div>
       </div>
-      <div class="bg-ctp-surface0 flex items-center rounded-md p-1.5 space-x-1.5 min-w-0">
+      <div class="flex min-w-0 items-center space-x-1.5 rounded-md bg-ctp-surface0 p-1.5">
         <div
-          class="flex items-center cursor-pointer space-x-1.5 transition"
+          class="flex cursor-pointer items-center space-x-1.5 transition"
           @click="parentUserModal = true"
         >
-          <UserAvatar class="w-4 h-4" :avatar="message.parent.author.avatar" />
+          <UserAvatar class="h-4 w-4" :avatar="message.parent.author.avatar" />
           <p class="text-ctp-white">{{ message.parent.author.name }}</p>
         </div>
         <div
-          class="flex-1 text-ctp-subtext0 truncate flex space-x-2"
+          class="flex flex-1 space-x-2 truncate text-ctp-subtext0"
           v-html="message.parent.dataFormatted"
         ></div>
       </div>
@@ -91,7 +91,7 @@
           </p>
           <div class="relative text-ctp-overlay2 transition-all">
             <div
-              class="ttarrow absolute bottom-[calc(100%+0.5rem)] left-[50%] -ml-[5rem] w-[10rem] transform rounded-md p-2 text-center shadow-md transition bg-ctp-surface0 text-ctp-text"
+              class="ttarrow absolute bottom-[calc(100%+0.5rem)] left-[50%] -ml-[5rem] w-[10rem] transform rounded-md bg-ctp-surface0 p-2 text-center text-ctp-text shadow-md transition"
               :class="{
                 'invisible opacity-0': !timeExpanded,
               }"
@@ -127,7 +127,7 @@
               <div v-html="message.dataFormatted"></div>
               <div
                 v-if="invite"
-                class="bg-ctp-base mt-2 flex w-80 items-center justify-between rounded-md p-3 text-ctp-text"
+                class="mt-2 flex w-80 items-center justify-between rounded-md bg-ctp-base p-3 text-ctp-text"
               >
                 <div class="flex items-center space-x-3">
                   <div
@@ -148,7 +148,7 @@
                   </div>
                 </div>
                 <button
-                  class="bg-ctp-accent rounded-md p-1.5 text-ctp-base hover:bg-ctp-accent/75 transition text-xs"
+                  class="rounded-md bg-ctp-accent p-1.5 text-xs text-ctp-base transition hover:bg-ctp-accent/75"
                   @click="useInvite"
                 >
                   Join
@@ -204,7 +204,7 @@
                 />
                 <div
                   v-if="upload.type.split('/')[0] === 'audio'"
-                  class="overflow-hidden rounded-md bg-[#f1f3f4] grayscale filter[85.5%]"
+                  class="filter[85.5%] overflow-hidden rounded-md bg-[#f1f3f4] grayscale"
                 >
                   <audio
                     ref="previewEl"
@@ -1218,7 +1218,7 @@ const reply = () => {
 
 <style>
 pre {
-  @apply border-ctp-accent bg-ctp-crust -m-1.5 whitespace-pre-wrap rounded-md p-2 text-ctp-text;
+  @apply -m-1.5 whitespace-pre-wrap rounded-md border-ctp-accent bg-ctp-crust p-2 text-ctp-text;
 }
 
 pre + * {
@@ -1226,7 +1226,7 @@ pre + * {
 }
 
 .ttarrow::after {
-  @apply shadow-md border-transparent border-t-ctp-surface0;
+  @apply border-transparent border-t-ctp-surface0 shadow-md;
   content: " ";
   position: absolute;
   top: 100%;

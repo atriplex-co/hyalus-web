@@ -36,7 +36,7 @@
         <div class="relative min-h-0 w-full flex-1">
           <div v-if="typingStatus" class="absolute z-10 w-full p-2">
             <div
-              class="bg-ctp-surface0 flex w-full items-center space-x-4 rounded-md px-4 py-2 text-sm shadow-md"
+              class="flex w-full items-center space-x-4 rounded-md bg-ctp-surface0 px-4 py-2 text-sm shadow-md"
             >
               <PencilIcon class="h-4 w-4" />
               <p>{{ typingStatus }}</p>
@@ -63,34 +63,34 @@
             <div id="messageListAfter" ref="messageListAfter" class="pb-4"></div>
           </div>
         </div>
-        <div class="bg-ctp-mantle shadow-lg rounded-md m-4 mt-0">
+        <div class="m-4 mt-0 rounded-md bg-ctp-mantle shadow-lg">
           <div
             v-if="replyMessage"
-            class="text-sm py-2 px-4 border-b border-ctp-base flex items-center justify-between min-w-0 space-x-2"
+            class="flex min-w-0 items-center justify-between space-x-2 border-b border-ctp-base px-4 py-2 text-sm"
           >
-            <div class="flex items-center space-x-2 min-w-0">
+            <div class="flex min-w-0 items-center space-x-2">
               <p class="text-ctp-subtext0">Replying to</p>
               <div class="flex items-center space-x-1">
-                <UserAvatar class="w-5 h-5" :avatar="replyMessage.author.avatar" />
+                <UserAvatar class="h-5 w-5" :avatar="replyMessage.author.avatar" />
                 <p class="text-ctp-white">{{ replyMessage.author.name }}</p>
               </div>
               <div
-                class="flex-1 text-ctp-subtext0 truncate flex space-x-2"
+                class="flex flex-1 space-x-2 truncate text-ctp-subtext0"
                 v-html="replyMessage.dataFormatted"
               ></div>
             </div>
             <XMarkIcon
-              class="text-ctp-subtext0 hover:text-ctp-text transition w-5 h-5 cursor-pointer flex-shrink-0"
+              class="h-5 w-5 flex-shrink-0 cursor-pointer text-ctp-subtext0 transition hover:text-ctp-text"
               @click="replyMessage = null"
             />
           </div>
-          <div v-if="writable" class="flex items-center space-x-4 py-2 px-4">
+          <div v-if="writable" class="flex items-center space-x-4 px-4 py-2">
             <textarea
               ref="messageBox"
               v-model="messageBoxText"
               rows="1"
               :placeholder="`Message ${name}`"
-              class="max-h-32 flex-1 resize-none border-transparent bg-transparent text-sm outline-none placeholder:text-ctp-overlay0 focus:border-transparent:text-gray-500"
+              class="focus:border-transparent:text-gray-500 max-h-32 flex-1 resize-none border-transparent bg-transparent text-sm outline-none placeholder:text-ctp-overlay0"
               @input="messageBoxInput"
               @keydown="messageBoxKeydown"
             />

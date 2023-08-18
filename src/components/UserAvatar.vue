@@ -38,7 +38,7 @@
     </div>
     <div
       v-else
-      class="bg-ctp-accent flex w-full items-center justify-center rounded-full text-ctp-base"
+      class="flex w-full items-center justify-center rounded-full bg-ctp-accent text-ctp-base"
     >
       <UserIcon class="h-2/3 w-2/3" />
     </div>

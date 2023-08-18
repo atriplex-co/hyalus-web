@@ -9,20 +9,20 @@
       <div class="w-full space-y-2">
         <p>Type</p>
         <div
-          class="flex w-full items-center space-x-3 rounded-md border bg-ctp-crust border-ctp-base p-3 shadow-sm"
+          class="flex w-full items-center space-x-3 rounded-md border border-ctp-base bg-ctp-crust p-3 shadow-sm"
           @click="type = ChannelType.SpaceText"
         >
-          <HashtagIcon class="bg-ctp-base h-8 w-8 rounded-full p-2 text-ctp-subtext0" />
+          <HashtagIcon class="h-8 w-8 rounded-full bg-ctp-base p-2 text-ctp-subtext0" />
           <div class="flex-1">
             <p class="font-bold">Text Channel</p>
           </div>
           <CheckBox :model-value="type === ChannelType.SpaceText" />
         </div>
         <div
-          class="flex w-full items-center space-x-3 rounded-md border bg-ctp-crust border-ctp-base p-3 shadow-sm"
+          class="flex w-full items-center space-x-3 rounded-md border border-ctp-base bg-ctp-crust p-3 shadow-sm"
           @click="type = ChannelType.SpaceVoice"
         >
-          <SpeakerWaveIcon class="bg-ctp-base h-8 w-8 rounded-full p-2 text-ctp-subtext0" />
+          <SpeakerWaveIcon class="h-8 w-8 rounded-full bg-ctp-base p-2 text-ctp-subtext0" />
           <div class="flex-1">
             <p class="font-bold">Voice Channel</p>
           </div>

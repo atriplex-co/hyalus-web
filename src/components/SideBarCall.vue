@@ -5,11 +5,11 @@
   >
     <div class="flex w-full min-w-0 items-center justify-between space-x-2">
       <div class="flex min-w-0 flex-1 items-center space-x-2">
-        <div class="text-ctp-accent h-8 w-8 rounded-md bg-ctp-mantle p-2">
+        <div class="h-8 w-8 rounded-md bg-ctp-mantle p-2 text-ctp-accent">
           <PhoneIcon />
         </div>
         <div class="min-w-0 flex-1">
-          <p class="text-ctp-accent text-sm font-bold">Call Connected</p>
+          <p class="text-sm font-bold text-ctp-accent">Call Connected</p>
           <div class="flex min-w-0 space-x-1 text-xs text-ctp-subtext0">
             <router-link :to="`/channels/${channel.id}`" class="block truncate hover:underline">
               {{ name }}
@@ -23,7 +23,7 @@
           :avatar="store.self.avatar"
           class="h-7 w-7 rounded-full border border-ctp-mantle transition"
           :class="{
-            'ring-ctp-accent ring-2': store.call.localStreams.find(
+            'ring-2 ring-ctp-accent': store.call.localStreams.find(
               (stream) => stream.type === CallStreamType.Audio,
             )?.speaking,
           }"
@@ -34,14 +34,14 @@
           :avatar="user.avatar"
           class="h-7 w-7 rounded-full border border-ctp-mantle transition"
           :class="{
-            'ring-ctp-accent ring-2': store.call.remoteStreams.find(
+            'ring-2 ring-ctp-accent': store.call.remoteStreams.find(
               (stream) => stream.type === CallStreamType.Audio && stream.userId === user.id,
             )?.speaking,
           }"
         />
         <div
           v-if="voiceUsers.length !== voiceUsersShown.length"
-          class="bg-ctp-base flex h-7 w-7 items-center justify-center rounded-full border border-gray-900 text-xs font-bold text-white"
+          class="flex h-7 w-7 items-center justify-center rounded-full border border-gray-900 bg-ctp-base text-xs font-bold text-white"
         >
           <p>+{{ voiceUsers.length - voiceUsersShown.length }}</p>
         </div>
@@ -55,7 +55,7 @@
           class="h-10 w-10 cursor-pointer rounded-full p-3 transition"
           :class="{
             'bg-ctp-text text-ctp-base': audioStream,
-            'bg-ctp-mantle hover:text-ctp-text text-ctp-subtext0': !audioStream,
+            'bg-ctp-mantle text-ctp-subtext0 hover:text-ctp-text': !audioStream,
           }"
         >
           <MicIcon v-if="audioStream" />
@@ -67,7 +67,7 @@
           class="h-10 w-10 cursor-pointer rounded-full p-3 transition"
           :class="{
             'bg-ctp-text text-ctp-base': videoStream,
-            'bg-ctp-mantle hover:text-ctp-text text-ctp-subtext0': !videoStream,
+            'bg-ctp-mantle text-ctp-subtext0 hover:text-ctp-text': !videoStream,
           }"
         >
           <VideoIcon v-if="videoStream" />
@@ -76,7 +76,7 @@
       </div>
       <div @click="stop">
         <CallEndIcon
-          class="bg-ctp-red hover:bg-ctp-red/75 h-10 w-10 cursor-pointer rounded-full p-3 text-ctp-base transition"
+          class="h-10 w-10 cursor-pointer rounded-full bg-ctp-red p-3 text-ctp-base transition hover:bg-ctp-red/75"
         />
       </div>
       <div @click="toggleStream(CallStreamType.DisplayVideo)($event)">
@@ -84,7 +84,7 @@
           class="h-10 w-10 cursor-pointer rounded-full p-3 transition"
           :class="{
             'bg-ctp-text text-ctp-base': displayVideoStream,
-            'bg-ctp-mantle hover:text-ctp-text text-ctp-subtext0': !displayVideoStream,
+            'bg-ctp-mantle text-ctp-subtext0 hover:text-ctp-text': !displayVideoStream,
           }"
         />
       </div>
@@ -93,7 +93,7 @@
           class="h-10 w-10 cursor-pointer rounded-full p-3 transition"
           :class="{
             'bg-ctp-text text-ctp-base': store.call.deaf,
-            'bg-ctp-mantle hover:text-ctp-text text-ctp-subtext0': !store.call.deaf,
+            'bg-ctp-mantle text-ctp-subtext0 hover:text-ctp-text': !store.call.deaf,
           }"
         >
           <AudioOffIcon v-if="store.call" />

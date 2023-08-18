@@ -2,7 +2,7 @@
   <div v-if="store.self" class="flex h-full flex-col">
     <div class="relative">
       <div
-        class="relative flex h-14 cursor-pointer items-center justify-between px-4 shadow-ctp-crust/50 shadow-md transition hover:bg-ctp-surface0/50 group"
+        class="group relative flex h-14 cursor-pointer items-center justify-between px-4 shadow-md shadow-ctp-crust/50 transition hover:bg-ctp-surface0/50"
         @click="menu = !menu"
       >
         <p class="font-semibold">{{ space.name }}</p>
@@ -18,10 +18,10 @@
         leave-to-class="transform opacity-0 scale-95"
       >
         <div v-if="menu" class="absolute z-10 w-full p-2">
-          <div class="bg-ctp-crust rounded-md p-2 text-sm shadow-lg">
+          <div class="rounded-md bg-ctp-crust p-2 text-sm shadow-lg">
             <div
               v-if="allowManageSpace || allowManageRoles || allowBanMember"
-              class="flex cursor-pointer items-center space-x-3 rounded-md p-2 hover:bg-ctp-accent hover:text-ctp-base transition"
+              class="flex cursor-pointer items-center space-x-3 rounded-md p-2 transition hover:bg-ctp-accent hover:text-ctp-base"
               @click="
                 manageModal = true;
                 menu = false;
@@ -32,7 +32,7 @@
             </div>
             <div
               v-if="allowCreateInvite"
-              class="flex cursor-pointer items-center space-x-3 rounded-md p-2 hover:bg-ctp-accent hover:text-ctp-base transition"
+              class="flex cursor-pointer items-center space-x-3 rounded-md p-2 transition hover:bg-ctp-accent hover:text-ctp-base"
               @click="
                 inviteCreateModal = true;
                 menu = false;
@@ -43,7 +43,7 @@
             </div>
             <div
               v-if="allowManageChannels"
-              class="flex cursor-pointer items-center space-x-3 rounded-md p-2 hover:bg-ctp-accent hover:text-ctp-base transition"
+              class="flex cursor-pointer items-center space-x-3 rounded-md p-2 transition hover:bg-ctp-accent hover:text-ctp-base"
               @click="
                 categoryCreateModal = true;
                 menu = false;
@@ -54,7 +54,7 @@
             </div>
             <div
               v-if="allowManageChannels"
-              class="flex cursor-pointer items-center space-x-3 rounded-md p-2 hover:bg-ctp-accent hover:text-ctp-base transition"
+              class="flex cursor-pointer items-center space-x-3 rounded-md p-2 transition hover:bg-ctp-accent hover:text-ctp-base"
               @click="
                 channelCreateModal = true;
                 menu = false;
@@ -65,7 +65,7 @@
             </div>
             <div
               v-if="allowSetAlias"
-              class="flex cursor-pointer items-center space-x-3 rounded-md p-2 hover:bg-ctp-accent hover:text-ctp-base transition"
+              class="flex cursor-pointer items-center space-x-3 rounded-md p-2 transition hover:bg-ctp-accent hover:text-ctp-base"
               @click="
                 setAliasModal = true;
                 menu = false;
@@ -75,7 +75,7 @@
               <p>Change Nickname</p>
             </div>
             <div
-              class="flex cursor-pointer items-center space-x-3 rounded-md p-2 hover:bg-ctp-accent hover:text-ctp-base transition"
+              class="flex cursor-pointer items-center space-x-3 rounded-md p-2 transition hover:bg-ctp-accent hover:text-ctp-base"
               @click="
                 privacySettingsModal = true;
                 menu = false;
@@ -85,7 +85,7 @@
               <p>Privacy Settings</p>
             </div>
             <div
-              class="flex cursor-pointer items-center space-x-3 rounded-md p-2 hover:bg-ctp-accent hover:text-ctp-base transition"
+              class="flex cursor-pointer items-center space-x-3 rounded-md p-2 transition hover:bg-ctp-accent hover:text-ctp-base"
               @click="
                 notificationSettingsModal = true;
                 menu = false;
@@ -94,10 +94,10 @@
               <BellIcon class="h-4 w-4" />
               <p>Notification Settings</p>
             </div>
-            <div class="border-ctp-base my-1 mx-2 border-t"></div>
+            <div class="mx-2 my-1 border-t border-ctp-base"></div>
             <div
               v-if="space.ownerId === store.self.id"
-              class="flex cursor-pointer items-center space-x-3 rounded-md p-2 text-red-400 hover:bg-ctp-red hover:text-ctp-base transition"
+              class="flex cursor-pointer items-center space-x-3 rounded-md p-2 text-red-400 transition hover:bg-ctp-red hover:text-ctp-base"
               @click="
                 deleteModal = true;
                 menu = false;
@@ -108,7 +108,7 @@
             </div>
             <div
               v-if="space.ownerId !== store.self.id"
-              class="flex cursor-pointer items-center space-x-3 rounded-md p-2 text-red-400 hover:bg-ctp-red hover:text-ctp-base transition"
+              class="flex cursor-pointer items-center space-x-3 rounded-md p-2 text-red-400 transition hover:bg-ctp-red hover:text-ctp-base"
               @click="
                 leaveModal = true;
                 menu = false;
@@ -123,7 +123,7 @@
     </div>
     <div
       ref="channelsEl"
-      class="flex-1 space-y-4 overflow-auto py-4 px-2"
+      class="flex-1 space-y-4 overflow-auto px-2 py-4"
       @scroll="queueSaveScrollTop"
     >
       <div v-if="rootChannels.length" class="space-y-0.5">

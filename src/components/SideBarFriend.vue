@@ -1,6 +1,6 @@
 <template>
   <div
-    class="group flex cursor-pointer items-center justify-between rounded-md p-1.5 hover:bg-ctp-base transition"
+    class="group flex cursor-pointer items-center justify-between rounded-md p-1.5 transition hover:bg-ctp-base"
     @click="userModal = true"
   >
     <div class="flex items-center space-x-3">
@@ -15,7 +15,7 @@
           <p class="truncate text-ctp-subtext0">@{{ friend.username }}</p>
           <p
             v-if="!friend.accepted && !friend.acceptable"
-            class="bg-ctp-surface0 rounded-md px-1 text-xs"
+            class="rounded-md bg-ctp-surface0 px-1 text-xs"
           >
             Pending
           </p>
@@ -25,7 +25,7 @@
     <div class="flex space-x-2">
       <div v-if="friend.acceptable" @click.stop="accept">
         <CheckIcon
-          class="h-7 w-7 cursor-pointer rounded-full p-1.5 transition bg-ctp-accent text-ctp-base hover:bg-ctp-accent/75"
+          class="h-7 w-7 cursor-pointer rounded-full bg-ctp-accent p-1.5 text-ctp-base transition hover:bg-ctp-accent/75"
         />
       </div>
       <div
@@ -41,7 +41,7 @@
         "
       >
         <CloseIcon
-          class="h-7 w-7 cursor-pointer rounded-full p-1.5 transition bg-ctp-surface0 hover:bg-ctp-surface0/50"
+          class="h-7 w-7 cursor-pointer rounded-full bg-ctp-surface0 p-1.5 transition hover:bg-ctp-surface0/50"
         />
       </div>
     </div>

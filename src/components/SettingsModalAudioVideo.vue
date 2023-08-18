@@ -1,7 +1,7 @@
 <template>
   <div>
     <p class="text-2xl">Audio & Video</p>
-    <div class="divide-y divide-ctp-surface0/50 border-t border-b border-ctp-surface0/50 mt-8">
+    <div class="mt-8 divide-y divide-ctp-surface0/50 border-b border-t border-ctp-surface0/50">
       <div class="flex h-16 items-center justify-between">
         <p class="font-bold">Audio Output</p>
         <InputList>

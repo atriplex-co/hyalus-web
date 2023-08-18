@@ -1,10 +1,10 @@
 <template>
   <div class="w-full space-y-2">
     <p class="text-sm">Friends</p>
-    <div class="border-ctp-base bg-ctp-crust rounded-md border shadow-sm">
+    <div class="rounded-md border border-ctp-base bg-ctp-crust shadow-sm">
       <input
         v-model="search"
-        class="border-ctp-base ring-ctp-accent -mt-px w-full rounded-sm border bg-transparent px-4 py-2 transition focus:outline-none focus:ring-2 placeholder:text-ctp-overlay0 text-ctp-subtext0"
+        class="-mt-px w-full rounded-sm border border-ctp-base bg-transparent px-4 py-2 text-ctp-subtext0 ring-ctp-accent transition placeholder:text-ctp-overlay0 focus:outline-none focus:ring-2"
         type="text"
         placeholder="Search for friends"
       />
