@@ -1,6 +1,6 @@
 <template>
   <ModalBase empty @close="$emit('close')">
-    <div class="bg-ctp-mantle p-4 max-w-xl w-screen rounded-md shadow-md space-y-4 h-96">
+    <div class="bg-ctp-mantle p-4 max-w-xl w-screen rounded-md shadow-md space-y-4 h-96 min-h-0">
       <input
         type="text"
         class="border-ctp-base bg-ctp-crust w-full p-4 rounded-md focus:ring-2 ring-ctp-accent transition"
@@ -9,7 +9,7 @@
         @keydown="onKeydown"
         v-model="search"
       />
-      <div class="space-y-2">
+      <div class="space-y-2 overflow-auto">
         <p v-if="!search" class="font-semibold">Recent Channels</p>
         <div>
           <QuickSwitcherItem
