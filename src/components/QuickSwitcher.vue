@@ -69,26 +69,32 @@ const items = computed(() => {
       ret.push({ channel });
     }
   } else {
-    const dmChannels = store.channels.filter(
-      (channel) =>
-        channel.type === ChannelType.DM &&
-        (channel.members[0].name.toLowerCase().includes(search.value.toLowerCase()) ||
-          channel.members[0].username.toLowerCase().includes(search.value.toLowerCase())),
-    );
-    const groupChannels = store.channels.filter(
-      (channel) =>
-        channel.type === ChannelType.Group &&
-        channel.name!.toLowerCase().includes(search.value.toLowerCase()),
-    );
-    const spaceChannels = store.channels.filter(
-      (channel) =>
-        channel.type === ChannelType.SpaceText &&
-        channel.name!.toLowerCase().includes(search.value.toLowerCase()),
-    );
+    const dmChannels = store.channels
+      .filter(
+        (channel) =>
+          channel.type === ChannelType.DM &&
+          (channel.members[0].name.toLowerCase().includes(search.value.toLowerCase()) ||
+            channel.members[0].username.toLowerCase().includes(search.value.toLowerCase())),
+      )
+      .slice(0, 5);
+    const groupChannels = store.channels
+      .filter(
+        (channel) =>
+          channel.type === ChannelType.Group &&
+          channel.name!.toLowerCase().includes(search.value.toLowerCase()),
+      )
+      .slice(0, 10);
+    const spaceChannels = store.channels
+      .filter(
+        (channel) =>
+          channel.type === ChannelType.SpaceText &&
+          channel.name!.toLowerCase().includes(search.value.toLowerCase()),
+      )
+      .slice(0, 10);
     const channels = [
       ...dmChannels,
       ...[...groupChannels, ...spaceChannels].sort((a, b) => (+a.activeAt > +b.activeAt ? -1 : 1)),
-    ].slice(0, 30);
+    ];
     for (const channel of channels) {
       if (channel.spaceId) {
         const space = store.spaces.find((space) => space.id === channel.spaceId);
