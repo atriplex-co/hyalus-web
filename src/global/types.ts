@@ -33,6 +33,7 @@ export interface IState {
   sideBarOpen: boolean;
   sideBarState: SideBarState;
   cachedUsers: ICachedUser[];
+  quickSwitcherOpen: boolean;
 }
 
 export type IConfig = _IConfig & Record<string, unknown>;

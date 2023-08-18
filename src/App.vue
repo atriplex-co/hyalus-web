@@ -145,7 +145,7 @@
     <!-- DON'T REMOVE THIS! -->
     <!-- this is here to keep some random css classes from being puregd. -->
     <p class="hidden font-medium underline"></p>
-    <QuickSwitcher v-if="quickSwitcher" @close="quickSwitcher = false" />
+    <QuickSwitcher v-if="store.quickSwitcherOpen" @close="store.quickSwitcherOpen = false" />
   </div>
 </template>
 
@@ -172,7 +172,6 @@ const store = useStore();
 const welcomeModal = ref(false);
 const settingsModal = ref(false);
 const desktopUpdating = ref(isDesktop);
-const quickSwitcher = ref(false);
 
 const inAppRoutes = [
   "app",
@@ -265,7 +264,7 @@ addEventListener("keydown", (e: KeyboardEvent) => {
 
   if (e.ctrlKey && e.key === "k") {
     e.preventDefault();
-    quickSwitcher.value = true;
+    store.quickSwitcherOpen = !store.quickSwitcherOpen;
   }
 });
 </script>

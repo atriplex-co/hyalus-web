@@ -1,22 +1,19 @@
 <template>
   <div class="flex h-full w-full flex-col">
     <div class="flex h-14 items-center space-x-2 p-2">
-      <div
-        class="flex h-8 w-full items-center space-x-3 overflow-hidden rounded-md bg-ctp-crust px-3"
+      <button
+        class="flex h-8 w-full items-center space-x-3 overflow-hidden rounded-md bg-ctp-crust px-3 cursor-pointer"
+        @click="store.quickSwitcherOpen = true"
       >
-        <input
-          type="text"
-          placeholder="Search"
-          class="w-full bg-transparent text-sm placeholder:text-ctp-overlay0"
-        />
-        <SearchIcon class="mt-0.5 h-5 w-5 text-ctp-overlay0" />
-      </div>
+        <p class="flex-1 text-start bg-transparent text-sm text-ctp-overlay0">Search</p>
+        <MagnifyingGlassIcon class="h-4 w-4 text-ctp-overlay0" />
+      </button>
       <div
         to="/friends"
-        class="hover:text-ctp-text:text-white relative flex h-8 w-8 flex-shrink-0 cursor-pointer items-center justify-center rounded-md bg-ctp-crust text-ctp-overlay0 transition"
+        class="hover:text-ctp-text relative flex h-8 w-8 flex-shrink-0 cursor-pointer items-center justify-center rounded-md bg-ctp-crust text-ctp-overlay0 transition"
         @click="store.sideBarState = SideBarState.FRIENDS"
       >
-        <FriendsIcon class="h-4 w-4" />
+        <UsersIcon class="h-4 w-4" />
         <div
           v-if="acceptableFriendsCount"
           class="absolute -right-1 -top-1 rounded-full bg-ctp-accent px-1 text-center text-xs font-bold text-ctp-base"
@@ -25,10 +22,10 @@
         </div>
       </div>
       <div
-        class="hover:text-ctp-text:text-white flex h-8 w-8 flex-shrink-0 cursor-pointer items-center justify-center rounded-md bg-ctp-crust text-ctp-overlay0 transition"
+        class="hover:text-ctp-text flex h-8 w-8 flex-shrink-0 cursor-pointer items-center justify-center rounded-md bg-ctp-crust text-ctp-overlay0 transition"
         @click="settingsModal = true"
       >
-        <SettingsIcon class="h-4 w-4" />
+        <CogIcon class="h-4 w-4" />
       </div>
     </div>
     <div v-if="channels.length" class="flex-1 space-y-0.5 overflow-auto px-2 pb-2">
@@ -60,14 +57,12 @@ import { ref, computed, onMounted, onUnmounted } from "vue";
 import { useRoute, useRouter } from "vue-router";
 import { isMobile } from "../global/helpers";
 import { useStore } from "../global/store";
-import SearchIcon from "../icons/SearchIcon.vue";
-import FriendsIcon from "../icons/FriendsIcon.vue";
-import SettingsIcon from "../icons/SettingsIcon.vue";
 import { SideBarState } from "../global/types";
 import { ChannelType } from "@/../../hyalus-server/src/types";
 import SettingsModal from "./SettingsModal.vue";
 import { SparklesIcon } from "@heroicons/vue/24/solid";
 import FriendAddModal from "./FriendAddModal.vue";
+import { CogIcon, MagnifyingGlassIcon, UsersIcon } from "@heroicons/vue/20/solid";
 
 const store = useStore();
 const route = useRoute();

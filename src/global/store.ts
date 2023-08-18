@@ -104,6 +104,7 @@ export const useStore = defineStore("main", {
       invite: null,
       self: null,
       cachedUsers: [],
+      quickSwitcherOpen: false,
     };
   },
   actions: {

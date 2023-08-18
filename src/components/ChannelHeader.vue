@@ -7,7 +7,7 @@
           class="ml-2 h-8 w-8 rounded-full bg-ctp-surface0 p-1.5 text-ctp-subtext0 transition hover:bg-ctp-surface0/50 hover:text-ctp-text"
           to="/app"
         >
-          <ArrowLeftIcon />
+          <ChevronLeftIcon />
         </router-link>
         <div class="h-8 w-8 rounded-full bg-ctp-surface0 p-2">
           <AtSymbolIcon v-if="channel.type === ChannelType.DM" />
@@ -57,7 +57,7 @@
             class="h-8 w-8 cursor-pointer rounded-full bg-ctp-surface0 p-2 transition hover:text-ctp-text"
             @click="callStartWithVideo"
           >
-            <VideoIcon />
+            <VideoCameraIcon />
           </div>
           <div
             class="h-8 w-8 cursor-pointer rounded-full bg-ctp-surface0 p-2 transition hover:text-ctp-text"
@@ -95,12 +95,15 @@ import { computed, type PropType, ref } from "vue";
 import { isMobile } from "../global/helpers";
 import { useStore } from "../global/store";
 import type { IChannel, ISpace } from "../global/types";
-import ArrowLeftIcon from "../icons/ArrowLeftIcon.vue";
 import UserAvatar from "./UserAvatar.vue";
-import PhoneIcon from "../icons/PhoneIcon.vue";
-import VideoIcon from "../icons/VideoIcon.vue";
 import { SpeakerWaveIcon, UserGroupIcon, AtSymbolIcon, HashtagIcon } from "@heroicons/vue/24/solid";
-import { UserPlusIcon, UsersIcon } from "@heroicons/vue/20/solid";
+import {
+  ChevronLeftIcon,
+  PhoneIcon,
+  UserPlusIcon,
+  UsersIcon,
+  VideoCameraIcon,
+} from "@heroicons/vue/20/solid";
 import GroupCreateModal from "./GroupCreateModal.vue";
 import GroupAddModal from "./GroupAddModal.vue";
 
