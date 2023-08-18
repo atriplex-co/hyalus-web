@@ -9,9 +9,9 @@
         @keydown="onKeydown"
         v-model="search"
       />
-      <div class="space-y-2 overflow-auto">
+      <div class="space-y-2 min-h-0">
         <p v-if="!search" class="font-semibold">Recent Channels</p>
-        <div>
+        <div class="-mx-1 overflow-auto">
           <QuickSwitcherItem
             v-for="item in items"
             :key="item.channel.id"
