@@ -127,6 +127,7 @@
     </div>
     <MessageEditModal
       v-if="messageBeingEdited"
+      :channel="channel"
       :message="messageBeingEdited"
       @close="messageBeingEdited = null"
     />
