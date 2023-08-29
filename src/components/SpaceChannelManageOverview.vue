@@ -43,7 +43,7 @@ const props = defineProps({
 const name = ref(props.channel.name);
 
 const save = async () => {
-  await axios.patch(`/api/v1/spaces/${props.space.id}/channels.${props.channel.id}`, {
+  await axios.patch(`/api/v1/spaces/${props.space.id}/channels/${props.channel.id}`, {
     name: name.value,
   });
 };
