@@ -1,5 +1,4 @@
 import {
-  CallRTCDataType,
   CallStreamType,
   ChannelType,
   ColorMode,
@@ -9,8 +8,8 @@ import {
   SpaceChannelOverrideType,
   NotificationMode,
   Status,
+  VoiceStateFlags,
 } from "@/../../hyalus-server/src/types";
-import JMuxer from "jmuxer";
 import { Socket } from "./socket";
 
 export interface IState {
@@ -50,7 +49,6 @@ export interface _IConfig {
   audioInput: string;
   videoInput: string;
   videoMode: string;
-  videoQuality: number;
   audioOutputGain: number;
   audioInputGain: number;
   audioInputTrigger: number;
@@ -99,11 +97,41 @@ export interface ICachedUser {
 
 export interface ICall {
   channelId: string;
-  localStreams: ICallLocalStream[];
-  remoteStreams: ICallRemoteStream[];
   start: Date;
+  muted: boolean;
+  mutedBeforeDeaf: boolean;
   deaf: boolean;
   updatePersistInterval: number;
+  pc: RTCPeerConnection;
+  localKeyId: number;
+  localKeyCounter: number;
+  localKeySwapTarget: number;
+  localKeySwapTimeout: number;
+  localKeyAcks: string[];
+  localKeyAcksNeeded: number;
+  localKeys: ICallLocalKey[];
+  remoteKeys: ICallRemoteKey[];
+  localStreams: ICallLocalStream[];
+  remoteStreams: ICallRemoteStream[];
+  usedSenders: {
+    audio: RTCRtpSender[];
+    video: RTCRtpSender[];
+  };
+  configuredTransceivers: RTCRtpTransceiver[];
+  payloadCodecs: Record<number, string>;
+  flags: number;
+  initComplete: boolean;
+}
+
+export interface ICallLocalKey {
+  id: number;
+  key: CryptoKey;
+}
+
+export interface ICallRemoteKey {
+  userId: string;
+  id: number;
+  key: CryptoKey;
 }
 
 export interface ICallPersist {
@@ -114,62 +142,28 @@ export interface ICallPersist {
 
 export interface ICallLocalStream {
   type: CallStreamType;
-  track: MediaStreamTrack | null;
-  getTrack: (() => Promise<MediaStreamTrack>) | null;
-  peers: ICallLocalStreamPeer[];
-  encoder: MediaEncoder | null;
-  proc(val: MediaData): Promise<void>;
-  submit(val: Uint8Array | EncodedMediaChunk): void;
-  context: AudioContext | null;
-  gain: GainNode | null;
-  requestKeyFrame: boolean;
-  requestInit: boolean; // TODO: make sure this works on all encoders.
+  track: MediaStreamTrack;
+  gain1: GainNode | null; // for audio mute
+  gain2: GainNode | null; // for audio input volume
   speaking: boolean;
-}
-
-export interface ICallLocalStreamPeer {
-  userId: string;
-  pc: RTCPeerConnection;
-  dc: RTCDataChannel;
-  enabled: boolean;
+  sender: RTCRtpSender;
 }
 
 export interface ICallRemoteStream {
   userId: string;
   type: CallStreamType;
-  pc: RTCPeerConnection;
-  dc: RTCDataChannel | null;
-  element: IHTMLMediaElement | null; // TS won't let us put IHTMLAudioElement in an interface for whatever fucking reason.
-  context: AudioContext | null;
-  decoder: MediaDecoder | null;
-  writer: WritableStreamDefaultWriter | null; // allows us to close the MediaStreamTrackGenerator|null.
-  muxer: JMuxer | null;
+  track: MediaStreamTrack;
   gain: GainNode | null;
-  speaking: boolean | null;
+  speaking: boolean;
+  receiver: RTCRtpReceiver;
+  element: IHTMLMediaElement | null;
 }
 
 export interface ICallTile {
   id: string;
   user: ISelf | IChannelMember;
-  localStream: ICallLocalStream | null;
-  remoteStream: ICallRemoteStream | null;
-}
-
-export interface ICallRTCData {
-  mt: CallRTCDataType;
-  st: CallStreamType;
-  d: string;
-}
-
-export interface IVoicePeer {
-  userId: string;
-  peer: RTCPeerConnection;
-  tracks: IVoiceTrack[];
-}
-
-export interface IVoiceTrack {
-  type: string;
-  track: MediaStreamTrack;
+  localTrack: ICallLocalStream | null;
+  remoteTrack: ICallRemoteStream | null;
 }
 
 export interface ISelf {
@@ -313,6 +307,7 @@ export interface ISpaceMember {
   username: string;
   avatar: string | null;
   flags: number;
+  publicKey: Uint8Array;
   status: Status;
   roleIds: string[];
   alias: string | null;
@@ -343,6 +338,7 @@ export interface ITypingState {
 export interface IVoiceState {
   id: string;
   channelId: string;
+  flags: VoiceStateFlags;
 }
 
 export interface ISpaceBan {

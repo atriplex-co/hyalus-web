@@ -32,7 +32,7 @@
         </div>
       </div>
       <div class="flex items-center space-x-2 text-ctp-subtext0">
-        <template v-if="!inVoice && !space">
+        <template v-if="!inVoice && voiceCapable">
           <div v-if="voiceUsers.length" class="mr-2 flex -space-x-3">
             <UserAvatar
               v-for="user in voiceUsersShown"
@@ -59,6 +59,8 @@
           >
             <VideoCameraIcon />
           </div>
+        </template>
+        <template v-if="!inVoice && !space">
           <div
             class="h-8 w-8 cursor-pointer rounded-full bg-ctp-surface0 p-2 transition hover:text-ctp-text"
             @click="inviteModal = true"
@@ -67,7 +69,7 @@
           </div>
         </template>
         <div
-          v-if="channel.type !== ChannelType.DM"
+          v-if="channel.type !== ChannelType.DM && channel.type !== ChannelType.SpaceVoice"
           class="h-8 w-8 cursor-pointer rounded-full bg-ctp-surface0 p-2 transition hover:text-ctp-text"
           @click="store.writeConfig('showChannelMembers', !store.config.showChannelMembers)"
         >
@@ -219,4 +221,13 @@ const setNameFocusOut = async () => {
     name: newName,
   });
 };
+
+const voiceCapable = computed(() => {
+  return [
+    // voice capable channel types:
+    ChannelType.DM,
+    ChannelType.Group,
+    ChannelType.SpaceVoice,
+  ].includes(props.channel.type);
+});
 </script>

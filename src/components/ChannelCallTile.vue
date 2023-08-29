@@ -24,7 +24,6 @@
       v-if="stream && [CallStreamType.Video, CallStreamType.DisplayVideo].includes(stream.type)"
       ref="video"
       class="h-full w-full"
-      poster="../assets/images/call-video-loading.gif"
       autoplay
       muted
     ></video>
@@ -34,8 +33,18 @@
         class="m-2 flex h-full items-center space-x-2 overflow-hidden rounded-md bg-black bg-opacity-25 px-2 backdrop-blur"
       >
         <p class="truncate text-sm">{{ tile.user.name }}</p>
-        <MicOffIcon v-if="muted" class="h-4 w-4 flex-shrink-0" />
-        <DisplayIcon
+        <MicOffIcon
+          v-if="
+            (flags & VoiceStateFlags.Muted) === VoiceStateFlags.Muted &&
+            !((flags & VoiceStateFlags.Deaf) === VoiceStateFlags.Deaf)
+          "
+          class="h-4 w-4 flex-shrink-0"
+        />
+        <SpeakerXMarkIcon
+          v-if="(flags & VoiceStateFlags.Deaf) === VoiceStateFlags.Deaf"
+          class="h-4 w-4 flex-shrink-0"
+        />
+        <ComputerDesktopIcon
           v-if="stream?.type === CallStreamType.DisplayVideo"
           class="h-4 w-4 flex-shrink-0 text-ctp-subtext0"
         />
@@ -53,14 +62,13 @@
 
 <script lang="ts" setup>
 import UserAvatar from "./UserAvatar.vue";
-import DisplayIcon from "../icons/DisplayIcon.vue";
 import MicOffIcon from "../icons/MicOffIcon.vue";
-import { ref, type PropType, type Ref, computed, onMounted, onBeforeUnmount, watch } from "vue";
+import { ref, type PropType, type Ref, computed, watch } from "vue";
 import type { ICallTile } from "../global/types";
-import { CallStreamType } from "@/../../hyalus-server/src/types";
+import { CallStreamType, VoiceStateFlags } from "@/../../hyalus-server/src/types";
 import ChannelCallTileMenu from "./ChannelCallTileMenu.vue";
 import { useStore } from "../global/store";
-import JMuxer from "jmuxer";
+import { ComputerDesktopIcon, SpeakerXMarkIcon } from "@heroicons/vue/20/solid";
 
 const store = useStore();
 
@@ -81,8 +89,6 @@ const menuY = ref(0);
 const main: Ref<HTMLDivElement | null> = ref(null);
 const video: Ref<HTMLVideoElement | null> = ref(null);
 let controlsTimeout: number | null = null;
-let track: MediaStreamTrack | null = null;
-let disableTimeout = 0;
 
 const expand = async () => {
   if (!main.value) {
@@ -117,24 +123,19 @@ const updateIsFullscreen = () => {
 };
 
 const stream = computed(() => {
-  return props.tile.localStream || props.tile.remoteStream;
+  return props.tile.localTrack || props.tile.remoteTrack;
 });
 
-const muted = computed(() => {
-  if (!store.call || !stream.value) {
-    return true;
+const flags = computed(() => {
+  if (props.tile.user.id === store.self!.id) {
+    return store.call!.flags;
   }
 
-  if (stream.value.type === CallStreamType.DisplayVideo) {
-    return false;
-  }
-
-  if (props.tile.user === store.self) {
-    return !store.call.localStreams.find((stream) => stream.type === CallStreamType.Audio);
+  const state = store.voiceStates.find((state) => state.id === props.tile.user.id);
+  if (state) {
+    return state.flags;
   } else {
-    return !store.call.remoteStreams.find(
-      (stream) => stream.userId === props.tile.user.id && stream.type === CallStreamType.Audio,
-    );
+    return 0;
   }
 });
 
@@ -143,12 +144,12 @@ const speaking = computed(() => {
     return false;
   }
 
-  if (props.tile.localStream) {
-    return store.call?.localStreams.find((stream2) => stream2.speaking);
+  if (props.tile.localTrack) {
+    return store.call!.localStreams.find((track2) => track2.speaking);
   }
 
-  if (props.tile.remoteStream) {
-    return store.call?.remoteStreams.find(
+  if (props.tile.remoteTrack) {
+    return store.call!.remoteStreams.find(
       (stream2) => stream2.userId === props.tile.user.id && stream2.speaking,
     );
   }
@@ -156,119 +157,16 @@ const speaking = computed(() => {
   return false;
 });
 
-const ensureStreamEnabled = async () => {
-  if (video.value && props.tile.localStream && props.tile.localStream.getTrack) {
-    if (!track) {
-      track = await props.tile.localStream.getTrack();
-    }
-
-    video.value.srcObject = new MediaStream([track]);
-  }
-
-  if (
-    video.value &&
-    props.tile.remoteStream &&
-    props.tile.remoteStream.dc &&
-    props.tile.remoteStream.dc.readyState === "open"
-  ) {
-    const remoteStream = props.tile.remoteStream; // lets us modify props without eslint bitching about it.
-
-    if (remoteStream.muxer) {
-      remoteStream.muxer.destroy();
-      remoteStream.muxer = null;
-    }
-
-    if (!remoteStream.muxer) {
-      remoteStream.muxer = new JMuxer({
-        node: video.value,
-        mode: "video",
-        fps: 60, // TODO: dynamic FPS metadata.
-        flushingTime: 0,
-        maxDelay: 100, // unsupported in TS types, but is def a thing.
-        debug: false,
-        onMissingVideoFrames() {
-          if (remoteStream.dc) {
-            remoteStream.dc.send("");
-          }
-        },
-        onMissingAudioFrames() {
-          if (remoteStream.dc) {
-            remoteStream.dc.send("");
-          }
-        },
-        async onReady() {
-          for (;;) {
-            if (!video.value || video.value.readyState === 4) {
-              break;
-            }
-
-            if (remoteStream.dc) {
-              remoteStream.dc.send("enable");
-            }
-
-            await new Promise((resolve) => {
-              setTimeout(resolve, 100);
-            });
-          }
-        },
-      } as unknown as JMuxer.Options);
-    }
-  }
-};
-
-const ensureStreamDisabled = async () => {
-  if (video.value && track) {
-    track.stop();
-    track = null;
-  }
-
-  if (video.value && props.tile.remoteStream) {
-    const remoteStream = props.tile.remoteStream; // lets us modify props without eslint bitching about it.
-
-    if (remoteStream.dc && remoteStream.dc.readyState === "open") {
-      remoteStream.dc.send("disable");
-    }
-
-    if (remoteStream.muxer) {
-      remoteStream.muxer.destroy();
-      remoteStream.muxer = null;
-    }
-  }
-};
-
-const onVisibilityChange = async () => {
-  clearTimeout(disableTimeout);
-
-  if (document.visibilityState === "visible") {
-    await ensureStreamEnabled();
-  }
-
-  if (document.visibilityState === "hidden") {
-    disableTimeout = +setTimeout(ensureStreamDisabled, 2000);
-  }
-};
-
-onMounted(async () => {
-  if (video.value && props.tile.localStream && props.tile.localStream.track) {
-    video.value.srcObject = new MediaStream([props.tile.localStream.track]);
-  }
-
-  addEventListener("visibilitychange", onVisibilityChange);
-
-  if (document.visibilityState === "visible") {
-    await ensureStreamEnabled();
-  }
-});
-
-onBeforeUnmount(async () => {
-  removeEventListener("visibilitychange", onVisibilityChange);
-  await ensureStreamDisabled();
-});
-
 watch(
-  () => props.tile.remoteStream?.dc?.readyState,
+  () => video.value,
   () => {
-    onVisibilityChange(); // this is a bit weird but it works great.
+    if (video.value && !video.value.srcObject && props.tile.localTrack) {
+      video.value.srcObject = new MediaStream([props.tile.localTrack.track]);
+    }
+
+    if (video.value && !video.value.srcObject && props.tile.remoteTrack) {
+      video.value.srcObject = new MediaStream([props.tile.remoteTrack.track]);
+    }
   },
 );
 </script>

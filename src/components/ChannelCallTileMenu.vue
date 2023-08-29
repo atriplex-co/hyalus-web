@@ -87,7 +87,7 @@ const selfMute = computed({
 
 const selfDeaf = computed({
   get() {
-    return !!store.call?.deaf;
+    return !!store.call!.deaf;
   },
   async set(val: boolean) {
     await store.callSetDeaf(val);
@@ -95,7 +95,7 @@ const selfDeaf = computed({
 });
 
 let targetAudioStream = CallStreamType.Audio;
-if (props.tile.remoteStream?.type === CallStreamType.DisplayVideo) {
+if (props.tile.remoteTrack?.type === CallStreamType.DisplayVideo) {
   targetAudioStream = CallStreamType.DisplayAudio;
 }
 

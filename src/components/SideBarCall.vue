@@ -9,7 +9,13 @@
           <PhoneIcon />
         </div>
         <div class="min-w-0 flex-1">
-          <p class="text-sm font-bold text-ctp-accent">Call Connected</p>
+          <div class="text-sm font-bold text-ctp-accent">
+            <p v-if="store.call.pc.connectionState === 'new'">Waiting for Server</p>
+            <p v-if="store.call.pc.connectionState === 'connecting'">Call Connecting</p>
+            <p v-if="store.call.pc.connectionState === 'connected'">Call Connected</p>
+            <p v-if="store.call.pc.connectionState === 'disconnected'">Call Disconnected</p>
+            <p v-if="store.call.pc.connectionState === 'failed'">You're Fucked (F5)</p>
+          </div>
           <div class="flex min-w-0 space-x-1 text-xs text-ctp-subtext0">
             <router-link :to="`/channels/${channel.id}`" class="block truncate hover:underline">
               {{ name }}
@@ -50,19 +56,19 @@
     <div
       class="mt-0 flex h-0 scale-y-0 transform items-center space-x-2.5 opacity-0 transition-all group-hover:mt-2.5 group-hover:h-10 group-hover:scale-y-100 group-hover:opacity-100"
     >
-      <div @click="toggleStream(CallStreamType.Audio)($event)">
+      <div @click="store.callSetMuted(!store.call.muted)">
         <div
           class="h-10 w-10 cursor-pointer rounded-full p-3 transition"
           :class="{
-            'bg-ctp-text text-ctp-base': audioStream,
-            'bg-ctp-mantle text-ctp-subtext0 hover:text-ctp-text': !audioStream,
+            'bg-ctp-text text-ctp-base': !store.call.muted,
+            'bg-ctp-mantle text-ctp-subtext0 hover:text-ctp-text': store.call.muted,
           }"
         >
           <MicIcon v-if="audioStream" />
           <MicOffIcon v-else />
         </div>
       </div>
-      <div @click="toggleStream(CallStreamType.Video)($event)">
+      <div @click="toggleStream(CallStreamType.Video)">
         <div
           class="h-10 w-10 cursor-pointer rounded-full p-3 transition"
           :class="{
@@ -70,7 +76,7 @@
             'bg-ctp-mantle text-ctp-subtext0 hover:text-ctp-text': !videoStream,
           }"
         >
-          <VideoIcon v-if="videoStream" />
+          <VideoIcon v-if="CallStreamType" />
           <VideoOffIcon v-else />
         </div>
       </div>
@@ -79,7 +85,7 @@
           class="h-10 w-10 cursor-pointer rounded-full bg-ctp-red p-3 text-ctp-base transition hover:bg-ctp-red/75"
         />
       </div>
-      <div @click="toggleStream(CallStreamType.DisplayVideo)($event)">
+      <div @click="toggleStream(CallStreamType.DisplayVideo)">
         <DisplayIcon
           class="h-10 w-10 cursor-pointer rounded-full p-3 transition"
           :class="{
@@ -88,7 +94,7 @@
           }"
         />
       </div>
-      <div @click="toggleDeaf">
+      <div @click="store.callSetDeaf(!store.call!.deaf)">
         <div
           class="h-10 w-10 cursor-pointer rounded-full p-3 transition"
           :class="{
@@ -158,16 +164,12 @@ const audioStream = getComputedStream(CallStreamType.Audio);
 const videoStream = getComputedStream(CallStreamType.Video);
 const displayVideoStream = getComputedStream(CallStreamType.DisplayVideo);
 
-const toggleStream = (type: CallStreamType) => async (e: MouseEvent) => {
+const toggleStream = async (type: CallStreamType) => {
   if (getComputedStream(type).value) {
     await store.callRemoveLocalStream({
       type,
     });
   } else {
-    if (type === CallStreamType.Audio && store.call?.deaf && !e.shiftKey) {
-      await store.callSetDeaf(false);
-    }
-
     if (type === CallStreamType.DisplayVideo && isDesktop) {
       desktopCaptureModal.value = true;
       return;
@@ -175,17 +177,6 @@ const toggleStream = (type: CallStreamType) => async (e: MouseEvent) => {
 
     await store.callAddLocalStream({
       type,
-    });
-  }
-};
-
-const toggleDeaf = async (e: MouseEvent) => {
-  store.callSetDeaf(!store.call?.deaf);
-
-  if (!e.shiftKey && audioStream.value && store.call?.deaf) {
-    await store.callRemoveLocalStream({
-      type: CallStreamType.Audio,
-      silent: true,
     });
   }
 };

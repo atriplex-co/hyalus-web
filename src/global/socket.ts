@@ -1,14 +1,10 @@
-import { idbGet, idbKeys } from "../global/idb";
-import { iceServers, RTCMaxMessageSize } from "../global/config";
 import sodium from "libsodium-wrappers";
 import { router } from "../router";
 import {
-  CallRTCDataType,
   CallStreamType,
   ChannelType,
   ColorMode,
   ColorTheme,
-  FileChunkRTCType,
   MessageType,
   PushProtocol,
   SocketMessageType,
@@ -18,11 +14,12 @@ import {
 } from "@/../../hyalus-server/src/types";
 import type {
   ICallPersist,
-  ICallRTCData,
   IChannel,
+  IChannelMember,
   IHTMLMediaElement,
   ISocketHook,
   ISocketMessage,
+  ISpaceMember,
 } from "./types";
 import {
   cleanObject,
@@ -34,11 +31,13 @@ import {
   notifySend,
   playSound,
   processMessage,
+  wcImportKey,
 } from "./helpers";
 import { store } from "../global/store";
 import axios from "axios";
 import SoundStateUp from "../assets/sounds/state-change_confirm-up.ogg";
 import SoundStateDown from "../assets/sounds/state-change_confirm-down.ogg";
+import msgpack from "msgpack-lite";
 
 let updateCheck: string;
 let awayController: AbortController;
@@ -55,7 +54,7 @@ export class Socket {
   } | null = null;
 
   constructor() {
-    // this.ws.binaryType = "arraybuffer";
+    this.ws.binaryType = "arraybuffer";
 
     this.ws.addEventListener("open", async () => {
       socketRetries = 0;
@@ -71,16 +70,13 @@ export class Socket {
           proto: SocketProtocol,
           token: sodium.to_base64(store.config.token),
           away: store.away,
-          fileChunks: (await idbKeys())
-            .filter((key) => key.startsWith("file:"))
-            .map((key) => key.replaceAll("file:", "")),
         },
       });
     });
 
     this.ws.addEventListener("message", async ({ data: _msg }) => {
-      const msg = JSON.parse(_msg) as ISocketMessage;
-      // const msg = msgpack.decode(new Uint8Array(_msg)) as/ ISocketMessage;
+      // const msg = JSON.parse(_msg) as ISocketMessage;
+      const msg = msgpack.decode(new Uint8Array(_msg)) as ISocketMessage;
       console.debug("ws/rx: %o", { t: SocketMessageType[msg.t], d: msg.d });
 
       for (const hook of this.hooks) {
@@ -189,6 +185,7 @@ export class Socket {
               username: string;
               avatar: string | null;
               flags: number;
+              publicKey: string;
               status: Status;
               roleIds: string[];
               alias: string | null;
@@ -197,6 +194,7 @@ export class Socket {
           voiceStates: {
             id: string;
             channelId: string;
+            flags: number;
           }[];
           meta: {
             proto: number;
@@ -311,38 +309,33 @@ export class Socket {
               position: space.self.position,
             },
             roles: space.roles,
-            members: space.members,
+            members: space.members.map((member) => ({
+              id: member.id,
+              alias: member.alias,
+              avatar: member.avatar,
+              flags: member.flags,
+              name: member.name,
+              publicKey: sodium.from_base64(member.publicKey),
+              roleIds: member.roleIds,
+              status: member.status,
+              username: member.username,
+            })),
           });
         }
 
         for (const voiceState of data.voiceStates) {
-          store.voiceStates.push({
-            id: voiceState.id,
-            channelId: voiceState.channelId,
-          });
+          store.voiceStates.push(voiceState);
         }
-
-        // await new Promise((resolve) =>
-        //   setTimeout(resolve, 1000 + Math.random() * 2000)
-        // );
 
         store.ready = true;
 
         if (store.call) {
           this.send({
-            t: SocketMessageType.CCallStart,
+            t: SocketMessageType.CCallJoin,
             d: {
               channelId: store.call.channelId,
             },
           });
-
-          for (const state of store.voiceStates.filter(
-            (state) => state.channelId === store.call?.channelId,
-          )) {
-            for (const stream of store.call.localStreams) {
-              await store.callAddLocalStreamPeer(stream, state.id);
-            }
-          }
         }
 
         if (store.config.colorSync) {
@@ -1056,547 +1049,6 @@ export class Socket {
         });
       }
 
-      if (msg.t === SocketMessageType.SFileChunkRequest) {
-        const data = msg.d as {
-          hash: string;
-          tag: string;
-          userId: string;
-          channelId: string;
-        };
-
-        if (!store.friends.find((friend) => friend.id === data.userId && friend.acceptable)) {
-          console.warn(`SFileChunkRequest for non-friend: ${data.userId}`);
-          return;
-        }
-
-        const chunk = (await idbGet(`file:${data.hash}`)) as Uint8Array;
-
-        if (!chunk) {
-          console.warn(`SFileChunkRequest for invalid hash: ${data.hash}`);
-          return;
-        }
-
-        const channel = store.channels.find((channel) => channel.id === data.channelId);
-
-        if (!channel) {
-          console.warn(`fileChunkRequest for invalid channel: ${data.channelId}`);
-          return;
-        }
-
-        let publicKey: Uint8Array | null = null;
-
-        if (store.self && store.self.id === data.userId) {
-          publicKey = store.config.publicKey;
-        } else {
-          publicKey =
-            channel.members.find((member) => member.id === data.userId)?.publicKey || null;
-        }
-
-        if (!publicKey) {
-          console.warn(`SFileChunkRequest for invalid user: ${data.userId}`);
-          return;
-        }
-
-        const pc = new RTCPeerConnection({ iceServers });
-        const dc = pc.createDataChannel("");
-
-        const send = (val: unknown) => {
-          const json = JSON.stringify(val);
-          console.debug("f_rtc/tx: %o", JSON.parse(json)); // yes, there's a reason for this.
-          const nonce = sodium.randombytes_buf(sodium.crypto_box_NONCEBYTES);
-
-          this.send({
-            t: SocketMessageType.CFileChunkRTC,
-            d: {
-              hash: data.hash,
-              tag: data.tag,
-              data: sodium.to_base64(
-                new Uint8Array([
-                  ...nonce,
-                  ...sodium.crypto_box_easy(
-                    JSON.stringify(val),
-                    nonce,
-                    publicKey as unknown as Uint8Array,
-                    store.config.privateKey as unknown as Uint8Array,
-                  ),
-                ]),
-              ),
-            },
-          });
-        };
-
-        this.registerHook({
-          ttl: 1000 * 10,
-          ttlTimeout: null,
-          type: SocketMessageType.SFileChunkRTC,
-          async hook(msg: ISocketMessage) {
-            const data2 = msg.d as {
-              hash: string;
-              tag: string;
-              data: string;
-            };
-
-            if (data2.hash !== data.hash || data2.tag !== data.tag) {
-              return;
-            }
-
-            const dataBytes = sodium.from_base64(data2.data);
-            const dataDecrypted = JSON.parse(
-              sodium.to_string(
-                sodium.crypto_box_open_easy(
-                  new Uint8Array(dataBytes.buffer, sodium.crypto_box_NONCEBYTES),
-                  new Uint8Array(dataBytes.buffer, 0, sodium.crypto_box_NONCEBYTES),
-                  publicKey as unknown as Uint8Array,
-                  store.config.privateKey as unknown as Uint8Array,
-                ),
-              ),
-            );
-
-            console.debug("f_rtc/rx: %o", dataDecrypted);
-
-            if (dataDecrypted.t === FileChunkRTCType.SDP) {
-              await pc.setRemoteDescription(
-                new RTCSessionDescription({
-                  type: "answer",
-                  sdp: dataDecrypted.d,
-                }),
-              );
-            }
-
-            if (dataDecrypted.t === FileChunkRTCType.ICECandidate) {
-              await pc.addIceCandidate(new RTCIceCandidate(JSON.parse(dataDecrypted.d)));
-            }
-          },
-        });
-
-        pc.addEventListener("icecandidate", ({ candidate }) => {
-          if (!candidate) {
-            return;
-          }
-
-          send({
-            t: FileChunkRTCType.ICECandidate,
-            d: JSON.stringify(candidate),
-          });
-        });
-
-        pc.addEventListener("connectionstatechange", () => {
-          console.debug(`f_rtc/peer: ${pc.connectionState}`);
-        });
-
-        let i = 0;
-        let eof = false;
-        const sendChunkMessage = () => {
-          if (i > chunk.length) {
-            if (!eof) {
-              eof = true;
-              dc.send("");
-            } else {
-              dc.close();
-            }
-
-            return;
-          }
-
-          dc.send(new Uint8Array(chunk.buffer, i, Math.min(RTCMaxMessageSize, chunk.length - i)));
-
-          i += RTCMaxMessageSize;
-        };
-
-        dc.addEventListener("open", () => {
-          console.debug("f_rtc/dc: open");
-          sendChunkMessage();
-        });
-
-        dc.addEventListener("bufferedamountlow", () => {
-          console.debug("f_rtc/dc: bufferedamountlow");
-          sendChunkMessage();
-        });
-
-        dc.addEventListener("close", () => {
-          pc.close();
-          console.debug("f_rtc/dc: close");
-        });
-
-        await pc.setLocalDescription(await pc.createOffer());
-
-        send({
-          t: FileChunkRTCType.SDP,
-          d: pc.localDescription?.sdp,
-        });
-      }
-
-      if (msg.t === SocketMessageType.SCallRTC) {
-        const data = msg.d as {
-          userId: string;
-          data: string;
-        };
-
-        if (!store.call) {
-          return;
-        }
-
-        const channel = store.channels.find((channel) => channel.id === store.call?.channelId);
-
-        if (!channel) {
-          return;
-        }
-
-        const member = channel.members.find((member) => member.id === data.userId);
-
-        if (!member || !store.config.privateKey) {
-          return;
-        }
-
-        const dataBytes = sodium.from_base64(data.data);
-        const dataDecrypted: ICallRTCData = JSON.parse(
-          sodium.to_string(
-            sodium.crypto_box_open_easy(
-              new Uint8Array(dataBytes.buffer, sodium.crypto_box_NONCEBYTES),
-              new Uint8Array(dataBytes.buffer, 0, sodium.crypto_box_NONCEBYTES),
-              member.publicKey,
-              store.config.privateKey,
-            ),
-          ),
-        );
-
-        console.debug("c_rtc/rx: %o", {
-          ...dataDecrypted,
-          mt: CallRTCDataType[dataDecrypted.mt],
-          st: CallStreamType[dataDecrypted.st],
-          userId: member.id,
-        });
-
-        if (
-          [CallRTCDataType.RemoteStreamOffer, CallRTCDataType.RemoteStreamICECandidate].includes(
-            dataDecrypted.mt,
-          )
-        ) {
-          const getStream = () => {
-            return store.call?.remoteStreams.find(
-              (stream) => stream.userId === member.id && stream.type === dataDecrypted.st,
-            );
-          };
-
-          let existingStream = getStream();
-
-          if (dataDecrypted.mt === CallRTCDataType.RemoteStreamOffer) {
-            if (existingStream) {
-              existingStream.pc.close();
-            }
-
-            const pc = new RTCPeerConnection({ iceServers });
-
-            const pcSend = (val: unknown) => {
-              const jsonRaw = JSON.stringify(val);
-              const json = JSON.parse(jsonRaw);
-              console.debug("c_rtc/tx: %o", {
-                ...json,
-                mt: CallRTCDataType[json.mt],
-                st: CallStreamType[json.st],
-                userId: member.id,
-              }); // yes, there's a reason for this.
-              const nonce = sodium.randombytes_buf(sodium.crypto_box_NONCEBYTES);
-
-              this.send({
-                t: SocketMessageType.CCallRTC,
-                d: {
-                  userId: data.userId,
-                  data: sodium.to_base64(
-                    new Uint8Array([
-                      ...nonce,
-                      ...sodium.crypto_box_easy(
-                        JSON.stringify(val),
-                        nonce,
-                        member.publicKey,
-                        store.config.privateKey as unknown as Uint8Array,
-                      ),
-                    ]),
-                  ),
-                },
-              });
-            };
-
-            let element: IHTMLMediaElement | null = null;
-            let writer: WritableStreamDefaultWriter | null = null;
-            let context: AudioContext | null = null;
-            let gain: GainNode | null = null;
-            let decoder: MediaDecoder | null = null;
-
-            if ([CallStreamType.Audio, CallStreamType.DisplayAudio].includes(dataDecrypted.st)) {
-              const generator = new MediaStreamTrackGenerator({
-                kind: "audio",
-              });
-
-              writer = generator.writable.getWriter();
-              element = document.createElement("audio") as IHTMLMediaElement;
-              context = new AudioContext();
-              gain = context.createGain();
-              const dest = context.createMediaStreamDestination();
-
-              context.createMediaStreamSource(new MediaStream([generator])).connect(gain);
-              gain.connect(dest);
-              gain.gain.value = getUserOutputGain(dataDecrypted.st, member.id);
-              element.srcObject = dest.stream;
-              element.volume = !store.call?.deaf ? 1 : 0;
-
-              try {
-                element.setSinkId(store.config.audioOutput);
-              } catch {
-                //
-              }
-
-              element.play();
-
-              const decoderInit = {
-                output(frame: MediaData) {
-                  if (writer) {
-                    writer.write(frame);
-                  }
-                },
-                error() {
-                  //
-                },
-              };
-
-              decoder = new AudioDecoder(decoderInit);
-            }
-
-            const stream =
-              store.call.remoteStreams[
-                store.call.remoteStreams.push({
-                  userId: data.userId,
-                  type: dataDecrypted.st,
-                  element,
-                  pc,
-                  dc: null,
-                  writer,
-                  context,
-                  gain,
-                  decoder,
-                  muxer: null,
-                  speaking: false,
-                }) - 1
-              ];
-
-            const close = pc.close.bind(pc);
-            pc.close = () => {
-              close();
-
-              if (pc.onconnectionstatechange) {
-                pc.onconnectionstatechange(new Event(""));
-              }
-            };
-
-            pc.onicecandidate = ({ candidate }) => {
-              if (!candidate) {
-                return;
-              }
-
-              pcSend({
-                mt: CallRTCDataType.LocalStreamICECandidate,
-                st: dataDecrypted.st,
-                d: JSON.stringify(candidate),
-              });
-            };
-
-            pc.ondatachannel = ({ channel: dc }) => {
-              stream.dc = dc;
-
-              const rxBuffer = new Uint8Array(2 * 1024 * 1024);
-              let rxBufferPos = 0;
-              let decoderConfig = "";
-
-              dc.addEventListener("message", async ({ data }) => {
-                if (typeof data === "string") {
-                  const info = JSON.parse(data);
-
-                  if (stream.speaking !== info.speaking) {
-                    stream.speaking = info.speaking;
-                  }
-
-                  if (decoder) {
-                    if (decoder.state === "closed") {
-                      pc.close();
-                      return;
-                    }
-
-                    if (decoderConfig !== info.decoderConfig || decoder.state === "unconfigured") {
-                      decoderConfig = info.decoderConfig;
-                      const parsedDecoderConfig = JSON.parse(decoderConfig);
-
-                      decoder.configure({
-                        ...parsedDecoderConfig,
-                        hardwareAcceleration: "prefer-hardware",
-                        description:
-                          parsedDecoderConfig.description &&
-                          sodium.from_base64(parsedDecoderConfig.description),
-                        optimizeForLatency: true,
-                      });
-                    }
-
-                    const chunkInit: EncodedMediaChunkInit = {
-                      data: new Uint8Array(rxBuffer.buffer, 0, rxBufferPos),
-                      type: info.type,
-                      timestamp: info.timestamp,
-                      duration: info.duration,
-                    };
-
-                    let chunk!: EncodedMediaChunk;
-
-                    if (decoder instanceof AudioDecoder) {
-                      chunk = new EncodedAudioChunk(chunkInit);
-                    }
-
-                    if (decoder instanceof VideoDecoder) {
-                      chunk = new EncodedVideoChunk(
-                        chunkInit as EncodedVideoChunkInit,
-                      ) as EncodedMediaChunk;
-                    }
-
-                    try {
-                      decoder.decode(chunk);
-                    } catch (e) {
-                      dc.send("");
-                    }
-                  }
-
-                  if (stream.muxer) {
-                    stream.muxer.feed({
-                      video: new Uint8Array(rxBuffer.buffer, 0, rxBufferPos),
-                      duration: 1000 / 60, // TODO: dynamic FPS metadata.
-                    });
-                  }
-
-                  rxBufferPos = 0;
-                  return;
-                }
-
-                if (rxBufferPos + data.byteLength > rxBuffer.length) {
-                  rxBufferPos = 0;
-                  return;
-                }
-
-                rxBuffer.set(new Uint8Array(data), rxBufferPos);
-                rxBufferPos += data.byteLength;
-              });
-
-              dc.addEventListener("close", () => {
-                pc.close();
-              });
-            };
-
-            pc.onconnectionstatechange = () => {
-              console.debug(`c_rtc/peer: ${pc.connectionState}`);
-
-              if (pc.connectionState === "failed") {
-                pc.close();
-              }
-
-              if (
-                pc.connectionState === "closed" &&
-                store.call &&
-                store.call.remoteStreams.find((stream2) => stream2 === stream)
-              ) {
-                if (stream.gain) {
-                  stream.gain.disconnect();
-                }
-
-                if (stream.muxer) {
-                  stream.muxer.destroy();
-                }
-
-                if (stream.context) {
-                  stream.context.close();
-                }
-
-                if (stream.decoder && stream.decoder.state !== "closed") {
-                  stream.decoder.close();
-                }
-
-                if (stream.writer && !stream.writer.closed) {
-                  stream.writer.close();
-                }
-
-                if (!store.call) {
-                  return;
-                }
-
-                store.call.remoteStreams = store.call.remoteStreams.filter(
-                  (stream2) => stream2 !== stream,
-                );
-              }
-            };
-
-            await pc.setRemoteDescription(
-              new RTCSessionDescription({
-                type: "offer",
-                sdp: dataDecrypted.d,
-              }),
-            );
-            await pc.setLocalDescription(await pc.createAnswer());
-
-            pcSend({
-              mt: CallRTCDataType.LocalStreamAnswer,
-              st: dataDecrypted.st,
-              d: pc.localDescription?.sdp,
-            });
-          }
-
-          if (dataDecrypted.mt === CallRTCDataType.RemoteStreamICECandidate) {
-            for (let i = 0; i < 10; ++i) {
-              if (existingStream) {
-                break;
-              }
-
-              existingStream = getStream();
-              await new Promise((resolve) => setTimeout(resolve, 1000));
-            }
-
-            if (!existingStream) {
-              return;
-            }
-
-            await existingStream.pc.addIceCandidate(
-              new RTCIceCandidate(JSON.parse(dataDecrypted.d)),
-            );
-          }
-        }
-
-        if (
-          [CallRTCDataType.LocalStreamAnswer, CallRTCDataType.LocalStreamICECandidate].includes(
-            dataDecrypted.mt,
-          )
-        ) {
-          const stream = store.call.localStreams.find((stream) => stream.type === dataDecrypted.st);
-
-          if (!stream) {
-            console.warn("SCallRTC missing stream");
-            return;
-          }
-
-          const peer = stream.peers.find((peer) => peer.userId === data.userId)?.pc;
-
-          if (!peer) {
-            console.warn("SCallRTC missing peer");
-            return;
-          }
-
-          if (dataDecrypted.mt === CallRTCDataType.LocalStreamAnswer) {
-            await peer.setRemoteDescription(
-              new RTCSessionDescription({
-                type: "answer",
-                sdp: dataDecrypted.d,
-              }),
-            );
-          }
-
-          if (dataDecrypted.mt === CallRTCDataType.LocalStreamICECandidate) {
-            await peer.addIceCandidate(new RTCIceCandidate(JSON.parse(dataDecrypted.d)));
-          }
-        }
-      }
-
       if (msg.t === SocketMessageType.SCallReset) {
         await store.callReset();
       }
@@ -1632,6 +1084,7 @@ export class Socket {
             status: number;
             roleIds: string[];
             alias: string | null;
+            publicKey: string;
           }[];
           channels: {
             id: string;
@@ -1668,7 +1121,17 @@ export class Socket {
             position: data.self.position,
           },
           roles: data.roles,
-          members: data.members,
+          members: data.members.map((member) => ({
+            alias: member.alias,
+            avatar: member.avatar,
+            flags: member.flags,
+            id: member.id,
+            roleIds: member.roleIds,
+            name: member.name,
+            publicKey: sodium.from_base64(member.publicKey),
+            status: member.status,
+            username: member.username,
+          })),
         });
 
         for (const channel of data.channels) {
@@ -1756,6 +1219,7 @@ export class Socket {
           status: number;
           roleIds: string[];
           alias: string | null;
+          publicKey: string;
         };
 
         const space = store.spaces.find((space) => space.id === data.spaceId);
@@ -1774,6 +1238,7 @@ export class Socket {
           status: data.status,
           roleIds: data.roleIds,
           alias: data.alias,
+          publicKey: sodium.from_base64(data.publicKey),
         });
       }
 
@@ -1951,90 +1416,523 @@ export class Socket {
       if (msg.t === SocketMessageType.SVoiceStateUpdate) {
         const data = msg.d as {
           id: string;
-          channelId: string | null;
+          channelId?: string | null;
+          flags?: number;
+        };
+
+        if (data.id === store.self!.id) {
+          return; // don't process voice state updates from ourself.
+        }
+
+        const handleUserJoin = async () => {
+          playSound(SoundStateUp);
+          console.debug("voice: updating call keys (reason: user joined)");
+          await store.callUpdateKeys();
         };
 
         const handleUserLeave = async () => {
-          if (!store.call) {
-            return;
-          }
-
-          for (const stream of store.call.localStreams) {
-            for (const peer of stream.peers) {
-              if (peer.userId !== data.id) {
-                continue;
-              }
-
-              peer.pc.close();
-              stream.peers = stream.peers.filter((peer2) => peer2 !== peer);
-            }
-          }
-
-          for (const stream of store.call.remoteStreams) {
-            if (stream.userId !== data.id) {
-              continue;
-            }
-
-            stream.pc.close();
-            store.call.remoteStreams = store.call.remoteStreams.filter(
-              (stream2) => stream2 !== stream,
-            );
-          }
-
-          playSound(data.channelId ? SoundStateUp : SoundStateDown);
+          playSound(SoundStateDown);
+          console.debug("voice: updating call keys (reason: user left)");
+          await store.callUpdateKeys();
         };
 
-        const handleUserJoin = async () => {
-          if (!store.call) {
-            return;
-          }
+        const state = store.voiceStates.find((state) => state.id === data.id);
 
-          handleUserLeave();
-
-          for (const stream of store.call.localStreams) {
-            await store.callAddLocalStreamPeer(stream, data.id);
-          }
-        };
-
-        if (data.channelId) {
+        if (!state && data.channelId) {
           store.voiceStates.push({
             id: data.id,
             channelId: data.channelId,
+            flags: data.flags!,
           });
 
-          if (store.call && store.call.channelId === data.channelId) {
+          if (store.call && data.channelId === store.call.channelId) {
             handleUserJoin();
           }
         }
 
-        if (!data.channelId) {
-          const state = store.voiceStates.find((state) => state.id === data.id);
-          if (!state) {
-            return;
-          }
+        if (state && state.flags !== undefined) {
+          state.flags = data.flags!;
+        }
 
+        if (state && data.channelId === null) {
           store.voiceStates = store.voiceStates.filter((state2) => state2 !== state);
 
-          if (store.call && store.call.channelId === state.channelId) {
+          if (store.call && state.channelId === store.call.channelId) {
             handleUserLeave();
           }
         }
       }
+
+      if (msg.t === SocketMessageType.SCallOffer && store.call) {
+        const data = msg.d as {
+          sdp: string;
+          streams: {
+            uid: string;
+            mid: string;
+            type: number;
+          }[];
+        };
+
+        try {
+          await store.call.pc.setRemoteDescription(
+            new RTCSessionDescription({
+              type: "offer",
+              sdp: data.sdp,
+            }),
+          );
+          await store.call.pc.setLocalDescription(await store.call.pc.createAnswer());
+          store.socket!.send({
+            t: SocketMessageType.CCallAnswer,
+            d: {
+              sdp: store.call.pc.localDescription!.sdp,
+            },
+          });
+        } catch {
+          return store.callUpdateStreams();
+        }
+
+        store.call.pc
+          .localDescription!.sdp.trim()
+          .split("\r\n")
+          .filter((l) => l.startsWith("a=rtpmap:"))
+          .map((l) => {
+            const k = +l.split(" ")[0].split(":")[1].trim();
+            const v = l.split(" ")[1].split("/")[0].toLowerCase().trim();
+            if (store.call!.payloadCodecs[k] !== v) {
+              store.call!.payloadCodecs[k] = v;
+              console.debug("updated payload codecs: %o", {
+                payloadCodecs: store.call!.payloadCodecs,
+              });
+            }
+          });
+
+        if (!store.call.initComplete) {
+          await store.callUpdateKeys(); // set up keys/streams after we receive our first offer.
+          await store.callUpdateStreams();
+          await store.callUpdateFlags();
+          store.call.initComplete = true;
+        }
+
+        for (const trans of store.call.pc.getTransceivers()) {
+          if (store.call.configuredTransceivers.includes(trans)) {
+            continue;
+          }
+
+          const senderStreams = trans.sender.createEncodedStreams();
+          const receiverStreams = trans.receiver.createEncodedStreams();
+          const IV_SIZE = 12;
+
+          senderStreams.readable
+            .pipeThrough(
+              new TransformStream({
+                async transform(frame, controller) {
+                  try {
+                    if (!store.call) {
+                      return;
+                    }
+                    const stream = store.call.localStreams.find(
+                      (stream) => stream.sender === trans.sender,
+                    );
+                    if (!stream) {
+                      return;
+                    }
+                    const codec = store.call.payloadCodecs[frame.getMetadata().payloadType];
+                    const _data = new Uint8Array(frame.data);
+                    const key = store.call.localKeys[store.call.localKeyId];
+                    let skip = 0;
+                    if (codec === "opus" && _data.length === 3) {
+                      return; // opus frame (empty)
+                    }
+                    if (codec === "opus") {
+                      skip = 1; // opus frame
+                    }
+                    if ((codec === "vp8" || codec === "vp9") && (_data[0] & 0x01) === 1) {
+                      skip = 3; // VP8/VP9 frame (normal)
+                    }
+                    if ((codec === "vp8" || codec === "vp9") && (_data[0] & 0x01) === 0) {
+                      skip = 10; // VP8/VP9 frame (keyframe)
+                    }
+                    const iv = new Uint8Array(IV_SIZE);
+                    crypto.getRandomValues(iv);
+                    const encrypted = await crypto.subtle.encrypt(
+                      {
+                        name: "AES-GCM",
+                        iv,
+                      },
+                      key.key,
+                      new Uint8Array(frame.data, skip),
+                    );
+                    const data = new Uint8Array(skip + encrypted.byteLength + 2 + IV_SIZE);
+                    data.set(new Uint8Array(frame.data, 0, skip), 0);
+                    data.set(new Uint8Array([key.id, +stream.speaking]), skip);
+                    data.set(new Uint8Array(iv), skip + 2);
+                    data.set(new Uint8Array(encrypted), skip + 2 + IV_SIZE);
+                    frame.data = data.buffer;
+
+                    // asineth's experimental H264 NALU parser/encrypter:
+                    // TODO: doesn't work well so it's diabled for now, making H264 work later.
+
+                    // const _data = new Uint8Array(frame.data);
+                    // const starts: number[] = [];
+                    // let zc = 0;
+                    // for (let i = 0; i < _data.length; ++i) {
+                    //   if (zc === 3 && _data[i] === 1) {
+                    //     starts.push(i + 1);
+                    //   }
+                    //   if (_data[i] === 0) {
+                    //     zc++;
+                    //   } else {
+                    //     zc = 0;
+                    //   }
+                    // }
+                    // // const data = new Uint8Array(_data.length + starts.length * (IV_SIZE + 16));
+                    // const data = new Uint8Array(_data.length + starts.length * 16);
+                    // let offset = 0;
+                    // for (let i = 0; i < starts.length; ++i) {
+                    //   const naluSkipped = new Uint8Array(frame.data, starts[i], skip);
+                    //   const nalu = new Uint8Array(
+                    //     frame.data,
+                    //     starts[i] + skip,
+                    //     starts[i + 1] ? starts[i + 1] - starts[i] - 4 - skip : undefined,
+                    //   );
+                    //   const iv = new Uint8Array(IV_SIZE);
+                    //   crypto.getRandomValues(iv);
+                    //   const encrypted = new Uint8Array(
+                    //     await crypto.subtle.encrypt(
+                    //       {
+                    //         name: "AES-GCM",
+                    //         // iv,
+                    //         iv: new Uint8Array(IV_SIZE),
+                    //       },
+                    //       key,
+                    //       nalu,
+                    //     ),
+                    //   );
+                    //   data.set(new Uint8Array([0x00, 0x00, 0x00, 0x01]), offset); // NALU header
+                    //   offset += 4;
+                    //   data.set(naluSkipped, offset);
+                    //   offset += naluSkipped.length;
+                    //   // data.set(iv, offset);
+                    //   // offset += iv.length;
+                    //   data.set(encrypted, offset);
+                    //   offset += encrypted.length;
+                    // }
+                    // frame.data = data.buffer;
+
+                    controller.enqueue(frame);
+                  } catch (e) {
+                    console.warn("error encrypting frame");
+                    console.warn(e);
+                  }
+                },
+              }),
+            )
+            .pipeTo(senderStreams.writable);
+
+          receiverStreams.readable
+            .pipeThrough(
+              new TransformStream({
+                async transform(frame, controller) {
+                  try {
+                    if (!store.call) {
+                      return;
+                    }
+                    const stream = store.call.remoteStreams.find(
+                      (stream) => stream.receiver === trans.receiver,
+                    );
+                    if (!stream) {
+                      return;
+                    }
+                    const codec = store.call!.payloadCodecs[frame.getMetadata().payloadType];
+                    const _data = new Uint8Array(frame.data);
+                    let skip = 0;
+                    if (codec === "opus") {
+                      skip = 1; // opus frame
+                    }
+                    if ((codec === "vp8" || codec === "vp9") && (_data[0] & 0x01) === 1) {
+                      skip = 3; // VP8/VP9 frame (normal)
+                    }
+                    if ((codec === "vp8" || codec === "vp9") && (_data[0] & 0x01) === 0) {
+                      skip = 10; // VP8/VP9 frame (keyframe)
+                    }
+                    const key = store.call.remoteKeys.find(
+                      (key) => key.userId === stream.userId && key.id === _data[skip + 0],
+                    );
+                    if (!key) {
+                      return console.warn(`missing key for ${stream.userId} (${stream.type})`);
+                    }
+                    const decrypted = await crypto.subtle.decrypt(
+                      {
+                        name: "AES-GCM",
+                        iv: new Uint8Array(frame.data, skip + 2, IV_SIZE),
+                      },
+                      key.key,
+                      new Uint8Array(frame.data, skip + 2 + IV_SIZE),
+                    );
+                    const data = new Uint8Array(decrypted.byteLength + skip);
+                    data.set(new Uint8Array(frame.data, 0, skip), 0);
+                    data.set(new Uint8Array(decrypted), skip);
+                    frame.data = data.buffer;
+
+                    if (stream.speaking !== !!_data[skip + 1]) {
+                      stream.speaking = !!_data[skip + 1];
+                    }
+
+                    // asineth's experimental H264 NALU parser/decrypter:
+                    // TODO: doesn't work well so it's diabled for now, making H264 work later.
+
+                    // const _data = new Uint8Array(frame.data);
+                    // const starts: number[] = [];
+                    // let zc = 0;
+                    // for (let i = 0; i < _data.length; ++i) {
+                    //   if (zc === 3 && _data[i] === 1) {
+                    //     starts.push(i + 1);
+                    //   }
+                    //   if (_data[i] === 0) {
+                    //     zc++;
+                    //   } else {
+                    //     zc = 0;
+                    //   }
+                    // }
+                    // // const data = new Uint8Array(_data.length - starts.length * (IV_SIZE + 16));
+                    // const data = new Uint8Array(_data.length - starts.length * 16);
+                    // let offset = 0;
+                    // for (let i = 0; i < starts.length; ++i) {
+                    //   const naluSkipped = new Uint8Array(frame.data, starts[i], skip);
+                    //   const nalu = new Uint8Array(
+                    //     frame.data,
+                    //     starts[i] + skip,
+                    //     starts[i + 1] ? starts[i + 1] - starts[i] - 4 - skip : undefined,
+                    //   );
+                    //   const decrypted = new Uint8Array(
+                    //     await crypto.subtle.decrypt(
+                    //       {
+                    //         name: "AES-GCM",
+                    //         // iv: nalu.slice(0, IV_SIZE),
+                    //         iv: new Uint8Array(IV_SIZE),
+                    //       },
+                    //       key,
+                    //       // nalu.slice(IV_SIZE),
+                    //       nalu,
+                    //     ),
+                    //   );
+                    //   data.set(new Uint8Array([0x00, 0x00, 0x00, 0x01]), offset); // NALU header
+                    //   offset += 4;
+                    //   data.set(naluSkipped, offset);
+                    //   offset += naluSkipped.length;
+                    //   data.set(decrypted, offset);
+                    //   offset += decrypted.length;
+                    // }
+                    // frame.data = data.buffer;
+
+                    // const decrypted = await crypto.subtle.decrypt(
+                    //   {
+                    //     name: "AES-GCM",
+                    //     iv: new Uint8Array(frame.data, 4, IV_SIZE),
+                    //   },
+                    //   key,
+                    //   new Uint8Array(frame.data, 4 + IV_SIZE),
+                    // );
+                    // const data = new Uint8Array(decrypted.byteLength + 4);
+                    // data.set(new Uint8Array([0x00, 0x00, 0x00, 0x01]), 0);
+                    // data.set(new Uint8Array(decrypted), 4);
+                    // frame.data = data.buffer;
+
+                    controller.enqueue(frame);
+                  } catch (e) {
+                    console.warn("error decrypting frame");
+                    console.warn(e);
+                  }
+                },
+              }),
+            )
+            .pipeTo(receiverStreams.writable);
+
+          console.debug(`debug: enabled encryption for mid: ${trans.mid}`);
+          store.call.configuredTransceivers.push(trans);
+        }
+
+        // the SFU i built uses a different ID format. (honestly it's for easier-to-read logs)
+        for (const info of data.streams) {
+          const hex = sodium.to_hex(sodium.from_base64(info.uid));
+          info.uid = `${hex.slice(0, 8)}`;
+          info.uid += `-${hex.slice(8, 8 + 4)}`;
+          info.uid += `-${hex.slice(12, 12 + 4)}`;
+          info.uid += `-${hex.slice(16, 16 + 4)}`;
+          info.uid += `-${hex.slice(20, 20 + 12)}`;
+        }
+
+        // remove any dead streams
+        for (const stream of store.call.remoteStreams) {
+          if (
+            !data.streams.find((info) => info.uid === stream.userId && info.type === stream.type)
+          ) {
+            console.debug(`voice: removing stream: %o`, { uid: stream.userId, type: stream.type });
+            store.call.remoteStreams = store.call.remoteStreams.filter(
+              (stream2) => stream2 !== stream,
+            );
+          }
+        }
+
+        // add new streams
+        for (const info of data.streams) {
+          const transceiver = store.call.pc
+            .getTransceivers()
+            .find((trans) => trans.mid === info.mid);
+          if (!transceiver) {
+            console.warn(`SCallOffer: missing transceiver for ${info.uid} type ${info.type}`);
+            continue;
+          }
+          const receiver = transceiver.receiver;
+          const stream = store.call.remoteStreams.find(
+            (stream) => stream.userId === info.uid && stream.type === info.type,
+          );
+          if (stream) {
+            continue;
+          }
+          console.debug(`voice: adding stream %o`, info);
+          let element: IHTMLMediaElement | null = null;
+          let gain: GainNode | null = null;
+          if (receiver.track.kind === "audio") {
+            // this wasted over an hour of my time.
+            // chrome requires something to be reading the MediaStreamTrack for AudioContext to work.
+            const tmpElement = document.createElement("audio");
+            tmpElement.srcObject = new MediaStream([receiver.track]);
+            tmpElement.muted = true;
+            tmpElement.play();
+            const context = new AudioContext({
+              latencyHint: "interactive", // this probably improves latency or some shit.
+              sampleRate: 48000,
+            });
+            const source = context.createMediaStreamSource(tmpElement.srcObject);
+            const dest = context.createMediaStreamDestination();
+            gain = context.createGain();
+            source.connect(gain);
+            gain.connect(dest);
+            gain.gain.value = getUserOutputGain(info.type, info.uid);
+            element = document.createElement("audio") as IHTMLMediaElement;
+            element.srcObject = dest.stream;
+            element.volume = !store.call.deaf ? 1 : 0;
+            try {
+              element.setSinkId(store.config.audioOutput);
+            } catch {
+              //
+            }
+            element.play();
+          }
+          store.call.remoteStreams.push({
+            userId: info.uid,
+            type: info.type,
+            speaking: false,
+            track: receiver.track,
+            element,
+            gain,
+            receiver,
+          });
+        }
+      }
+
+      if (msg.t === SocketMessageType.SCallICECandidate && store.call) {
+        const data = msg.d as {
+          candidate: string;
+        };
+
+        await store.call.pc.addIceCandidate(
+          new RTCIceCandidate({
+            candidate: data.candidate,
+            sdpMid: "0",
+            sdpMLineIndex: 0,
+            usernameFragment: null,
+          }),
+        );
+      }
+
+      if (msg.t === SocketMessageType.SCallUpdateKeys && store.call) {
+        const data = msg.d as {
+          userId: string;
+          id: number;
+          keys: string;
+        };
+
+        if (!store.call) {
+          return;
+        }
+
+        const boxes = msgpack.decode(sodium.from_base64(data.keys));
+        const box: Uint8Array = boxes[store.self!.id];
+        if (!box) {
+          return console.warn(`SCallUpdateKeys: missing key box from ${data.userId}`);
+        }
+
+        const channel = store.channels.find((channel) => channel.id === store.call!.channelId);
+        if (!channel) {
+          return console.warn(`SCallUpdateKeys: missing channel ${store.call.channelId}`);
+        }
+        let members: IChannelMember[] | ISpaceMember[] = channel.members;
+        if (channel.spaceId) {
+          const space = store.spaces.find((space) => space.id === channel.spaceId);
+          if (!space) {
+            return console.warn(`SCallUpdateKeys: missing space ${channel.spaceId}`);
+          }
+          members = space.members;
+        }
+        const member = members.find((member) => member.id === data.userId);
+        if (!member) {
+          return console.warn(`SCallUpdateKeys: missing member ${data.userId}`);
+        }
+
+        const key = sodium.crypto_box_open_easy(
+          new Uint8Array(box.buffer, sodium.crypto_secretbox_NONCEBYTES),
+          new Uint8Array(box.buffer, 0, sodium.crypto_secretbox_NONCEBYTES),
+          member.publicKey,
+          store.config.privateKey!,
+        );
+
+        store.call.remoteKeys.push({
+          userId: data.userId,
+          id: data.id,
+          key: await wcImportKey(key),
+        });
+
+        this.send({
+          t: SocketMessageType.CCallUpdateKeysACK,
+          d: {
+            userId: data.userId,
+            id: data.id,
+          },
+        });
+      }
+
+      if (msg.t === SocketMessageType.SCallUpdateKeysACK && store.call) {
+        const data = msg.d as {
+          userId: string;
+          id: number;
+        };
+
+        if (
+          data.id !== store.call.localKeySwapTarget ||
+          store.call.localKeyAcks.includes(data.userId)
+        ) {
+          return;
+        }
+
+        store.call.localKeyAcks.push(data.userId);
+        if (store.call.localKeyAcks.length === store.call.localKeyAcksNeeded) {
+          store.call.localKeyAcks = [];
+          clearInterval(store.call.localKeySwapTimeout);
+          console.debug("voice: swapping call key (all members ACKed)");
+          store.call.localKeyId = store.call.localKeySwapTarget;
+        }
+      }
+
+      // add new WS message types here!
     });
 
     this.ws.addEventListener("close", async () => {
       store.ready = false;
 
       if (store.call) {
-        for (const stream of store.call.localStreams) {
-          for (const peer of stream.peers) {
-            peer.pc.close();
-          }
-        }
-
-        for (const stream of store.call.remoteStreams) {
-          stream.pc.close();
-        }
+        store.call.initComplete = false;
       }
 
       if (!this.preventReconnect) {
@@ -2049,8 +1947,8 @@ export class Socket {
 
   send(msg: ISocketMessage): void {
     console.debug("ws/tx: %o", { t: SocketMessageType[msg.t], d: msg.d });
-    this.ws.send(JSON.stringify(msg));
-    // this.ws.send(msgpack.encode(msg));
+    // this.ws.send(JSON.stringify(msg));
+    this.ws.send(msgpack.encode(msg));
   }
 
   close(): void {

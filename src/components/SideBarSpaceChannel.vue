@@ -27,16 +27,16 @@
     </div>
   </div>
   <div
-    v-else
+    v-if="channel.type !== ChannelType.SpaceCategory"
     class="group flex cursor-pointer items-center justify-between rounded-md p-1.5 text-sm transition hover:bg-ctp-surface0/75 hover:text-ctp-text"
     :class="{
       'text-ctp-subtext0': route.path !== `/channels/${channel.id}`,
       'bg-ctp-surface0/50': route.path === `/channels/${channel.id}`,
     }"
-    @click="click"
+    @click="click($event)"
   >
-    <div class="flex items-center space-x-1">
-      <div class="h-4 w-4">
+    <div class="flex items-center space-x-1.5">
+      <div class="h-5 w-5 text-ctp-overlay0">
         <HashtagIcon v-if="channel.type === ChannelType.SpaceText" />
         <SpeakerWaveIcon v-if="channel.type === ChannelType.SpaceVoice" />
       </div>
@@ -49,6 +49,16 @@
         @click="manageModal = true"
       />
     </div>
+  </div>
+  <div class="pl-4 space-y-0.5 pb-1.5" v-if="voiceUsers.length">
+    <SideBarSpaceVoiceUser
+      v-for="voiceUser in voiceUsers"
+      :key="voiceUser.member.id"
+      :member="voiceUser.member"
+      :flags="voiceUser.flags"
+      :space="space"
+      :channel="channel"
+    />
   </div>
   <SpaceChannelManage
     v-if="manageModal"
@@ -66,14 +76,20 @@
 
 <script lang="ts" setup>
 import { CogIcon, HashtagIcon, PlusIcon, SpeakerWaveIcon } from "@heroicons/vue/20/solid";
-import { ChannelType, SpacePermission } from "@/../../hyalus-server/src/types";
+import {
+  CallStreamType,
+  ChannelType,
+  SpacePermission,
+  VoiceStateFlags,
+} from "@/../../hyalus-server/src/types";
 import { computed, type PropType, ref } from "vue";
 import { useRoute, useRouter } from "vue-router";
 import { checkSpacePermissions } from "../global/helpers";
 import { useStore } from "../global/store";
-import type { IChannel, ISpace } from "../global/types";
+import type { IChannel, ISelf, ISpace, ISpaceMember } from "../global/types";
 import SpaceChannelCreateModal from "./SpaceChannelCreateModal.vue";
 import SpaceChannelManage from "./SpaceChannelManage.vue";
+import SideBarSpaceVoiceUser from "./SideBarSpaceVoiceUser.vue";
 
 const router = useRouter();
 const route = useRoute();
@@ -126,13 +142,48 @@ const allowManageRoles = computed(() =>
   }),
 );
 
-const click = async () => {
-  if (props.channel.type === ChannelType.SpaceText) {
-    router.push(`/channels/${props.channel.id}`);
+const click = async (e: MouseEvent) => {
+  if (props.channel.type === ChannelType.SpaceVoice && !store.call) {
+    if (route.name === "channel") {
+      const channel = store.channels.find((channel) => channel.id === route.params.channelId);
+      if (channel && channel.type === ChannelType.SpaceVoice) {
+        router.push(`/channels/${props.channel.id}`);
+      }
+    }
+    await store.callStart(props.channel.id);
+    if (!e.shiftKey) {
+      await store.callAddLocalStream({ type: CallStreamType.Audio, silent: true });
+    }
+    return;
   }
 
-  if (props.channel.type === ChannelType.SpaceVoice) {
-    console.log(`TODO: enable joining SpaceVoice\n${props.channel.id}`);
-  }
+  router.push(`/channels/${props.channel.id}`);
 };
+
+const voiceUsers = computed(() => {
+  const states = store.voiceStates.filter((state) => state.channelId === props.channel.id);
+  const ret: {
+    member: ISelf | ISpaceMember;
+    flags: VoiceStateFlags;
+  }[] = [];
+  for (const state of states) {
+    const member = props.space.members.find((member) => member.id === state.id);
+    if (!member) {
+      console.warn(`missing member for voice state: ${state.id}`);
+      continue;
+    }
+    ret.push({
+      member,
+      flags: state.flags,
+    });
+  }
+  if (store.call && store.call.channelId === props.channel.id) {
+    ret.push({
+      member: store.self!,
+      flags: store.call.flags,
+    });
+  }
+  ret.sort((a, b) => (a.member.name > b.member.name ? 1 : -1));
+  return ret;
+});
 </script>

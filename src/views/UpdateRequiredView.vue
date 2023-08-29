@@ -1,13 +1,13 @@
 <template>
   <div
-    class="fixed inset-0 flex h-full w-full flex-col items-center justify-center space-y-8 bg-white"
+    class="fixed inset-0 z-50 flex h-full w-full flex-col items-center justify-center space-y-6 bg-ctp-crust text-sm"
   >
     <div class="flex flex-col items-center space-y-4">
-      <RefreshIcon class="h-20 w-20 text-ctp-subtext0" />
+      <RefreshIcon class="h-16 w-16 text-ctp-subtext0" />
       <p class="text-2xl font-bold">Hyalus needs an update</p>
     </div>
     <div
-      class="cursor-pointer rounded-md bg-ctp-base px-4 py-2 transition hover:bg-ctp-base"
+      class="cursor-pointer rounded-md bg-ctp-base px-4 py-2 transition hover:bg-ctp-base/50"
       @click="submit"
     >
       <p>Reload</p>

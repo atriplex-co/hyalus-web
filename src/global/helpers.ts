@@ -471,3 +471,15 @@ export const getSpaceMemberPosition = (opts: { spaceId: string; memberId: string
 
   return Math.min(...roles.map((role) => role.position));
 };
+
+export const wcImportKey = async (key: Uint8Array) => {
+  return await crypto.subtle.importKey(
+    "raw",
+    key,
+    {
+      name: "AES-GCM",
+    },
+    false,
+    ["encrypt", "decrypt"],
+  );
+};

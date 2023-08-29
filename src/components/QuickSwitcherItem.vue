@@ -1,6 +1,6 @@
 <template>
   <div
-    class="flex items-center justify-between px-2 text-sm rounded-md"
+    class="flex items-center justify-between rounded-md px-2 text-sm"
     :class="{
       'bg-ctp-surface0/50': selected,
     }"

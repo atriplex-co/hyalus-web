@@ -4,7 +4,6 @@ import MarkdownItLinkAttr from "markdown-it-link-attributes";
 import highlight from "highlight.js";
 import type Renderer from "markdown-it/lib/renderer";
 
-export const RTCMaxMessageSize = 1024 * 256;
 export const MaxFileSize = 1024 * 1024 * 50;
 export const MaxFileChunkSize = 1024 * 256;
 

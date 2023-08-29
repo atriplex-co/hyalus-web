@@ -2,15 +2,15 @@
   <div class="flex h-full w-full flex-col">
     <div class="flex h-14 items-center space-x-2 p-2">
       <button
-        class="flex h-8 w-full items-center space-x-3 overflow-hidden rounded-md bg-ctp-crust px-3 cursor-pointer"
+        class="flex h-8 w-full cursor-pointer items-center space-x-3 overflow-hidden rounded-md bg-ctp-crust px-3"
         @click="store.quickSwitcherOpen = true"
       >
-        <p class="flex-1 text-start bg-transparent text-sm text-ctp-overlay0">Search</p>
+        <p class="flex-1 bg-transparent text-start text-sm text-ctp-overlay0">Search</p>
         <MagnifyingGlassIcon class="h-4 w-4 text-ctp-overlay0" />
       </button>
       <div
         to="/friends"
-        class="hover:text-ctp-text relative flex h-8 w-8 flex-shrink-0 cursor-pointer items-center justify-center rounded-md bg-ctp-crust text-ctp-overlay0 transition"
+        class="relative flex h-8 w-8 flex-shrink-0 cursor-pointer items-center justify-center rounded-md bg-ctp-crust text-ctp-overlay0 transition hover:text-ctp-text"
         @click="store.sideBarState = SideBarState.FRIENDS"
       >
         <UsersIcon class="h-4 w-4" />
@@ -22,7 +22,7 @@
         </div>
       </div>
       <div
-        class="hover:text-ctp-text flex h-8 w-8 flex-shrink-0 cursor-pointer items-center justify-center rounded-md bg-ctp-crust text-ctp-overlay0 transition"
+        class="flex h-8 w-8 flex-shrink-0 cursor-pointer items-center justify-center rounded-md bg-ctp-crust text-ctp-overlay0 transition hover:text-ctp-text"
         @click="settingsModal = true"
       >
         <CogIcon class="h-4 w-4" />

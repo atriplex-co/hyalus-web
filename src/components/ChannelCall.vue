@@ -2,7 +2,10 @@
   <div
     v-if="store.call"
     class="top-0 flex flex-col bg-ctp-crust"
-    :style="`height: ${resizeHeight}px;`"
+    :class="{
+      'h-screen': full,
+    }"
+    :style="!full ? `height: ${resizeHeight}px;` : ''"
     @mouseenter="controls = true"
     @mouseleave="controls = false"
   >
@@ -30,19 +33,19 @@
         'opacity-100': controls,
       }"
     >
-      <div @click="toggleStream(CallStreamType.Audio)($event)">
+      <div @click="store.callSetMuted(!store.call.muted)">
         <div
           class="h-12 w-12 cursor-pointer rounded-full p-3.5 transition"
           :class="{
-            'bg-ctp-text text-ctp-base': audioStream,
-            'bg-ctp-mantle text-ctp-overlay0 hover:text-ctp-text': !audioStream,
+            'bg-ctp-text text-ctp-base': !store.call.muted,
+            'bg-ctp-mantle text-ctp-overlay0 hover:text-ctp-text': store.call.muted,
           }"
         >
           <MicIcon v-if="audioStream" />
           <MicOffIcon v-else />
         </div>
       </div>
-      <div @click="toggleStream(CallStreamType.Video)($event)">
+      <div @click="toggleStream(CallStreamType.Video)">
         <div
           class="h-12 w-12 cursor-pointer rounded-full p-3.5 transition"
           :class="{
@@ -59,7 +62,7 @@
           class="h-12 w-12 cursor-pointer rounded-full bg-ctp-red p-3 text-ctp-base transition hover:bg-ctp-red/75"
         />
       </div>
-      <div @click="toggleStream(CallStreamType.DisplayVideo)($event)">
+      <div @click="toggleStream(CallStreamType.DisplayVideo)">
         <ComputerDesktopIcon
           class="h-12 w-12 cursor-pointer rounded-full p-3.5 transition"
           :class="{
@@ -68,7 +71,7 @@
           }"
         />
       </div>
-      <div @click="toggleDeaf">
+      <div @click="store.callSetDeaf(!store.call.deaf)">
         <div
           class="h-12 w-12 cursor-pointer rounded-full p-3.5 transition"
           :class="{
@@ -99,7 +102,7 @@ import { ref, computed, onMounted, type Ref, onBeforeUnmount } from "vue";
 import { CallStreamType } from "@/../../hyalus-server/src/types";
 import { isDesktop } from "../global/helpers";
 import { useStore } from "../global/store";
-import type { ICallTile } from "../global/types";
+import type { ICallTile, IChannelMember, ISpaceMember } from "../global/types";
 import ChannelHeader from "./ChannelHeader.vue";
 import {
   ComputerDesktopIcon,
@@ -108,6 +111,13 @@ import {
   VideoCameraIcon,
   VideoCameraSlashIcon,
 } from "@heroicons/vue/20/solid";
+
+defineProps({
+  full: {
+    type: Boolean,
+    default: false,
+  },
+});
 
 const store = useStore();
 
@@ -139,12 +149,19 @@ const tiles = computed(() => {
   if (!store.self || !store.call || !channel.value) {
     return [];
   }
+  let members: IChannelMember[] | ISpaceMember[] = channel.value.members;
+  if (channel.value.spaceId) {
+    const space = store.spaces.find((space) => space.id === channel.value!.spaceId);
+    if (!space) {
+      return;
+    }
+    members = space.members;
+  }
 
   const tiles: ICallTile[] = [];
 
-  for (const state of store.voiceStates.filter((state) => state.channelId === channel.value?.id)) {
-    const member = channel.value.members.find((member2) => member2.id === state.id);
-
+  for (const state of store.voiceStates.filter((state) => state.channelId === channel.value!.id)) {
+    const member = members.find((member2) => member2.id === state.id);
     if (!member) {
       continue;
     }
@@ -161,8 +178,8 @@ const tiles = computed(() => {
       userTiles.push({
         id: "",
         user: member,
-        localStream: null,
-        remoteStream: videoStream,
+        localTrack: null,
+        remoteTrack: videoStream,
       });
     }
 
@@ -170,8 +187,8 @@ const tiles = computed(() => {
       userTiles.push({
         id: "",
         user: member,
-        localStream: null,
-        remoteStream: displayVideoStream,
+        localTrack: null,
+        remoteTrack: displayVideoStream,
       });
     }
 
@@ -179,8 +196,8 @@ const tiles = computed(() => {
       userTiles.push({
         id: "",
         user: member,
-        localStream: null,
-        remoteStream: audioStream,
+        localTrack: null,
+        remoteTrack: audioStream,
       });
     }
 
@@ -188,8 +205,8 @@ const tiles = computed(() => {
       userTiles.push({
         id: "",
         user: member,
-        localStream: null,
-        remoteStream: null,
+        localTrack: null,
+        remoteTrack: null,
       });
     }
 
@@ -212,8 +229,8 @@ const tiles = computed(() => {
     selfTiles.push({
       id: "",
       user: store.self,
-      localStream: videoStream,
-      remoteStream: null,
+      localTrack: videoStream,
+      remoteTrack: null,
     });
   }
 
@@ -221,8 +238,8 @@ const tiles = computed(() => {
     selfTiles.push({
       id: "",
       user: store.self,
-      localStream: displayVideoStream,
-      remoteStream: null,
+      localTrack: displayVideoStream,
+      remoteTrack: null,
     });
   }
 
@@ -230,8 +247,8 @@ const tiles = computed(() => {
     selfTiles.push({
       id: "",
       user: store.self,
-      localStream: audioStream,
-      remoteStream: null,
+      localTrack: audioStream,
+      remoteTrack: null,
     });
   }
 
@@ -239,31 +256,27 @@ const tiles = computed(() => {
     selfTiles.push({
       id: "",
       user: store.self,
-      localStream: null,
-      remoteStream: null,
+      localTrack: null,
+      remoteTrack: null,
     });
   }
 
   for (const tile of tiles) {
-    tile.id = `${tile.user.id}:${tile.localStream?.type || tile.remoteStream?.type || "0"}`;
+    tile.id = `${tile.user.id}:${tile.localTrack?.type || tile.remoteTrack?.type || "0"}`;
   }
 
   tiles.push(...selfTiles);
-  tiles.sort((a, b) => (a.id > b.id ? 1 : -1));
+  tiles.sort((a, b) => (a.user.name > b.user.name ? 1 : -1));
 
   return tiles;
 });
 
-const toggleStream = (type: CallStreamType) => async (e: MouseEvent) => {
+const toggleStream = async (type: CallStreamType) => {
   if (getComputedStream(type).value) {
     await store.callRemoveLocalStream({
       type,
     });
   } else {
-    if (type === CallStreamType.Audio && store.call?.deaf && !e.shiftKey) {
-      await store.callSetDeaf(false);
-    }
-
     if (type === CallStreamType.DisplayVideo && isDesktop) {
       desktopCaptureModal.value = true;
       return;
@@ -373,17 +386,6 @@ const updateTileBounds = () => {
 
 const stop = async () => {
   await store.callReset();
-};
-
-const toggleDeaf = async (e: MouseEvent) => {
-  store.callSetDeaf(!store.call?.deaf);
-
-  if (!e.shiftKey && audioStream.value && store.call?.deaf) {
-    await store.callRemoveLocalStream({
-      type: CallStreamType.Audio,
-      silent: true,
-    });
-  }
 };
 
 const resizeMouseMove = (e: MouseEvent) => {

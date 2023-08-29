@@ -1,12 +1,12 @@
 import { idbDel, idbGet } from "./idb";
-import { iceServers, RTCMaxMessageSize } from "./config";
+import { iceServers } from "./config";
 import sodium from "libsodium-wrappers";
 import {
-  CallRTCDataType,
   CallStreamType,
   ColorMode,
   ColorTheme,
   SocketMessageType,
+  VoiceStateFlags,
 } from "@/../../hyalus-server/src/types";
 import RnnoiseWasm from "../vendor/rnnoise.wasm?url";
 import RnnoiseWorker from "../shared/rnnoiseWorker?worker";
@@ -18,10 +18,11 @@ import SoundNavigateForward from "../assets/sounds/navigation_forward-selection.
 import SoundNavigateForwardMin from "../assets/sounds/navigation_forward-selection-minimal.ogg";
 import {
   type ICallLocalStream,
-  type ICallRTCData,
   type IConfig,
   type IState,
   SideBarState,
+  type IChannelMember,
+  type ISpaceMember,
 } from "./types";
 import {
   callUpdatePersist,
@@ -29,6 +30,7 @@ import {
   getWorkerUrl,
   playSound,
   updateIcon,
+  wcImportKey,
 } from "./helpers";
 import { Socket } from "./socket";
 import { createPinia, defineStore } from "pinia";
@@ -53,7 +55,6 @@ export const useStore = defineStore("main", {
         audioInput: "default",
         videoInput: "default",
         videoMode: "720p60",
-        videoQuality: 10000000, // 10mbps
         audioOutputGain: 100,
         audioInputGain: 100,
         audioInputTrigger: 60,
@@ -256,26 +257,6 @@ export const useStore = defineStore("main", {
         });
       }
 
-      if (["videoMode", "videoQuality"].includes(k) && this.call) {
-        const videoStream = this.call.localStreams.find(
-          (stream) => stream.type === CallStreamType.Video,
-        );
-
-        const displayVideoStream = this.call.localStreams.find(
-          (stream) => stream.type === CallStreamType.DisplayVideo,
-        );
-
-        if (videoStream) {
-          console.debug("requestInit 2 for videoMode/videoQuality update");
-          videoStream.requestInit = true;
-        }
-
-        if (displayVideoStream) {
-          console.debug("requestInit 3 for videoMode/videoQuality update");
-          displayVideoStream.requestInit = true;
-        }
-      }
-
       if ((k.startsWith("userGain:") || k.startsWith("userMuted:")) && this.call) {
         const stream = this.call.remoteStreams.find(
           (stream) => stream.userId === k.split(":")[1] && stream.type === +k.split(":")[2],
@@ -295,175 +276,22 @@ export const useStore = defineStore("main", {
 
       return v;
     },
-    async callAddLocalStreamPeer(stream: ICallLocalStream, userId: string): Promise<void> {
-      const channel = this.channels.find((channel) => channel.id === this.call?.channelId);
-
-      if (!channel) {
-        console.warn("callSendLocalStream missing channel");
-        return;
-      }
-
-      const member = channel.members.find((member) => member.id === userId);
-
-      if (!member) {
-        console.warn("callSendLocalStream missing user");
-        return;
-      }
-
-      const oldPeer = stream.peers.find((peer) => peer.userId === userId);
-
-      if (oldPeer) {
-        oldPeer.pc.close();
-      }
-
-      const send = (val: unknown) => {
-        const jsonRaw = JSON.stringify(val);
-        const json = JSON.parse(jsonRaw) as ICallRTCData;
-        console.debug("c_rtc/tx: %o", {
-          ...json,
-          mt: CallRTCDataType[json.mt],
-          st: CallStreamType[json.st],
-          userId,
-        }); // yes, there's a reason for this.
-        const nonce = sodium.randombytes_buf(sodium.crypto_box_NONCEBYTES);
-
-        this.socket?.send({
-          t: SocketMessageType.CCallRTC,
-          d: {
-            userId,
-            data: sodium.to_base64(
-              new Uint8Array([
-                ...nonce,
-                ...sodium.crypto_box_easy(
-                  JSON.stringify(val),
-                  nonce,
-                  member.publicKey,
-                  this.config.privateKey as unknown as Uint8Array,
-                ),
-              ]),
-            ),
-          },
-        });
-      };
-
-      const pc = new RTCPeerConnection({ iceServers });
-      const dc = pc.createDataChannel("");
-
-      const peer =
-        stream.peers[
-          stream.peers.push({
-            userId,
-            pc,
-            dc,
-            enabled: [
-              // audio streams are enabled by default.
-              CallStreamType.Audio,
-              CallStreamType.DisplayAudio,
-            ].includes(stream.type),
-          }) - 1
-        ]; // retains reactivity this way.
-
-      const close = pc.close.bind(pc);
-      pc.close = () => {
-        close();
-
-        if (pc.onconnectionstatechange) {
-          pc.onconnectionstatechange(new Event(""));
-        }
-      };
-
-      pc.onicecandidate = ({ candidate }) => {
-        if (!candidate) {
-          return;
-        }
-
-        send({
-          mt: CallRTCDataType.RemoteStreamICECandidate,
-          st: stream.type,
-          d: JSON.stringify(candidate),
-        });
-      };
-
-      pc.onconnectionstatechange = async () => {
-        console.debug(`c_rtc/peer: ${pc.connectionState}`);
-
-        if (pc.connectionState === "failed") {
-          pc.close();
-        }
-
-        if (pc.connectionState === "closed" && stream.peers.find((peer2) => peer2.pc === peer.pc)) {
-          stream.peers = stream.peers.filter((peer2) => peer2.pc !== peer.pc);
-          stream.requestInit = true;
-
-          if (
-            this.ready &&
-            this.call &&
-            this.call.localStreams.find((stream2) => stream2 === stream) &&
-            this.voiceStates.find(
-              (state) =>
-                this.call && state.id === userId && state.channelId === this.call.channelId,
-            )
-          ) {
-            await this.callAddLocalStreamPeer(stream, userId);
-          }
-        }
-      };
-
-      dc.onmessage = ({ data }) => {
-        if (data === "") {
-          stream.requestKeyFrame = true;
-        }
-
-        if (data === "enable") {
-          peer.enabled = true;
-          stream.requestInit = true;
-        }
-
-        if (data === "disable") {
-          peer.enabled = false;
-          stream.requestInit = true;
-        }
-      };
-
-      dc.onclose = () => {
-        pc.close();
-      };
-
-      await pc.setLocalDescription(await pc.createOffer());
-
-      send({
-        mt: CallRTCDataType.RemoteStreamOffer,
-        st: stream.type,
-        d: pc.localDescription?.sdp,
-      });
-      (async () => {
-        await new Promise((resolve) => {
-          setTimeout(resolve, 10000);
-        });
-
-        if (pc.connectionState !== "connected") {
-          pc.close();
-        }
-      })();
-    },
     async callAddLocalStream(opts: {
       type: CallStreamType;
       track?: MediaStreamTrack;
-      getTrack?: () => Promise<MediaStreamTrack>;
       silent?: boolean;
-      procOverride?: boolean;
-      submitOverride?: boolean;
-    }): Promise<ICallLocalStream | undefined> {
+    }) {
       if (!this.call) {
-        console.warn("callAddLocalStream missing call");
+        console.warn("callAddLocalTrack missing call");
         return;
       }
 
       let stream: ICallLocalStream | null = null;
       let context: AudioContext | null = null;
-      let gain: GainNode | null = null;
+      let gain1: GainNode | null = null;
+      let gain2: GainNode | null = null;
 
-      if (!opts.track && !opts.getTrack && opts.type === CallStreamType.Audio) {
+      if (!opts.track && opts.type === CallStreamType.Audio) {
         const _stream = await navigator.mediaDevices.getUserMedia({
           audio: {
             deviceId: {
@@ -480,7 +308,8 @@ export const useStore = defineStore("main", {
         } as unknown as MediaStreamConstraints);
 
         context = new AudioContext();
-        gain = context.createGain();
+        gain1 = context.createGain(); // for audio mute
+        gain2 = context.createGain(); // for audio input volume & VAD
         const src = context.createMediaStreamSource(_stream);
         const dest = context.createMediaStreamDestination();
         const analyser = context.createAnalyser();
@@ -511,32 +340,34 @@ export const useStore = defineStore("main", {
             analyserData.reduce((a, b) => Math.max(a, b)) >
               (this.config.audioInputTrigger / 100) * 255
           ) {
-            if (!stream.speaking && gain) {
+            if (!stream.speaking && gain2) {
               stream.speaking = true;
-              gain.gain.value = store.config.audioInputGain / 100;
+              gain2.gain.value = store.config.audioInputGain / 100;
             }
 
             clearTimeout(closeTimeout);
             closeTimeout = +setTimeout(() => {
-              if (stream && stream.speaking && gain) {
+              if (stream && stream.speaking && gain2) {
                 stream.speaking = false;
-                gain.gain.value = 0;
+                gain2.gain.value = 0;
               }
             }, 200);
           }
         };
 
-        gain.gain.value = 0;
+        gain1.gain.value = 1;
+        gain2.gain.value = 0;
 
-        src.connect(worklet);
+        src.connect(gain1);
+        gain1.connect(worklet);
         worklet.connect(analyser);
-        worklet.connect(gain);
-        gain.connect(dest);
+        worklet.connect(gain2);
+        gain2.connect(dest);
 
         opts.track = dest.stream.getTracks()[0];
       }
 
-      if (!opts.track && !opts.getTrack && opts.type === CallStreamType.Video) {
+      if (!opts.track && opts.type === CallStreamType.Video) {
         const [height, frameRate] = this.config.videoMode.split("p");
 
         opts.track = (
@@ -550,12 +381,12 @@ export const useStore = defineStore("main", {
         ).getTracks()[0];
       }
 
-      if (!opts.track && !opts.getTrack && opts.type === CallStreamType.DisplayVideo) {
+      if (!opts.track && opts.type === CallStreamType.DisplayVideo) {
         const height = +this.config.videoMode.split("p")[0];
         const fps = +this.config.videoMode.split("p")[1];
         const width = {
           360: 640,
-          480: 854,
+          540: 960,
           720: 1280,
           900: 1600,
           1080: 1920,
@@ -575,6 +406,7 @@ export const useStore = defineStore("main", {
         });
 
         for (const track of stream.getTracks()) {
+          console.log(track);
           await this.callAddLocalStream({
             type:
               track.kind === "video" ? CallStreamType.DisplayVideo : CallStreamType.DisplayAudio,
@@ -582,226 +414,32 @@ export const useStore = defineStore("main", {
             silent: track.kind !== "video",
           });
         }
+
+        return; // we called this function again with the tracks, it's fine.
       }
 
-      if (!opts.track && !opts.getTrack && !opts.procOverride) {
-        console.warn("callAddLocalStream missing track");
-        return;
-      }
-
-      const channel = this.channels.find((channel) => channel.id === this.call?.channelId);
-
+      const channel = this.channels.find((channel) => channel.id === this.call!.channelId);
       if (!channel) {
+        console.warn("callAddLocalStream: missing channel");
         return;
       }
 
-      let decoderConfig = "";
-      let lastWidth = 0;
-      let lastHeight = 0;
-
-      const submit = (val: Uint8Array | EncodedMediaChunk) => {
-        let data: Uint8Array | null = null;
-        let chunk: EncodedMediaChunk | null = null;
-
-        if (val instanceof Uint8Array) {
-          data = val;
-        }
-
-        if (val instanceof EncodedVideoChunk || val instanceof EncodedAudioChunk) {
-          chunk = val as EncodedMediaChunk;
-          data = new Uint8Array(val.byteLength);
-          val.copyTo(data);
-        }
-
-        if (!data || !stream) {
-          return;
-        }
-
-        for (const peer of stream.peers) {
-          if (peer.dc.readyState !== "open" || !peer.enabled) {
-            continue;
-          }
-
-          try {
-            for (let i = 0; i < data.length; i += RTCMaxMessageSize) {
-              peer.dc.send(
-                new Uint8Array(data.buffer, i, Math.min(RTCMaxMessageSize, data.length - i)),
-              );
-            }
-
-            peer.dc.send(
-              JSON.stringify({
-                type: chunk?.type,
-                timestamp: chunk?.timestamp,
-                duration: chunk?.duration,
-                decoderConfig,
-                speaking: stream.speaking,
-              }),
-            );
-          } catch {
-            //
-          }
-        }
-      };
-
-      const proc = async (val: MediaData) => {
-        if (!stream || !encoder) {
-          return;
-        }
-
-        if (encoder.encodeQueueSize > 3 || encoder.state === "closed") {
-          console.debug("dropping frame @ encoder");
-          val.close();
-          return;
-        }
-
-        if (val instanceof AudioData && (encoder.state === "unconfigured" || stream.requestInit)) {
-          let sampleRate = 48000;
-          let numberOfChannels = 2;
-
-          if (stream.track) {
-            const settings = stream.track.getSettings() as {
-              sampleRate: number;
-              channelCount: number;
-            };
-
-            sampleRate = settings.sampleRate;
-            numberOfChannels = settings.channelCount;
-          }
-
-          encoder.configure({
-            codec: "opus",
-            bitrate: 160e3,
-            sampleRate,
-            numberOfChannels,
-          });
-        }
-
-        if (
-          val instanceof VideoFrame &&
-          (encoder.state === "unconfigured" ||
-            stream.requestInit ||
-            lastWidth !== val.codedWidth ||
-            lastHeight !== val.codedHeight)
-        ) {
-          const maxScaledHeight = +this.config.videoMode.split("p")[0];
-          const maxScaledWidth =
-            {
-              360: 640,
-              480: 854,
-              720: 1280,
-              1080: 1920,
-            }[maxScaledHeight] || maxScaledHeight;
-          const maxFps = +this.config.videoMode.split("p")[1];
-
-          let scaledWidth = val.codedWidth;
-          let scaledHeight = val.codedHeight;
-
-          if (scaledWidth > maxScaledWidth) {
-            scaledHeight = Math.floor(scaledHeight * (maxScaledWidth / scaledWidth));
-            scaledWidth = maxScaledWidth;
-          }
-
-          if (scaledHeight > maxScaledHeight) {
-            scaledWidth = Math.floor(scaledWidth * (maxScaledHeight / scaledHeight));
-            scaledHeight = maxScaledHeight;
-          }
-
-          const maxBitrate =
-            {
-              ["480p30"]: 3000000,
-              ["480p60"]: 3000000,
-              ["720p30"]: 3000000,
-              ["720p60"]: 4500000,
-              ["1080p30"]: 4500000,
-              ["1080p60"]: 6000000,
-            }[store.config.videoMode] || 4500000;
-
-          let bitrate = store.config.videoQuality;
-          if (bitrate && stream.peers.filter((peer) => peer.enabled).length && store.call) {
-            bitrate /= stream.peers.filter((peer) => peer.enabled).length;
-            bitrate /= store.call.localStreams.filter((stream) =>
-              [CallStreamType.Video, CallStreamType.DisplayVideo].includes(stream.type),
-            ).length;
-            bitrate = Math.floor(bitrate);
-            bitrate = Math.min(bitrate, maxBitrate);
-          } else {
-            bitrate = maxBitrate;
-          }
-
-          encoder.configure({
-            codec: "avc1.42001f",
-            width: Math.floor(scaledWidth / 2) * 2,
-            height: Math.floor(scaledHeight / 2) * 2,
-            framerate: 1,
-            latencyMode: "realtime",
-            hardwareAcceleration: "prefer-hardware",
-            bitrate: bitrate / maxFps,
-            bitrateMode: "constant",
-            avc: {
-              format: "annexb",
-            },
-          });
-
-          lastWidth = val.codedWidth;
-          lastHeight = val.codedHeight;
-        }
-
-        try {
-          encoder.encode(val, {
-            keyFrame: stream.requestInit || stream.requestKeyFrame,
-          });
-
-          if (stream.requestInit) {
-            stream.requestInit = false;
-          }
-
-          if (stream.requestKeyFrame) {
-            stream.requestKeyFrame = false;
-          }
-        } catch (e) {
-          //
-        }
-
-        val.close();
-      };
-
-      const encoderInit = {
-        output(chunk: EncodedMediaChunk, info: MediaEncoderOutputInfo) {
-          if (!stream) {
-            return;
-          }
-
-          if (info.decoderConfig) {
-            decoderConfig = JSON.stringify({
-              ...info.decoderConfig,
-              description:
-                info.decoderConfig.description &&
-                sodium.to_base64(new Uint8Array(info.decoderConfig.description)),
-            });
-          }
-
-          submit(chunk);
-        },
-        error() {
-          //
-        },
-      };
-
-      let encoder: MediaEncoder | null = null;
-
-      if (
-        !opts.submitOverride &&
-        [CallStreamType.Audio, CallStreamType.DisplayAudio].includes(opts.type)
-      ) {
-        encoder = new AudioEncoder(encoderInit);
+      if (!opts.track) {
+        console.warn("callAddLocalStream: missing track");
+        return;
       }
 
-      if (
-        !opts.submitOverride &&
-        [CallStreamType.Video, CallStreamType.DisplayVideo].includes(opts.type)
-      ) {
-        encoder = new VideoEncoder(encoderInit as VideoEncoderInit) as MediaEncoder;
+      let sender: RTCRtpSender | undefined;
+      if (opts.track.kind === "audio") {
+        sender = store.call!.usedSenders.audio.pop();
+      }
+      if (opts.track.kind === "video") {
+        sender = store.call!.usedSenders.video.pop();
+      }
+      if (sender) {
+        sender.replaceTrack(opts.track);
+      } else {
+        sender = this.call.pc.addTrack(opts.track);
       }
 
       stream =
@@ -809,61 +447,30 @@ export const useStore = defineStore("main", {
           this.call.localStreams.push({
             type: opts.type,
             track: opts.track || null,
-            getTrack: opts.getTrack || null,
-            peers: [],
-            encoder,
-            context,
-            gain,
-            requestKeyFrame: false,
-            requestInit: false,
+            gain1,
+            gain2,
             speaking: false,
-            proc,
-            submit,
-          }) - 1
-        ]; // keeps things reactive.
+            sender,
+          }) - 1 // keeps things reactive, stop removing this thinking you're smart.
+        ];
 
       if (!opts.silent) {
         playSound(SoundNavigateForward);
       }
 
+      if (opts.type === CallStreamType.Audio) {
+        this.call.muted = false;
+      }
+
       await callUpdatePersist();
+      await this.callUpdateStreams();
+      await this.callUpdateFlags();
 
-      for (const state of this.voiceStates.filter((state) => state.channelId === channel.id)) {
-        await this.callAddLocalStreamPeer(stream, state.id);
-      }
-
-      if (opts.track) {
-        opts.track.addEventListener("ended", async () => {
-          if (!stream) {
-            return;
-          }
-
-          await this.callRemoveLocalStream({
-            type: stream.type,
-          });
+      opts.track.addEventListener("ended", async () => {
+        await this.callRemoveLocalStream({
+          type: stream!.type,
         });
-      }
-
-      if (!opts.procOverride && !opts.submitOverride) {
-        // allows us to return and throw this somewhere else on the event loop.
-        (async () => {
-          const reader = new MediaStreamTrackProcessor({
-            track: opts.track as MediaStreamTrack,
-          }).readable.getReader();
-
-          for (;;) {
-            const { value } = await reader.read();
-
-            if (!value) {
-              break;
-            }
-
-            proc(value);
-          }
-        })();
-      }
-
-      return stream;
+      });
     },
     async callRemoveLocalStream(opts: { type: CallStreamType; silent?: boolean }): Promise<void> {
       if (!this.call) {
@@ -872,37 +479,29 @@ export const useStore = defineStore("main", {
       }
 
       const stream = this.call.localStreams.find((stream) => stream.type === opts.type);
-
       if (!stream) {
         console.warn("callRemoveLocalStream missing stream");
         return;
       }
 
       this.call.localStreams = this.call.localStreams.filter((stream2) => stream2 !== stream);
-
-      if (stream.track) {
-        stream.track.stop();
+      stream.track.stop();
+      stream.sender.replaceTrack(null);
+      if (stream.track.kind === "audio") {
+        this.call.usedSenders.audio.push(stream.sender);
       }
-
-      if (stream.encoder && stream.encoder.state !== "closed") {
-        stream.encoder.close();
-      }
-
-      if (stream.context) {
-        stream.context.close();
-      }
-
-      for (const { pc } of stream.peers) {
-        pc.close();
+      if (stream.track.kind === "video") {
+        this.call.usedSenders.video.push(stream.sender);
       }
 
       if (opts.type === CallStreamType.DisplayVideo) {
         window.HyalusDesktop?.win32?.stopCapture();
+        // TODO: remove this and set up an event for when we shut down the track (on creating it).
       }
 
       if (
         opts.type === CallStreamType.DisplayVideo &&
-        this.call?.localStreams.find((stream) => stream.type === CallStreamType.DisplayAudio)
+        this.call!.localStreams.find((stream) => stream.type === CallStreamType.DisplayAudio)
       ) {
         await this.callRemoveLocalStream({
           type: CallStreamType.DisplayAudio,
@@ -915,19 +514,63 @@ export const useStore = defineStore("main", {
       }
 
       await callUpdatePersist();
+      await this.callUpdateStreams();
+      await this.callUpdateFlags();
     },
     async callStart(channelId: string): Promise<void> {
-      this.call = {
-        channelId,
-        localStreams: [],
-        remoteStreams: [],
-        start: new Date(),
-        deaf: false,
-        updatePersistInterval: +setInterval(callUpdatePersist, 1000 * 30),
+      const pc = new RTCPeerConnection({
+        iceServers,
+        bundlePolicy: "max-bundle",
+        encodedInsertableStreams: true,
+      });
+
+      pc.onicecandidate = ({ candidate }) => {
+        if (!candidate) {
+          return;
+        }
+
+        this.socket!.send({
+          t: SocketMessageType.CCallICECandidate,
+          d: {
+            candidate: candidate.candidate,
+          },
+        });
       };
 
-      this.socket?.send({
-        t: SocketMessageType.CCallStart,
+      pc.onconnectionstatechange = () => {
+        console.log(`voice: connectionState -> ${pc.connectionState}`);
+      };
+
+      this.call = {
+        channelId,
+        start: new Date(),
+        muted: true,
+        mutedBeforeDeaf: false,
+        deaf: false,
+        updatePersistInterval: +setInterval(callUpdatePersist, 1000 * 30),
+        pc,
+        localKeyId: 0,
+        localKeyCounter: 0,
+        localKeySwapTarget: 0,
+        localKeySwapTimeout: 0,
+        localKeyAcks: [],
+        localKeyAcksNeeded: 0,
+        localKeys: [],
+        remoteKeys: [],
+        localStreams: [],
+        remoteStreams: [],
+        usedSenders: {
+          audio: [],
+          video: [],
+        },
+        configuredTransceivers: [],
+        payloadCodecs: {},
+        flags: 0,
+        initComplete: false,
+      };
+
+      this.socket!.send({
+        t: SocketMessageType.CCallJoin,
         d: {
           channelId,
         },
@@ -937,21 +580,175 @@ export const useStore = defineStore("main", {
 
       await callUpdatePersist();
     },
+    async callSetMuted(val: boolean) {
+      if (!this.call || this.call.muted === val) {
+        return;
+      }
+
+      const stream = this.call.localStreams.find((stream) => stream.type === CallStreamType.Audio);
+
+      if (!stream && !val) {
+        await this.callAddLocalStream({
+          type: CallStreamType.Audio,
+        });
+      }
+
+      if (stream && val) {
+        stream.gain1!.gain.value = 0;
+        playSound(SoundNavigateBackward);
+      }
+
+      if (stream && !val) {
+        stream.gain1!.gain.value = 1;
+        playSound(SoundNavigateForward);
+      }
+
+      this.call.muted = val;
+      this.callUpdateFlags();
+    },
+    async callSetDeaf(val: boolean) {
+      if (!this.call || this.call.deaf === val) {
+        return;
+      }
+
+      for (const stream of this.call.remoteStreams) {
+        if (stream.element) {
+          stream.element.volume = val ? 0 : 1;
+        }
+      }
+
+      if (val) {
+        this.call.mutedBeforeDeaf = this.call.muted;
+        await this.callSetMuted(true);
+      }
+
+      if (!val && !this.call.mutedBeforeDeaf) {
+        await this.callSetMuted(false);
+      }
+
+      this.call.deaf = val;
+      this.callUpdateFlags();
+      playSound(val ? SoundNavigateBackwardMin : SoundNavigateForwardMin);
+    },
+    async callUpdateKeys() {
+      if (!this.call) {
+        return;
+      }
+
+      console.debug("voice: updating call keys");
+      const id =
+        this.call.localKeyCounter < 255
+          ? this.call.localKeyCounter++
+          : (this.call.localKeyCounter = 0);
+      const key = new Uint8Array(16); // AES-128
+      crypto.getRandomValues(key);
+      this.call.localKeys.push({
+        id,
+        key: await wcImportKey(key),
+      });
+
+      const channel = store.channels.find((channel) => channel.id === this.call!.channelId);
+      if (!channel) {
+        return console.warn("callUpdateKeys: missing channel");
+      }
+      let members: IChannelMember[] | ISpaceMember[] = channel.members;
+      if (channel.spaceId) {
+        const space = store.spaces.find((space) => space.id === channel.spaceId);
+        if (!space) {
+          return console.warn("callUpdateKeys: missing space");
+        }
+        members = space.members;
+      }
+      members = members.filter((member) => member.id !== this.self!.id);
+
+      if (!this.call.localKeyId) {
+        console.debug("voice: swapping call key (no key present)");
+        this.call.localKeyId = id; // swap right away if no key.
+      } else {
+        this.call.localKeySwapTarget = id;
+        clearTimeout(this.call.localKeySwapTimeout);
+        this.call.localKeySwapTimeout = +setTimeout(() => {
+          if (!this.call) {
+            return;
+          }
+          console.debug("voice: swapping call key (3s timeout)");
+          this.call.localKeyId = id;
+        }, 3000);
+        this.call.localKeyAcks = [];
+        this.call.localKeyAcksNeeded = members.length;
+      }
+
+      const boxes: Record<string, Uint8Array> = {};
+      for (const member of members) {
+        const nonce = sodium.randombytes_buf(sodium.crypto_box_NONCEBYTES);
+        boxes[member.id] = new Uint8Array([
+          ...nonce,
+          ...sodium.crypto_box_easy(key, nonce, member.publicKey, this.config.privateKey!),
+        ]);
+      }
+
+      this.socket!.send({
+        t: SocketMessageType.CCallUpdateKeys,
+        d: {
+          id,
+          keys: sodium.to_base64(msgpack.encode(boxes)),
+        },
+      });
+    },
+    async callUpdateStreams() {
+      // prevent us from updating streams before we're connected to a voice server.
+      if (!store.call || store.call.pc.connectionState === "new") {
+        return;
+      }
+
+      const streams = [];
+      for (const stream of store.call.localStreams) {
+        streams.push({
+          mid: store.call.pc.getTransceivers().find((trans) => trans.sender === stream.sender)!.mid,
+          type: stream.type,
+        });
+      }
+      this.socket!.send({
+        t: SocketMessageType.CCallUpdateStreams,
+        d: {
+          streams,
+        },
+      });
+    },
+    async callUpdateFlags() {
+      if (!this.socket || !this.call) {
+        return;
+      }
+      let flags = 0;
+      if (this.call.muted) {
+        flags |= VoiceStateFlags.Muted;
+      }
+      if (this.call.deaf) {
+        flags |= VoiceStateFlags.Deaf;
+      }
+      if (this.call.localStreams.find((stream) => stream.type === CallStreamType.Video)) {
+        flags |= VoiceStateFlags.VideoEnabled;
+      }
+      if (this.call.localStreams.find((stream) => stream.type === CallStreamType.DisplayVideo)) {
+        flags |= VoiceStateFlags.DisplayEnabled;
+      }
+      this.call.flags = flags;
+      this.socket.send({
+        t: SocketMessageType.CCallUpdateFlags,
+        d: {
+          flags,
+        },
+      });
+    },
     async callReset(): Promise<void> {
       if (this.call) {
         clearInterval(this.call.updatePersistInterval);
 
         for (const stream of this.call.localStreams) {
-          await this.callRemoveLocalStream({
-            type: stream.type,
-            silent: true,
-          });
+          stream.track.stop();
         }
 
-        for (const stream of this.call.remoteStreams) {
-          stream.pc.close();
-        }
-
+        this.call.pc.close();
         this.call = null;
         await callUpdatePersist();
 
@@ -960,26 +757,9 @@ export const useStore = defineStore("main", {
 
       if (this.socket) {
         this.socket.send({
-          t: SocketMessageType.CCallStop,
+          t: SocketMessageType.CCallLeave,
         });
       }
-    },
-    async callSetDeaf(val: boolean) {
-      if (!this.call) {
-        return;
-      }
-
-      for (const stream of this.call.remoteStreams) {
-        if (!stream.element) {
-          continue;
-        }
-
-        stream.element.volume = val ? 0 : 1;
-      }
-
-      this.call.deaf = val;
-
-      playSound(val ? SoundNavigateBackwardMin : SoundNavigateForwardMin);
     },
     async resetKeybinds() {
       window.HyalusDesktop?.resetKeybinds();

@@ -1,7 +1,7 @@
 <template>
   <ModalBase empty @close="$emit('close')">
     <div
-      class="h-96 min-h-0 w-screen max-w-xl space-y-4 rounded-md bg-ctp-mantle p-4 shadow-md flex flex-col"
+      class="flex h-96 min-h-0 w-screen max-w-xl flex-col space-y-4 rounded-md bg-ctp-mantle p-4 shadow-md"
     >
       <input
         type="text"
@@ -11,9 +11,9 @@
         @keydown="onKeydown"
         v-model="search"
       />
-      <div class="space-y-2 min-h-0 flex flex-col flex-1">
+      <div class="flex min-h-0 flex-1 flex-col space-y-2">
         <p v-if="!search" class="font-semibold">Recent Channels</p>
-        <div class="-mx-1 overflow-auto flex-1">
+        <div class="-mx-1 flex-1 overflow-auto">
           <QuickSwitcherItem
             v-for="item in items"
             :key="item.channel.id"

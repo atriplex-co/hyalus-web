@@ -253,3 +253,29 @@ declare interface HyalusWin32CaptureData {
     data: ArrayBuffer;
   };
 }
+
+declare interface RTCConfiguration extends RTCConfiguration {
+  encodedInsertableStreams?: boolean;
+}
+
+declare interface RTCRtpSender extends RTCRtpSender {
+  createEncodedStreams(): {
+    readable: ReadableStream<RTCEncodedAudioFrame | RTCEncodedVideoFrame>;
+    writable: WritableStream<RTCEncodedAudioFrame | RTCEncodedVideoFrame>;
+  };
+}
+
+declare interface RTCRtpReceiver extends RTCRtpSender {
+  createEncodedStreams(): {
+    readable: ReadableStream<RTCEncodedAudioFrame | RTCEncodedVideoFrame>;
+    writable: WritableStream<RTCEncodedAudioFrame | RTCEncodedVideoFrame>;
+  };
+}
+
+declare interface RTCEncodedVideoFrameMetadata extends RTCEncodedVideoFrameMetadata {
+  payloadType: number;
+}
+
+declare interface RTCEncodedAudioFrameMetadata extends RTCEncodedAudioFrameMetadata {
+  payloadType: number;
+}

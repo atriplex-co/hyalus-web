@@ -9,7 +9,7 @@
     @dragsend.prevent
   >
     <div
-      class="relative z-10 min-h-[56px] w-full bg-ctp-base shadow-md shadow-ctp-crust/50"
+      class="relative z-10 min-h-[3.5rem] w-full bg-ctp-base shadow-md shadow-ctp-crust/50"
       :class="{
         'bg-black': inVoice,
       }"
@@ -25,13 +25,13 @@
         leave-from-class="opacity-100 scale-y-100"
         leave-to-class="opacity-0 scale-y-95"
       >
-        <ChannelCall v-if="inVoice" />
+        <ChannelCall v-if="inVoice" :full="voiceOnly" />
       </transition>
     </div>
-    <p v-if="!writable" class="bg-ctp-crust px-4 py-2 text-sm">
+    <p v-if="!writable && writableType" class="bg-ctp-crust px-4 py-2 text-sm">
       You can't send messages in this channel.
     </p>
-    <div class="flex min-h-0 flex-1">
+    <div v-if="writableType" class="flex min-h-0 flex-1">
       <div class="flex min-h-0 min-w-0 flex-1 flex-col">
         <div class="relative min-h-0 w-full flex-1">
           <div v-if="typingStatus" class="absolute z-10 w-full p-2">
@@ -110,10 +110,20 @@
         </div>
       </div>
       <ChannelMemberList
-        v-if="store.config.showChannelMembers && channel.type !== ChannelType.DM"
+        v-if="store.config.showChannelMembers && channel.type !== ChannelType.DM && writableType"
         :channel="channel"
         :space="space"
       />
+    </div>
+    <div
+      v-if="voiceOnly && !inVoice"
+      class="flex-1 flex items-center justify-center flex-col space-y-4"
+    >
+      <SpeakerWaveIcon class="w-12 h-12 bg-ctp-surface0 p-3 rounded-full" />
+      <p class="text-2xl">{{ channel.name }}</p>
+      <button class="bg-ctp-accent text-ctp-base w-16 p-2 rounded-md text-sm" @click="callStart">
+        Join
+      </button>
     </div>
     <MessageEditModal
       v-if="messageBeingEdited"
@@ -129,6 +139,7 @@ import { ref, computed, onMounted, onUnmounted, type Ref, nextTick, watch } from
 import { useRoute, useRouter } from "vue-router";
 import { checkSpacePermissions, getChannelState, processMessage } from "../global/helpers";
 import {
+CallStreamType,
   ChannelType,
   MessageType,
   SocketMessageType,
@@ -146,6 +157,7 @@ import type { IMessage } from "@/global/types";
 import { PaperAirplaneIcon, PaperClipIcon, PencilIcon, XMarkIcon } from "@heroicons/vue/20/solid";
 import UserAvatar from "@/components/UserAvatar.vue";
 import MessageEditModal from "@/components/MessageEditModal.vue";
+import { SpeakerWaveIcon } from "@heroicons/vue/24/outline";
 
 const store = useStore();
 const route = useRoute();
@@ -194,8 +206,31 @@ const name = computed(() => {
   return channel.value.name;
 });
 
+const writableType = computed(() => {
+  if (!channel.value) {
+    return false;
+  }
+
+  if (
+    ![
+      // writable channel types:
+      ChannelType.DM,
+      ChannelType.Group,
+      ChannelType.SpaceText,
+    ].includes(channel.value.type)
+  ) {
+    return false;
+  }
+
+  return true;
+});
+
 const writable = computed(() => {
   if (!channel.value) {
+    return false;
+  }
+
+  if (!writableType.value) {
     return false;
   }
 
@@ -674,6 +709,31 @@ addEventListener("keydown", keydownHandler);
 onUnmounted(() => {
   removeEventListener("keydown", keydownHandler);
 });
+
+const voiceOnly = computed(() => {
+  if (!channel.value) {
+    return false;
+  }
+  return [
+    // voice only channels:
+    ChannelType.SpaceVoice,
+  ].includes(channel.value.type);
+});
+
+const callStart = async (e: MouseEvent) => {
+  if (store.call) {
+    await store.callReset();
+  }
+
+  await store.callStart(channel.value!.id);
+
+  if (!e.shiftKey) {
+    await store.callAddLocalStream({
+      type: CallStreamType.Audio,
+      silent: true,
+    });
+  }
+};
 
 store.sideBarOpen = false;
 </script>

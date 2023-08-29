@@ -99,26 +99,6 @@
           </template>
         </InputList>
       </div>
-      <div class="flex h-16 items-center justify-between">
-        <p class="font-bold">Video Quality</p>
-        <InputList>
-          <template #selected>
-            {{
-              usableVideoQualities.find((videoQuality2) => videoQuality2.val === videoQuality)?.name
-            }}
-          </template>
-          <template #items>
-            <InputListItem
-              v-for="quality in usableVideoQualities"
-              :key="JSON.stringify(quality)"
-              @click="videoQuality = quality.val"
-            >
-              {{ quality.name }}
-            </InputListItem>
-          </template>
-        </InputList>
-      </div>
-
       <div class="flex min-h-[4rem] items-center justify-between">
         <p class="font-bold">Video Test</p>
         <div class="flex flex-col items-end space-y-4 py-4">
@@ -147,22 +127,7 @@ import { useStore } from "../global/store";
 
 const store = useStore();
 
-const usableVideoModes = ["480p30", "480p60", "720p30", "720p60", "1080p30", "1080p60"];
-
-const usableVideoQualities = [
-  { name: "Auto", val: 0 },
-  { name: "Dynamic (3mbps)", val: 3000000 },
-  { name: "Dynamic (5mbps)", val: 5000000 },
-  { name: "Dynamic (7mbps)", val: 7000000 },
-  { name: "Dynamic (10mbps)", val: 10000000 },
-  { name: "Dynamic (15mbps)", val: 15000000 },
-  { name: "Dynamic (20mbps)", val: 20000000 },
-  { name: "Dynamic (25mbps)", val: 25000000 },
-  { name: "Dynamic (30mbps)", val: 30000000 },
-  { name: "Dynamic (35mbps)", val: 35000000 },
-  { name: "Dynamic (40mbps)", val: 40000000 },
-];
-
+const usableVideoModes = ["540p30", "540p60", "720p30", "720p60", "1080p30", "1080p60"];
 const usableAudioOutputs: Ref<MediaDeviceInfo[]> = ref([]);
 const usableAudioInputs: Ref<MediaDeviceInfo[]> = ref([]);
 const usableVideoInputs: Ref<MediaDeviceInfo[]> = ref([]);
@@ -288,7 +253,6 @@ const audioOutputGain = configToComputed<number>("audioOutputGain");
 const audioInputGain = configToComputed<number>("audioInputGain");
 const audioInputTrigger = configToComputed<number>("audioInputTrigger");
 const videoMode = configToComputed<string>("videoMode");
-const videoQuality = configToComputed<number>("videoQuality");
 const voiceRtcGain = configToComputed<boolean>("voiceRtcGain");
 const voiceRtcEcho = configToComputed<boolean>("voiceRtcEcho");
 const voiceRtcNoise = configToComputed<boolean>("voiceRtcNoise");
