@@ -84,7 +84,7 @@ const submit = async () => {
       });
     } else {
       await axios.post(`/api/v1/spaces/${props.space.id}/delete`, {
-        totpCode: auth.value,
+        totpCode: +auth.value,
       });
     }
   } catch (e) {
