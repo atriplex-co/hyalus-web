@@ -12,6 +12,7 @@
       class="relative z-10 min-h-[3.5rem] w-full bg-ctp-base shadow-md shadow-ctp-crust/50"
       :class="{
         'bg-black': inVoice,
+        'h-full': inVoice && voiceOnly,
       }"
     >
       <div class="absolute w-full">
@@ -140,7 +141,7 @@ import { ref, computed, onMounted, onUnmounted, type Ref, nextTick, watch } from
 import { useRoute, useRouter } from "vue-router";
 import { checkSpacePermissions, getChannelState, processMessage } from "../global/helpers";
 import {
-CallStreamType,
+  CallStreamType,
   ChannelType,
   MessageType,
   SocketMessageType,
