@@ -4,7 +4,7 @@
     class="fixed"
     :class="{
       'top-0': !isDesktop,
-      'top-8': isDesktop,
+      'top-[30px]': isDesktop,
     }"
   />
   <div class="flex h-full flex-1 items-center justify-center bg-ctp-crust">
