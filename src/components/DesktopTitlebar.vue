@@ -1,12 +1,17 @@
 <template>
   <div class="z-20 flex h-[30px] items-center bg-ctp-crust text-sm">
-    <div class="draggable flex h-full flex-1 select-none items-center justify-between px-2">
+    <div
+      class="draggable flex h-full flex-1 select-none items-center justify-between px-2"
+      :class="{
+        'pl-[4.25rem]': platform === 'darwin',
+      }"
+    >
       <div class="flex items-center space-x-2">
         <AppIcon class="h-4 w-4" />
         <p>{{ title }}</p>
       </div>
     </div>
-    <div class="flex h-full items-center text-ctp-overlay0">
+    <div v-if="platform !== 'darwin'" class="flex h-full items-center text-ctp-overlay0">
       <div
         class="flex h-full w-10 items-center justify-center p-2 transition hover:bg-ctp-mantle hover:text-ctp-text"
         @click="minimize"
@@ -46,6 +51,7 @@ import { onUnmounted, ref } from "vue";
 // const gitCommitHash = import.meta.env.VITE_GIT_COMMIT_HASH;
 
 const title = ref("Hyalus");
+const platform = window.HyalusDesktop!.osPlatform;
 
 let updateTitleInterval: number;
 
