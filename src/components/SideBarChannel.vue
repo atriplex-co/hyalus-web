@@ -105,7 +105,7 @@ const channelState = computed(() => {
 
 const description = computed(() => {
   if (props.channel.type === ChannelType.Group) {
-    return `${props.channel.members.length} member${props.channel.members.length > 1 ? "s" : ""}`;
+    return `${props.channel.members.length + 1} members`;
   }
 
   return "";
