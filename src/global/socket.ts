@@ -1926,7 +1926,7 @@ export class Socket {
         }
 
         store.call.localKeyAcks.push(data.userId);
-        if (store.call.localKeyAcks.length === store.call.localKeyAcksNeeded) {
+        if (store.call.localKeyAcks.length >= store.call.localKeyAcksNeeded) {
           store.call.localKeyAcks = [];
           clearInterval(store.call.localKeySwapTimeout);
           console.debug("voice: swapping call key (all members ACKed)");

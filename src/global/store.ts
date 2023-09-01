@@ -666,6 +666,9 @@ export const useStore = defineStore("main", {
         }
         members = space.members;
       }
+      members = members.filter((member) =>
+        store.voiceStates.find((state) => state.id === member.id && state.channelId === channel.id),
+      );
       members = members.filter((member) => member.id !== this.self!.id);
 
       if (!this.call.localKeyId) {
