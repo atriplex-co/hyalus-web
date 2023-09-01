@@ -12,8 +12,9 @@
       <div class="relative" @mouseup="userMenu && $event.stopPropagation()">
         <UserAvatar
           :avatar="store.self.avatar"
-          class="h-10 w-10 cursor-pointer rounded-full"
           :status="store.self.preferredStatus"
+          :allow-animate="false"
+          class="h-10 w-10 cursor-pointer rounded-full"
           @click="store.sideBarState = SideBarState.HOME"
           @contextmenu.prevent="userMenu = !userMenu"
         />

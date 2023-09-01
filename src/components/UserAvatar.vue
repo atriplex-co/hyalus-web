@@ -24,7 +24,7 @@
         class="h-full w-full rounded-full object-cover object-center"
       />
       <video
-        v-if="animate && avatar.split('+').length > 1"
+        v-if="allowAnimate && animate && avatar.split('+').length > 1"
         :src="`/api/v1/avatars/${avatar.split('+')[1]}`"
         class="h-full w-full rounded-full object-cover object-center"
         :class="{
@@ -65,6 +65,10 @@ defineProps({
     default() {
       //
     },
+  },
+  allowAnimate: {
+    type: Boolean,
+    default: true,
   },
 });
 </script>
