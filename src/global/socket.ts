@@ -1480,7 +1480,12 @@ export class Socket {
               sdp: data.sdp,
             }),
           );
-          await store.call.pc.setLocalDescription(await store.call.pc.createAnswer());
+          const answer = await store.call.pc.createAnswer();
+          answer.sdp = answer.sdp!.replaceAll(
+            "minptime=10;useinbandfec=1",
+            "minptime=10;useinbandfec=1;maxaveragebitrate=160000;stereo=1",
+          ); // temporary hack, remove never.
+          await store.call.pc.setLocalDescription(answer);
           store.socket!.send({
             t: SocketMessageType.CCallAnswer,
             d: {

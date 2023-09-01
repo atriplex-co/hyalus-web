@@ -185,25 +185,22 @@ const audioTest = computed({
   },
   async set(val) {
     if (val) {
-      try {
-        audioStream.value = await navigator.mediaDevices.getUserMedia({
-          audio: {
-            deviceId: store.config.audioInput || "default",
-            echoCancellation: store.config.voiceRtcEcho,
-            autoGainControl: store.config.voiceRtcGain,
-            noiseSuppression: store.config.voiceRtcNoise,
+      audioStream.value = await navigator.mediaDevices.getUserMedia({
+        audio: {
+          deviceId: {
+            ideal: store.config.audioInput,
           },
-        });
-      } catch {
-        audioStream.value = await navigator.mediaDevices.getUserMedia({
-          audio: {
-            deviceId: "default",
-            echoCancellation: store.config.voiceRtcEcho,
-            autoGainControl: store.config.voiceRtcGain,
-            noiseSuppression: store.config.voiceRtcNoise,
+          echoCancellation: {
+            ideal: store.config.voiceRtcEcho,
           },
-        });
-      }
+          autoGainControl: {
+            ideal: store.config.voiceRtcGain,
+          },
+          noiseSuppression: {
+            ideal: store.config.voiceRtcNoise,
+          },
+        },
+      });
     } else {
       if (audioStream.value) {
         for (const track of audioStream.value.getTracks()) {
@@ -224,19 +221,13 @@ const videoTest = computed({
   },
   async set(val) {
     if (val) {
-      try {
-        videoStream.value = await navigator.mediaDevices.getUserMedia({
-          video: {
-            deviceId: store.config.videoInput || "default",
+      videoStream.value = await navigator.mediaDevices.getUserMedia({
+        video: {
+          deviceId: {
+            ideal: store.config.videoInput,
           },
-        });
-      } catch {
-        videoStream.value = await navigator.mediaDevices.getUserMedia({
-          video: {
-            deviceId: "default",
-          },
-        });
-      }
+        },
+      });
     } else {
       if (videoStream.value) {
         for (const track of videoStream.value.getTracks()) {

@@ -297,15 +297,18 @@ export const useStore = defineStore("main", {
             deviceId: {
               ideal: this.config.audioInput,
             },
-            googAutoGainControl: this.config.voiceRtcGain,
-            googExperimentalAutoGainControl: this.config.voiceRtcGain,
-            googEchoCancellation: this.config.voiceRtcEcho,
-            googExperimentalEchoCancellation: this.config.voiceRtcEcho,
-            googNoiseSuppression: !this.config.voiceRnnoise && this.config.voiceRtcNoise,
-            googExperimentalNoiseSuppression:
-              !this.config.voiceRnnoise && this.config.voiceRtcNoise,
+            channelCount: 1,
+            autoGainControl: {
+              ideal: this.config.voiceRtcGain,
+            },
+            echoCancellation: {
+              ideal: this.config.voiceRtcEcho,
+            },
+            noiseSuppression: {
+              ideal: this.config.voiceRtcNoise && !this.config.voiceRnnoise,
+            },
           },
-        } as unknown as MediaStreamConstraints);
+        });
 
         context = new AudioContext();
         gain1 = context.createGain(); // for audio mute
@@ -373,9 +376,15 @@ export const useStore = defineStore("main", {
         opts.track = (
           await navigator.mediaDevices.getUserMedia({
             video: {
-              deviceId: this.config.videoInput,
-              height: +height,
-              frameRate: +frameRate,
+              deviceId: {
+                ideal: this.config.videoInput,
+              },
+              height: {
+                ideal: +height,
+              },
+              frameRate: {
+                ideal: +frameRate,
+              },
             },
           })
         ).getTracks()[0];
@@ -399,10 +408,11 @@ export const useStore = defineStore("main", {
             frameRate: fps,
           },
           audio: {
+            channelCount: 2,
             autoGainControl: false,
             echoCancellation: false,
             noiseSuppression: false,
-          } as unknown as MediaTrackConstraints, // TS is stupid here and complains.
+          },
         });
 
         for (const track of stream.getTracks()) {
