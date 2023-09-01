@@ -109,8 +109,8 @@ export interface ICall {
   localKeySwapTimeout: number;
   localKeyAcks: string[];
   localKeyAcksNeeded: number;
-  localKeys: ICallLocalKey[];
-  remoteKeys: ICallRemoteKey[];
+  localKeys: Map<number, CryptoKey>;
+  remoteKeys: Map<string, CryptoKey>;
   localStreams: ICallLocalStream[];
   remoteStreams: ICallRemoteStream[];
   usedSenders: {
@@ -121,17 +121,6 @@ export interface ICall {
   payloadCodecs: Record<number, string>;
   flags: number;
   initComplete: boolean;
-}
-
-export interface ICallLocalKey {
-  id: number;
-  key: CryptoKey;
-}
-
-export interface ICallRemoteKey {
-  userId: string;
-  id: number;
-  key: CryptoKey;
 }
 
 export interface ICallPersist {

@@ -565,8 +565,8 @@ export const useStore = defineStore("main", {
         localKeySwapTimeout: 0,
         localKeyAcks: [],
         localKeyAcksNeeded: 0,
-        localKeys: [],
-        remoteKeys: [],
+        localKeys: new Map(),
+        remoteKeys: new Map(),
         localStreams: [],
         remoteStreams: [],
         usedSenders: {
@@ -652,10 +652,7 @@ export const useStore = defineStore("main", {
           : (this.call.localKeyCounter = 0);
       const key = new Uint8Array(16); // AES-128
       crypto.getRandomValues(key);
-      this.call.localKeys.push({
-        id,
-        key: await wcImportKey(key),
-      });
+      this.call.localKeys.set(id, await wcImportKey(key));
 
       const channel = store.channels.find((channel) => channel.id === this.call!.channelId);
       if (!channel) {

@@ -1543,10 +1543,10 @@ export class Socket {
                     }
                     const codec = store.call.payloadCodecs[frame.getMetadata().payloadType];
                     const _data = new Uint8Array(frame.data);
-                    const key = store.call.localKeys[store.call.localKeyId];
+                    const key = store.call.localKeys.get(store.call.localKeyId)!;
                     let skip = 0;
                     if (codec === "opus" && _data.length === 3) {
-                      return; // opus frame (empty)
+                      // return; // opus frame (empty)
                     }
                     if (codec === "opus") {
                       skip = 1; // opus frame
@@ -1564,12 +1564,12 @@ export class Socket {
                         name: "AES-GCM",
                         iv,
                       },
-                      key.key,
+                      key,
                       new Uint8Array(frame.data, skip),
                     );
                     const data = new Uint8Array(skip + encrypted.byteLength + 2 + IV_SIZE);
                     data.set(new Uint8Array(frame.data, 0, skip), 0);
-                    data.set(new Uint8Array([key.id, +stream.speaking]), skip);
+                    data.set(new Uint8Array([store.call.localKeyId, +stream.speaking]), skip);
                     data.set(new Uint8Array(iv), skip + 2);
                     data.set(new Uint8Array(encrypted), skip + 2 + IV_SIZE);
                     frame.data = data.buffer;
@@ -1660,20 +1660,25 @@ export class Socket {
                     if ((codec === "vp8" || codec === "vp9") && (_data[0] & 0x01) === 0) {
                       skip = 10; // VP8/VP9 frame (keyframe)
                     }
-                    const key = store.call.remoteKeys.find(
-                      (key) => key.userId === stream.userId && key.id === _data[skip + 0],
-                    );
+                    const key = store.call.remoteKeys.get(`${stream.userId}:${_data[skip + 0]}`);
                     if (!key) {
                       return console.warn(`missing key for ${stream.userId} (${stream.type})`);
                     }
-                    const decrypted = await crypto.subtle.decrypt(
-                      {
-                        name: "AES-GCM",
-                        iv: new Uint8Array(frame.data, skip + 2, IV_SIZE),
-                      },
-                      key.key,
-                      new Uint8Array(frame.data, skip + 2 + IV_SIZE),
-                    );
+                    let decrypted: ArrayBuffer;
+                    try {
+                      decrypted = await crypto.subtle.decrypt(
+                        {
+                          name: "AES-GCM",
+                          iv: new Uint8Array(frame.data, skip + 2, IV_SIZE),
+                        },
+                        key,
+                        new Uint8Array(frame.data, skip + 2 + IV_SIZE),
+                      );
+                    } catch (e) {
+                      console.log("here");
+                      console.log(e);
+                      return;
+                    }
                     const data = new Uint8Array(decrypted.byteLength + skip);
                     data.set(new Uint8Array(frame.data, 0, skip), 0);
                     data.set(new Uint8Array(decrypted), skip);
@@ -1746,7 +1751,7 @@ export class Socket {
                     controller.enqueue(frame);
                   } catch (e) {
                     console.warn("error decrypting frame");
-                    console.warn(e);
+                    console.log(e);
                   }
                 },
               }),
@@ -1886,18 +1891,17 @@ export class Socket {
           return console.warn(`SCallUpdateKeys: missing member ${data.userId}`);
         }
 
-        const key = sodium.crypto_box_open_easy(
-          new Uint8Array(box.buffer, sodium.crypto_secretbox_NONCEBYTES),
-          new Uint8Array(box.buffer, 0, sodium.crypto_secretbox_NONCEBYTES),
-          member.publicKey,
-          store.config.privateKey!,
+        store.call.remoteKeys.set(
+          `${data.userId}:${data.id}`,
+          await wcImportKey(
+            sodium.crypto_box_open_easy(
+              new Uint8Array(box.buffer, sodium.crypto_secretbox_NONCEBYTES),
+              new Uint8Array(box.buffer, 0, sodium.crypto_secretbox_NONCEBYTES),
+              member.publicKey,
+              store.config.privateKey!,
+            ),
+          ),
         );
-
-        store.call.remoteKeys.push({
-          userId: data.userId,
-          id: data.id,
-          key: await wcImportKey(key),
-        });
 
         this.send({
           t: SocketMessageType.CCallUpdateKeysACK,
