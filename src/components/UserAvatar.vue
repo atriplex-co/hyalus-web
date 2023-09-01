@@ -22,6 +22,7 @@
         v-show="!animateReady"
         :src="`/api/v1/avatars/${avatar.split('+')[0]}`"
         class="h-full w-full rounded-full object-cover object-center"
+        loading="lazy"
       />
       <video
         v-if="allowAnimate && animate && avatar.split('+').length > 1"
