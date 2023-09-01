@@ -19,6 +19,7 @@ import type { IChannel, IChannelMember, ISelf, ISpace, ISpaceMember } from "../g
 import { useStore } from "../global/store";
 import ChannelMemberListGroup from "./ChannelMemberListGroup.vue";
 import { Status } from "@/../../hyalus-server/src/types";
+import { getStatus } from "../global/helpers";
 
 defineEmits(["close"]);
 const store = useStore();
@@ -59,7 +60,7 @@ const groups = computed<IChannelMemberGroup[]>(() => {
       const members = props.space.members.filter(
         (member) =>
           member.roleIds.includes(role.id) &&
-          member.status !== Status.Offline &&
+          getStatus(member.id).status !== Status.Offline &&
           !groups.find((group) => group.members.find((member2) => member2.id === member.id)),
       );
 
@@ -76,7 +77,7 @@ const groups = computed<IChannelMemberGroup[]>(() => {
 
     const onlineUsers = props.space.members.filter(
       (member) =>
-        member.status !== Status.Offline &&
+        getStatus(member.id).status !== Status.Offline &&
         !groups.find((group) => group.members.find((member2) => member2.id === member.id)),
     );
 

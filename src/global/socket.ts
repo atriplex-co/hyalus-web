@@ -121,7 +121,6 @@ export class Socket {
             username: string;
             avatar: string | null;
             flags: number;
-            status: Status;
             accepted: boolean;
             acceptable: boolean;
           }[];
@@ -186,7 +185,6 @@ export class Socket {
               avatar: string | null;
               flags: number;
               publicKey: string;
-              status: Status;
               roleIds: string[];
               alias: string | null;
             }[];
@@ -195,6 +193,11 @@ export class Socket {
             id: string;
             channelId: string;
             flags: number;
+          }[];
+          userStatuses: {
+            id: string;
+            status: Status;
+            statusText: string;
           }[];
           meta: {
             proto: number;
@@ -230,6 +233,7 @@ export class Socket {
         store.channelStates = [];
         store.spaces = [];
         store.voiceStates = [];
+        store.userStatuses = new Map();
 
         for (const friend of data.friends) {
           store.friends.push({
@@ -238,7 +242,6 @@ export class Socket {
             username: friend.username,
             avatar: friend.avatar,
             flags: friend.flags,
-            status: friend.status,
             accepted: friend.accepted,
             acceptable: friend.acceptable,
           });
@@ -317,7 +320,6 @@ export class Socket {
               name: member.name,
               publicKey: sodium.from_base64(member.publicKey),
               roleIds: member.roleIds,
-              status: member.status,
               username: member.username,
             })),
           });
@@ -325,6 +327,13 @@ export class Socket {
 
         for (const voiceState of data.voiceStates) {
           store.voiceStates.push(voiceState);
+        }
+
+        for (const userStatus of data.userStatuses) {
+          store.userStatuses.set(userStatus.id, {
+            status: userStatus.status,
+            statusText: userStatus.statusText,
+          });
         }
 
         store.ready = true;
@@ -511,6 +520,7 @@ export class Socket {
           phone?: string;
           phoneVerified?: boolean;
           preferredStatus?: Status;
+          preferredStatusText?: string;
           typingEvents?: boolean;
           totpEnabled?: boolean;
           colorMode?: ColorMode;
@@ -530,6 +540,7 @@ export class Socket {
             phone: data.phone,
             phoneVerified: data.phoneVerified,
             preferredStatus: data.preferredStatus,
+            preferredStatusText: data.preferredStatusText,
             typingEvents: data.typingEvents,
             totpEnabled: data.totpEnabled,
             colorMode: data.colorMode,
@@ -556,7 +567,6 @@ export class Socket {
           username: string;
           avatar: string | null;
           flags: number;
-          status: number;
           accepted: boolean;
           acceptable: boolean;
         };
@@ -567,7 +577,6 @@ export class Socket {
           username: data.username,
           avatar: data.avatar,
           flags: data.flags,
-          status: data.status,
           accepted: data.accepted,
           acceptable: data.acceptable,
         });
@@ -818,7 +827,6 @@ export class Socket {
           banner?: string | null;
           bio?: string;
           flags?: number;
-          status?: Status;
         };
 
         const friend = store.friends.find((friend) => friend.id === data.id);
@@ -830,7 +838,6 @@ export class Socket {
               username: data.username,
               avatar: data.avatar,
               flags: data.flags,
-              status: data.status,
             }),
           );
         }
@@ -862,13 +869,12 @@ export class Socket {
                 username: data.username,
                 avatar: data.avatar,
                 flags: data.flags,
-                status: data.status,
               }),
             );
           }
         }
 
-        const cachedUser = store.cachedUsers.find((user) => user.id === data.id);
+        const cachedUser = store.cachedUsers.get(data.id);
 
         if (cachedUser) {
           Object.assign(
@@ -1216,7 +1222,6 @@ export class Socket {
           username: string;
           avatar: string | null;
           flags: number;
-          status: number;
           roleIds: string[];
           alias: string | null;
           publicKey: string;
@@ -1235,7 +1240,6 @@ export class Socket {
           username: data.username,
           avatar: data.avatar,
           flags: data.flags,
-          status: data.status,
           roleIds: data.roleIds,
           alias: data.alias,
           publicKey: sodium.from_base64(data.publicKey),
@@ -1932,6 +1936,18 @@ export class Socket {
           console.debug("voice: swapping call key (all members ACKed)");
           store.call.localKeyId = store.call.localKeySwapTarget;
         }
+      }
+
+      if (msg.t === SocketMessageType.SUserStatusUpdate) {
+        const data = msg.d as {
+          id: string;
+          status: Status;
+          statusText: string;
+        };
+        store.userStatuses.set(data.id, {
+          status: data.status,
+          statusText: data.statusText,
+        });
       }
 
       // add new WS message types here!

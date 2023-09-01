@@ -13,8 +13,10 @@
         <div class="relative h-12">
           <div class="absolute -top-12">
             <UserAvatar
+              :id="cachedUser.id"
               :avatar="cachedUser.avatar"
-              :status="status"
+              :allow-status="true"
+              :allow-animate="true"
               class="h-24 w-24 rounded-full backdrop-blur"
             />
           </div>
@@ -264,7 +266,7 @@
 <script lang="ts" setup>
 import { onMounted, type PropType, ref, type Ref, computed } from "vue";
 import { SettingsPage, type ICachedUser, type ISpace } from "../global/types";
-import { getCachedUser } from "../global/helpers";
+import { getCachedUser, getStatus } from "../global/helpers";
 import UserAvatar from "./UserAvatar.vue";
 import {
   ChatBubbleLeftIcon,
@@ -344,23 +346,7 @@ const spaceRoles = computed(() => {
 });
 
 const status = computed(() => {
-  if (store.self && props.id === store.self.id) {
-    return store.self.preferredStatus;
-  }
-
-  if (friend.value && friend.value.accepted) {
-    return friend.value.status;
-  }
-
-  for (const space of store.spaces) {
-    const member = space.members.find((member) => member.id === props.id);
-
-    if (member) {
-      return member.status;
-    }
-  }
-
-  return Status.Offline;
+  return getStatus(props.id);
 });
 
 const mutualSpaces = computed(() => {

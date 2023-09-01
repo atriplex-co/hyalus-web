@@ -282,10 +282,10 @@ export const updateIcon = async () => {
 };
 
 export const getCachedUser = async (id: string): Promise<ICachedUser | null> => {
-  let user: ICachedUser | undefined = store.cachedUsers.find((cachedUser) => cachedUser.id === id);
+  let user: ICachedUser | undefined = store.cachedUsers.get(id);
 
   if (user && +new Date() - +user.time > 30 * 60 * 1000) {
-    store.cachedUsers = store.cachedUsers.filter((user2) => user2 !== user);
+    store.cachedUsers.delete(id);
     user = undefined;
   }
 
@@ -295,31 +295,14 @@ export const getCachedUser = async (id: string): Promise<ICachedUser | null> => 
 
   try {
     const { data } = await axios.get(`/api/v1/users/by-id/${id}`);
-    return store.cachedUsers[
-      store.cachedUsers.push({
-        time: new Date(),
-        ...data,
-      }) - 1
-    ];
+    const cachedUser = {
+      time: new Date(),
+      ...data,
+    };
+    store.cachedUsers.set(id, cachedUser);
+    return cachedUser;
   } catch {
     console.warn(`getCachedUser error: ${id}`);
-    return null;
-  }
-};
-
-export const getCachedUserByUsername = async (username: string): Promise<ICachedUser | null> => {
-  const cachedUser = store.cachedUsers.find((cachedUser) => cachedUser.username === username);
-
-  if (cachedUser) {
-    return cachedUser;
-  }
-
-  try {
-    const { data } = await axios.get(`/api/v1/users/by-username/${username}`);
-    store.cachedUsers.push(data);
-    return data;
-  } catch {
-    console.warn(`getCachedUserByUsername error: ${username}`);
     return null;
   }
 };
@@ -481,5 +464,20 @@ export const wcImportKey = async (key: Uint8Array) => {
     },
     false,
     ["encrypt", "decrypt"],
+  );
+};
+
+export const getStatus = (id: string) => {
+  if (store.self && store.self.id === id) {
+    return {
+      status: store.self.preferredStatus,
+      statusText: store.self.preferredStatusText,
+    };
+  }
+  return (
+    store.userStatuses.get(id) ?? {
+      status: Status.Offline,
+      statusText: "",
+    }
   );
 };

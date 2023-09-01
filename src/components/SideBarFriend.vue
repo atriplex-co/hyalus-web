@@ -5,8 +5,10 @@
   >
     <div class="flex items-center space-x-3">
       <UserAvatar
+        :id="friend.id"
         :avatar="friend.avatar"
-        :status="friend.status"
+        :allow-status="true"
+        :allow-animate="true"
         class="h-8 w-8 min-w-0 flex-shrink-0 rounded-full"
       />
       <div>

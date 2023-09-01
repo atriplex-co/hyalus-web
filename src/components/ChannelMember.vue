@@ -5,7 +5,13 @@
       @click="userModal = true"
     >
       <div class="flex min-w-0 items-center space-x-3">
-        <UserAvatar :avatar="member.avatar" :status="status" class="h-8 w-8 rounded-full" />
+        <UserAvatar
+          :id="member.id"
+          :avatar="member.avatar"
+          :allow-status="true"
+          :allow-animate="true"
+          class="h-8 w-8 rounded-full"
+        />
         <div class="min-w-0">
           <p
             class="truncate font-semibold"
@@ -19,9 +25,9 @@
           <p class="truncate text-xs text-ctp-subtext0">@{{ member.username }}</p>
         </div>
       </div>
-      <CloseIcon
+      <TrashIcon
         v-if="channel.ownerId === store.self.id && channel.type === ChannelType.Group"
-        class="hidden h-7 w-7 flex-shrink-0 cursor-pointer rounded-full bg-gray-200 p-1.5 text-gray-500 transition hover:text-gray-800 group-hover:block"
+        class="hidden h-7 w-7 flex-shrink-0 cursor-pointer rounded-full p-1.5 transition group-hover:block bg-ctp-surface0 text-ctp-subtext0 hover:text-ctp-text hover:bg-ctp-surface0/50"
         @click.stop="groupRemoveModal = true"
       />
     </div>
@@ -44,12 +50,12 @@
 import UserAvatar from "./UserAvatar.vue";
 import { computed, type PropType, ref } from "vue";
 import type { IChannel, IChannelMember, ISelf, ISpace, ISpaceMember } from "../global/types";
-import { ChannelType, Status } from "@/../../hyalus-server/src/types";
+import { ChannelType } from "@/../../hyalus-server/src/types";
 import { useStore } from "../global/store";
 import UserModal from "./UserModal.vue";
-import CloseIcon from "../icons/CloseIcon.vue";
 import GroupRemoveModal from "./GroupRemoveModal.vue";
 import GroupLeaveModal from "./GroupLeaveModal.vue";
+import { TrashIcon } from "@heroicons/vue/20/solid";
 
 const store = useStore();
 const props = defineProps({
@@ -74,32 +80,6 @@ const props = defineProps({
 });
 const userModal = ref(false);
 const groupRemoveModal = ref(false);
-
-const status = computed(() => {
-  if (store.self && props.member.id === store.self.id) {
-    return store.self.preferredStatus;
-  }
-
-  const friend = store.friends.find((friend) => friend.id === props.member.id);
-
-  if (friend) {
-    return friend.status;
-  }
-
-  let spaceMember: ISpaceMember | undefined = undefined;
-  for (const space of store.spaces) {
-    spaceMember = space.members.find((member) => member.id === props.member.id);
-    if (spaceMember) {
-      break;
-    }
-  }
-
-  if (spaceMember) {
-    return spaceMember.status;
-  }
-
-  return Status.Offline;
-});
 
 const color = computed(() => {
   if (!props.space) {

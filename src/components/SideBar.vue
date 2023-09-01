@@ -11,8 +11,9 @@
     <div class="flex min-h-0 w-16 flex-col items-center space-y-2 bg-ctp-crust py-2">
       <div class="relative" @mouseup="userMenu && $event.stopPropagation()">
         <UserAvatar
+          :id="store.self.id"
           :avatar="store.self.avatar"
-          :status="store.self.preferredStatus"
+          :allow-status="true"
           :allow-animate="false"
           class="h-10 w-10 cursor-pointer rounded-full"
           @click="store.sideBarState = SideBarState.HOME"

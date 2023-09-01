@@ -10,8 +10,10 @@
     >
       <div class="flex items-center space-x-4">
         <UserAvatar
+          :id="member.id"
           :avatar="member.avatar"
-          :status="member.status"
+          :allow-status="true"
+          :allow-animate="false"
           class="h-10 w-10 rounded-full"
         />
         <div>

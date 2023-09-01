@@ -31,8 +31,9 @@ export interface IState {
   invite: string | null;
   sideBarOpen: boolean;
   sideBarState: SideBarState;
-  cachedUsers: ICachedUser[];
   quickSwitcherOpen: boolean;
+  cachedUsers: Map<string, ICachedUser>;
+  userStatuses: Map<string, IUserStatus>;
 }
 
 export type IConfig = _IConfig & Record<string, unknown>;
@@ -189,7 +190,6 @@ export interface IFriend {
   username: string;
   avatar: string | null;
   flags: number;
-  status: Status;
   accepted: boolean;
   acceptable: boolean;
 }
@@ -297,7 +297,6 @@ export interface ISpaceMember {
   avatar: string | null;
   flags: number;
   publicKey: Uint8Array;
-  status: Status;
   roleIds: string[];
   alias: string | null;
 }
@@ -367,4 +366,9 @@ export enum SettingsPage {
   Changelog,
   Desktop,
   StreamerMode,
+}
+
+export interface IUserStatus {
+  status: Status;
+  statusText: string;
 }

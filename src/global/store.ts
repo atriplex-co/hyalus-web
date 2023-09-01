@@ -23,6 +23,7 @@ import {
   SideBarState,
   type IChannelMember,
   type ISpaceMember,
+  type IUserStatus,
 } from "./types";
 import {
   callUpdatePersist,
@@ -104,8 +105,9 @@ export const useStore = defineStore("main", {
       expectedEvent: null,
       invite: null,
       self: null,
-      cachedUsers: [],
       quickSwitcherOpen: false,
+      cachedUsers: new Map(),
+      userStatuses: new Map(),
     };
   },
   actions: {

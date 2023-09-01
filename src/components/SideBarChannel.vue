@@ -9,8 +9,10 @@
     <div class="h-8 w-8">
       <UserAvatar
         v-if="avatar || channel.type === ChannelType.DM"
+        :id="channel.type === ChannelType.DM ? channel.members[0].id : undefined"
         :avatar="avatar"
-        :status="status"
+        :allow-status="true"
+        :allow-animate="true"
         class="h-full w-full"
       />
       <EmptyAvatar v-else :name="name" class="h-full w-full" />
@@ -31,7 +33,7 @@
       >
         {{ name }}
       </p>
-      <p v-if="description" class="text-xs">
+      <p v-if="description" class="text-xs truncate">
         {{ description }}
       </p>
     </div>
@@ -46,7 +48,7 @@ import type { IChannel } from "../global/types";
 import { useRoute } from "vue-router";
 import { ChannelType, Status } from "@/../../hyalus-server/src/types";
 import { useStore } from "../global/store";
-import { getChannelState } from "../global/helpers";
+import { getChannelState, getStatus } from "../global/helpers";
 
 const store = useStore();
 const props = defineProps({
@@ -85,20 +87,6 @@ const avatar = computed(() => {
   return props.channel.avatar;
 });
 
-const status = computed(() => {
-  if (props.channel.type === ChannelType.DM && props.channel.members.length) {
-    const friend = store.friends.find((friend) => friend.id === props.channel.members[0].id);
-
-    if (friend) {
-      return friend.status;
-    } else {
-      return Status.Offline;
-    }
-  }
-
-  return undefined;
-});
-
 const channelState = computed(() => {
   return getChannelState(props.channel);
 });
@@ -106,6 +94,10 @@ const channelState = computed(() => {
 const description = computed(() => {
   if (props.channel.type === ChannelType.Group) {
     return `${props.channel.members.length + 1} members`;
+  }
+
+  if (props.channel.type === ChannelType.DM) {
+    return getStatus(props.channel.members[0].id).statusText;
   }
 
   return "";
