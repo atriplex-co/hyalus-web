@@ -441,10 +441,10 @@ export const useStore = defineStore("main", {
 
       let sender: RTCRtpSender | undefined;
       if (opts.track.kind === "audio") {
-        sender = store.call!.usedSenders.audio.pop();
+        sender = this.call.usedSenders.audio.pop();
       }
       if (opts.track.kind === "video") {
-        sender = store.call!.usedSenders.video.pop();
+        sender = this.call.usedSenders.video.pop();
       }
       if (sender) {
         sender.replaceTrack(opts.track);
@@ -706,15 +706,14 @@ export const useStore = defineStore("main", {
       });
     },
     async callUpdateStreams() {
-      // prevent us from updating streams before we're connected to a voice server.
-      if (!store.call || store.call.pc.connectionState === "new") {
+      if (!this.call) {
         return;
       }
 
       const streams = [];
-      for (const stream of store.call.localStreams) {
+      for (const stream of this.call.localStreams) {
         streams.push({
-          mid: store.call.pc.getTransceivers().find((trans) => trans.sender === stream.sender)!.mid,
+          mid: this.call.pc.getTransceivers().find((trans) => trans.sender === stream.sender)!.mid,
           type: stream.type,
         });
       }
