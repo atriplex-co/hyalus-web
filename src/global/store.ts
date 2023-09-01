@@ -712,8 +712,14 @@ export const useStore = defineStore("main", {
 
       const streams = [];
       for (const stream of this.call.localStreams) {
+        const transceiver = this.call.pc
+          .getTransceivers()
+          .find((trans) => trans.sender === stream.sender);
+        if (!transceiver || !transceiver.mid) {
+          continue;
+        }
         streams.push({
-          mid: this.call.pc.getTransceivers().find((trans) => trans.sender === stream.sender)!.mid,
+          mid: transceiver.mid,
           type: stream.type,
         });
       }
