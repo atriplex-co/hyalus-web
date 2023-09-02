@@ -43,7 +43,10 @@
         @click="preferredStatusTextModal = true"
       >
         <PencilSquareIcon class="w-4 h-4" />
-        <p>Edit Custom Status</p>
+        <div class="min-w-0">
+          <p>Edit Custom Status</p>
+          <p class="truncate text-xs text-ctp-subtext0">{{ store.self.preferredStatusText }}</p>
+        </div>
       </div>
       <div class="my-1 border-t border-ctp-surface0"></div>
       <div
