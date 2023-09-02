@@ -686,8 +686,21 @@ onMounted(async () => {
   }
 });
 
+const keydownHandler = (e: KeyboardEvent) => {
+  if (e.key === "Escape") {
+    replyMessage.value = null;
+    return;
+  }
+
+  if (messageBox.value) {
+    messageBox.value.focus();
+  }
+};
+addEventListener("keydown", keydownHandler);
+
 onUnmounted(() => {
   clearTimeout(updateTypingStatusTimeout);
+  removeEventListener("keydown", keydownHandler);
 });
 
 watch(
@@ -702,15 +715,14 @@ watch(
   },
 );
 
-const keydownHandler = (e: KeyboardEvent) => {
-  if (e.key === "Escape") {
-    replyMessage.value = null;
-  }
-};
-addEventListener("keydown", keydownHandler);
-onUnmounted(() => {
-  removeEventListener("keydown", keydownHandler);
-});
+watch(
+  () => replyMessage.value,
+  () => {
+    if (replyMessage.value && messageBox.value) {
+      messageBox.value.focus();
+    }
+  },
+);
 
 const voiceOnly = computed(() => {
   if (!channel.value) {
