@@ -1516,10 +1516,10 @@ export class Socket {
           });
 
         if (!store.call.initComplete) {
+          store.call.initComplete = true;
           await store.callUpdateKeys(); // set up keys/streams after we receive our first offer.
           await store.callUpdateStreams();
           await store.callUpdateFlags();
-          store.call.initComplete = true;
         }
 
         for (const trans of store.call.pc.getTransceivers()) {

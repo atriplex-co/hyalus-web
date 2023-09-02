@@ -708,7 +708,7 @@ export const useStore = defineStore("main", {
       });
     },
     async callUpdateStreams() {
-      if (!this.call || this.call.pc.connectionState === "new") {
+      if (!this.call || !this.call.initComplete) {
         return; // don't update until we have received our first SCallOffer.
       }
 
