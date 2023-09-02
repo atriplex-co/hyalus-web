@@ -4,7 +4,13 @@
     @click="userModal = true"
   >
     <div class="flex items-center space-x-2">
-      <UserAvatar :avatar="member.avatar" class="h-5 w-5" />
+      <UserAvatar
+        :avatar="member.avatar"
+        class="h-5 w-5 rounded-full transition duration-50"
+        :class="{
+          'ring-2 ring-ctp-accent': speaking,
+        }"
+      />
       <p>{{ member.name }}</p>
     </div>
     <div class="text-ctp-subtext0 flex space-x-1.5">
@@ -30,17 +36,23 @@
 </template>
 
 <script setup lang="ts">
-import { ref, type PropType } from "vue";
-import { VoiceStateFlags } from "../../../hyalus-server/src/types";
-import type { IChannel, ISelf, ISpace, ISpaceMember } from "@/global/types";
+import { ref, type PropType, computed } from "vue";
+import { CallStreamType, VoiceStateFlags } from "../../../hyalus-server/src/types";
+import type {
+  ICallLocalStream,
+  ICallRemoteStream,
+  IChannel,
+  ISelf,
+  ISpace,
+  ISpaceMember,
+} from "@/global/types";
 import UserAvatar from "./UserAvatar.vue";
 import UserModal from "./UserModal.vue";
 import MicOffIcon from "@/icons/MicOffIcon.vue";
 import { ComputerDesktopIcon, SpeakerXMarkIcon, VideoCameraIcon } from "@heroicons/vue/20/solid";
+import { useStore } from "@/global/store";
 
-const userModal = ref(false);
-
-defineProps({
+const props = defineProps({
   member: {
     type: Object as PropType<ISpaceMember | ISelf>,
     required: true,
@@ -57,5 +69,28 @@ defineProps({
     type: Object as PropType<IChannel>,
     required: true,
   },
+});
+const userModal = ref(false);
+const store = useStore();
+const speaking = computed(() => {
+  if (!store.call) {
+    return false;
+  }
+
+  let stream: ICallRemoteStream | ICallLocalStream | undefined;
+
+  if (props.member.id === store.self!.id) {
+    stream = store.call.localStreams.find((stream) => stream.type === CallStreamType.Audio);
+  } else {
+    stream = store.call.remoteStreams.find(
+      (stream) => stream.userId === props.member.id && stream.type === CallStreamType.Audio,
+    );
+  }
+
+  if (stream) {
+    return stream.speaking;
+  } else {
+    return false;
+  }
 });
 </script>
