@@ -89,16 +89,16 @@
 
 <script lang="ts" setup>
 import { computed, type PropType, ref } from "vue";
-import type { ISpace, ISpaceMember } from "../global/types";
+import type { ISpace, ISpaceMember } from "@/global/types";
 import { ChevronDownIcon, ChevronUpIcon } from "@heroicons/vue/24/solid";
 import UserAvatar from "./UserAvatar.vue";
 import SpaceMemberKickModal from "./SpaceMemberKickModal.vue";
 import SpaceMemberBanModal from "./SpaceMemberBanModal.vue";
 import InputBoolean from "./InputBoolean.vue";
 import axios from "axios";
-import { checkSpacePermissions, getSpaceMemberPosition } from "../global/helpers";
+import { checkSpacePermissions, getSpaceMemberPosition } from "@/global/helpers";
 import { SpacePermission } from "@/../../hyalus-server/src/types";
-import { useStore } from "../global/store";
+import { useStore } from "@/global/store";
 
 const store = useStore();
 const props = defineProps({

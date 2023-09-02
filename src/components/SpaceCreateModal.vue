@@ -29,10 +29,10 @@ import ModalBase from "./ModalBase.vue";
 import ModalInput from "./ModalInput.vue";
 import ModalError from "./ModalError.vue";
 import { ref } from "vue";
-import { prettyError } from "../global/helpers";
-import PlusIcon from "../icons/PlusIcon.vue";
+import { prettyError } from "@/global/helpers";
+import PlusIcon from "@/icons/PlusIcon.vue";
 import axios from "axios";
-import { useStore } from "../global/store";
+import { useStore } from "@/global/store";
 import { SocketMessageType } from "@/../../hyalus-server/src/types";
 
 const store = useStore();

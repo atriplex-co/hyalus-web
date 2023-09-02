@@ -30,7 +30,7 @@
 </template>
 
 <script lang="ts" setup>
-import CloseIcon from "../icons/CloseIcon.vue";
+import CloseIcon from "@/icons/CloseIcon.vue";
 import { ref } from "vue";
 import { TvIcon } from "@heroicons/vue/20/solid";
 import { useStore } from "@/global/store";

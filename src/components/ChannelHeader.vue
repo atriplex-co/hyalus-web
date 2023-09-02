@@ -125,9 +125,9 @@
 import axios from "axios";
 import { CallStreamType, ChannelType } from "@/../../hyalus-server/src/types";
 import { computed, type PropType, ref } from "vue";
-import { isMobile } from "../global/helpers";
-import { useStore } from "../global/store";
-import type { IChannel, ISpace } from "../global/types";
+import { isMobile } from "@/global/helpers";
+import { useStore } from "@/global/store";
+import type { IChannel, ISpace } from "@/global/types";
 import UserAvatar from "./UserAvatar.vue";
 import { SpeakerWaveIcon, UserGroupIcon, HashtagIcon } from "@heroicons/vue/24/solid";
 import {

@@ -26,11 +26,11 @@
 import ModalBase from "./ModalBase.vue";
 import ModalError from "./ModalError.vue";
 import UserAvatar from "./UserAvatar.vue";
-import UserAddIcon from "../icons/UserAddIcon.vue";
+import UserAddIcon from "@/icons/UserAddIcon.vue";
 import { onMounted, ref, type Ref } from "vue";
-import { prettyError } from "../global/helpers";
+import { prettyError } from "@/global/helpers";
 import axios from "axios";
-import { useStore } from "../global/store";
+import { useStore } from "@/global/store";
 
 const store = useStore();
 const user: Ref<{

@@ -4,8 +4,8 @@ import {
   PushProtocol,
   SocketMessageType,
 } from "@/../../hyalus-server/src/types";
-import { idbGet } from "../global/idb";
-import type { IConfig } from "../global/types";
+import { idbGet } from "@/global/idb";
+import type { IConfig } from "@/global/types";
 import sodium from "libsodium-wrappers";
 import ImageIcon from "../assets/images/icon-background.png";
 import { cleanupOutdatedCaches, precacheAndRoute } from "workbox-precaching";

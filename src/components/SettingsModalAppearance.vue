@@ -116,12 +116,12 @@
 </template>
 
 <script lang="ts" setup>
-import InputList from "../components/InputList.vue";
-import InputListItem from "../components/InputListItem.vue";
-import InputBoolean from "../components/InputBoolean.vue";
-import { configToComputed } from "../global/helpers";
+import InputList from "@/components/InputList.vue";
+import InputListItem from "@/components/InputListItem.vue";
+import InputBoolean from "@/components/InputBoolean.vue";
+import { configToComputed } from "@/global/helpers";
 import { ColorMode, ColorTheme } from "@/../../hyalus-server/src/types";
-import { useStore } from "../global/store";
+import { useStore } from "@/global/store";
 import { computed } from "vue";
 import axios from "axios";
 

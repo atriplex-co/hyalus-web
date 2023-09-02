@@ -89,7 +89,7 @@
 import { ArrowUpOnSquareIcon } from "@heroicons/vue/24/outline";
 import axios from "axios";
 import { ref } from "vue";
-import { useStore } from "../global/store";
+import { useStore } from "@/global/store";
 import UserAvatar from "./UserAvatar.vue";
 
 const store = useStore();

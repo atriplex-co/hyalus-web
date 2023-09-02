@@ -35,10 +35,10 @@
 
 <script lang="ts" setup>
 import CheckBox from "./CheckBox.vue";
-import GroupIcon from "../icons/GroupIcon.vue";
+import GroupIcon from "@/icons/GroupIcon.vue";
 import UserAvatar from "./UserAvatar.vue";
 import { ref, computed, type PropType } from "vue";
-import type { IChannelMember, IFriend } from "../global/types";
+import type { IChannelMember, IFriend } from "@/global/types";
 
 const props = defineProps({
   users: {

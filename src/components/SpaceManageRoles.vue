@@ -238,7 +238,7 @@
 import { PlusIcon } from "@heroicons/vue/20/solid";
 import axios from "axios";
 import { type PropType, ref, watch, computed, onBeforeMount } from "vue";
-import type { ISpace, ISpaceRole } from "../global/types";
+import type { ISpace, ISpaceRole } from "@/global/types";
 import InputBoolean from "./InputBoolean.vue";
 import SpacePermissionsEditor from "./SpacePermissionsEditor.vue";
 import SpaceRoleCreateModal from "./SpaceRoleCreateModal.vue";

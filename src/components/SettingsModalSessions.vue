@@ -16,9 +16,9 @@
 
 <script lang="ts" setup>
 import { onMounted, ref } from "vue";
-import { useStore } from "../global/store";
+import { useStore } from "@/global/store";
 import SessionItem from "./SessionItem.vue";
-import type { ISession } from "../global/types";
+import type { ISession } from "@/global/types";
 import axios from "axios";
 
 const store = useStore();

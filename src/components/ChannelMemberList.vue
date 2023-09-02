@@ -15,11 +15,11 @@
 
 <script lang="ts" setup>
 import { computed, type PropType } from "vue";
-import type { IChannel, IChannelMember, ISelf, ISpace, ISpaceMember } from "../global/types";
-import { useStore } from "../global/store";
+import type { IChannel, IChannelMember, ISelf, ISpace, ISpaceMember } from "@/global/types";
+import { useStore } from "@/global/store";
 import ChannelMemberListGroup from "./ChannelMemberListGroup.vue";
 import { Status } from "@/../../hyalus-server/src/types";
-import { getStatus } from "../global/helpers";
+import { getStatus } from "@/global/helpers";
 
 defineEmits(["close"]);
 const store = useStore();

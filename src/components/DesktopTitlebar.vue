@@ -44,7 +44,7 @@
 </template>
 
 <script lang="ts" setup>
-import AppIcon from "../icons/AppIcon.vue";
+import AppIcon from "@/icons/AppIcon.vue";
 import { onUnmounted, ref } from "vue";
 
 // const gitBranch = import.meta.env.VITE_GIT_BRANCH;

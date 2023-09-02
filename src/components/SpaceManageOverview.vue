@@ -54,7 +54,7 @@
 import { ArrowUpOnSquareIcon } from "@heroicons/vue/24/outline";
 import axios from "axios";
 import { type PropType, ref } from "vue";
-import type { ISpace } from "../global/types";
+import type { ISpace } from "@/global/types";
 import UserAvatar from "./UserAvatar.vue";
 
 const props = defineProps({

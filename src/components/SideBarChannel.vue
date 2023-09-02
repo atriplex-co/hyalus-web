@@ -47,11 +47,11 @@
 import UserAvatar from "./UserAvatar.vue";
 import EmptyAvatar from "./EmptyAvatar.vue";
 import { computed, type PropType } from "vue";
-import type { IChannel } from "../global/types";
+import type { IChannel } from "@/global/types";
 import { useRoute } from "vue-router";
 import { ChannelType, Status } from "@/../../hyalus-server/src/types";
-import { useStore } from "../global/store";
-import { getChannelState, getStatus } from "../global/helpers";
+import { useStore } from "@/global/store";
+import { getChannelState, getStatus } from "@/global/helpers";
 import { UserGroupIcon } from "@heroicons/vue/20/solid";
 
 const store = useStore();

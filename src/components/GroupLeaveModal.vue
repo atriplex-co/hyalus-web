@@ -11,9 +11,9 @@
 
 <script lang="ts" setup>
 import ModalBase from "./ModalBase.vue";
-import LogoutIcon from "../icons/LogoutIcon.vue";
+import LogoutIcon from "@/icons/LogoutIcon.vue";
 import axios from "axios";
-import type { IChannel } from "../global/types";
+import type { IChannel } from "@/global/types";
 import type { PropType } from "vue";
 
 const emit = defineEmits(["close"]);

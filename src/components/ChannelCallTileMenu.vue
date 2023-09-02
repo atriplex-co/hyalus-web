@@ -34,12 +34,12 @@
 
 <script lang="ts" setup>
 import { watch, ref, type Ref, nextTick, type PropType, computed, onMounted } from "vue";
-import type { ICallTile } from "../global/types";
+import type { ICallTile } from "@/global/types";
 import InputRange from "./InputRange.vue";
-import { useStore } from "../global/store";
+import { useStore } from "@/global/store";
 import CheckBox from "./CheckBox.vue";
 import { CallStreamType } from "@/../../hyalus-server/src/types";
-import { configToComputed } from "../global/helpers";
+import { configToComputed } from "@/global/helpers";
 
 const store = useStore();
 

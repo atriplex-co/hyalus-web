@@ -29,7 +29,7 @@
 import { TrashIcon } from "@heroicons/vue/20/solid";
 import axios from "axios";
 import type { PropType } from "vue";
-import type { ISpace, ISpaceInvite } from "../global/types";
+import type { ISpace, ISpaceInvite } from "@/global/types";
 import UserAvatar from "./UserAvatar.vue";
 
 const emit = defineEmits(["remove"]);

@@ -112,17 +112,17 @@
 
 <script lang="ts" setup>
 import UserAvatar from "./UserAvatar.vue";
-import RefreshIcon from "../icons/RefreshIcon.vue";
+import RefreshIcon from "@/icons/RefreshIcon.vue";
 import SidebarHome from "./SidebarHome.vue";
 import SideBarFriendList from "./SideBarFriendList.vue";
 import SideBarUserMenu from "./SideBarUserMenu.vue";
 import UpdateReloadModal from "./UpdateReloadModal.vue";
 import { ref, watch, onMounted, computed } from "vue";
 import { useRoute } from "vue-router";
-import { SideBarState } from "../global/types";
-import { getChannelState, isMobile } from "../global/helpers";
-import { useStore } from "../global/store";
-import PlusIcon from "../icons/PlusIcon.vue";
+import { SideBarState } from "@/global/types";
+import { getChannelState, isMobile } from "@/global/helpers";
+import { useStore } from "@/global/store";
+import PlusIcon from "@/icons/PlusIcon.vue";
 import SpaceCreateModal from "./SpaceCreateModal.vue";
 import SideBarCall from "./SideBarCall.vue";
 import SideBarSpace from "./SideBarSpace.vue";

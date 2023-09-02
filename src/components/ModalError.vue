@@ -9,7 +9,7 @@
 </template>
 
 <script lang="ts" setup>
-import ErrorIcon from "../icons/ErrorIcon.vue";
+import ErrorIcon from "@/icons/ErrorIcon.vue";
 
 defineProps({
   error: {

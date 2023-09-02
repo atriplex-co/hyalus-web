@@ -15,7 +15,7 @@
 </template>
 
 <script lang="ts" setup>
-import InputBoolean from "../components/InputBoolean.vue";
+import InputBoolean from "@/components/InputBoolean.vue";
 import { ref, onMounted, watch } from "vue";
 
 const startupEnabled = ref(false);

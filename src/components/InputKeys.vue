@@ -14,7 +14,7 @@
 
 <script lang="ts" setup>
 import { ref } from "vue";
-import StopIcon from "../icons/StopIcon.vue";
+import StopIcon from "@/icons/StopIcon.vue";
 
 const props = defineProps({
   modelValue: {

@@ -117,13 +117,13 @@
 </template>
 
 <script lang="ts" setup>
-import InputRange from "../components/InputRange.vue";
-import InputList from "../components/InputList.vue";
-import InputListItem from "../components/InputListItem.vue";
-import InputBoolean from "../components/InputBoolean.vue";
+import InputRange from "@/components/InputRange.vue";
+import InputList from "@/components/InputList.vue";
+import InputListItem from "@/components/InputListItem.vue";
+import InputBoolean from "@/components/InputBoolean.vue";
 import { computed, onMounted, ref, type Ref, onUnmounted } from "vue";
-import { configToComputed, isDesktop } from "../global/helpers";
-import { useStore } from "../global/store";
+import { configToComputed, isDesktop } from "@/global/helpers";
+import { useStore } from "@/global/store";
 
 const store = useStore();
 

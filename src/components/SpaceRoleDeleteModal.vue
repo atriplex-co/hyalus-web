@@ -18,10 +18,10 @@
 import ModalBase from "./ModalBase.vue";
 import ModalError from "./ModalError.vue";
 import { type PropType, ref } from "vue";
-import { prettyError } from "../global/helpers";
+import { prettyError } from "@/global/helpers";
 import axios from "axios";
 import { TrashIcon } from "@heroicons/vue/20/solid";
-import type { ISpace, ISpaceRole } from "../global/types";
+import type { ISpace, ISpaceRole } from "@/global/types";
 
 const emit = defineEmits(["close"]);
 const props = defineProps({

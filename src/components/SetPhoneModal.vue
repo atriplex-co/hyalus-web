@@ -15,9 +15,9 @@ import ModalBase from "./ModalBase.vue";
 import ModalInput from "./ModalInput.vue";
 import ModalError from "./ModalError.vue";
 import { ref } from "vue";
-import { prettyError } from "../global/helpers";
+import { prettyError } from "@/global/helpers";
 import axios from "axios";
-import { useStore } from "../global/store";
+import { useStore } from "@/global/store";
 import { PhoneIcon } from "@heroicons/vue/24/solid";
 
 const store = useStore();

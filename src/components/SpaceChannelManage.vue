@@ -60,8 +60,8 @@ import {
 } from "@heroicons/vue/24/solid";
 import { ChannelType, SpacePermission } from "@/../../hyalus-server/src/types";
 import { computed, type PropType, ref } from "vue";
-import { checkSpacePermissions } from "../global/helpers";
-import type { IChannel, ISpace } from "../global/types";
+import { checkSpacePermissions } from "@/global/helpers";
+import type { IChannel, ISpace } from "@/global/types";
 import SpaceChannelDeleteModal from "./SpaceChannelDeleteModal.vue";
 import SpaceChannelManageOverview from "./SpaceChannelManageOverview.vue";
 import SpaceChannelManagePermissions from "./SpaceChannelManagePermissions.vue";

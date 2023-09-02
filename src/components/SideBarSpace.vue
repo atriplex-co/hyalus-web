@@ -175,7 +175,7 @@
 
 <script lang="ts" setup>
 import { computed, type PropType, ref, onMounted, watch } from "vue";
-import type { ISpace } from "../global/types";
+import type { ISpace } from "@/global/types";
 import { ChevronDownIcon } from "@heroicons/vue/24/outline";
 import SideBarSpaceChannel from "./SideBarSpaceChannel.vue";
 import { ChannelType, SpacePermission } from "@/../../hyalus-server/src/types";
@@ -191,8 +191,8 @@ import {
   LockClosedIcon,
   ChevronUpIcon,
 } from "@heroicons/vue/20/solid";
-import { useStore } from "../global/store";
-import { checkSpacePermissions } from "../global/helpers";
+import { useStore } from "@/global/store";
+import { checkSpacePermissions } from "@/global/helpers";
 import SpaceManage from "./SpaceManage.vue";
 import SpaceInviteCreateModal from "./SpaceInviteCreateModal.vue";
 import SpaceChannelCreateModal from "./SpaceChannelCreateModal.vue";

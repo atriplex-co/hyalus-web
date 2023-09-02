@@ -122,11 +122,11 @@
 import { ref, onUnmounted } from "vue";
 import { Status } from "@/../../hyalus-server/src/types";
 import axios from "axios";
-import LogoutIcon from "../icons/LogoutIcon.vue";
+import LogoutIcon from "@/icons/LogoutIcon.vue";
 import LogoutModal from "./LogoutModal.vue";
-import SettingsIcon from "../icons/SettingsIcon.vue";
+import SettingsIcon from "@/icons/SettingsIcon.vue";
 import SettingsModal from "./SettingsModal.vue";
-import { useStore } from "../global/store";
+import { useStore } from "@/global/store";
 import {
   FaceSmileIcon,
   PencilIcon,

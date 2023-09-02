@@ -59,9 +59,9 @@
 
 <script lang="ts" setup>
 import ModalBase from "./ModalBase.vue";
-import WindowsIcon from "../icons/WindowsIcon.vue";
-import AppleIcon from "../icons/AppleIcon.vue";
-import LinuxIcon from "../icons/LinuxIcon.vue";
+import WindowsIcon from "@/icons/WindowsIcon.vue";
+import AppleIcon from "@/icons/AppleIcon.vue";
+import LinuxIcon from "@/icons/LinuxIcon.vue";
 import { ref } from "vue";
 import ChevronDownIcon from "@heroicons/vue/20/solid/ChevronDownIcon";
 import ChevronUpIcon from "@heroicons/vue/20/solid/ChevronUpIcon";

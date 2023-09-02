@@ -33,7 +33,7 @@ import {
   processMessage,
   wcImportKey,
 } from "./helpers";
-import { store } from "../global/store";
+import { store } from "@/global/store";
 import axios from "axios";
 import SoundStateUp from "../assets/sounds/state-change_confirm-up.ogg";
 import SoundStateDown from "../assets/sounds/state-change_confirm-down.ogg";

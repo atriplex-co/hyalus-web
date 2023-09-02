@@ -43,7 +43,7 @@
 <script setup lang="ts">
 import ModalBase from "./ModalBase.vue";
 import { XCircleIcon } from "@heroicons/vue/24/outline";
-import { isDesktop } from "../global/helpers";
+import { isDesktop } from "@/global/helpers";
 
 defineEmits(["close"]);
 </script>

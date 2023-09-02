@@ -54,13 +54,13 @@
 
 <script lang="ts" setup>
 import UserAvatar from "./UserAvatar.vue";
-import CheckIcon from "../icons/CheckIcon.vue";
-import CloseIcon from "../icons/CloseIcon.vue";
+import CheckIcon from "@/icons/CheckIcon.vue";
+import CloseIcon from "@/icons/CloseIcon.vue";
 import { type PropType, ref } from "vue";
-import type { IFriend } from "../global/types";
+import type { IFriend } from "@/global/types";
 import { SocketMessageType } from "@/../../hyalus-server/src/types";
 import axios from "axios";
-import { useStore } from "../global/store";
+import { useStore } from "@/global/store";
 import UserModal from "./UserModal.vue";
 import FriendRemoveModal from "./FriendRemoveModal.vue";
 

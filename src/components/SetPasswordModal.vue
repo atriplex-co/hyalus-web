@@ -32,11 +32,11 @@
 import ModalBase from "./ModalBase.vue";
 import ModalInput from "./ModalInput.vue";
 import ModalError from "./ModalError.vue";
-import KeyIcon from "../icons/KeyIcon.vue";
+import KeyIcon from "@/icons/KeyIcon.vue";
 import { ref } from "vue";
-import { prettyError } from "../global/helpers";
+import { prettyError } from "@/global/helpers";
 import axios from "axios";
-import { useStore } from "../global/store";
+import { useStore } from "@/global/store";
 import sodium from "libsodium-wrappers";
 
 const store = useStore();

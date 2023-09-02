@@ -26,9 +26,9 @@
 import ModalBase from "./ModalBase.vue";
 import ModalError from "./ModalError.vue";
 import { onMounted, type PropType, ref } from "vue";
-import { prettyError } from "../global/helpers";
+import { prettyError } from "@/global/helpers";
 import axios from "axios";
-import type { ISpace } from "../global/types";
+import type { ISpace } from "@/global/types";
 import { UserPlusIcon } from "@heroicons/vue/20/solid";
 
 defineEmits(["close"]);

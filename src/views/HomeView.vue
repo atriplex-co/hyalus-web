@@ -147,13 +147,13 @@
 </template>
 
 <script lang="ts" setup>
-import AppDownloadModal from "../components/AppDownloadModal.vue";
+import AppDownloadModal from "@/components/AppDownloadModal.vue";
 import { ref } from "vue";
-import LockIcon from "../icons/LockIcon.vue";
-import DesktopIcon from "../icons/DesktopIcon.vue";
-import TwitterIcon from "../icons/TwitterIcon.vue";
-import GitHubIcon from "../icons/GitHubIcon.vue";
-import YouTubeIcon from "../icons/YouTubeIcon.vue";
+import LockIcon from "@/icons/LockIcon.vue";
+import DesktopIcon from "@/icons/DesktopIcon.vue";
+import TwitterIcon from "@/icons/TwitterIcon.vue";
+import GitHubIcon from "@/icons/GitHubIcon.vue";
+import YouTubeIcon from "@/icons/YouTubeIcon.vue";
 
 const appDownloadModal = ref(false);
 

@@ -23,7 +23,7 @@
 <script setup lang="ts">
 import axios from "axios";
 import { type PropType, ref } from "vue";
-import type { IChannel, ISpace } from "../global/types";
+import type { IChannel, ISpace } from "@/global/types";
 
 const props = defineProps({
   space: {

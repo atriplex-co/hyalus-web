@@ -14,7 +14,7 @@
 </template>
 
 <script lang="ts" setup>
-import CheckIcon from "../icons/CheckIcon.vue";
+import CheckIcon from "@/icons/CheckIcon.vue";
 
 defineEmits(["update:modelValue"]);
 

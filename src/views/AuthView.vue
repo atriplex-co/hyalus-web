@@ -115,18 +115,19 @@
 </template>
 
 <script lang="ts" setup>
-import ErrorIcon from "../icons/ErrorIcon.vue";
-import AppIcon from "../icons/AppIcon.vue";
+import ErrorIcon from "@/icons/ErrorIcon.vue";
+import AppIcon from "@/icons/AppIcon.vue";
 import { ref, onMounted, watch } from "vue";
-import { isDesktop, prettyError } from "../global/helpers";
+import { isDesktop, prettyError } from "@/global/helpers";
 import sodium from "libsodium-wrappers";
-import { router } from "../router";
-import BetaBanner from "../components/BetaBanner.vue";
+import BetaBanner from "@/components/BetaBanner.vue";
 import axios from "axios";
-import { useStore } from "../global/store";
-import LoadingIcon from "../icons/LoadingIcon.vue";
+import { useStore } from "@/global/store";
+import LoadingIcon from "@/icons/LoadingIcon.vue";
+import { useRouter } from "vue-router";
 
 const store = useStore();
+const router = useRouter();
 
 const mode = ref("login");
 const email = ref("");

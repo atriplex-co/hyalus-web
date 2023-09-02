@@ -37,7 +37,7 @@
 
 <script setup lang="ts">
 import { ref, type PropType, computed } from "vue";
-import { CallStreamType, VoiceStateFlags } from "../../../hyalus-server/src/types";
+import { CallStreamType, VoiceStateFlags } from "@/../hyalus-server/src/types";
 import type {
   ICallLocalStream,
   ICallRemoteStream,

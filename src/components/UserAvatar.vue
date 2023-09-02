@@ -47,10 +47,10 @@
 </template>
 
 <script lang="ts" setup>
-import UserIcon from "../icons/UserIcon.vue";
 import { type PropType, ref, computed } from "vue";
 import { Status } from "@/../../hyalus-server/src/types";
 import { getStatus } from "@/global/helpers";
+import { UserIcon } from "@heroicons/vue/20/solid";
 
 const animate = ref(false);
 const animateReady = ref(false);

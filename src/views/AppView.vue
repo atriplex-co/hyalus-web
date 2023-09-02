@@ -5,8 +5,8 @@
 </template>
 
 <script lang="ts" setup>
-import { useStore } from "../global/store";
-import AppIcon from "../icons/AppIcon.vue";
+import { useStore } from "@/global/store";
+import AppIcon from "@/icons/AppIcon.vue";
 
 const store = useStore();
 

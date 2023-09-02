@@ -286,14 +286,14 @@ import UserAvatar from "./UserAvatar.vue";
 import ImageView from "./ImageView.vue";
 import MessageDeleteModal from "./MessageDeleteModal.vue";
 import MessageEditModal from "./MessageEditModal.vue";
-import FriendsIcon from "../icons/FriendsIcon.vue";
-import GroupIcon from "../icons/GroupIcon.vue";
-import UserAddIcon from "../icons/UserAddIcon.vue";
-import UserRemoveIcon from "../icons/UserRemoveIcon.vue";
-import LogoutIcon from "../icons/LogoutIcon.vue";
-import DownloadIcon from "../icons/DownloadIcon.vue";
-import LoadingIcon from "../icons/LoadingIcon.vue";
-import PhotographIcon from "../icons/PhotographIcon.vue";
+import FriendsIcon from "@/icons/FriendsIcon.vue";
+import GroupIcon from "@/icons/GroupIcon.vue";
+import UserAddIcon from "@/icons/UserAddIcon.vue";
+import UserRemoveIcon from "@/icons/UserRemoveIcon.vue";
+import LogoutIcon from "@/icons/LogoutIcon.vue";
+import DownloadIcon from "@/icons/DownloadIcon.vue";
+import LoadingIcon from "@/icons/LoadingIcon.vue";
+import PhotographIcon from "@/icons/PhotographIcon.vue";
 import Day from "dayjs";
 import {
   ref,
@@ -305,8 +305,8 @@ import {
   onBeforeUnmount,
   watch,
 } from "vue";
-import type { IChannel, IMessage, ISpace } from "../global/types";
-import { MaxFileSize, MaxFileChunkSize } from "../global/config";
+import type { IChannel, IMessage, ISpace } from "@/global/types";
+import { MaxFileSize, MaxFileChunkSize } from "@/global/config";
 import { MessageType, SpacePermission } from "@/../../hyalus-server/src/types";
 import {
   crypto_secretstream_xchacha20poly1305_init_pull,
@@ -314,10 +314,10 @@ import {
   from_base64,
 } from "libsodium-wrappers";
 import axios from "axios";
-import { useStore } from "../global/store";
+import { useStore } from "@/global/store";
 import Promise from "bluebird";
 import UserModal from "./UserModal.vue";
-import { checkSpacePermissions } from "../global/helpers";
+import { checkSpacePermissions } from "@/global/helpers";
 import { ArrowUturnLeftIcon, PencilIcon, TrashIcon } from "@heroicons/vue/20/solid";
 
 const store = useStore();

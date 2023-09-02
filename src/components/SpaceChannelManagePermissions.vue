@@ -140,7 +140,7 @@ import { PlusIcon } from "@heroicons/vue/20/solid";
 import axios from "axios";
 import { ChannelType, SpaceChannelOverrideType } from "@/../../hyalus-server/src/types";
 import { computed, type PropType, ref, watch } from "vue";
-import type { IChannel, IChannelOverride, ISpace, ISpaceMember, ISpaceRole } from "../global/types";
+import type { IChannel, IChannelOverride, ISpace, ISpaceMember, ISpaceRole } from "@/global/types";
 import InputBoolean from "./InputBoolean.vue";
 import SpaceChannelSyncModal from "./SpaceChannelSyncModal.vue";
 import SpacePermissionsEditor from "./SpacePermissionsEditor.vue";

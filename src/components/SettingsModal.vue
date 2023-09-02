@@ -141,8 +141,8 @@ import {
   VideoCameraIcon,
 } from "@heroicons/vue/24/solid";
 import { ref, type PropType } from "vue";
-import { isDesktop } from "../global/helpers";
-import KeyboardIcon from "../icons/KeyboardIcon.vue";
+import { isDesktop } from "@/global/helpers";
+import KeyboardIcon from "@/icons/KeyboardIcon.vue";
 import LogoutModal from "./LogoutModal.vue";
 import SettingsModalAccount from "./SettingsModalAccount.vue";
 import SettingsModalAppearance from "./SettingsModalAppearance.vue";
@@ -155,7 +155,7 @@ import SettingsModalDesktop from "./SettingsModalDesktop.vue";
 import SettingsModalProfile from "./SettingsModalProfile.vue";
 import SettingsModalStreamerMode from "./SettingsModalStreamerMode.vue";
 import SplitModal from "./SplitModal.vue";
-import { SettingsPage } from "../global/types";
+import { SettingsPage } from "@/global/types";
 
 const logoutModal = ref(false);
 

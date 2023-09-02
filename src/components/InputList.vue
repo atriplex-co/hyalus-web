@@ -33,7 +33,7 @@
 </template>
 
 <script lang="ts" setup>
-import ArrowDownIcon from "../icons/ArrowDownIcon.vue";
+import ArrowDownIcon from "@/icons/ArrowDownIcon.vue";
 import { onBeforeUnmount, ref, type Ref } from "vue";
 
 const open = ref(false);

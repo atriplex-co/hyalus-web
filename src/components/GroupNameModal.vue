@@ -14,10 +14,10 @@
 import ModalBase from "./ModalBase.vue";
 import ModalInput from "./ModalInput.vue";
 import ModalError from "./ModalError.vue";
-import PencilIcon from "../icons/PencilIcon.vue";
+import PencilIcon from "@/icons/PencilIcon.vue";
 import { ref, type PropType } from "vue";
-import { prettyError } from "../global/helpers";
-import type { IChannel } from "../global/types";
+import { prettyError } from "@/global/helpers";
+import type { IChannel } from "@/global/types";
 import axios from "axios";
 
 const props = defineProps({

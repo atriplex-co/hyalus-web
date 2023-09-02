@@ -19,12 +19,12 @@
 import ModalBase from "./ModalBase.vue";
 import ModalInput from "./ModalInput.vue";
 import ModalError from "./ModalError.vue";
-import LockIcon from "../icons/LockIcon.vue";
+import LockIcon from "@/icons/LockIcon.vue";
 import { ref } from "vue";
 import sodium from "libsodium-wrappers";
-import { prettyError } from "../global/helpers";
+import { prettyError } from "@/global/helpers";
 import axios from "axios";
-import { useStore } from "../global/store";
+import { useStore } from "@/global/store";
 
 const store = useStore();
 

@@ -54,16 +54,16 @@
 import ModalBase from "./ModalBase.vue";
 import ModalInput from "./ModalInput.vue";
 import ModalError from "./ModalError.vue";
-import LockIcon from "../icons/LockIcon.vue";
-import AppleIcon from "../icons/AppleIcon.vue";
-import GooglePlayIcon from "../icons/GooglePlayIcon.vue";
+import LockIcon from "@/icons/LockIcon.vue";
+import AppleIcon from "@/icons/AppleIcon.vue";
+import GooglePlayIcon from "@/icons/GooglePlayIcon.vue";
 import qrcode from "qrcode";
 import { ref, onMounted } from "vue";
 import sodium from "libsodium-wrappers";
 import b32 from "base32-encode";
-import { prettyError } from "../global/helpers";
+import { prettyError } from "@/global/helpers";
 import axios from "axios";
-import { useStore } from "../global/store";
+import { useStore } from "@/global/store";
 
 const store = useStore();
 const emit = defineEmits(["close"]);

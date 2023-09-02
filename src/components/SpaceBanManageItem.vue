@@ -39,7 +39,7 @@
 
 <script lang="ts" setup>
 import { type PropType, ref } from "vue";
-import type { ISpace, ISpaceBan } from "../global/types";
+import type { ISpace, ISpaceBan } from "@/global/types";
 import { ChevronDownIcon, ChevronUpIcon } from "@heroicons/vue/24/solid";
 import UserAvatar from "./UserAvatar.vue";
 import axios from "axios";

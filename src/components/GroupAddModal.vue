@@ -14,12 +14,12 @@
 import ModalBase from "./ModalBase.vue";
 import ModalError from "./ModalError.vue";
 import InputUser from "./InputUser.vue";
-import UserAddIcon from "../icons/UserAddIcon.vue";
+import UserAddIcon from "@/icons/UserAddIcon.vue";
 import { ref, type PropType } from "vue";
-import type { IChannel } from "../global/types";
-import { prettyError } from "../global/helpers";
+import type { IChannel } from "@/global/types";
+import { prettyError } from "@/global/helpers";
 import axios from "axios";
-import { useStore } from "../global/store";
+import { useStore } from "@/global/store";
 
 const store = useStore();
 const props = defineProps({

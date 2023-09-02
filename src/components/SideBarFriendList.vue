@@ -17,10 +17,10 @@
 
 <script lang="ts" setup>
 import SideBarFriend from "./SideBarFriend.vue";
-import UserAddIcon from "../icons/UserAddIcon.vue";
+import UserAddIcon from "@/icons/UserAddIcon.vue";
 import FriendAddModal from "./FriendAddModal.vue";
 import { ref, computed } from "vue";
-import { useStore } from "../global/store";
+import { useStore } from "@/global/store";
 
 const store = useStore();
 

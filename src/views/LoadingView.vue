@@ -14,6 +14,6 @@
 </template>
 
 <script lang="ts" setup>
-import AppIcon from "../icons/AppIcon.vue";
-import LoadingIcon from "../icons/LoadingIcon.vue";
+import AppIcon from "@/icons/AppIcon.vue";
+import LoadingIcon from "@/icons/LoadingIcon.vue";
 </script>

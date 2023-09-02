@@ -15,10 +15,10 @@ import ModalBase from "./ModalBase.vue";
 import ModalInput from "./ModalInput.vue";
 import ModalError from "./ModalError.vue";
 import { type PropType, ref } from "vue";
-import { prettyError } from "../global/helpers";
+import { prettyError } from "@/global/helpers";
 import axios from "axios";
 import { PlusIcon } from "@heroicons/vue/20/solid";
-import type { ISpace } from "../global/types";
+import type { ISpace } from "@/global/types";
 
 const emit = defineEmits(["close"]);
 const props = defineProps({

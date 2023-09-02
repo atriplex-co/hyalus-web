@@ -19,8 +19,8 @@
 import { ScaleIcon } from "@heroicons/vue/20/solid";
 import axios from "axios";
 import { type PropType, ref } from "vue";
-import { prettyError } from "../global/helpers";
-import type { ISpace, ISpaceMember } from "../global/types";
+import { prettyError } from "@/global/helpers";
+import type { ISpace, ISpaceMember } from "@/global/types";
 import ModalBase from "./ModalBase.vue";
 import ModalError from "./ModalError.vue";
 import ModalInput from "./ModalInput.vue";

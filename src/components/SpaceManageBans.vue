@@ -33,7 +33,7 @@
 <script lang="ts" setup>
 import axios from "axios";
 import { onMounted, type PropType, ref } from "vue";
-import type { ISpace, ISpaceBan } from "../global/types";
+import type { ISpace, ISpaceBan } from "@/global/types";
 import SpaceBanManageItem from "./SpaceBanManageItem.vue";
 
 const props = defineProps({

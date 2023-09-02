@@ -20,7 +20,7 @@ import axios from "axios";
 import { onMounted, ref } from "vue";
 import { useRoute } from "vue-router";
 import { CheckCircleIcon, ExclamationCircleIcon } from "@heroicons/vue/24/outline";
-import LoadingIcon from "../icons/LoadingIcon.vue";
+import LoadingIcon from "@/icons/LoadingIcon.vue";
 
 const route = useRoute();
 const mode = ref(0);

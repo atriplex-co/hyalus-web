@@ -23,10 +23,10 @@
 import ModalBase from "./ModalBase.vue";
 import ModalError from "./ModalError.vue";
 import { type PropType, ref } from "vue";
-import { prettyError } from "../global/helpers";
+import { prettyError } from "@/global/helpers";
 import axios from "axios";
-import { useStore } from "../global/store";
-import type { ISpace } from "../global/types";
+import { useStore } from "@/global/store";
+import type { ISpace } from "@/global/types";
 import { ArrowRightOnRectangleIcon } from "@heroicons/vue/20/solid";
 
 const store = useStore();

@@ -14,9 +14,9 @@
 import ModalBase from "./ModalBase.vue";
 import ModalInput from "./ModalInput.vue";
 import ModalError from "./ModalError.vue";
-import UserAddIcon from "../icons/UserAddIcon.vue";
+import UserAddIcon from "@/icons/UserAddIcon.vue";
 import { ref } from "vue";
-import { prettyError } from "../global/helpers";
+import { prettyError } from "@/global/helpers";
 import axios from "axios";
 
 const emit = defineEmits(["close"]);

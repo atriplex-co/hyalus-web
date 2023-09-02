@@ -136,10 +136,10 @@
 </template>
 
 <script lang="ts" setup>
-import MessageItem from "../components/MessageItem.vue";
+import MessageItem from "@/components/MessageItem.vue";
 import { ref, computed, onMounted, onUnmounted, type Ref, nextTick, watch } from "vue";
 import { useRoute, useRouter } from "vue-router";
-import { checkSpacePermissions, getChannelState, processMessage } from "../global/helpers";
+import { checkSpacePermissions, getChannelState, processMessage } from "@/global/helpers";
 import {
   CallStreamType,
   ChannelType,
@@ -148,13 +148,13 @@ import {
   SpacePermission,
 } from "@/../../hyalus-server/src/types";
 import sodium from "libsodium-wrappers";
-import ChannelCall from "../components/ChannelCall.vue";
-import { MaxFileSize, MaxFileChunkSize } from "../global/config";
+import ChannelCall from "@/components/ChannelCall.vue";
+import { MaxFileSize, MaxFileChunkSize } from "@/global/config";
 import axios from "axios";
-import { useStore } from "../global/store";
-import ChannelHeader from "../components/ChannelHeader.vue";
+import { useStore } from "@/global/store";
+import ChannelHeader from "@/components/ChannelHeader.vue";
 import msgpack from "msgpack-lite";
-import ChannelMemberList from "../components/ChannelMemberList.vue";
+import ChannelMemberList from "@/components/ChannelMemberList.vue";
 import type { IMessage } from "@/global/types";
 import { PaperAirplaneIcon, PaperClipIcon, PencilIcon, XMarkIcon } from "@heroicons/vue/20/solid";
 import UserAvatar from "@/components/UserAvatar.vue";

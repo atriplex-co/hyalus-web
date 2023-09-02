@@ -37,7 +37,7 @@
 
 <script lang="ts" setup>
 import { configToComputed } from "@/global/helpers";
-import InputBoolean from "../components/InputBoolean.vue";
+import InputBoolean from "@/components/InputBoolean.vue";
 
 const streamerModeEnabled = configToComputed<boolean>("streamerModeEnabled");
 const streamerModeAuto = configToComputed<boolean>("streamerModeAuto");

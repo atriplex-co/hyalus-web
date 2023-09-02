@@ -39,7 +39,7 @@
 <script setup lang="ts">
 import type { IChannel, ISpace } from "@/global/types";
 import type { PropType } from "vue";
-import { ChannelType } from "../../../hyalus-server/src/types";
+import { ChannelType } from "@/../hyalus-server/src/types";
 import UserAvatar from "./UserAvatar.vue";
 
 defineProps({

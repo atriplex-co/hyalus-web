@@ -277,7 +277,7 @@
 <script setup lang="ts">
 import { SpacePermission } from "@/../../hyalus-server/src/types";
 import type { PropType } from "vue";
-import type { ISpace } from "../global/types";
+import type { ISpace } from "@/global/types";
 import SpacePermissionEditorItem from "./SpacePermissionEditorItem.vue";
 
 defineProps({

@@ -21,10 +21,10 @@
 <script lang="ts" setup>
 import ModalBase from "./ModalBase.vue";
 import ModalError from "./ModalError.vue";
-import TrashIcon from "../icons/TrashIcon.vue";
+import TrashIcon from "@/icons/TrashIcon.vue";
 import { ref, type PropType, type Ref, onMounted } from "vue";
-import { prettyError } from "../global/helpers";
-import type { IMessage, IChannel } from "../global/types";
+import { prettyError } from "@/global/helpers";
+import type { IMessage, IChannel } from "@/global/types";
 import axios from "axios";
 
 const props = defineProps({

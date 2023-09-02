@@ -49,9 +49,9 @@
 <script lang="ts" setup>
 import UserAvatar from "./UserAvatar.vue";
 import { computed, type PropType, ref } from "vue";
-import type { IChannel, IChannelMember, ISelf, ISpace, ISpaceMember } from "../global/types";
+import type { IChannel, IChannelMember, ISelf, ISpace, ISpaceMember } from "@/global/types";
 import { ChannelType } from "@/../../hyalus-server/src/types";
-import { useStore } from "../global/store";
+import { useStore } from "@/global/store";
 import UserModal from "./UserModal.vue";
 import GroupRemoveModal from "./GroupRemoveModal.vue";
 import GroupLeaveModal from "./GroupLeaveModal.vue";

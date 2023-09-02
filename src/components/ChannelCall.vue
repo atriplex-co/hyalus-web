@@ -95,14 +95,14 @@
 <script lang="ts" setup>
 import DesktopCaptureModal from "./DesktopCaptureModal.vue";
 import ChannelCallTile from "./ChannelCallTile.vue";
-import CallEndIcon from "../icons/CallEndIcon.vue";
-import MicIcon from "../icons/MicIcon.vue";
-import MicOffIcon from "../icons/MicOffIcon.vue";
+import CallEndIcon from "@/icons/CallEndIcon.vue";
+import MicIcon from "@/icons/MicIcon.vue";
+import MicOffIcon from "@/icons/MicOffIcon.vue";
 import { ref, computed, onMounted, type Ref, onBeforeUnmount } from "vue";
 import { CallStreamType } from "@/../../hyalus-server/src/types";
-import { isDesktop } from "../global/helpers";
-import { useStore } from "../global/store";
-import type { ICallTile, IChannelMember, ISpaceMember } from "../global/types";
+import { isDesktop } from "@/global/helpers";
+import { useStore } from "@/global/store";
+import type { ICallTile, IChannelMember, ISpaceMember } from "@/global/types";
 import ChannelHeader from "./ChannelHeader.vue";
 import {
   ComputerDesktopIcon,

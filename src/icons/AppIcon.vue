@@ -74,6 +74,6 @@
 
 <script lang="ts" setup>
 // import { ColorTheme } from "@/../../hyalus-server/src/types";
-// import { useStore } from "../global/store";
+// import { useStore } from "@/global/store";
 // const store = useStore();
 </script>

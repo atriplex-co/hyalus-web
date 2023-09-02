@@ -26,8 +26,8 @@ import { TrashIcon } from "@heroicons/vue/20/solid";
 import axios from "axios";
 import { ChannelType } from "@/../../hyalus-server/src/types";
 import { type PropType, ref } from "vue";
-import { prettyError } from "../global/helpers";
-import type { IChannel, ISpace } from "../global/types";
+import { prettyError } from "@/global/helpers";
+import type { IChannel, ISpace } from "@/global/types";
 import ModalBase from "./ModalBase.vue";
 import ModalError from "./ModalError.vue";
 

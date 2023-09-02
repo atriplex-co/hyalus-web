@@ -16,7 +16,7 @@
 </template>
 
 <script lang="ts" setup>
-import RefreshIcon from "../icons/RefreshIcon.vue";
+import RefreshIcon from "@/icons/RefreshIcon.vue";
 
 const submit = () => {
   if (window.HyalusDesktop) {

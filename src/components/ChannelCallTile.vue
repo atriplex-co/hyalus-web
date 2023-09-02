@@ -62,12 +62,12 @@
 
 <script lang="ts" setup>
 import UserAvatar from "./UserAvatar.vue";
-import MicOffIcon from "../icons/MicOffIcon.vue";
+import MicOffIcon from "@/icons/MicOffIcon.vue";
 import { ref, type PropType, type Ref, computed, watch } from "vue";
-import type { ICallTile } from "../global/types";
+import type { ICallTile } from "@/global/types";
 import { CallStreamType, VoiceStateFlags } from "@/../../hyalus-server/src/types";
 import ChannelCallTileMenu from "./ChannelCallTileMenu.vue";
-import { useStore } from "../global/store";
+import { useStore } from "@/global/store";
 import { ComputerDesktopIcon, SpeakerXMarkIcon } from "@heroicons/vue/20/solid";
 
 const store = useStore();

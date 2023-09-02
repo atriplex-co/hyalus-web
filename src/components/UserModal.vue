@@ -265,8 +265,8 @@
 
 <script lang="ts" setup>
 import { onMounted, type PropType, ref, type Ref, computed } from "vue";
-import { SettingsPage, type ICachedUser, type ISpace } from "../global/types";
-import { getCachedUser, getStatus } from "../global/helpers";
+import { SettingsPage, type ICachedUser, type ISpace } from "@/global/types";
+import { getCachedUser, getStatus } from "@/global/helpers";
 import UserAvatar from "./UserAvatar.vue";
 import {
   ChatBubbleLeftIcon,
@@ -278,17 +278,17 @@ import {
   SparklesIcon,
   BeakerIcon,
 } from "@heroicons/vue/20/solid";
-import { useStore } from "../global/store";
+import { useStore } from "@/global/store";
 import { ChannelType, Status, UserFlag } from "@/../../hyalus-server/src/types";
 import { useRouter } from "vue-router";
 import ModalBase from "./ModalBase.vue";
 import { FaceFrownIcon, InformationCircleIcon, XCircleIcon } from "@heroicons/vue/24/outline";
 import FriendRemoveModal from "./FriendRemoveModal.vue";
 import axios from "axios";
-import LoadingIcon from "../icons/LoadingIcon.vue";
+import LoadingIcon from "@/icons/LoadingIcon.vue";
 import { ServerStackIcon, WrenchScrewdriverIcon } from "@heroicons/vue/20/solid";
-import RobotIcon from "../icons/RobotIcon.vue";
-import { messageFormatter } from "../global/config";
+import RobotIcon from "@/icons/RobotIcon.vue";
+import { messageFormatter } from "@/global/config";
 import SettingsModal from "./SettingsModal.vue";
 
 const store = useStore();

@@ -18,9 +18,9 @@ import ModalBase from "./ModalBase.vue";
 import ModalInput from "./ModalInput.vue";
 import ModalError from "./ModalError.vue";
 import { ref } from "vue";
-import { prettyError } from "../global/helpers";
+import { prettyError } from "@/global/helpers";
 import axios from "axios";
-import { useStore } from "../global/store";
+import { useStore } from "@/global/store";
 import { SocketMessageType } from "@/../../hyalus-server/src/types";
 import { HashtagIcon } from "@heroicons/vue/20/solid";
 

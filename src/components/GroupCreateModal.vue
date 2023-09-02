@@ -13,16 +13,16 @@
 
 <script lang="ts" setup>
 import ModalBase from "./ModalBase.vue";
-import GroupIcon from "../icons/GroupIcon.vue";
+import GroupIcon from "@/icons/GroupIcon.vue";
 import ModalInput from "./ModalInput.vue";
 import ModalError from "./ModalError.vue";
 import InputUser from "./InputUser.vue";
 import { ref, type Ref } from "vue";
-import { prettyError } from "../global/helpers";
+import { prettyError } from "@/global/helpers";
 import { SocketMessageType } from "@/../../hyalus-server/src/types";
 import axios from "axios";
-import { useStore } from "../global/store";
-import type { IFriend } from "../global/types";
+import { useStore } from "@/global/store";
+import type { IFriend } from "@/global/types";
 
 const store = useStore();
 const props = defineProps({

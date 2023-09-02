@@ -51,12 +51,12 @@
 /* eslint-disable no-undef */
 
 import ModalBase from "./ModalBase.vue";
-import DisplayIcon from "../icons/DisplayIcon.vue";
+import DisplayIcon from "@/icons/DisplayIcon.vue";
 import InputBoolean from "./InputBoolean.vue";
 import { onMounted, onUnmounted, ref, type Ref } from "vue";
 import { CallStreamType } from "@/../../hyalus-server/src/types";
-import { useStore } from "../global/store";
-import LoadingIcon from "../icons/LoadingIcon.vue";
+import { useStore } from "@/global/store";
+import LoadingIcon from "@/icons/LoadingIcon.vue";
 
 interface ISource {
   id: string;

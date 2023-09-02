@@ -44,8 +44,8 @@
 <script lang="ts" setup>
 import axios from "axios";
 import { onMounted, type PropType, ref } from "vue";
-import type { ISpace, ISpaceInvite } from "../global/types";
-import LoadingIcon from "../icons/LoadingIcon.vue";
+import type { ISpace, ISpaceInvite } from "@/global/types";
+import LoadingIcon from "@/icons/LoadingIcon.vue";
 import SpaceInviteManageItem from "./SpaceInviteManageItem.vue";
 
 const props = defineProps({

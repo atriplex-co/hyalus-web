@@ -38,8 +38,8 @@ import { HashtagIcon, PlusIcon, SpeakerWaveIcon } from "@heroicons/vue/20/solid"
 import axios from "axios";
 import { ChannelType } from "@/../../hyalus-server/src/types";
 import { type PropType, ref } from "vue";
-import { prettyError } from "../global/helpers";
-import type { ISpace } from "../global/types";
+import { prettyError } from "@/global/helpers";
+import type { ISpace } from "@/global/types";
 import CheckBox from "./CheckBox.vue";
 import ModalBase from "./ModalBase.vue";
 import ModalError from "./ModalError.vue";

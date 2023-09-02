@@ -28,12 +28,12 @@
 import ModalBase from "./ModalBase.vue";
 import ModalError from "./ModalError.vue";
 import { ref, type PropType, type Ref, onMounted } from "vue";
-import { prettyError } from "../global/helpers";
-import type { IMessage, IChannel } from "../global/types";
+import { prettyError } from "@/global/helpers";
+import type { IMessage, IChannel } from "@/global/types";
 import sodium from "libsodium-wrappers";
-import PencilIcon from "../icons/PencilIcon.vue";
+import PencilIcon from "@/icons/PencilIcon.vue";
 import axios from "axios";
-import { useStore } from "../global/store";
+import { useStore } from "@/global/store";
 import msgpack from "msgpack-lite";
 
 const store = useStore();

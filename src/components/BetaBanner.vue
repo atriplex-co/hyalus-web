@@ -17,7 +17,7 @@
 
 <script lang="ts" setup>
 import { ExclamationTriangleIcon, XMarkIcon } from "@heroicons/vue/20/solid";
-import { useStore } from "../global/store";
+import { useStore } from "@/global/store";
 
 const store = useStore();
 

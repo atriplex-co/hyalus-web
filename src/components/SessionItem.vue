@@ -40,9 +40,9 @@
 import Day from "dayjs";
 import UAParser from "ua-parser-js";
 import type { PropType } from "vue";
-import type { ISession } from "../global/types";
+import type { ISession } from "@/global/types";
 import axios from "axios";
-import { useStore } from "../global/store";
+import { useStore } from "@/global/store";
 import {
   ComputerDesktopIcon,
   DevicePhoneMobileIcon,

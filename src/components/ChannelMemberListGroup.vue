@@ -17,7 +17,7 @@
 
 <script setup lang="ts">
 import type { PropType } from "vue";
-import type { IChannelMember, ISpaceMember, ISelf, IChannel, ISpace } from "../global/types";
+import type { IChannelMember, ISpaceMember, ISelf, IChannel, ISpace } from "@/global/types";
 import ChannelMember from "./ChannelMember.vue";
 
 defineProps({

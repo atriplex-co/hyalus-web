@@ -31,9 +31,9 @@ import { ArrowPathIcon } from "@heroicons/vue/20/solid";
 import axios from "axios";
 import { ChannelType, SpaceChannelOverrideType } from "@/../../hyalus-server/src/types";
 import { type PropType, computed, ref } from "vue";
-import { prettyError } from "../global/helpers";
-import { useStore } from "../global/store";
-import type { IChannel } from "../global/types";
+import { prettyError } from "@/global/helpers";
+import { useStore } from "@/global/store";
+import type { IChannel } from "@/global/types";
 import ModalBase from "./ModalBase.vue";
 import ModalError from "./ModalError.vue";
 

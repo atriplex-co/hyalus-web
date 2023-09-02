@@ -114,17 +114,17 @@
 <script lang="ts" setup>
 import { CallStreamType, ChannelType } from "@/../../hyalus-server/src/types";
 import { computed, ref, onUnmounted, watch } from "vue";
-import { isDesktop } from "../global/helpers";
-import { useStore } from "../global/store";
-import PhoneIcon from "../icons/PhoneIcon.vue";
-import MicIcon from "../icons/MicIcon.vue";
-import MicOffIcon from "../icons/MicOffIcon.vue";
-import VideoIcon from "../icons/VideoIcon.vue";
-import VideoOffIcon from "../icons/VideoOffIcon.vue";
-import CallEndIcon from "../icons/CallEndIcon.vue";
-import DisplayIcon from "../icons/DisplayIcon.vue";
-import AudioOffIcon from "../icons/AudioOffIcon.vue";
-import AudioIcon from "../icons/AudioIcon.vue";
+import { isDesktop } from "@/global/helpers";
+import { useStore } from "@/global/store";
+import PhoneIcon from "@/icons/PhoneIcon.vue";
+import MicIcon from "@/icons/MicIcon.vue";
+import MicOffIcon from "@/icons/MicOffIcon.vue";
+import VideoIcon from "@/icons/VideoIcon.vue";
+import VideoOffIcon from "@/icons/VideoOffIcon.vue";
+import CallEndIcon from "@/icons/CallEndIcon.vue";
+import DisplayIcon from "@/icons/DisplayIcon.vue";
+import AudioOffIcon from "@/icons/AudioOffIcon.vue";
+import AudioIcon from "@/icons/AudioIcon.vue";
 import DesktopCaptureModal from "./DesktopCaptureModal.vue";
 import Day from "dayjs";
 import UserAvatar from "./UserAvatar.vue";

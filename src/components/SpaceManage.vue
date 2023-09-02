@@ -100,9 +100,9 @@ import SpaceManageRoles from "./SpaceManageRoles.vue";
 import SpaceManageMembers from "./SpaceManageMembers.vue";
 import SpaceManageInvites from "./SpaceManageInvites.vue";
 import SpaceManageBans from "./SpaceManageBans.vue";
-import type { ISpace } from "../global/types";
+import type { ISpace } from "@/global/types";
 import SpaceDeleteModal from "./SpaceDeleteModal.vue";
-import { checkSpacePermissions } from "../global/helpers";
+import { checkSpacePermissions } from "@/global/helpers";
 import { SpacePermission } from "@/../../hyalus-server/src/types";
 
 defineEmits(["close"]);

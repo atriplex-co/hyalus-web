@@ -14,11 +14,11 @@
 import ModalBase from "./ModalBase.vue";
 import ModalInput from "./ModalInput.vue";
 import ModalError from "./ModalError.vue";
-import AtSymbolIcon from "../icons/AtSymbolIcon.vue";
+import AtSymbolIcon from "@/icons/AtSymbolIcon.vue";
 import { ref } from "vue";
-import { prettyError } from "../global/helpers";
+import { prettyError } from "@/global/helpers";
 import axios from "axios";
-import { useStore } from "../global/store";
+import { useStore } from "@/global/store";
 
 const store = useStore();
 const emit = defineEmits(["close"]);

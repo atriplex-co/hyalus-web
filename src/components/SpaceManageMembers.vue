@@ -31,7 +31,7 @@
 
 <script lang="ts" setup>
 import type { PropType } from "vue";
-import type { ISpace } from "../global/types";
+import type { ISpace } from "@/global/types";
 import SpaceMemberManageItem from "./SpaceMemberManageItem.vue";
 
 defineProps({

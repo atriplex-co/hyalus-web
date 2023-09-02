@@ -64,14 +64,14 @@
 </template>
 
 <script lang="ts" setup>
-import DownloadIcon from "../icons/DownloadIcon.vue";
+import DownloadIcon from "@/icons/DownloadIcon.vue";
 import { onBeforeUnmount, onMounted, ref } from "vue";
-import AppDownloadModal from "../components/AppDownloadModal.vue";
-import WarningIcon from "../icons/WarningIcon.vue";
-import InputKeys from "../components/InputKeys.vue";
-import { configToComputed } from "../global/helpers";
-import { isDesktop } from "../global/helpers";
-import { useStore } from "../global/store";
+import AppDownloadModal from "@/components/AppDownloadModal.vue";
+import WarningIcon from "@/icons/WarningIcon.vue";
+import InputKeys from "@/components/InputKeys.vue";
+import { configToComputed } from "@/global/helpers";
+import { isDesktop } from "@/global/helpers";
+import { useStore } from "@/global/store";
 
 const store = useStore();
 const appDownloadModal = ref(false);

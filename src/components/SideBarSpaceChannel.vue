@@ -84,9 +84,9 @@ import {
 } from "@/../../hyalus-server/src/types";
 import { computed, type PropType, ref } from "vue";
 import { useRoute, useRouter } from "vue-router";
-import { checkSpacePermissions } from "../global/helpers";
-import { useStore } from "../global/store";
-import type { IChannel, ISelf, ISpace, ISpaceMember } from "../global/types";
+import { checkSpacePermissions } from "@/global/helpers";
+import { useStore } from "@/global/store";
+import type { IChannel, ISelf, ISpace, ISpaceMember } from "@/global/types";
 import SpaceChannelCreateModal from "./SpaceChannelCreateModal.vue";
 import SpaceChannelManage from "./SpaceChannelManage.vue";
 import SideBarSpaceVoiceUser from "./SideBarSpaceVoiceUser.vue";
