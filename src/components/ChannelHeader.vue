@@ -16,7 +16,14 @@
         >
           <ChevronLeftIcon />
         </router-link>
-        <div class="h-8 w-8 rounded-full bg-ctp-surface0">
+        <div
+          class="h-8 w-8 rounded-full bg-ctp-surface0"
+          :class="{
+            'cursor-pointer':
+              channel.type === ChannelType.Group && channel.ownerId === store.self.id,
+          }"
+          @click="setAvatar"
+        >
           <UserAvatar
             v-if="channel.type === ChannelType.DM"
             :id="channel.members[0].id"
@@ -25,7 +32,16 @@
             :allow-animate="true"
             class="w-8 h-8"
           />
-          <UserGroupIcon class="w-8 h-8 p-2" v-if="channel.type === ChannelType.Group" />
+          <UserAvatar
+            v-if="channel.type === ChannelType.Group && channel.avatar"
+            :avatar="channel.avatar"
+            :allow-animate="true"
+            :allow-status="false"
+          />
+          <UserGroupIcon
+            class="w-8 h-8 p-2"
+            v-if="channel.type === ChannelType.Group && !channel.avatar"
+          />
           <HashtagIcon class="w-8 h-8 p-2" v-if="channel.type === ChannelType.SpaceText" />
           <SpeakerWaveIcon class="w-8 h-8 p-2" v-if="channel.type === ChannelType.SpaceVoice" />
         </div>
@@ -147,32 +163,35 @@ const inVoice = computed(() => {
   return store.call && store.call.channelId === props.channel.id;
 });
 
-// TODO: implement this somehow or something idk fuck this
-// const setAvatar = () => {
-//   if (!store.self || props.channel.ownerId !== store.self.id) {
-//     return;
-//   }
+const setAvatar = () => {
+  if (
+    !store.self ||
+    props.channel.type !== ChannelType.Group ||
+    props.channel.ownerId !== store.self.id
+  ) {
+    return;
+  }
 
-//   const el = document.createElement("input");
+  const el = document.createElement("input");
 
-//   el.addEventListener("input", async () => {
-//     if (!el.files) {
-//       return;
-//     }
+  el.addEventListener("input", async () => {
+    if (!el.files) {
+      return;
+    }
 
-//     const form = new FormData();
-//     form.append("avatar", el.files[0]);
+    const form = new FormData();
+    form.append("avatar", el.files[0]);
 
-//     await axios.post(`/api/v1/channels/${props.channel.id}/avatar`, form, {
-//       headers: {
-//         "Content-Type": "multipart/form-data",
-//       },
-//     });
-//   });
+    await axios.post(`/api/v1/channels/${props.channel.id}/avatar`, form, {
+      headers: {
+        "Content-Type": "multipart/form-data",
+      },
+    });
+  });
 
-//   el.type = "file";
-//   el.click();
-// };
+  el.type = "file";
+  el.click();
+};
 
 const callStart = async (e: MouseEvent) => {
   if (store.call) {
