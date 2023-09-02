@@ -551,6 +551,9 @@ export const useStore = defineStore("main", {
 
       pc.onconnectionstatechange = () => {
         console.log(`voice: connectionState -> ${pc.connectionState}`);
+        if (pc.connectionState === "disconnected") {
+          pc.restartIce();
+        }
       };
 
       this.call = {
