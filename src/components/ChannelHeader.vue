@@ -1,7 +1,14 @@
 <template>
   <div v-if="store.self">
     <div class="flex h-14 w-full justify-between px-3">
-      <div class="flex w-full min-w-0 items-center space-x-2">
+      <div
+        class="flex min-w-0 items-center space-x-2"
+        :class="{
+          'cursor-pointer': channel.type === ChannelType.DM,
+          'w-full': channel.type === ChannelType.Group && channel.ownerId === store.self.id,
+        }"
+        @click="if (channel.type === ChannelType.DM) userModal = true;"
+      >
         <router-link
           v-if="isMobile"
           class="ml-2 h-8 w-8 rounded-full bg-ctp-surface0 p-1.5 text-ctp-subtext0 transition hover:bg-ctp-surface0/50 hover:text-ctp-text"
@@ -9,15 +16,22 @@
         >
           <ChevronLeftIcon />
         </router-link>
-        <div class="h-8 w-8 rounded-full bg-ctp-surface0 p-2">
-          <AtSymbolIcon v-if="channel.type === ChannelType.DM" />
-          <UserGroupIcon v-if="channel.type === ChannelType.Group" />
-          <HashtagIcon v-if="channel.type === ChannelType.SpaceText" />
-          <SpeakerWaveIcon v-if="channel.type === ChannelType.SpaceVoice" />
+        <div class="h-8 w-8 rounded-full bg-ctp-surface0">
+          <UserAvatar
+            v-if="channel.type === ChannelType.DM"
+            :id="channel.members[0].id"
+            :avatar="channel.members[0].avatar"
+            :allow-status="true"
+            :allow-animate="true"
+            class="w-8 h-8"
+          />
+          <UserGroupIcon class="w-8 h-8 p-2" v-if="channel.type === ChannelType.Group" />
+          <HashtagIcon class="w-8 h-8 p-2" v-if="channel.type === ChannelType.SpaceText" />
+          <SpeakerWaveIcon class="w-8 h-8 p-2" v-if="channel.type === ChannelType.SpaceVoice" />
         </div>
         <div class="min-w-0 flex-1 font-semibold">
           <form
-            v-if="channel.ownerId === store.self.id"
+            v-if="channel.type === ChannelType.Group && channel.ownerId === store.self.id"
             @submit.prevent="setNameSubmit"
             @focusout="setNameFocusOut"
           >
@@ -87,6 +101,7 @@
       :channel="channel"
       @close="inviteModal = false"
     />
+    <UserModal v-if="userModal" @close="userModal = false" :id="channel.members[0].id" />
   </div>
 </template>
 
@@ -98,7 +113,7 @@ import { isMobile } from "../global/helpers";
 import { useStore } from "../global/store";
 import type { IChannel, ISpace } from "../global/types";
 import UserAvatar from "./UserAvatar.vue";
-import { SpeakerWaveIcon, UserGroupIcon, AtSymbolIcon, HashtagIcon } from "@heroicons/vue/24/solid";
+import { SpeakerWaveIcon, UserGroupIcon, HashtagIcon } from "@heroicons/vue/24/solid";
 import {
   ChevronLeftIcon,
   PhoneIcon,
@@ -108,6 +123,7 @@ import {
 } from "@heroicons/vue/20/solid";
 import GroupCreateModal from "./GroupCreateModal.vue";
 import GroupAddModal from "./GroupAddModal.vue";
+import UserModal from "./UserModal.vue";
 
 const store = useStore();
 const props = defineProps({
@@ -125,6 +141,7 @@ const props = defineProps({
   },
 });
 const inviteModal = ref(false);
+const userModal = ref(false);
 
 const inVoice = computed(() => {
   return store.call && store.call.channelId === props.channel.id;
