@@ -34,7 +34,7 @@ import { useStore } from "@/global/store";
 import type { IChannel, ISpace } from "@/global/types";
 import { useRouter } from "vue-router";
 import QuickSwitcherItem from "./QuickSwitcherItem.vue";
-import { ChannelType } from "@/../hyalus-server/src/types";
+import { ChannelType } from "@/../../hyalus-server/src/types";
 
 const emit = defineEmits(["close"]);
 const store = useStore();
