@@ -15,7 +15,10 @@
         :allow-animate="true"
         class="h-full w-full"
       />
-      <EmptyAvatar v-else :name="name" class="h-full w-full" />
+      <UserGroupIcon
+        v-if="channel.type === ChannelType.Group && !avatar"
+        class="w-8 h-8 p-2 bg-ctp-surface0 rounded-full"
+      />
     </div>
     <div
       class="min-w-0 flex-1 transition"
@@ -49,6 +52,7 @@ import { useRoute } from "vue-router";
 import { ChannelType, Status } from "@/../../hyalus-server/src/types";
 import { useStore } from "../global/store";
 import { getChannelState, getStatus } from "../global/helpers";
+import { UserGroupIcon } from "@heroicons/vue/20/solid";
 
 const store = useStore();
 const props = defineProps({
