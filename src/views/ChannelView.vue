@@ -693,7 +693,8 @@ const keydownHandler = (e: KeyboardEvent) => {
   }
 
   if (messageBox.value && !e.ctrlKey) {
-    messageBox.value.focus();
+    // messageBox.value.focus();
+    // TOOD: make this work without breaking so much shit.
   }
 };
 addEventListener("keydown", keydownHandler);
