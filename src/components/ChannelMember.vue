@@ -27,7 +27,7 @@
       </div>
       <TrashIcon
         v-if="channel.ownerId === store.self.id && channel.type === ChannelType.Group"
-        class="hidden h-7 w-7 flex-shrink-0 cursor-pointer rounded-full p-1.5 transition group-hover:block bg-ctp-surface0 text-ctp-subtext0 hover:text-ctp-text hover:bg-ctp-surface0/50"
+        class="hidden h-7 w-7 flex-shrink-0 cursor-pointer rounded-full bg-ctp-surface0 p-1.5 text-ctp-subtext0 transition hover:bg-ctp-surface0/50 hover:text-ctp-text group-hover:block"
         @click.stop="groupRemoveModal = true"
       />
     </div>

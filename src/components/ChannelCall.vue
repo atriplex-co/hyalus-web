@@ -3,7 +3,7 @@
     v-if="store.call"
     class="top-0 flex flex-col bg-ctp-crust"
     :class="{
-      'flex-1 h-full': full,
+      'h-full flex-1': full,
     }"
     :style="!full ? `height: ${resizeHeight}px;` : ''"
     @mouseenter="controls = true"

@@ -23,7 +23,6 @@ import {
   SideBarState,
   type IChannelMember,
   type ISpaceMember,
-  type IUserStatus,
 } from "./types";
 import {
   callUpdatePersist,
@@ -553,6 +552,10 @@ export const useStore = defineStore("main", {
         console.log(`voice: connectionState -> ${pc.connectionState}`);
         if (pc.connectionState === "disconnected") {
           pc.restartIce();
+          this.socket!.send({
+            t: SocketMessageType.CCallRequestRestartICE,
+            d: {},
+          });
         }
       };
 

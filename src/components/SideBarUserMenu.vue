@@ -31,18 +31,18 @@
       <div class="my-1 border-t border-ctp-surface0"></div>
       <div
         v-if="!store.self.preferredStatusText"
-        class="p-2 flex items-center hover:bg-ctp-surface0/50 transition cursor-pointer rounded-md space-x-3"
+        class="flex cursor-pointer items-center space-x-3 rounded-md p-2 transition hover:bg-ctp-surface0/50"
         @click="preferredStatusTextModal = true"
       >
-        <PlusCircleIcon class="w-4 h-4" />
+        <PlusCircleIcon class="h-4 w-4" />
         <p>Set Custom Status</p>
       </div>
       <div
         v-if="store.self.preferredStatusText"
-        class="p-2 flex items-center hover:bg-ctp-surface0/50 transition cursor-pointer rounded-md space-x-3"
+        class="flex cursor-pointer items-center space-x-3 rounded-md p-2 transition hover:bg-ctp-surface0/50"
         @click="preferredStatusTextModal = true"
       >
-        <PencilSquareIcon class="w-4 h-4" />
+        <PencilSquareIcon class="h-4 w-4" />
         <div class="min-w-0">
           <p>Edit Custom Status</p>
           <p class="truncate text-xs text-ctp-subtext0">{{ store.self.preferredStatusText }}</p>
@@ -127,13 +127,7 @@ import LogoutModal from "./LogoutModal.vue";
 import SettingsIcon from "@/icons/SettingsIcon.vue";
 import SettingsModal from "./SettingsModal.vue";
 import { useStore } from "@/global/store";
-import {
-  FaceSmileIcon,
-  PencilIcon,
-  PencilSquareIcon,
-  PlusCircleIcon,
-  PlusIcon,
-} from "@heroicons/vue/20/solid";
+import { PencilSquareIcon, PlusCircleIcon } from "@heroicons/vue/20/solid";
 import SetPreferredStatusTextModal from "./SetPreferredStatusTextModal.vue";
 
 const store = useStore();

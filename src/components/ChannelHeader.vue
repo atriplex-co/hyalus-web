@@ -30,7 +30,7 @@
             :avatar="channel.members[0].avatar"
             :allow-status="true"
             :allow-animate="true"
-            class="w-8 h-8"
+            class="h-8 w-8"
           />
           <UserAvatar
             v-if="channel.type === ChannelType.Group && channel.avatar"
@@ -39,11 +39,11 @@
             :allow-status="false"
           />
           <UserGroupIcon
-            class="w-8 h-8 p-2"
+            class="h-8 w-8 p-2"
             v-if="channel.type === ChannelType.Group && !channel.avatar"
           />
-          <HashtagIcon class="w-8 h-8 p-2" v-if="channel.type === ChannelType.SpaceText" />
-          <SpeakerWaveIcon class="w-8 h-8 p-2" v-if="channel.type === ChannelType.SpaceVoice" />
+          <HashtagIcon class="h-8 w-8 p-2" v-if="channel.type === ChannelType.SpaceText" />
+          <SpeakerWaveIcon class="h-8 w-8 p-2" v-if="channel.type === ChannelType.SpaceVoice" />
         </div>
         <div class="min-w-0 flex-1 font-semibold">
           <form

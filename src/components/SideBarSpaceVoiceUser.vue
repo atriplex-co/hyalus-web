@@ -1,34 +1,34 @@
 <template>
   <div
-    class="flex items-center justify-between py-1 px-1.5 rounded-md hover:bg-ctp-surface0/50 cursor-pointer hover:text-ctp-text transition text-sm text-ctp-subtext0"
+    class="flex cursor-pointer items-center justify-between rounded-md px-1.5 py-1 text-sm text-ctp-subtext0 transition hover:bg-ctp-surface0/50 hover:text-ctp-text"
     @click="userModal = true"
   >
     <div class="flex items-center space-x-2">
       <UserAvatar
         :avatar="member.avatar"
-        class="h-5 w-5 rounded-full transition duration-50"
+        class="duration-50 h-5 w-5 rounded-full transition"
         :class="{
           'ring-2 ring-ctp-accent': speaking,
         }"
       />
       <p>{{ member.name }}</p>
     </div>
-    <div class="text-ctp-subtext0 flex space-x-1.5">
+    <div class="flex space-x-1.5 text-ctp-subtext0">
       <MicOffIcon
         v-if="(flags & VoiceStateFlags.Muted) === VoiceStateFlags.Muted"
-        class="w-4 h-4"
+        class="h-4 w-4"
       />
       <SpeakerXMarkIcon
         v-if="(flags & VoiceStateFlags.Deaf) === VoiceStateFlags.Deaf"
-        class="w-4 h-4"
+        class="h-4 w-4"
       />
       <VideoCameraIcon
         v-if="(flags & VoiceStateFlags.VideoEnabled) === VoiceStateFlags.VideoEnabled"
-        class="w-4 h-4"
+        class="h-4 w-4"
       />
       <ComputerDesktopIcon
         v-if="(flags & VoiceStateFlags.DisplayEnabled) === VoiceStateFlags.DisplayEnabled"
-        class="w-4 h-4"
+        class="h-4 w-4"
       />
     </div>
   </div>

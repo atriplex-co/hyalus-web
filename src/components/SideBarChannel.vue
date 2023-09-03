@@ -17,7 +17,7 @@
       />
       <UserGroupIcon
         v-if="channel.type === ChannelType.Group && !avatar"
-        class="w-8 h-8 p-2 bg-ctp-surface0 rounded-full"
+        class="h-8 w-8 rounded-full bg-ctp-surface0 p-2"
       />
     </div>
     <div
@@ -36,7 +36,7 @@
       >
         {{ name }}
       </p>
-      <p v-if="description" class="text-xs truncate">
+      <p v-if="description" class="truncate text-xs">
         {{ description }}
       </p>
     </div>
@@ -45,16 +45,13 @@
 
 <script lang="ts" setup>
 import UserAvatar from "./UserAvatar.vue";
-import EmptyAvatar from "./EmptyAvatar.vue";
 import { computed, type PropType } from "vue";
 import type { IChannel } from "@/global/types";
 import { useRoute } from "vue-router";
-import { ChannelType, Status } from "@/../../hyalus-server/src/types";
-import { useStore } from "@/global/store";
+import { ChannelType } from "@/../../hyalus-server/src/types";
 import { getChannelState, getStatus } from "@/global/helpers";
 import { UserGroupIcon } from "@heroicons/vue/20/solid";
 
-const store = useStore();
 const props = defineProps({
   channel: {
     type: Object as PropType<IChannel>,

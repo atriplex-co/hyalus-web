@@ -118,11 +118,11 @@
     </div>
     <div
       v-if="voiceOnly && !inVoice"
-      class="flex-1 flex items-center justify-center flex-col space-y-4"
+      class="flex flex-1 flex-col items-center justify-center space-y-4"
     >
-      <SpeakerWaveIcon class="w-12 h-12 bg-ctp-surface0 p-3 rounded-full" />
+      <SpeakerWaveIcon class="h-12 w-12 rounded-full bg-ctp-surface0 p-3" />
       <p class="text-2xl">{{ channel.name }}</p>
-      <button class="bg-ctp-accent text-ctp-base w-16 p-2 rounded-md text-sm" @click="callStart">
+      <button class="w-16 rounded-md bg-ctp-accent p-2 text-sm text-ctp-base" @click="callStart">
         Join
       </button>
     </div>

@@ -50,7 +50,7 @@
       />
     </div>
   </div>
-  <div class="pl-4 space-y-0.5 pb-1.5" v-if="voiceUsers.length">
+  <div class="space-y-0.5 pb-1.5 pl-4" v-if="voiceUsers.length">
     <SideBarSpaceVoiceUser
       v-for="voiceUser in voiceUsers"
       :key="voiceUser.member.id"
