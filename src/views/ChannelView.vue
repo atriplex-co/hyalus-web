@@ -692,7 +692,7 @@ const keydownHandler = (e: KeyboardEvent) => {
     return;
   }
 
-  if (messageBox.value) {
+  if (messageBox.value && !e.ctrlKey) {
     messageBox.value.focus();
   }
 };
