@@ -56,17 +56,6 @@ export const messageFormatter = new MarkdownIt("zero", {
 
 export const availableExperiments: IExperiment[] = [
   {
-    id: "force_audio_codec",
-    default: "opus",
-    options: ["opus"],
-  },
-  {
-    id: "force_video_codec",
-    default: "h264",
-    // options: ["h264", "vp8", "vp9"],
-    options: ["h264"],
-  },
-  {
     id: "enable_wgc_screen_capture",
     default: "off",
     options: ["off", "on"],

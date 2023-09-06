@@ -26,7 +26,6 @@ import {
 } from "./types";
 import {
   callUpdatePersist,
-  getExperimentValue,
   getUserOutputGain,
   getWorkerUrl,
   playSound,
@@ -607,9 +606,7 @@ export const useStore = defineStore("main", {
         t: SocketMessageType.CCallJoin,
         d: {
           channelId,
-          audioCodec: getExperimentValue("force_audio_codec") || "opus",
           audioMode: "default",
-          videoCodec: getExperimentValue("force_video_codec") || "h264",
           videoMode: this.config.videoMode,
         },
       });
