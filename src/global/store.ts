@@ -369,6 +369,11 @@ export const useStore = defineStore("main", {
         gain2.connect(dest);
 
         opts.track = dest.stream.getTracks()[0];
+        const _stop = opts.track.stop.bind(opts.track);
+        opts.track.stop = () => {
+          _stop();
+          context!.close();
+        };
       }
 
       if (!opts.track && opts.type === CallStreamType.Video) {
@@ -438,6 +443,10 @@ export const useStore = defineStore("main", {
       if (!opts.track) {
         console.warn("callAddLocalStream: missing track");
         return;
+      }
+
+      if (opts.type === CallStreamType.DisplayVideo) {
+        // opts.track.contentHint = "motion";
       }
 
       let sender: RTCRtpSender | undefined;
@@ -581,10 +590,11 @@ export const useStore = defineStore("main", {
           audio: [],
           video: [],
         },
-        configuredTransceivers: [],
         payloadCodecs: {},
         flags: 0,
         initComplete: false,
+        encryptWorkers: new Map(),
+        decryptWorkers: new Map(),
       };
 
       this.socket!.send({
@@ -658,9 +668,19 @@ export const useStore = defineStore("main", {
         this.call.localKeyCounter < 255
           ? this.call.localKeyCounter++
           : (this.call.localKeyCounter = 0);
-      const key = new Uint8Array(16); // AES-128
-      crypto.getRandomValues(key);
-      this.call.localKeys.set(id, await wcImportKey(key));
+      const _key = new Uint8Array(16); // AES-128
+      crypto.getRandomValues(_key);
+      const key = await wcImportKey(_key);
+      this.call.localKeys.set(id, key);
+      for (const worker of this.call.encryptWorkers.values()) {
+        worker.postMessage({
+          t: "set_local_key",
+          d: {
+            id,
+            key,
+          },
+        });
+      }
 
       const channel = store.channels.find((channel) => channel.id === this.call!.channelId);
       if (!channel) {
@@ -679,18 +699,15 @@ export const useStore = defineStore("main", {
       );
       members = members.filter((member) => member.id !== this.self!.id);
 
+      this.call.localKeySwapTarget = id;
       if (!this.call.localKeyId) {
         console.debug("voice: swapping call key (no key present)");
-        this.call.localKeyId = id; // swap right away if no key.
+        this.callSwapKeys();
       } else {
-        this.call.localKeySwapTarget = id;
         clearTimeout(this.call.localKeySwapTimeout);
         this.call.localKeySwapTimeout = +setTimeout(() => {
-          if (!this.call) {
-            return;
-          }
           console.debug("voice: swapping call key (3s timeout)");
-          this.call.localKeyId = id;
+          this.callSwapKeys();
         }, 3000);
         this.call.localKeyAcks = [];
         this.call.localKeyAcksNeeded = members.length;
@@ -701,7 +718,7 @@ export const useStore = defineStore("main", {
         const nonce = sodium.randombytes_buf(sodium.crypto_box_NONCEBYTES);
         boxes[member.id] = new Uint8Array([
           ...nonce,
-          ...sodium.crypto_box_easy(key, nonce, member.publicKey, this.config.privateKey!),
+          ...sodium.crypto_box_easy(_key, nonce, member.publicKey, this.config.privateKey!),
         ]);
       }
 
@@ -712,6 +729,20 @@ export const useStore = defineStore("main", {
           keys: sodium.to_base64(msgpack.encode(boxes)),
         },
       });
+    },
+    async callSwapKeys() {
+      if (!this.call || this.call.localKeyId === this.call.localKeySwapTarget) {
+        return;
+      }
+      this.call.localKeyId = this.call.localKeySwapTarget;
+      for (const worker of this.call.encryptWorkers.values()) {
+        worker.postMessage({
+          t: "set_local_key_id",
+          d: {
+            localKeyId: this.call.localKeyId,
+          },
+        });
+      }
     },
     async callUpdateStreams() {
       if (!this.call || !this.call.initComplete) {
@@ -764,24 +795,27 @@ export const useStore = defineStore("main", {
       });
     },
     async callReset(): Promise<void> {
-      if (this.call) {
-        clearInterval(this.call.updatePersistInterval);
-
-        for (const stream of this.call.localStreams) {
-          stream.track.stop();
-        }
-
-        this.call.pc.close();
-        this.call = null;
-        await callUpdatePersist();
-
-        playSound(SoundStateDown);
-      }
-
       if (this.socket) {
         this.socket.send({
           t: SocketMessageType.CCallLeave,
         });
+      }
+
+      if (this.call) {
+        this.call.pc.close();
+        for (const stream of this.call.localStreams) {
+          stream.track.stop();
+        }
+        for (const worker of this.call.encryptWorkers.values()) {
+          worker.terminate();
+        }
+        for (const worker of this.call.decryptWorkers.values()) {
+          worker.terminate();
+        }
+        clearInterval(this.call.updatePersistInterval);
+        this.call = null;
+        await callUpdatePersist();
+        playSound(SoundStateDown);
       }
     },
     async resetKeybinds() {

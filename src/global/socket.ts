@@ -38,6 +38,7 @@ import axios from "axios";
 import SoundStateUp from "../assets/sounds/state-change_confirm-up.ogg";
 import SoundStateDown from "../assets/sounds/state-change_confirm-down.ogg";
 import msgpack from "msgpack-lite";
+import VoiceCryptoWorker from "../shared/voiceCryptoWorker?worker";
 
 let updateCheck: string;
 let awayController: AbortController;
@@ -1500,6 +1501,7 @@ export class Socket {
           return store.callUpdateStreams();
         }
 
+        const payloadCodecs: Record<string, string> = {};
         store.call.pc
           .localDescription!.sdp.trim()
           .split("\r\n")
@@ -1507,12 +1509,7 @@ export class Socket {
           .map((l) => {
             const k = +l.split(" ")[0].split(":")[1].trim();
             const v = l.split(" ")[1].split("/")[0].toLowerCase().trim();
-            if (store.call!.payloadCodecs[k] !== v) {
-              store.call!.payloadCodecs[k] = v;
-              console.debug("updated payload codecs: %o", {
-                payloadCodecs: store.call!.payloadCodecs,
-              });
-            }
+            payloadCodecs[k] = v;
           });
 
         if (!store.call.initComplete) {
@@ -1523,247 +1520,85 @@ export class Socket {
         }
 
         for (const trans of store.call.pc.getTransceivers()) {
-          if (store.call.configuredTransceivers.includes(trans)) {
-            continue;
+          let encryptWorker = store.call.encryptWorkers.get(trans.mid!);
+          let decryptWorker = store.call.decryptWorkers.get(trans.mid!);
+          if (!encryptWorker) {
+            const streams = trans.sender.createEncodedStreams();
+            encryptWorker = new VoiceCryptoWorker();
+            encryptWorker.postMessage(
+              {
+                t: "init_encrypt",
+                d: {
+                  readable: streams.readable,
+                  writable: streams.writable,
+                },
+              },
+              [streams.readable, streams.writable],
+            );
+            for (const [k, v] of store.call.localKeys) {
+              encryptWorker.postMessage({
+                t: "set_local_key",
+                d: {
+                  id: k,
+                  key: v,
+                },
+              });
+            }
+            encryptWorker.postMessage({
+              t: "set_local_key_id",
+              d: {
+                localKeyId: store.call.localKeyId,
+              },
+            });
+            store.call.encryptWorkers.set(trans.mid!, encryptWorker);
           }
-
-          const senderStreams = trans.sender.createEncodedStreams();
-          const receiverStreams = trans.receiver.createEncodedStreams();
-          const IV_SIZE = 12;
-
-          senderStreams.readable
-            .pipeThrough(
-              new TransformStream({
-                async transform(frame, controller) {
-                  try {
-                    if (!store.call) {
-                      return;
-                    }
-                    const stream = store.call.localStreams.find(
-                      (stream) => stream.sender === trans.sender,
-                    );
-                    if (!stream) {
-                      return;
-                    }
-                    const codec = store.call.payloadCodecs[frame.getMetadata().payloadType];
-                    const _data = new Uint8Array(frame.data);
-                    const key = store.call.localKeys.get(store.call.localKeyId)!;
-                    let skip = 0;
-                    if (codec === "opus" && _data.length === 3) {
-                      // return; // opus frame (empty)
-                    }
-                    if (codec === "opus") {
-                      skip = 1; // opus frame
-                    }
-                    if ((codec === "vp8" || codec === "vp9") && (_data[0] & 0x01) === 1) {
-                      skip = 3; // VP8/VP9 frame (normal)
-                    }
-                    if ((codec === "vp8" || codec === "vp9") && (_data[0] & 0x01) === 0) {
-                      skip = 10; // VP8/VP9 frame (keyframe)
-                    }
-                    const iv = new Uint8Array(IV_SIZE);
-                    crypto.getRandomValues(iv);
-                    const encrypted = await crypto.subtle.encrypt(
-                      {
-                        name: "AES-GCM",
-                        iv,
-                      },
-                      key,
-                      new Uint8Array(frame.data, skip),
-                    );
-                    const data = new Uint8Array(skip + encrypted.byteLength + 2 + IV_SIZE);
-                    data.set(new Uint8Array(frame.data, 0, skip), 0);
-                    data.set(new Uint8Array([store.call.localKeyId, +stream.speaking]), skip);
-                    data.set(new Uint8Array(iv), skip + 2);
-                    data.set(new Uint8Array(encrypted), skip + 2 + IV_SIZE);
-                    frame.data = data.buffer;
-
-                    // asineth's experimental H264 NALU parser/encrypter:
-                    // TODO: doesn't work well so it's diabled for now, making H264 work later.
-
-                    // const _data = new Uint8Array(frame.data);
-                    // const starts: number[] = [];
-                    // let zc = 0;
-                    // for (let i = 0; i < _data.length; ++i) {
-                    //   if (zc === 3 && _data[i] === 1) {
-                    //     starts.push(i + 1);
-                    //   }
-                    //   if (_data[i] === 0) {
-                    //     zc++;
-                    //   } else {
-                    //     zc = 0;
-                    //   }
-                    // }
-                    // // const data = new Uint8Array(_data.length + starts.length * (IV_SIZE + 16));
-                    // const data = new Uint8Array(_data.length + starts.length * 16);
-                    // let offset = 0;
-                    // for (let i = 0; i < starts.length; ++i) {
-                    //   const naluSkipped = new Uint8Array(frame.data, starts[i], skip);
-                    //   const nalu = new Uint8Array(
-                    //     frame.data,
-                    //     starts[i] + skip,
-                    //     starts[i + 1] ? starts[i + 1] - starts[i] - 4 - skip : undefined,
-                    //   );
-                    //   const iv = new Uint8Array(IV_SIZE);
-                    //   crypto.getRandomValues(iv);
-                    //   const encrypted = new Uint8Array(
-                    //     await crypto.subtle.encrypt(
-                    //       {
-                    //         name: "AES-GCM",
-                    //         // iv,
-                    //         iv: new Uint8Array(IV_SIZE),
-                    //       },
-                    //       key,
-                    //       nalu,
-                    //     ),
-                    //   );
-                    //   data.set(new Uint8Array([0x00, 0x00, 0x00, 0x01]), offset); // NALU header
-                    //   offset += 4;
-                    //   data.set(naluSkipped, offset);
-                    //   offset += naluSkipped.length;
-                    //   // data.set(iv, offset);
-                    //   // offset += iv.length;
-                    //   data.set(encrypted, offset);
-                    //   offset += encrypted.length;
-                    // }
-                    // frame.data = data.buffer;
-
-                    controller.enqueue(frame);
-                  } catch (e) {
-                    console.warn("error encrypting frame");
-                    console.warn(e);
-                  }
+          if (!decryptWorker) {
+            const streams = trans.receiver.createEncodedStreams();
+            decryptWorker = new VoiceCryptoWorker();
+            decryptWorker.postMessage(
+              {
+                t: "init_decrypt",
+                d: {
+                  readable: streams.readable,
+                  writable: streams.writable,
                 },
-              }),
-            )
-            .pipeTo(senderStreams.writable);
-
-          receiverStreams.readable
-            .pipeThrough(
-              new TransformStream({
-                async transform(frame, controller) {
-                  try {
-                    if (!store.call) {
-                      return;
-                    }
-                    const stream = store.call.remoteStreams.find(
-                      (stream) => stream.receiver === trans.receiver,
-                    );
-                    if (!stream) {
-                      return;
-                    }
-                    const codec = store.call!.payloadCodecs[frame.getMetadata().payloadType];
-                    const _data = new Uint8Array(frame.data);
-                    let skip = 0;
-                    if (codec === "opus") {
-                      skip = 1; // opus frame
-                    }
-                    if ((codec === "vp8" || codec === "vp9") && (_data[0] & 0x01) === 1) {
-                      skip = 3; // VP8/VP9 frame (normal)
-                    }
-                    if ((codec === "vp8" || codec === "vp9") && (_data[0] & 0x01) === 0) {
-                      skip = 10; // VP8/VP9 frame (keyframe)
-                    }
-                    const key = store.call.remoteKeys.get(`${stream.userId}:${_data[skip + 0]}`);
-                    if (!key) {
-                      return console.warn(`missing key for ${stream.userId} (${stream.type})`);
-                    }
-                    let decrypted: ArrayBuffer;
-                    try {
-                      decrypted = await crypto.subtle.decrypt(
-                        {
-                          name: "AES-GCM",
-                          iv: new Uint8Array(frame.data, skip + 2, IV_SIZE),
-                        },
-                        key,
-                        new Uint8Array(frame.data, skip + 2 + IV_SIZE),
-                      );
-                    } catch (e) {
-                      console.log("here");
-                      console.log(e);
-                      return;
-                    }
-                    const data = new Uint8Array(decrypted.byteLength + skip);
-                    data.set(new Uint8Array(frame.data, 0, skip), 0);
-                    data.set(new Uint8Array(decrypted), skip);
-                    frame.data = data.buffer;
-
-                    if (stream.speaking !== !!_data[skip + 1]) {
-                      stream.speaking = !!_data[skip + 1];
-                    }
-
-                    // asineth's experimental H264 NALU parser/decrypter:
-                    // TODO: doesn't work well so it's diabled for now, making H264 work later.
-
-                    // const _data = new Uint8Array(frame.data);
-                    // const starts: number[] = [];
-                    // let zc = 0;
-                    // for (let i = 0; i < _data.length; ++i) {
-                    //   if (zc === 3 && _data[i] === 1) {
-                    //     starts.push(i + 1);
-                    //   }
-                    //   if (_data[i] === 0) {
-                    //     zc++;
-                    //   } else {
-                    //     zc = 0;
-                    //   }
-                    // }
-                    // // const data = new Uint8Array(_data.length - starts.length * (IV_SIZE + 16));
-                    // const data = new Uint8Array(_data.length - starts.length * 16);
-                    // let offset = 0;
-                    // for (let i = 0; i < starts.length; ++i) {
-                    //   const naluSkipped = new Uint8Array(frame.data, starts[i], skip);
-                    //   const nalu = new Uint8Array(
-                    //     frame.data,
-                    //     starts[i] + skip,
-                    //     starts[i + 1] ? starts[i + 1] - starts[i] - 4 - skip : undefined,
-                    //   );
-                    //   const decrypted = new Uint8Array(
-                    //     await crypto.subtle.decrypt(
-                    //       {
-                    //         name: "AES-GCM",
-                    //         // iv: nalu.slice(0, IV_SIZE),
-                    //         iv: new Uint8Array(IV_SIZE),
-                    //       },
-                    //       key,
-                    //       // nalu.slice(IV_SIZE),
-                    //       nalu,
-                    //     ),
-                    //   );
-                    //   data.set(new Uint8Array([0x00, 0x00, 0x00, 0x01]), offset); // NALU header
-                    //   offset += 4;
-                    //   data.set(naluSkipped, offset);
-                    //   offset += naluSkipped.length;
-                    //   data.set(decrypted, offset);
-                    //   offset += decrypted.length;
-                    // }
-                    // frame.data = data.buffer;
-
-                    // const decrypted = await crypto.subtle.decrypt(
-                    //   {
-                    //     name: "AES-GCM",
-                    //     iv: new Uint8Array(frame.data, 4, IV_SIZE),
-                    //   },
-                    //   key,
-                    //   new Uint8Array(frame.data, 4 + IV_SIZE),
-                    // );
-                    // const data = new Uint8Array(decrypted.byteLength + 4);
-                    // data.set(new Uint8Array([0x00, 0x00, 0x00, 0x01]), 0);
-                    // data.set(new Uint8Array(decrypted), 4);
-                    // frame.data = data.buffer;
-
-                    controller.enqueue(frame);
-                  } catch (e) {
-                    console.warn("error decrypting frame");
-                    console.log(e);
-                  }
+              },
+              [streams.readable, streams.writable],
+            );
+            for (const [k, v] of store.call.remoteKeys) {
+              decryptWorker.postMessage({
+                t: "set_remote_key",
+                d: {
+                  id: k,
+                  key: v,
                 },
-              }),
-            )
-            .pipeTo(receiverStreams.writable);
-
-          console.debug(`debug: enabled encryption for mid: ${trans.mid}`);
-          store.call.configuredTransceivers.push(trans);
+              });
+            }
+            decryptWorker.onmessage = (e) => {
+              if (e.data.t === "set_speaking" && store.call) {
+                const stream = store.call.remoteStreams.find(
+                  (stream) => stream.receiver === trans.receiver,
+                );
+                if (!stream) {
+                  return;
+                }
+                stream.speaking = e.data.d.speaking;
+              }
+            };
+            store.call.decryptWorkers.set(trans.mid!, decryptWorker);
+          }
+          encryptWorker.postMessage({
+            t: "set_payload_codecs",
+            d: {
+              payloadCodecs,
+            },
+          });
+          decryptWorker.postMessage({
+            t: "set_payload_codecs",
+            d: {
+              payloadCodecs,
+            },
+          });
         }
 
         // the SFU i built uses a different ID format. (honestly it's for easier-to-read logs)
@@ -1797,6 +1632,15 @@ export class Socket {
             console.warn(`SCallOffer: missing transceiver for ${info.uid} type ${info.type}`);
             continue;
           }
+
+          const decryptWorker = store.call.decryptWorkers.get(transceiver.mid!)!;
+          decryptWorker.postMessage({
+            t: "set_remote_user_id",
+            d: {
+              remoteUserId: info.uid,
+            },
+          });
+
           const receiver = transceiver.receiver;
           const stream = store.call.remoteStreams.find(
             (stream) => stream.userId === info.uid && stream.type === info.type,
@@ -1895,17 +1739,26 @@ export class Socket {
           return console.warn(`SCallUpdateKeys: missing member ${data.userId}`);
         }
 
-        store.call.remoteKeys.set(
-          `${data.userId}:${data.id}`,
-          await wcImportKey(
-            sodium.crypto_box_open_easy(
-              new Uint8Array(box.buffer, sodium.crypto_secretbox_NONCEBYTES),
-              new Uint8Array(box.buffer, 0, sodium.crypto_secretbox_NONCEBYTES),
-              member.publicKey,
-              store.config.privateKey!,
-            ),
+        const id = `${data.userId}:${data.id}`;
+        const key = await wcImportKey(
+          sodium.crypto_box_open_easy(
+            new Uint8Array(box.buffer, sodium.crypto_secretbox_NONCEBYTES),
+            new Uint8Array(box.buffer, 0, sodium.crypto_secretbox_NONCEBYTES),
+            member.publicKey,
+            store.config.privateKey!,
           ),
         );
+        store.call.remoteKeys.set(id, key);
+
+        for (const worker of store.call.decryptWorkers.values()) {
+          worker.postMessage({
+            t: "set_remote_key",
+            d: {
+              id,
+              key,
+            },
+          });
+        }
 
         this.send({
           t: SocketMessageType.CCallUpdateKeysACK,
@@ -1931,10 +1784,10 @@ export class Socket {
 
         store.call.localKeyAcks.push(data.userId);
         if (store.call.localKeyAcks.length >= store.call.localKeyAcksNeeded) {
-          store.call.localKeyAcks = [];
-          clearInterval(store.call.localKeySwapTimeout);
           console.debug("voice: swapping call key (all members ACKed)");
-          store.call.localKeyId = store.call.localKeySwapTarget;
+          clearInterval(store.call.localKeySwapTimeout);
+          store.call.localKeyAcks = [];
+          store.callSwapKeys();
         }
       }
 

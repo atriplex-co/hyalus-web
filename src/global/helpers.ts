@@ -481,3 +481,9 @@ export const getStatus = (id: string) => {
     }
   );
 };
+
+// allows us to send objects/etc from pinia store to web worker.
+// warn: completely removes any & all reactivity.
+export const hackClone = <T>(v: T) => {
+  return JSON.parse(JSON.stringify(v));
+};

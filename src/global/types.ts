@@ -118,10 +118,11 @@ export interface ICall {
     audio: RTCRtpSender[];
     video: RTCRtpSender[];
   };
-  configuredTransceivers: RTCRtpTransceiver[];
   payloadCodecs: Record<number, string>;
   flags: number;
   initComplete: boolean;
+  encryptWorkers: Map<string, Worker>;
+  decryptWorkers: Map<string, Worker>;
 }
 
 export interface ICallPersist {
