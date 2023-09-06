@@ -83,6 +83,8 @@ export interface _IConfig {
   streamerModeDisableNotifications: boolean;
   streamerModeDisableSounds: boolean;
   recentChannelIds: string[];
+  experimentsEnabled: boolean;
+  experiments: Record<string, string>;
 }
 
 export interface ICachedUser {
@@ -118,7 +120,6 @@ export interface ICall {
     audio: RTCRtpSender[];
     video: RTCRtpSender[];
   };
-  payloadCodecs: Record<number, string>;
   flags: number;
   initComplete: boolean;
   encryptWorkers: Map<string, Worker>;
@@ -364,12 +365,20 @@ export enum SettingsPage {
   Notifications,
   AudioVideo,
   Keybinds,
-  Changelog,
+  Development,
   Desktop,
   StreamerMode,
+  Experiments,
+  Changelog,
 }
 
 export interface IUserStatus {
   status: Status;
   statusText: string;
+}
+
+export interface IExperiment {
+  id: string;
+  default: string;
+  options: string[];
 }

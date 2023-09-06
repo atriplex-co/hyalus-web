@@ -1,7 +1,7 @@
 <template>
   <div ref="root" class="cursor-pointer" @click="open = !open">
     <div
-      class="group flex w-96 items-center justify-between border border-ctp-surface0/50 bg-ctp-crust px-2 py-1 shadow-sm transition hover:border-ctp-surface0"
+      class="group flex items-center justify-between border border-ctp-surface0/50 bg-ctp-crust px-2 py-1 shadow-sm transition hover:border-ctp-surface0"
       :class="{
         'rounded-md': !open,
         'rounded-t-md': open,
@@ -23,7 +23,7 @@
       >
         <div
           v-if="open"
-          class="absolute -mt-px flex max-h-32 w-96 flex-col overflow-auto rounded-b-md border border-ctp-surface0/50 bg-ctp-crust shadow-lg"
+          class="absolute -mt-px flex max-h-32 w-full flex-col overflow-auto rounded-b-md border border-ctp-surface0/50 bg-ctp-crust shadow-lg"
         >
           <slot name="items" />
         </div>

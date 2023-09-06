@@ -21,7 +21,7 @@ import type {
   IChannelState,
   ISpaceRole,
 } from "./types";
-import { messageFormatter } from "./config";
+import { availableExperiments, messageFormatter } from "./config";
 import { store } from "./store";
 import msgpack from "msgpack-lite";
 
@@ -487,3 +487,36 @@ export const getStatus = (id: string) => {
 export const hackClone = <T>(v: T) => {
   return JSON.parse(JSON.stringify(v));
 };
+
+export const getExperimentValue = (id: string): string => {
+  const experiment = availableExperiments.find((experiment) => experiment.id === id);
+  if (!experiment) {
+    return "";
+  }
+  if (store.config.experimentsEnabled) {
+    return store.config.experiments[id] ?? experiment.default;
+  } else {
+    return experiment.default;
+  }
+};
+
+export const experimentValueToComputed = (id: string) =>
+  computed({
+    get() {
+      const experiment = availableExperiments.find((experiment) => experiment.id === id);
+      if (experiment) {
+        return store.config.experiments[id] ?? `default (${experiment.default})`;
+      } else {
+        return "default";
+      }
+    },
+    async set(val: string) {
+      const experiments = hackClone(store.config.experiments);
+      if (val) {
+        experiments[id] = val;
+      } else {
+        delete experiments[id];
+      }
+      await store.writeConfig("experiments", experiments);
+    },
+  });

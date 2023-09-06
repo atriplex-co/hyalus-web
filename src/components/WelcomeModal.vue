@@ -69,7 +69,7 @@
       <template v-if="stage === 1">
         <div class="w-full space-y-2">
           <p>Color Mode</p>
-          <InputList>
+          <InputList class="w-80">
             <template #selected>
               <div
                 class="h-3 w-3 rounded-full"

@@ -71,6 +71,17 @@
         <KeyboardIcon class="h-5 w-5" />
         <p>Keybinds</p>
       </div>
+      <!-- TODO: add screen for creating and managing bots -->
+      <!-- <div
+        class="flex cursor-pointer items-center space-x-4 rounded-md px-3 py-1.5 transition hover:bg-ctp-base/50"
+        :class="{
+          'bg-ctp-base text-ctp-text': page === SettingsPage.Development,
+        }"
+        @click="page = SettingsPage.Development"
+      >
+        <WrenchScrewdriverIcon class="h-5 w-5" />
+        <p>Development</p>
+      </div> -->
       <div
         v-if="isDesktop"
         class="flex cursor-pointer items-center space-x-4 rounded-md px-3 py-1.5 transition hover:bg-ctp-base/50"
@@ -92,6 +103,16 @@
       >
         <TvIcon class="h-5 w-5" />
         <p>Streamer Mode</p>
+      </div>
+      <div
+        class="flex cursor-pointer items-center space-x-4 rounded-md px-3 py-1.5 transition hover:bg-ctp-base/50"
+        :class="{
+          'bg-ctp-base text-ctp-text': page === SettingsPage.Experiments,
+        }"
+        @click="page = SettingsPage.Experiments"
+      >
+        <BeakerIcon class="h-5 w-5" />
+        <p>Experiments</p>
       </div>
       <div
         class="flex cursor-pointer items-center space-x-4 rounded-md px-3 py-1.5 transition hover:bg-ctp-base/50"
@@ -122,6 +143,7 @@
       <SettingsModalDesktop v-if="page === SettingsPage.Desktop" />
       <SettingsModalProfile v-if="page === SettingsPage.Profile" />
       <SettingsModalStreamerMode v-if="page === SettingsPage.StreamerMode" />
+      <SettingsModalExperiments v-if="page === SettingsPage.Experiments" />
     </template>
   </SplitModal>
   <LogoutModal v-if="logoutModal" @close="logoutModal = false" />
@@ -139,6 +161,7 @@ import {
   TvIcon,
   UserIcon,
   VideoCameraIcon,
+  BeakerIcon,
 } from "@heroicons/vue/24/solid";
 import { ref, type PropType } from "vue";
 import { isDesktop } from "@/global/helpers";
@@ -156,6 +179,7 @@ import SettingsModalProfile from "./SettingsModalProfile.vue";
 import SettingsModalStreamerMode from "./SettingsModalStreamerMode.vue";
 import SplitModal from "./SplitModal.vue";
 import { SettingsPage } from "@/global/types";
+import SettingsModalExperiments from "./SettingsModalExperiments.vue";
 
 const logoutModal = ref(false);
 

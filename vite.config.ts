@@ -57,6 +57,7 @@ export default defineConfig({
   build: {
     target: "esnext",
     reportCompressedSize: false,
+    sourcemap: true,
   },
   resolve: {
     alias: {

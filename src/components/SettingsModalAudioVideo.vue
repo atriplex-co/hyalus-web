@@ -4,7 +4,7 @@
     <div class="mt-8 divide-y divide-ctp-surface0/50 border-b border-t border-ctp-surface0/50">
       <div class="flex h-16 items-center justify-between">
         <p class="font-bold">Audio Output</p>
-        <InputList>
+        <InputList class="w-96">
           <template #selected>
             <p class="max-w-xs truncate">{{ audioOutput }}</p>
           </template>
@@ -25,7 +25,7 @@
       </div>
       <div class="flex h-16 items-center justify-between">
         <p class="font-bold">Audio Input</p>
-        <InputList>
+        <InputList class="w-96">
           <template #selected>
             <p class="max-w-xs truncate">{{ audioInput }}</p>
           </template>
@@ -71,7 +71,7 @@
       </div>
       <div class="flex h-16 items-center justify-between">
         <p class="font-bold">Video Input</p>
-        <InputList>
+        <InputList class="w-96">
           <template #selected>
             <p class="max-w-xs truncate">{{ videoInput }}</p>
           </template>
@@ -88,7 +88,7 @@
       </div>
       <div class="flex h-16 items-center justify-between">
         <p class="font-bold">Video Mode</p>
-        <InputList>
+        <InputList class="w-96">
           <template #selected>
             {{ videoMode }}
           </template>

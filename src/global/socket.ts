@@ -24,6 +24,7 @@ import type {
 import {
   cleanObject,
   getChannelState,
+  getExperimentValue,
   getUserOutputGain,
   isDesktop,
   isMobile,
@@ -344,6 +345,10 @@ export class Socket {
             t: SocketMessageType.CCallJoin,
             d: {
               channelId: store.call.channelId,
+              audioCodec: getExperimentValue("force_audio_codec") || "opus",
+              audioMode: "default",
+              videoCodec: getExperimentValue("force_video_codec") || "h264",
+              videoMode: store.config.videoMode,
             },
           });
         }

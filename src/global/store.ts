@@ -26,6 +26,7 @@ import {
 } from "./types";
 import {
   callUpdatePersist,
+  getExperimentValue,
   getUserOutputGain,
   getWorkerUrl,
   playSound,
@@ -88,6 +89,8 @@ export const useStore = defineStore("main", {
         streamerModeDisableNotifications: true,
         streamerModeDisableSounds: true,
         recentChannelIds: [],
+        experimentsEnabled: false,
+        experiments: {},
       },
       updateAvailable: false,
       updateRequired: false,
@@ -273,6 +276,10 @@ export const useStore = defineStore("main", {
           colorMode: store.config.colorMode,
           colorTheme: store.config.colorTheme,
         });
+      }
+
+      if (k === "experiments" && window.HyalusDesktop && window.HyalusDesktop.setExperiments) {
+        window.HyalusDesktop.setExperiments(v as Record<string, string>);
       }
 
       return v;
@@ -590,7 +597,6 @@ export const useStore = defineStore("main", {
           audio: [],
           video: [],
         },
-        payloadCodecs: {},
         flags: 0,
         initComplete: false,
         encryptWorkers: new Map(),
@@ -601,6 +607,10 @@ export const useStore = defineStore("main", {
         t: SocketMessageType.CCallJoin,
         d: {
           channelId,
+          audioCodec: getExperimentValue("force_audio_codec") || "opus",
+          audioMode: "default",
+          videoCodec: getExperimentValue("force_video_codec") || "h264",
+          videoMode: this.config.videoMode,
         },
       });
 

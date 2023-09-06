@@ -4,7 +4,7 @@
     <div class="mt-8 divide-y divide-ctp-surface0/50 border-b border-t border-ctp-surface0/50">
       <div class="flex h-16 items-center justify-between">
         <p class="font-bold">Font Scale</p>
-        <InputList>
+        <InputList class="w-80">
           <template #selected>
             <p>{{ fontScale }}%</p>
           </template>
@@ -21,7 +21,7 @@
       </div>
       <div class="flex h-16 items-center justify-between">
         <p class="font-bold">Color Mode</p>
-        <InputList>
+        <InputList class="w-80">
           <template #selected>
             <div
               class="h-3 w-3 rounded-full"
@@ -60,7 +60,7 @@
       </div>
       <div class="flex h-16 items-center justify-between">
         <p class="font-bold">Color Theme</p>
-        <InputList>
+        <InputList class="w-80">
           <template #selected>
             <div class="h-3 w-3 rounded-full bg-ctp-accent" />
             <p>
