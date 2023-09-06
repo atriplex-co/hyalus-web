@@ -3,22 +3,16 @@ const H264_NALU_SKIP = 1;
 
 const getNaluOffsets = (data: Uint8Array) => {
   const offsets = [];
-  // let zc = 0;
-  // for (let i = 0; i < data.length; ++i) {
-  //   if (data[i] === 1 && zc >= 2) {
-  //     zc = 0;
-  //     offsets.push(i + 1);
-  //   }
-  //   if (data[i] === 0) {
-  //     zc++;
-  //   } else {
-  //     zc = 0;
-  //   }
-  // }
-  for (let i = 3; i < data.length; ++i) {
-    // check every 4b (faster)
-    if (data[i - 3] === 0x00 && data[i - 2] === 0x00 && data[i - 1] === 0x00 && data[i] === 0x01) {
+  let zc = 0;
+  for (let i = 0; i < data.length; ++i) {
+    if (data[i] === 1 && zc >= 2) {
+      zc = 0;
       offsets.push(i + 1);
+    }
+    if (data[i] === 0) {
+      zc++;
+    } else {
+      zc = 0;
     }
   }
   return offsets;
