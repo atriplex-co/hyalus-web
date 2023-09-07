@@ -317,7 +317,10 @@ export const useStore = defineStore("main", {
           },
         });
 
-        context = new AudioContext();
+        context = new AudioContext({
+          latencyHint: "interactive", // this probably improves latency or some shit.
+          sampleRate: 48000,
+        });
         gain1 = context.createGain(); // for audio mute
         gain2 = context.createGain(); // for audio input volume & VAD
         const src = context.createMediaStreamSource(_stream);

@@ -1522,6 +1522,14 @@ export class Socket {
           await store.callUpdateFlags();
         }
 
+        if (["disconnected", "failed"].includes(store.call.pc.connectionState)) {
+          store.call.pc.restartIce();
+          store.socket!.send({
+            t: SocketMessageType.CCallRequestRestartICE,
+            d: {},
+          });
+        }
+
         for (const trans of store.call.pc.getTransceivers()) {
           let encryptWorker = store.call.encryptWorkers.get(trans.mid!);
           let decryptWorker = store.call.decryptWorkers.get(trans.mid!);
@@ -1624,6 +1632,13 @@ export class Socket {
             .find((transceiver) => transceiver.receiver === stream.receiver); // useful if other users reconnect fast
           if (!streamInfo || !transceiver || streamInfo.mid !== transceiver.mid) {
             console.debug(`voice: removing stream: %o`, { uid: stream.userId, type: stream.type });
+            if (stream.context) {
+              stream.context.close();
+            }
+            if (stream.element) {
+              stream.element.srcObject = null;
+              stream.element.remove();
+            }
             store.call.remoteStreams = store.call.remoteStreams.filter(
               (stream2) => stream2 !== stream,
             );
@@ -1657,6 +1672,7 @@ export class Socket {
           }
           console.debug(`voice: adding stream %o`, info);
           let element: IHTMLMediaElement | null = null;
+          let context: AudioContext | null = null;
           let gain: GainNode | null = null;
           if (receiver.track.kind === "audio") {
             // this wasted over an hour of my time.
@@ -1665,7 +1681,7 @@ export class Socket {
             tmpElement.srcObject = new MediaStream([receiver.track]);
             tmpElement.muted = true;
             tmpElement.play();
-            const context = new AudioContext({
+            context = new AudioContext({
               latencyHint: "interactive", // this probably improves latency or some shit.
               sampleRate: 48000,
             });
@@ -1691,6 +1707,7 @@ export class Socket {
             speaking: false,
             track: receiver.track,
             element,
+            context,
             gain,
             receiver,
           });

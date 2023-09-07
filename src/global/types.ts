@@ -145,6 +145,7 @@ export interface ICallRemoteStream {
   userId: string;
   type: CallStreamType;
   track: MediaStreamTrack;
+  context: AudioContext;
   gain: GainNode | null;
   speaking: boolean;
   receiver: RTCRtpReceiver;
