@@ -266,7 +266,7 @@
 <script lang="ts" setup>
 import { onMounted, type PropType, ref, type Ref, computed } from "vue";
 import { SettingsPage, type ICachedUser, type ISpace } from "@/global/types";
-import { getCachedUser, getStatus } from "@/global/helpers";
+import { getCachedUser } from "@/global/helpers";
 import UserAvatar from "./UserAvatar.vue";
 import {
   ChatBubbleLeftIcon,

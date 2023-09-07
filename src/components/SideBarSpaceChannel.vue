@@ -143,17 +143,32 @@ const allowManageRoles = computed(() =>
 );
 
 const click = async (e: MouseEvent) => {
-  if (props.channel.type === ChannelType.SpaceVoice && !store.call) {
-    if (route.name === "channel") {
-      const channel = store.channels.find((channel) => channel.id === route.params.channelId);
-      if (channel && channel.type === ChannelType.SpaceVoice) {
-        router.push(`/channels/${props.channel.id}`);
+  if (props.channel.type === ChannelType.SpaceVoice) {
+    let join = false;
+
+    if (!store.call) {
+      join = true;
+    }
+
+    if (store.call && store.call.channelId === props.channel.id) {
+      await router.push(`/channels/${props.channel.id}`);
+    }
+
+    if (store.call && store.call.channelId !== props.channel.id) {
+      if (route.name === "channel" && route.params.channelId === props.channel.id) {
+        join = true;
+      } else {
+        await router.push(`/channels/${props.channel.id}`);
       }
     }
-    await store.callStart(props.channel.id);
-    if (!e.shiftKey) {
+
+    if (join) {
+      await store.callStart(props.channel.id);
+    }
+    if (join && !e.shiftKey) {
       await store.callAddLocalStream({ type: CallStreamType.Audio, silent: true });
     }
+
     return;
   }
 

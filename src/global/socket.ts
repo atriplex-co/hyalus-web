@@ -24,7 +24,6 @@ import type {
 import {
   cleanObject,
   getChannelState,
-  getExperimentValue,
   getUserOutputGain,
   isDesktop,
   isMobile,
