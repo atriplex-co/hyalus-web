@@ -279,7 +279,7 @@ import {
   BeakerIcon,
 } from "@heroicons/vue/20/solid";
 import { useStore } from "@/global/store";
-import { ChannelType, Status, UserFlag } from "@/../../hyalus-server/src/types";
+import { ChannelType, UserFlag } from "@/../../hyalus-server/src/types";
 import { useRouter } from "vue-router";
 import ModalBase from "./ModalBase.vue";
 import { FaceFrownIcon, InformationCircleIcon, XCircleIcon } from "@heroicons/vue/24/outline";
@@ -343,10 +343,6 @@ const spaceRoles = computed(() => {
   }
 
   return roles.sort((a, b) => (a.position > b.position ? 1 : -1));
-});
-
-const status = computed(() => {
-  return getStatus(props.id);
 });
 
 const mutualSpaces = computed(() => {

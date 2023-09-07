@@ -1,7 +1,7 @@
 <template>
   <div>
     <p class="text-2xl">Changelog</p>
-    <div class="mt-8 changelog" v-html="changelogHtml"></div>
+    <div class="changelog mt-8" v-html="changelogHtml"></div>
   </div>
 </template>
 
@@ -14,14 +14,14 @@ const changelogHtml = new MarkdownIt().render(changelog);
 
 <style>
 .changelog h2 {
-  @apply text-lg font-bold mt-4;
+  @apply mt-4 text-lg font-bold;
 }
 
 .changelog ul {
-  @apply text-ctp-subtext0 mt-2 pb-4 border-b border-ctp-surface0/50;
+  @apply mt-2 border-b border-ctp-surface0/50 pb-4 text-ctp-subtext0;
 }
 
 .changelog li {
-  @apply list-disc ml-4;
+  @apply ml-4 list-disc;
 }
 </style>
