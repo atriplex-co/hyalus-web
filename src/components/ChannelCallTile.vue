@@ -157,16 +157,20 @@ const speaking = computed(() => {
   return false;
 });
 
-watch(
-  () => video.value,
-  () => {
-    if (video.value && !video.value.srcObject && props.tile.localTrack) {
-      video.value.srcObject = new MediaStream([props.tile.localTrack.track]);
-    }
+const updateVideoSrc = () => {
+  if (video.value && props.tile.localTrack) {
+    video.value.srcObject = new MediaStream([props.tile.localTrack.track]);
+  }
 
-    if (video.value && !video.value.srcObject && props.tile.remoteTrack) {
-      video.value.srcObject = new MediaStream([props.tile.remoteTrack.track]);
-    }
+  if (video.value && props.tile.remoteTrack) {
+    video.value.srcObject = new MediaStream([props.tile.remoteTrack.track]);
+  }
+};
+
+watch(
+  () => [video.value, props.tile.localTrack, props.tile.remoteTrack],
+  () => {
+    updateVideoSrc();
   },
 );
 </script>

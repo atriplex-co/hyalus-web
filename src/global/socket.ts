@@ -1616,9 +1616,13 @@ export class Socket {
 
         // remove any dead streams
         for (const stream of store.call.remoteStreams) {
-          if (
-            !data.streams.find((info) => info.uid === stream.userId && info.type === stream.type)
-          ) {
+          const streamInfo = data.streams.find(
+            (info) => info.uid === stream.userId && info.type === stream.type,
+          );
+          const transceiver = store.call.pc
+            .getTransceivers()
+            .find((transceiver) => transceiver.receiver === stream.receiver); // useful if other users reconnect fast
+          if (!streamInfo || !transceiver || streamInfo.mid !== transceiver.mid) {
             console.debug(`voice: removing stream: %o`, { uid: stream.userId, type: stream.type });
             store.call.remoteStreams = store.call.remoteStreams.filter(
               (stream2) => stream2 !== stream,
