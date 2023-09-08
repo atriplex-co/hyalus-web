@@ -46,7 +46,7 @@
       <CogIcon
         v-if="allowManageChannels || allowManageRoles"
         class="h-4 w-4 cursor-pointer transition hover:text-ctp-accent"
-        @click="manageModal = true"
+        @click.stop="manageModal = true"
       />
     </div>
   </div>
