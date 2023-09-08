@@ -47,7 +47,7 @@
             id="messageList"
             ref="messageList"
             class="flex h-full min-w-0 flex-1 flex-col overflow-auto"
-            @scroll="scrollUpdated = true"
+            @scroll="onScroll"
           >
             <div id="messageListBefore" ref="messageListBefore" class="flex-1 pt-16"></div>
             <div class="space-y-1">
@@ -751,6 +751,17 @@ const callStart = async (e: MouseEvent) => {
 };
 
 store.sideBarOpen = false;
+
+const onScroll = () => {
+  if (
+    messageList.value!.scrollTop ===
+    messageList.value!.scrollHeight - messageList.value!.offsetHeight
+  ) {
+    scrollUpdated.value = false; // yes this code sucks i'm tired fuck off
+  } else {
+    scrollUpdated.value = true;
+  }
+};
 </script>
 
 <style scoped>
