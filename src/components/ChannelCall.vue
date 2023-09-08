@@ -37,11 +37,11 @@
         <div
           class="h-12 w-12 cursor-pointer rounded-full p-3.5 transition"
           :class="{
-            'bg-ctp-text text-ctp-base': !store.call.muted,
-            'bg-ctp-mantle text-ctp-overlay0 hover:text-ctp-text': store.call.muted,
+            'bg-ctp-text text-ctp-base': store.call.muted,
+            'bg-ctp-mantle text-ctp-overlay0 hover:text-ctp-text': !store.call.muted,
           }"
         >
-          <MicIcon v-if="audioStream" />
+          <MicIcon v-if="!store.call.muted" />
           <MicOffIcon v-else />
         </div>
       </div>

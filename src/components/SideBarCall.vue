@@ -60,11 +60,11 @@
         <div
           class="h-10 w-10 cursor-pointer rounded-full p-3 transition"
           :class="{
-            'bg-ctp-text text-ctp-base': !store.call.muted,
-            'bg-ctp-mantle text-ctp-subtext0 hover:text-ctp-text': store.call.muted,
+            'bg-ctp-text text-ctp-base': store.call.muted,
+            'bg-ctp-mantle text-ctp-subtext0 hover:text-ctp-text': !store.call.muted,
           }"
         >
-          <MicIcon v-if="audioStream" />
+          <MicIcon v-if="!store.call.muted" />
           <MicOffIcon v-else />
         </div>
       </div>
@@ -76,8 +76,8 @@
             'bg-ctp-mantle text-ctp-subtext0 hover:text-ctp-text': !videoStream,
           }"
         >
-          <VideoIcon v-if="CallStreamType" />
-          <VideoOffIcon v-else />
+          <VideoCameraIcon v-if="CallStreamType" />
+          <VideoCameraSlashIcon v-else />
         </div>
       </div>
       <div @click="stop">
@@ -86,7 +86,7 @@
         />
       </div>
       <div @click="toggleStream(CallStreamType.DisplayVideo)">
-        <DisplayIcon
+        <ComputerDesktopIcon
           class="h-10 w-10 cursor-pointer rounded-full p-3 transition"
           :class="{
             'bg-ctp-text text-ctp-base': displayVideoStream,
@@ -119,15 +119,17 @@ import { useStore } from "@/global/store";
 import PhoneIcon from "@/icons/PhoneIcon.vue";
 import MicIcon from "@/icons/MicIcon.vue";
 import MicOffIcon from "@/icons/MicOffIcon.vue";
-import VideoIcon from "@/icons/VideoIcon.vue";
-import VideoOffIcon from "@/icons/VideoOffIcon.vue";
 import CallEndIcon from "@/icons/CallEndIcon.vue";
-import DisplayIcon from "@/icons/DisplayIcon.vue";
 import AudioOffIcon from "@/icons/AudioOffIcon.vue";
 import AudioIcon from "@/icons/AudioIcon.vue";
 import DesktopCaptureModal from "./DesktopCaptureModal.vue";
 import Day from "dayjs";
 import UserAvatar from "./UserAvatar.vue";
+import {
+  VideoCameraIcon,
+  VideoCameraSlashIcon,
+  ComputerDesktopIcon,
+} from "@heroicons/vue/20/solid";
 
 const store = useStore();
 const time = ref("");
