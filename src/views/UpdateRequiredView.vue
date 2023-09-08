@@ -1,6 +1,6 @@
 <template>
   <div
-    class="fixed inset-0 z-50 flex h-full w-full flex-col items-center justify-center space-y-6 bg-ctp-crust text-sm"
+    class="fixed inset-0 z-20 flex h-full w-full flex-col items-center justify-center space-y-6 bg-ctp-crust text-sm"
   >
     <div class="flex flex-col items-center space-y-4">
       <ArrowPathIcon class="h-16 w-16 text-ctp-subtext0" />
