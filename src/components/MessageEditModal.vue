@@ -35,6 +35,7 @@ import PencilIcon from "@/icons/PencilIcon.vue";
 import axios from "axios";
 import { useStore } from "@/global/store";
 import msgpack from "msgpack-lite";
+import { ChannelType } from "../../../hyalus-server/src/types";
 
 const store = useStore();
 const props = defineProps({
@@ -59,47 +60,52 @@ const error = ref("");
 
 const messageBoxSubmit = async () => {
   const data = messageBoxText.value.trim();
-
   try {
     if (data) {
-      if (!store.self || !store.config.publicKey || !store.config.privateKey) {
-        return;
-      }
+      if ([ChannelType.DM, ChannelType.Group].includes(props.channel.type)) {
+        const key = sodium.randombytes_buf(sodium.crypto_secretbox_KEYBYTES);
+        const nonce = sodium.randombytes_buf(sodium.crypto_secretbox_NONCEBYTES);
+        const keys: Record<string, Uint8Array> = {};
 
-      const key = sodium.randombytes_buf(sodium.crypto_secretbox_KEYBYTES);
-      const nonce = sodium.randombytes_buf(sodium.crypto_secretbox_NONCEBYTES);
+        for (const member of props.channel.members) {
+          const userKeyNonce = sodium.randombytes_buf(sodium.crypto_secretbox_NONCEBYTES);
+          keys[member.id] = new Uint8Array([
+            ...userKeyNonce,
+            ...sodium.crypto_box_easy(
+              key,
+              userKeyNonce,
+              member.publicKey,
+              store.config.privateKey!,
+            ),
+          ]);
+        }
 
-      const keys: Record<string, Uint8Array> = {};
-
-      for (const member of props.channel.members) {
-        const userKeyNonce = sodium.randombytes_buf(sodium.crypto_secretbox_NONCEBYTES);
-
-        keys[member.id] = new Uint8Array([
-          ...userKeyNonce,
-          ...sodium.crypto_box_easy(key, userKeyNonce, member.publicKey, store.config.privateKey),
+        const selfKeyNonce = sodium.randombytes_buf(sodium.crypto_secretbox_NONCEBYTES);
+        keys[store.self!.id] = new Uint8Array([
+          ...selfKeyNonce,
+          ...sodium.crypto_box_easy(
+            key,
+            selfKeyNonce,
+            store.config.publicKey!,
+            store.config.privateKey!,
+          ),
         ]);
+
+        await axios.patch(`/api/v1/channels/${props.channel.id}/messages/${props.message.id}`, {
+          data: sodium.to_base64(
+            msgpack.encode({
+              data: new Uint8Array([...nonce, ...sodium.crypto_secretbox_easy(data, nonce, key)]),
+              keys,
+            }),
+          ),
+        });
       }
 
-      const selfKeyNonce = sodium.randombytes_buf(sodium.crypto_secretbox_NONCEBYTES);
-
-      keys[store.self.id] = new Uint8Array([
-        ...selfKeyNonce,
-        ...sodium.crypto_box_easy(
-          key,
-          selfKeyNonce,
-          store.config.publicKey,
-          store.config.privateKey,
-        ),
-      ]);
-
-      await axios.patch(`/api/v1/channels/${props.channel.id}/messages/${props.message.id}`, {
-        data: sodium.to_base64(
-          msgpack.encode({
-            data: new Uint8Array([...nonce, ...sodium.crypto_secretbox_easy(data, nonce, key)]),
-            keys,
-          }),
-        ),
-      });
+      if ([ChannelType.SpaceText].includes(props.channel.type)) {
+        await axios.patch(`/api/v1/channels/${props.channel.id}/messages/${props.message.id}`, {
+          data: sodium.to_base64(data),
+        });
+      }
     } else {
       await axios.delete(`/api/v1/channels/${props.channel.id}/messages/${props.message.id}`);
     }
