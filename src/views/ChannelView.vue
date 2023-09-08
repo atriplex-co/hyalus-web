@@ -762,6 +762,21 @@ const onScroll = () => {
     scrollUpdated.value = true;
   }
 };
+
+addEventListener("focusin", () => {
+  if (!scrollUpdated.value) {
+    updateReadAt();
+  }
+});
+
+watch(
+  () => channel.value?.activeAt,
+  () => {
+    if (!scrollUpdated.value) {
+      updateReadAt();
+    }
+  },
+);
 </script>
 
 <style scoped>
