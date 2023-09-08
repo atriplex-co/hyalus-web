@@ -8,7 +8,12 @@
       </div>
       <div v-if="sessions.length > 1" class="space-y-4">
         <p class="text-sm font-semibold">Other Devices</p>
-        <SessionItem v-for="session in sessions.slice(1)" :key="session.id" :session="session" />
+        <SessionItem
+          v-for="session in sessions.slice(1)"
+          :key="session.id"
+          :session="session"
+          @remove="sessions.splice(sessions.indexOf(session), 1)"
+        />
       </div>
     </div>
   </div>

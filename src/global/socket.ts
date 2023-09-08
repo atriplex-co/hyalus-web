@@ -17,7 +17,6 @@ import type {
   IChannel,
   IChannelMember,
   IHTMLMediaElement,
-  ISocketHook,
   ISocketMessage,
   ISpaceMember,
 } from "./types";
@@ -43,14 +42,18 @@ import VoiceCryptoWorker from "../shared/voiceCryptoWorker?worker";
 let updateCheck: string;
 let awayController: AbortController;
 let socketRetries = 0;
+let socketId = "";
+let socketSeq = 0;
 
 export class Socket {
   ws = new WebSocket(`${location.origin.replace("http", "ws")}/api/v1/ws`);
-  hooks: ISocketHook[] = [];
+  ready = false;
   preventReconnect = false;
+  preventResume = false;
   meta: {
+    id: string;
     proto: number;
-    type: string;
+    env: string;
     vapidPublic: string;
   } | null = null;
 
@@ -65,33 +68,49 @@ export class Socket {
         return;
       }
 
-      this.send({
-        t: SocketMessageType.CStart,
-        d: {
-          proto: SocketProtocol,
-          token: sodium.to_base64(store.config.token),
-          away: store.away,
-        },
+      if (!socketId) {
+        this.send({
+          t: SocketMessageType.CStart,
+          d: {
+            proto: SocketProtocol,
+            token: sodium.to_base64(store.config.token),
+            away: store.away,
+          },
+        });
+      } else {
+        this.send({
+          t: SocketMessageType.CResume,
+          d: {
+            id: socketId,
+            seq: socketSeq,
+            token: sodium.to_base64(store.config.token),
+          },
+        });
+      }
+
+      addEventListener("beforeunload", () => {
+        this.send({
+          t: SocketMessageType.CDisconnect,
+          d: {},
+        });
       });
     });
 
     this.ws.addEventListener("message", async ({ data: _msg }) => {
       // const msg = JSON.parse(_msg) as ISocketMessage;
-      const msg = msgpack.decode(new Uint8Array(_msg)) as ISocketMessage;
-      console.debug("ws/rx: %o", { t: SocketMessageType[msg.t], d: msg.d });
-
-      for (const hook of this.hooks) {
-        if (msg.t !== hook.type) {
-          continue;
-        }
-
-        clearTimeout(hook.ttlTimeout || undefined);
-        hook.ttlTimeout = +setTimeout(() => {
-          this.hooks = this.hooks.filter((h) => h !== hook);
-        }, hook.ttl);
-
-        hook.hook(msg);
+      const msg = msgpack.decode(new Uint8Array(_msg)) as ISocketMessage & { s: number };
+      if (
+        msg.s < socketSeq &&
+        ![
+          SocketMessageType.SReady,
+          SocketMessageType.SReset,
+          SocketMessageType.SDisconnect,
+        ].includes(msg.t)
+      ) {
+        return;
       }
+      socketSeq = msg.s;
+      console.debug("ws/rx: %o", { t: SocketMessageType[msg.t], d: msg.d });
 
       if (msg.t === SocketMessageType.SReady) {
         const data = msg.d as {
@@ -201,13 +220,15 @@ export class Socket {
             statusText: string;
           }[];
           meta: {
+            id: string;
             proto: number;
-            type: string;
+            env: string;
             vapidPublic: string;
           };
         };
 
         this.meta = data.meta;
+        socketId = data.meta.id;
 
         store.self = {
           id: data.self.id,
@@ -337,9 +358,11 @@ export class Socket {
           });
         }
 
+        this.ready = true;
         store.ready = true;
 
         if (store.call) {
+          store.call.initComplete = false;
           this.send({
             t: SocketMessageType.CCallJoin,
             d: {
@@ -499,21 +522,44 @@ export class Socket {
         }
       }
 
+      if (msg.t === SocketMessageType.SResumeOK) {
+        this.ready = true;
+        store.ready = true;
+      }
+
       if (msg.t === SocketMessageType.SReset) {
+        this.ws.close();
+        this.ready = false;
+        store.ready = false;
+
+        await store.writeConfig("token", null);
+        await router.push("/auth");
+
+        if (store.call) {
+          await store.callReset();
+        }
+      }
+
+      if (msg.t === SocketMessageType.SDisconnect) {
         const data = msg.d as {
           error?: string;
           updateRequired?: boolean;
         };
 
-        if (data && data.updateRequired) {
+        if (data.error) {
+          console.warn("ws/error: %s", data.error);
+        }
+
+        if (data.updateRequired) {
           store.updateAvailable = true;
           store.updateRequired = true;
           this.close();
           return;
         }
 
-        await store.writeConfig("token", null);
-        await router.push("/auth");
+        socketId = "";
+        socketSeq = 0;
+        this.ws.close();
       }
 
       if (msg.t === SocketMessageType.SSelfUpdate) {
@@ -1830,38 +1876,39 @@ export class Socket {
     });
 
     this.ws.addEventListener("close", async () => {
-      store.ready = false;
-
-      if (store.call) {
-        store.call.initComplete = false;
+      if (this.preventResume) {
+        socketId = "";
+        socketSeq = 0;
       }
 
       if (!this.preventReconnect) {
         if (socketRetries++) {
           await new Promise((resolve) => setTimeout(resolve, 2000));
         }
-
         store.socket = new Socket();
       }
+
+      setTimeout(() => {
+        if (!store.socket || !store.socket.ready) {
+          store.ready = false;
+        }
+      }, 15000);
     });
   }
 
   send(msg: ISocketMessage): void {
     console.debug("ws/tx: %o", { t: SocketMessageType[msg.t], d: msg.d });
-    // this.ws.send(JSON.stringify(msg));
-    this.ws.send(msgpack.encode(msg));
+    if (this.ws.readyState === WebSocket.OPEN) {
+      this.ws.send(msgpack.encode(msg));
+    }
   }
 
   close(): void {
+    this.send({
+      t: SocketMessageType.CDisconnect,
+      d: {},
+    });
     this.preventReconnect = true;
     this.ws.close();
-  }
-
-  registerHook(hook: ISocketHook): void {
-    this.hooks.push(hook);
-
-    hook.ttlTimeout = +setTimeout(() => {
-      this.hooks = this.hooks.filter((h) => h !== hook);
-    }, hook.ttl);
   }
 }

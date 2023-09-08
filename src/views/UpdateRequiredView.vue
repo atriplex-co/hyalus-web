@@ -3,7 +3,7 @@
     class="fixed inset-0 z-50 flex h-full w-full flex-col items-center justify-center space-y-6 bg-ctp-crust text-sm"
   >
     <div class="flex flex-col items-center space-y-4">
-      <RefreshIcon class="h-16 w-16 text-ctp-subtext0" />
+      <ArrowPathIcon class="h-16 w-16 text-ctp-subtext0" />
       <p class="text-2xl font-bold">Hyalus needs an update</p>
     </div>
     <div
@@ -16,7 +16,7 @@
 </template>
 
 <script lang="ts" setup>
-import RefreshIcon from "@/icons/RefreshIcon.vue";
+import { ArrowPathIcon } from "@heroicons/vue/24/solid";
 
 const submit = () => {
   if (window.HyalusDesktop) {

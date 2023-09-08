@@ -51,13 +51,13 @@ import {
 } from "@heroicons/vue/24/outline";
 
 const store = useStore();
-
 const props = defineProps({
   session: {
     type: Object as PropType<ISession>,
     default: null,
   },
 });
+const emit = defineEmits(["remove"]);
 
 // const createdAt = Day(props.session.createdAt).calendar();
 // eslint-disable-next-line vue/no-setup-props-destructure
@@ -103,5 +103,6 @@ if (agentParsed.os) {
 
 const del = async () => {
   await axios.delete(`/api/v1/sessions/${props.session.id}`);
+  emit("remove");
 };
 </script>

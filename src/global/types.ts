@@ -262,13 +262,6 @@ export interface ISocketMessage {
   d?: unknown;
 }
 
-export interface ISocketHook {
-  ttl: number;
-  ttlTimeout: number | null;
-  type: SocketMessageType;
-  hook(msg: ISocketMessage): void;
-}
-
 export interface IHTMLMediaElement extends HTMLMediaElement {
   setSinkId(sinkId: string): void;
 }
