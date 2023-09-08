@@ -205,7 +205,12 @@ export const processMessage = async (opts: IMessageRaw): Promise<IMessage | unde
   };
 };
 
-export const notifySend = (opts: { icon: string; title: string; body: string }) => {
+export const notifySend = (opts: {
+  icon: string;
+  title: string;
+  body: string;
+  onclick?: () => void;
+}) => {
   if (
     store.self!.preferredStatus === Status.Busy ||
     (store.config.streamerModeEnabled && store.config.streamerModeDisableNotifications)
@@ -222,11 +227,14 @@ export const notifySend = (opts: { icon: string; title: string; body: string }) 
 
   if (store.config.notifySystem) {
     try {
-      new Notification(opts.title, {
+      const notification = new Notification(opts.title, {
         icon: opts.icon,
         body: opts.body,
         silent: true,
       });
+      if (opts.onclick) {
+        notification.onclick = opts.onclick;
+      }
     } catch {
       //
     }

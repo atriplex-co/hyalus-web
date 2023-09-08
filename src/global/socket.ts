@@ -627,6 +627,11 @@ export class Socket {
             icon: notifyGetAvatarUrl(data.avatar),
             title: data.name,
             body: `${data.name} sent a friend request`,
+            onclick() {
+              if (window.HyalusDesktop && window.HyalusDesktop.moveTop) {
+                window.HyalusDesktop.moveTop();
+              }
+            },
           });
         }
       }
@@ -1038,6 +1043,14 @@ export class Socket {
             icon: notifyGetAvatarUrl(data.author.avatar),
             title,
             body,
+            onclick() {
+              console.log("onclick called");
+              router.push(`/channels/${channel.id}`);
+              if (window.HyalusDesktop && window.HyalusDesktop.moveTop) {
+                console.log("moveTop called");
+                window.HyalusDesktop.moveTop();
+              }
+            },
           });
         }
       }
