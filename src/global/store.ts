@@ -618,7 +618,7 @@ export const useStore = defineStore("main", {
 
       await callUpdatePersist();
     },
-    async callSetMuted(val: boolean) {
+    async callSetMuted(val: boolean, silent = false) {
       if (!this.call || this.call.muted === val) {
         return;
       }
@@ -628,23 +628,33 @@ export const useStore = defineStore("main", {
       if (!stream && !val) {
         await this.callAddLocalStream({
           type: CallStreamType.Audio,
+          silent,
         });
       }
 
       if (stream && val) {
         stream.gain1!.gain.value = 0;
-        playSound(SoundNavigateBackward);
+        if (!silent) {
+          playSound(SoundNavigateBackward);
+        }
       }
 
       if (stream && !val) {
         stream.gain1!.gain.value = 1;
-        playSound(SoundNavigateForward);
+        if (!silent) {
+          playSound(SoundNavigateForward);
+        }
       }
 
       this.call.muted = val;
       this.callUpdateFlags();
+      callUpdatePersist();
+
+      if (!val && this.call.deaf) {
+        await this.callSetDeaf(false, true);
+      }
     },
-    async callSetDeaf(val: boolean) {
+    async callSetDeaf(val: boolean, silent = false) {
       if (!this.call || this.call.deaf === val) {
         return;
       }
@@ -655,18 +665,24 @@ export const useStore = defineStore("main", {
         }
       }
 
-      if (val) {
-        this.call.mutedBeforeDeaf = this.call.muted;
-        await this.callSetMuted(true);
-      }
-
-      if (!val && !this.call.mutedBeforeDeaf) {
-        await this.callSetMuted(false);
-      }
-
       this.call.deaf = val;
       this.callUpdateFlags();
-      playSound(val ? SoundNavigateBackwardMin : SoundNavigateForwardMin);
+      callUpdatePersist();
+      if (!silent) {
+        playSound(val ? SoundNavigateBackwardMin : SoundNavigateForwardMin);
+      }
+
+      if (val) {
+        this.call.mutedBeforeDeaf = this.call.muted;
+      }
+
+      if (val && !this.call.muted) {
+        await this.callSetMuted(true, true);
+      }
+
+      if (!val && !this.call.mutedBeforeDeaf && this.call.muted) {
+        await this.callSetMuted(false, true);
+      }
     },
     async callUpdateKeys() {
       if (!this.call) {

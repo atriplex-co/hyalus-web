@@ -498,27 +498,19 @@ export class Socket {
         }
 
         if (isDesktop && store.config.callPersist && !store.call) {
-          const callPersist = JSON.parse(store.config.callPersist) as ICallPersist;
+          const callPersist: ICallPersist = JSON.parse(store.config.callPersist);
 
           if (
-            +new Date() - callPersist.updated > 1000 * 60 * 5 ||
+            +new Date() - callPersist.time > 1000 * 60 * 5 ||
             !store.channels.find((channel) => channel.id === callPersist.channelId)
           ) {
             return;
           }
 
           await store.callStart(callPersist.channelId);
-
-          for (const stream of callPersist.localStreams) {
-            if (![CallStreamType.Audio].includes(stream)) {
-              continue;
-            }
-
-            await store.callAddLocalStream({
-              type: CallStreamType.Audio,
-              silent: true,
-            });
-          }
+          await store.callAddLocalStream({ type: CallStreamType.Audio, silent: true });
+          await store.callSetMuted(callPersist.muted, true);
+          await store.callSetDeaf(callPersist.deaf, true);
         }
       }
 

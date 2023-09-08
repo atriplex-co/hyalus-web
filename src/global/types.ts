@@ -127,9 +127,10 @@ export interface ICall {
 }
 
 export interface ICallPersist {
-  updated: number;
+  time: number;
   channelId: string;
-  localStreams: CallStreamType[];
+  muted: boolean;
+  deaf: boolean;
 }
 
 export interface ICallLocalStream {

@@ -244,14 +244,14 @@ export const notifyGetAvatarUrl = (avatar: string | null): string => {
 export const callUpdatePersist = async () => {
   await store.writeConfig(
     "callPersist",
-    store.call &&
-      JSON.stringify({
-        // idk why we JSON'd it but otherwise, IDB will shit itself.
-        // update (2022.11.27): i figured it out, and we aren't fixing this.
-        updated: +new Date(),
-        channelId: store.call.channelId,
-        localStreams: store.call.localStreams.map((stream) => stream.type),
-      } as ICallPersist),
+    store.call
+      ? JSON.stringify({
+          time: +new Date(),
+          channelId: store.call.channelId,
+          muted: store.call.muted,
+          deaf: store.call.deaf,
+        } as ICallPersist)
+      : "",
   );
 };
 
