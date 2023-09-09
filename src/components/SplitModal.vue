@@ -6,20 +6,17 @@
         'pt-[30px]': isDesktop,
       }"
     >
-      <div class="w-[50%] bg-ctp-crust"></div>
-      <div class="w-[50%] bg-ctp-mantle"></div>
-    </div>
-    <div
-      class="fixed inset-0 flex justify-center"
-      :class="{
-        'pt-[30px]': isDesktop,
-      }"
-    >
-      <div class="w-56 space-y-0.5 bg-ctp-crust pr-4 pt-16 text-ctp-subtext0">
-        <slot name="left"></slot>
+      <div
+        class="w-[calc(50vw-(48rem/2)+(16rem/2))] bg-ctp-crust flex flex-col items-end px-4 pt-16 text-ctp-subtext0"
+      >
+        <div class="w-56 space-y-0.5">
+          <slot name="left"></slot>
+        </div>
       </div>
-      <div id="main" class="flex space-x-4 overflow-auto bg-ctp-mantle px-8">
-        <div class="w-screen max-w-2xl pt-16">
+      <div
+        class="w-[calc(50vw-(16rem/2)+(48rem/2))] bg-ctp-mantle pt-16 px-8 flex space-x-4 min-w-0 overflow-auto"
+      >
+        <div class="max-w-2xl w-screen">
           <transition
             enter-active-class="transition transform duration-75 ease-out"
             enter-from-class="opacity-0 translate-y-1"
@@ -30,11 +27,10 @@
           </transition>
           <div class="pb-8"></div>
         </div>
-        <div class="h-8 w-8 pt-16" @click="$emit('close')">
-          <XCircleIcon
-            class="absolute h-8 w-8 cursor-pointer text-ctp-overlay0 transition hover:text-ctp-text"
-          />
-        </div>
+        <XCircleIcon
+          class="h-7 w-7 cursor-pointer text-ctp-overlay0 transition hover:text-ctp-text"
+          @click="$emit('close')"
+        />
       </div>
     </div>
   </ModalBase>

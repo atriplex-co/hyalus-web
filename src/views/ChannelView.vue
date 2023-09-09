@@ -46,7 +46,7 @@
           <div
             id="messageList"
             ref="messageList"
-            class="flex h-full min-w-0 flex-1 flex-col overflow-auto"
+            class="flex h-full min-w-0 flex-1 flex-col overflow-auto overflow-x-hidden"
             @scroll="onScroll"
           >
             <div id="messageListBefore" ref="messageListBefore" class="flex-1 pt-16"></div>
@@ -160,6 +160,7 @@ import { PaperAirplaneIcon, PaperClipIcon, PencilIcon, XMarkIcon } from "@heroic
 import UserAvatar from "@/components/UserAvatar.vue";
 import MessageEditModal from "@/components/MessageEditModal.vue";
 import { SpeakerWaveIcon } from "@heroicons/vue/24/outline";
+import { OverlayScrollbarsComponent } from "overlayscrollbars-vue";
 
 const store = useStore();
 const route = useRoute();
@@ -421,17 +422,15 @@ const messageBoxKeydown = (e: KeyboardEvent) => {
   }
 
   if (e.code === "ArrowUp" && !messageBoxText.value) {
-    const message = Array.from(channel.value!.messages)
-      .reverse()
-      .find(
-        (message) =>
-          message.author.id === store.self!.id &&
-          [
-            //editable Message types:
-            MessageType.PrivateText,
-            MessageType.SpaceText,
-          ].includes(message.type),
-      );
+    const message = channel.value!.messages.toReversed().find(
+      (message) =>
+        message.author.id === store.self!.id &&
+        [
+          //editable Message types:
+          MessageType.PrivateText,
+          MessageType.SpaceText,
+        ].includes(message.type),
+    );
     if (message) {
       messageBeingEdited.value = message;
     }

@@ -28,9 +28,20 @@
         <CogIcon class="h-4 w-4" />
       </div>
     </div>
-    <div v-if="channels.length" class="flex-1 space-y-0.5 overflow-auto px-2 pb-2">
-      <SideBarChannel v-for="channel in channels" :key="channel.id" :channel="channel" />
-    </div>
+    <OverlayScrollbarsComponent
+      defer
+      class="min-h-0 h-full flex-1"
+      :options="{
+        scrollbars: {
+          autoHide: 'leave',
+          autoHideDelay: 0,
+        },
+      }"
+    >
+      <div class="pb-2 px-2 space-y-0.5">
+        <SideBarChannel v-for="channel in channels" :key="channel.id" :channel="channel" />
+      </div>
+    </OverlayScrollbarsComponent>
     <div
       v-if="!channels.length"
       class="flex flex-1 flex-col items-center justify-center space-y-4 text-sm text-ctp-subtext0"
@@ -63,6 +74,7 @@ import SettingsModal from "./SettingsModal.vue";
 import { SparklesIcon } from "@heroicons/vue/24/solid";
 import FriendAddModal from "./FriendAddModal.vue";
 import { CogIcon, MagnifyingGlassIcon, UsersIcon } from "@heroicons/vue/20/solid";
+import { OverlayScrollbarsComponent } from "overlayscrollbars-vue";
 
 const store = useStore();
 const route = useRoute();

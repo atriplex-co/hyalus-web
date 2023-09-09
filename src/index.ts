@@ -1,4 +1,5 @@
 import "./index.css";
+import "overlayscrollbars/overlayscrollbars.css";
 import { createApp } from "vue";
 import App from "./App.vue";
 import { router } from "./router";
@@ -12,6 +13,7 @@ import DayRelativeTime from "dayjs/plugin/relativeTime";
 import DayLocalizedFormat from "dayjs/plugin/localizedFormat";
 import DayISOWeek from "dayjs/plugin/isoWeek";
 import { ColorMode } from "@/../../hyalus-server/src/types";
+import { OverlayScrollbarsComponent } from "overlayscrollbars-vue";
 
 if (!isMobile) {
   document.querySelector("link[rel='manifest']")?.remove(); // prevent PWA from being installed on desktop.

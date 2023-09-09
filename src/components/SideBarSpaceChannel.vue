@@ -112,7 +112,10 @@ const manageModal = ref(false);
 const createModal = ref(false);
 
 const children = computed(() => {
-  return store.channels
+  if (props.channel.type !== ChannelType.SpaceCategory) {
+    return [];
+  }
+  return Array.from(store.channels)
     .filter(
       (channel) =>
         channel.spaceId === props.channel.spaceId &&

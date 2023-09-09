@@ -25,5 +25,26 @@ html {
 }
 
 ::-webkit-scrollbar {
-  display: none;
+  @apply w-2 h-2;
+}
+
+::-webkit-scrollbar-thumb {
+  @apply rounded-full;
+}
+
+::-webkit-scrollbar-track {
+  @apply rounded-full bg-ctp-crust/50;
+}
+
+::-webkit-scrollbar-corner {
+  @apply bg-ctp-crust/50;
+}
+
+::-webkit-scrollbar-thumb {
+  @apply bg-ctp-surface0;
+}
+
+.os-scrollbar {
+  --os-size: 8px !important;
+  --os-handle-bg: #282828 !important;
 }

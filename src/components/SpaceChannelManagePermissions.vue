@@ -1,12 +1,12 @@
 <template>
-  <div>
+  <div class="flex flex-col flex-1 min-h-0">
     <p class="text-2xl">Permissions</p>
     <div v-if="channel.parentId" class="mt-8 flex items-center space-x-4">
       <InputBoolean v-model="sync" />
       <p>Sync Permissions</p>
     </div>
-    <div v-if="!sync" class="mt-8 flex space-x-4">
-      <div class="5 w-48 space-y-2">
+    <div v-if="!sync" class="mt-8 flex flex-1 space-x-4 min-h-0">
+      <div class="w-48 space-y-2 min-h-0 flex flex-col">
         <div class="flex items-center justify-between">
           <p class="text-sm font-semibold text-ctp-subtext0">
             {{ channel.overrides.length }} Override{{ channel.overrides.length !== 1 ? "s" : "" }}
@@ -55,7 +55,7 @@
             </div>
           </div>
         </div>
-        <div class="space-y-0.5 overflow-auto">
+        <div class="space-y-0.5 flex-1 pb-8">
           <button
             v-for="override in roleOverrides"
             :key="override.override.id"
@@ -65,14 +65,16 @@
             }"
             @click="id = override.override.id"
           >
-            <div
-              class="h-2.5 w-2.5 rounded-full bg-gray-500"
-              :style="
-                override.role.color
-                  ? `background: #${override.role.color.toString(16).padStart(6, '0')};`
-                  : ''
-              "
-            ></div>
+            <div class="w-5 h-5 flex items-center justify-center">
+              <div
+                class="h-3 w-3 rounded-full bg-gray-500"
+                :style="
+                  override.role.color
+                    ? `background: #${override.role.color.toString(16).padStart(6, '0')};`
+                    : ''
+                "
+              ></div>
+            </div>
             <p>{{ override.role.name }}</p>
           </button>
           <button
@@ -82,7 +84,9 @@
             }"
             @click="id = ''"
           >
-            <div class="h-2.5 w-2.5 rounded-full bg-gray-500"></div>
+            <div class="w-5 h-5 flex items-center justify-center">
+              <div class="h-3 w-3 rounded-full bg-gray-500"></div>
+            </div>
             <p>@everyone</p>
           </button>
           <button
@@ -99,7 +103,8 @@
           </button>
         </div>
       </div>
-      <div class="flex-1 space-y-4 overflow-auto">
+      <div class="border-l border-ctp-surface0/75"></div>
+      <div class="flex-1 space-y-4">
         <SpacePermissionsEditor
           :show-channels="true"
           :show-text-channels="

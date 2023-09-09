@@ -1,8 +1,8 @@
 <template>
-  <div>
+  <div class="flex-1 flex-col flex min-h-0">
     <p class="text-2xl">Roles</p>
-    <div class="mt-8 flex min-h-0 space-x-4">
-      <div class="w-48 space-y-2.5">
+    <div class="mt-8 flex-1 flex min-h-0 space-x-4">
+      <div class="w-48 space-y-2.5 min-h-0">
         <div class="flex items-center justify-between">
           <p class="text-sm font-semibold text-ctp-subtext0">
             {{ space.roles.length + 1 }} Role{{ space.roles.length + 1 === 1 ? "" : "s" }}
@@ -11,7 +11,7 @@
             <PlusIcon />
           </button>
         </div>
-        <div class="space-y-0.5 overflow-auto">
+        <div class="space-y-0.5">
           <div
             v-for="role in space.roles"
             :key="role.id"
@@ -59,7 +59,8 @@
           </button>
         </div>
       </div>
-      <div class="flex-1 space-y-4 overflow-auto">
+      <div class="border-l border-ctp-surface0/75"></div>
+      <div class="flex-1 space-y-4">
         <div v-if="id" class="w-full space-y-2.5">
           <p class="text-sm font-semibold text-ctp-subtext0">Name</p>
           <input
