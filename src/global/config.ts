@@ -105,4 +105,9 @@ export const availableExperiments: IExperiment[] = [
     default: "off",
     options: ["off", "on"],
   },
+  {
+    id: "windows_scrolling_personality",
+    default: "off",
+    options: ["off", "on"],
+  },
 ];
