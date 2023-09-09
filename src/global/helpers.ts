@@ -376,13 +376,13 @@ export const checkSpacePermissions = (opts: {
   }
 
   if (channel) {
-    let overrides = channel.overrides;
+    let overrides = Array.from(channel.overrides); // don't want to modify the overrides when we sort
 
     if (!overrides.length && channel.parentId) {
       const parent = store.channels.find((channel2) => channel2.id === channel.parentId);
 
       if (parent) {
-        overrides = parent.overrides;
+        overrides = Array.from(parent.overrides); // don't want to modify the overrides when we sort
       }
     }
 
