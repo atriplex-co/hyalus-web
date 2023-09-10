@@ -1,3 +1,18 @@
+## 2023.09.08
+
+- Added fancy scrollbars
+- Notifications now open the app on click
+- Fixed editing messages in server text channels
+- Fixed error when setting an empty user bio
+
+## 2023.09.07
+
+- Improved message read states
+- Seamless connection reumse support
+- Fixed message list scrolling when joining DM/group calls
+- Fixed settings icon for server voice channels
+- Fixed hidden desktop titlebar on "Update Required" screen
+
 ## 2023.09.06
 
 - Added Changelog

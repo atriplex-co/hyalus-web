@@ -422,15 +422,17 @@ const messageBoxKeydown = (e: KeyboardEvent) => {
   }
 
   if (e.code === "ArrowUp" && !messageBoxText.value) {
-    const message = channel.value!.messages.toReversed().find(
-      (message) =>
-        message.author.id === store.self!.id &&
-        [
-          //editable Message types:
-          MessageType.PrivateText,
-          MessageType.SpaceText,
-        ].includes(message.type),
-    );
+    const message = Array.from(channel.value!.messages)
+      .reverse()
+      .find(
+        (message) =>
+          message.author.id === store.self!.id &&
+          [
+            //editable Message types:
+            MessageType.PrivateText,
+            MessageType.SpaceText,
+          ].includes(message.type),
+      );
     if (message) {
       messageBeingEdited.value = message;
     }
