@@ -9,7 +9,7 @@
     "type-check": "vue-tsc --noEmit -p tsconfig.app.json --composite false",
     "lint": "eslint . --ext .vue,.js,.jsx,.cjs,.mjs,.ts,.tsx,.cts,.mts --fix --ignore-path .gitignore",
     "format": "prettier --write  --plugin=prettier-plugin-tailwindcss src",
-    "postinstall": "test -d node_modules/prisma && node scripts/postinstall"
+    "postinstall": "test -d node_modules/sharp && node scripts/postinstall || true"
   },
   "devDependencies": {
     "@catppuccin/highlightjs": "^0.1.2",
