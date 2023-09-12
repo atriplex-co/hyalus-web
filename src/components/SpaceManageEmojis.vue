@@ -5,7 +5,9 @@
       <div class="flex items-center justify-between">
         <div class="flex items-center space-x-4">
           <p class="text-sm font-semibold text-ctp-subtext0">
-            {{ space.emojis.length }} Emoji{{ space.emojis.length === 1 ? "" : "s" }}
+            {{ space.emojis.length }}/{{ MaxEmojisPerSpace }} Emoji{{
+              space.emojis.length === 1 ? "" : "s"
+            }}
           </p>
           <button
             class="bg-ctp-accent text-ctp-crust flex items-center text-xs space-x-1.5 p-1.5 h-7 rounded-md transition hover:bg-ctp-accent/75"
@@ -56,6 +58,7 @@ import type { ISpace } from "@/global/types";
 import { ArrowUpTrayIcon } from "@heroicons/vue/20/solid";
 import SpaceEmojiManageItem from "./SpaceEmojiManageItem.vue";
 import InputBoolean from "./InputBoolean.vue";
+import { MaxEmojisPerSpace } from "../../../hyalus-server/src/types";
 
 const props = defineProps({
   space: {
