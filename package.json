@@ -8,7 +8,8 @@
     "build-only": "rm -rf dist && vite build",
     "type-check": "vue-tsc --noEmit -p tsconfig.app.json --composite false",
     "lint": "eslint . --ext .vue,.js,.jsx,.cjs,.mjs,.ts,.tsx,.cts,.mts --fix --ignore-path .gitignore",
-    "format": "prettier --write  --plugin=prettier-plugin-tailwindcss src"
+    "format": "prettier --write  --plugin=prettier-plugin-tailwindcss src",
+    "postinstall": "node scripts/postinstall"
   },
   "devDependencies": {
     "@catppuccin/highlightjs": "^0.1.2",
@@ -54,6 +55,7 @@
     "prettier": "^3.0.3",
     "prettier-plugin-tailwindcss": "^0.5.4",
     "qrcode": "^1.5.3",
+    "sharp": "^0.32.5",
     "tailwindcss": "^3.3.3",
     "typescript": "~5.1.6",
     "ua-parser-js": "^1.0.35",

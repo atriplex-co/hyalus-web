@@ -30,7 +30,7 @@
       </div>
       <p
         class="cursor-pointer rounded-md bg-ctp-surface0/50 px-4 py-2.5 text-sm transition hover:bg-ctp-base"
-        @click="$emit('activate', 'profile')"
+        @click="$emit('activate', SettingsPage.Profile)"
       >
         Edit Profile
       </p>
@@ -138,6 +138,7 @@ import SetUsernameModal from "./SetUsernameModal.vue";
 import TotpEnableModal from "./TotpEnableModal.vue";
 import TotpDisableModal from "./TotpDisableModal.vue";
 import UserAvatar from "./UserAvatar.vue";
+import { SettingsPage } from "@/global/types";
 
 defineEmits(["activate"]);
 

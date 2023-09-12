@@ -26,7 +26,7 @@
 
 <script lang="ts" setup>
 import { ref } from "vue";
-import AppDownloadModal from "./AppDownloadModal.vue";
+import AppDownloadModal from "@/components/AppDownloadModal.vue";
 import { useStore } from "@/global/store";
 import { ComputerDesktopIcon, XMarkIcon } from "@heroicons/vue/20/solid";
 

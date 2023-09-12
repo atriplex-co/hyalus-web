@@ -8,14 +8,14 @@ import {
   SocketMessageType,
   VoiceStateFlags,
 } from "@/../../hyalus-server/src/types";
-import RnnoiseWasm from "../vendor/rnnoise.wasm?url";
-import RnnoiseWorker from "../shared/rnnoiseWorker?worker";
-import SoundStateUp from "../assets/sounds/state-change_confirm-up.ogg";
-import SoundStateDown from "../assets/sounds/state-change_confirm-down.ogg";
-import SoundNavigateBackward from "../assets/sounds/navigation_backward-selection.ogg";
-import SoundNavigateBackwardMin from "../assets/sounds/navigation_backward-selection-minimal.ogg";
-import SoundNavigateForward from "../assets/sounds/navigation_forward-selection.ogg";
-import SoundNavigateForwardMin from "../assets/sounds/navigation_forward-selection-minimal.ogg";
+import RnnoiseWasm from "@/vendor/rnnoise/rnnoise.wasm?url";
+import RnnoiseWorker from "@/shared/rnnoiseWorker?worker";
+import SoundStateUp from "@/assets/sounds/state-change_confirm-up.ogg";
+import SoundStateDown from "@/assets/sounds/state-change_confirm-down.ogg";
+import SoundNavigateBackward from "@/assets/sounds/navigation_backward-selection.ogg";
+import SoundNavigateBackwardMin from "@/assets/sounds/navigation_backward-selection-minimal.ogg";
+import SoundNavigateForward from "@/assets/sounds/navigation_forward-selection.ogg";
+import SoundNavigateForwardMin from "@/assets/sounds/navigation_forward-selection-minimal.ogg";
 import {
   type ICallLocalStream,
   type IConfig,

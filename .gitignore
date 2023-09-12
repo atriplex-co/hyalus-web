@@ -27,3 +27,7 @@ coverage
 *.sln
 *.sw?
 *.tsbuildinfo
+
+# filed generated at build time
+public/fluentui-emoji
+build

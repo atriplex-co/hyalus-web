@@ -3,7 +3,7 @@
     <div class="bg-dark-900 py-16">
       <div class="mx-auto flex w-full max-w-4xl items-center justify-between">
         <div>
-          <img src="../assets/images/icon-standalone-green.png" class="h-12 w-12" />
+          <img src="@/assets/images/icon-standalone-green.png" class="h-12 w-12" />
           <p class="mt-8 text-2xl font-bold">Hyalus</p>
           <p class="mt-2 text-lg text-ctp-subtext0">It's a messaging app.</p>
           <div class="mt-8 flex space-x-4 text-sm">
@@ -21,7 +21,7 @@
             </router-link>
           </div>
         </div>
-        <img src="../assets/images/Chat-bro.png" class="max-w-md" />
+        <img src="@/assets/images/Chat-bro.png" class="max-w-md" />
       </div>
     </div>
     <div class="flex flex-col items-center bg-ctp-mantle py-20">

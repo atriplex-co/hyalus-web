@@ -150,22 +150,22 @@
 </template>
 
 <script lang="ts" setup>
-import DesktopTitlebar from "./components/DesktopTitlebar.vue";
-import LoadingView from "./views/LoadingView.vue";
-import UpdateRequiredView from "./views/UpdateRequiredView.vue";
-import SideBar from "./components/SideBar.vue";
+import DesktopTitlebar from "@/components/DesktopTitlebar.vue";
+import LoadingView from "@/views/LoadingView.vue";
+import UpdateRequiredView from "@/views/UpdateRequiredView.vue";
+import SideBar from "@/components/SideBar.vue";
 import { computed, ref, watch, onMounted } from "vue";
 import { useRoute } from "vue-router";
-import UserInviteModal from "./components/UserInviteModal.vue";
+import UserInviteModal from "@/components/UserInviteModal.vue";
 import { isDesktop, isMobile } from "./global/helpers";
 import { useStore } from "./global/store";
-import AppDownloadBanner from "./components/AppDownloadBanner.vue";
-import WelcomeModal from "./components/WelcomeModal.vue";
-import EmailVerifyBanner from "./components/EmailVerifyBanner.vue";
-import SettingsModal from "./components/SettingsModal.vue";
+import AppDownloadBanner from "@/components/AppDownloadBanner.vue";
+import WelcomeModal from "@/components/WelcomeModal.vue";
+import EmailVerifyBanner from "@/components/EmailVerifyBanner.vue";
+import SettingsModal from "@/components/SettingsModal.vue";
 import { ColorMode, ColorTheme } from "@/../../hyalus-server/src/types";
-import StreamerModeBanner from "./components/StreamerModeBanner.vue";
-import QuickSwitcher from "./components/QuickSwitcher.vue";
+import StreamerModeBanner from "@/components/StreamerModeBanner.vue";
+import QuickSwitcher from "@/components/QuickSwitcher.vue";
 
 const store = useStore();
 

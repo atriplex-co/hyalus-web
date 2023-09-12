@@ -1,9 +1,9 @@
 <template>
-  <tr>
+  <tr class="h-16">
     <td>
-      <div class="flex items-center space-x-4">
-        <UserAvatar :avatar="invite.user.avatar" class="h-10 w-10 rounded-full" />
-        <div>
+      <div class="flex items-center space-x-3">
+        <UserAvatar :avatar="invite.user.avatar" class="h-8 w-8 rounded-full" />
+        <div class="-space-y-0.5">
           <p class="text-sm font-semibold">{{ invite.user.name }}</p>
           <p class="text-sm text-ctp-subtext0">@{{ invite.user.username }}</p>
         </div>

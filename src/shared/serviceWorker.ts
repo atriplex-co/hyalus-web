@@ -7,7 +7,7 @@ import {
 import { idbGet } from "@/global/idb";
 import type { IConfig } from "@/global/types";
 import sodium from "libsodium-wrappers";
-import ImageIcon from "../assets/images/icon-background.png";
+import ImageIcon from "@/assets/images/icon-background.png";
 import { cleanupOutdatedCaches, precacheAndRoute } from "workbox-precaching";
 
 declare const self: ServiceWorkerGlobalScope;

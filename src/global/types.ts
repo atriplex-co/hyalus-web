@@ -285,6 +285,8 @@ export interface ISpace {
   self: ISpaceSelf;
   roles: ISpaceRole[];
   members: ISpaceMember[];
+  emojis: ISpaceEmoji[];
+  allowEmojiUse: boolean;
 }
 
 export interface ISpaceMember {
@@ -376,4 +378,16 @@ export interface IExperiment {
   id: string;
   default: string;
   options: string[];
+}
+
+export interface ISpaceEmoji {
+  id: string;
+  createdAt: Date;
+  creator: {
+    id: string;
+    name: string;
+    username: string;
+    avatar: string | null;
+  };
+  name: string;
 }

@@ -2,7 +2,7 @@ import { fileURLToPath, URL } from "node:url";
 import { defineConfig, splitVendorChunkPlugin } from "vite";
 import vue from "@vitejs/plugin-vue";
 import { getManifest } from "workbox-build";
-import fs from "fs";
+import fs from "node:fs";
 
 // https://vitejs.dev/config/
 export default defineConfig({

@@ -35,7 +35,7 @@ import PencilIcon from "@/icons/PencilIcon.vue";
 import axios from "axios";
 import { useStore } from "@/global/store";
 import msgpack from "msgpack-lite";
-import { ChannelType } from "../../../hyalus-server/src/types";
+import { ChannelType } from "@/../../hyalus-server/src/types";
 
 const store = useStore();
 const props = defineProps({

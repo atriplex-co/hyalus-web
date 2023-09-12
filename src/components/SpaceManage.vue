@@ -56,6 +56,17 @@
         <EnvelopeIcon class="h-5 w-5" />
         <p>Invites</p>
       </div>
+      <div
+        v-if="allowManageEmojis"
+        class="flex cursor-pointer items-center space-x-4 rounded-md px-3 py-1.5 transition hover:bg-ctp-base/50"
+        :class="{
+          'bg-ctp-base text-ctp-text': active === 'emojis',
+        }"
+        @click="active = 'emojis'"
+      >
+        <FaceSmileIcon class="h-5 w-5" />
+        <p>Emojis</p>
+      </div>
       <div class="px-3 py-2">
         <div class="border-t border-ctp-surface0/50"></div>
       </div>
@@ -79,6 +90,7 @@
       <SpaceManageMembers v-if="active === 'members'" :space="space" />
       <SpaceManageInvites v-if="active === 'invites'" :space="space" />
       <SpaceManageBans v-if="active === 'bans'" :space="space" />
+      <SpaceManageEmojis v-if="active === 'emojis'" :space="space" />
     </template>
   </SplitModal>
   <SpaceDeleteModal v-if="deleteModal" :space="space" @close="deleteModal = false" />
@@ -87,6 +99,7 @@
 <script lang="ts" setup>
 import {
   EnvelopeIcon,
+  FaceSmileIcon,
   InformationCircleIcon,
   ShieldExclamationIcon,
   TagIcon,
@@ -104,6 +117,7 @@ import type { ISpace } from "@/global/types";
 import SpaceDeleteModal from "./SpaceDeleteModal.vue";
 import { checkSpacePermissions } from "@/global/helpers";
 import { SpacePermission } from "@/../../hyalus-server/src/types";
+import SpaceManageEmojis from "./SpaceManageEmojis.vue";
 
 defineEmits(["close"]);
 
@@ -124,7 +138,7 @@ const props = defineProps({
 // -> Members
 // -> Invites
 // -> Bans
-// -> Emotes (TODO)
+// -> Emojis
 // -> Logs (TODO)
 
 const allowManageSpace = computed(() => {
@@ -144,6 +158,13 @@ const allowManageRoles = computed(() => {
 const allowBanMember = computed(() => {
   return checkSpacePermissions({
     permissions: SpacePermission.BanMember,
+    spaceId: props.space.id,
+  });
+});
+
+const allowManageEmojis = computed(() => {
+  return checkSpacePermissions({
+    permissions: SpacePermission.ManageEmojis,
     spaceId: props.space.id,
   });
 });

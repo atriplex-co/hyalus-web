@@ -1,5 +1,5 @@
 import sodium from "libsodium-wrappers";
-import { router } from "../router";
+import { router } from "@/router";
 import {
   CallStreamType,
   ChannelType,
@@ -34,10 +34,10 @@ import {
 } from "./helpers";
 import { store } from "@/global/store";
 import axios from "axios";
-import SoundStateUp from "../assets/sounds/state-change_confirm-up.ogg";
-import SoundStateDown from "../assets/sounds/state-change_confirm-down.ogg";
+import SoundStateUp from "@/assets/sounds/state-change_confirm-up.ogg";
+import SoundStateDown from "@/assets/sounds/state-change_confirm-down.ogg";
 import msgpack from "msgpack-lite";
-import VoiceCryptoWorker from "../shared/voiceCryptoWorker?worker";
+import VoiceCryptoWorker from "@/shared/voiceCryptoWorker?worker";
 
 let updateCheck: string;
 let awayController: AbortController;
@@ -208,6 +208,18 @@ export class Socket {
               roleIds: string[];
               alias: string | null;
             }[];
+            emojis: {
+              id: string;
+              createdAt: number;
+              creator: {
+                id: string;
+                name: string;
+                username: string;
+                avatar: string | null;
+              };
+              name: string;
+            }[];
+            allowEmojiUse: boolean;
           }[];
           voiceStates: {
             id: string;
@@ -344,6 +356,13 @@ export class Socket {
               roleIds: member.roleIds,
               username: member.username,
             })),
+            emojis: space.emojis.map((emoji) => ({
+              id: emoji.id,
+              createdAt: new Date(emoji.createdAt),
+              name: emoji.name,
+              creator: emoji.creator,
+            })),
+            allowEmojiUse: space.allowEmojiUse,
           });
         }
 
@@ -1166,6 +1185,18 @@ export class Socket {
               deny: number;
             }[];
           }[];
+          emojis: {
+            id: string;
+            createdAt: number;
+            creator: {
+              id: string;
+              name: string;
+              username: string;
+              avatar: string | null;
+            };
+            name: string;
+          }[];
+          allowEmojiUse: boolean;
         };
 
         store.spaces.push({
@@ -1192,6 +1223,13 @@ export class Socket {
             status: member.status,
             username: member.username,
           })),
+          emojis: data.emojis.map((emoji) => ({
+            id: emoji.id,
+            createdAt: new Date(emoji.createdAt),
+            name: emoji.name,
+            creator: emoji.creator,
+          })),
+          allowEmojiUse: data.allowEmojiUse,
         });
 
         for (const channel of data.channels) {
@@ -1227,6 +1265,7 @@ export class Socket {
             addedAt?: number;
             position?: number;
           };
+          allowEmojiUse?: boolean;
         };
 
         const space = store.spaces.find((space) => space.id === data.id);
@@ -1242,6 +1281,7 @@ export class Socket {
             avatar: data.avatar,
             defaultAllow: data.defaultAllow,
             defaultNotificationMode: data.defaultNotificationMode,
+            allowEmojiUse: data.allowEmojiUse,
           }),
         );
 
@@ -1875,6 +1915,72 @@ export class Socket {
           status: data.status,
           statusText: data.statusText,
         });
+      }
+
+      if (msg.t === SocketMessageType.SSpaceEmojiCreate) {
+        const data = msg.d as {
+          spaceId: string;
+          id: string;
+          createdAt: number;
+          creator: {
+            id: string;
+            name: string;
+            username: string;
+            avatar: string | null;
+          };
+          name: string;
+        };
+
+        const space = store.spaces.find((space) => space.id === data.spaceId);
+        if (!space) {
+          return console.warn(`SSpaceEmojiCreate for unknown space: ${data.spaceId}`);
+        }
+
+        space.emojis.push({
+          id: data.id,
+          createdAt: new Date(data.createdAt),
+          creator: data.creator,
+          name: data.name,
+        });
+      }
+
+      if (msg.t === SocketMessageType.SSpaceEmojiUpdate) {
+        const data = msg.d as {
+          spaceId: string;
+          id: string;
+          name?: string;
+        };
+
+        const space = store.spaces.find((space) => space.id === data.spaceId);
+        if (!space) {
+          return console.warn(`SSpaceEmojiUpdate for unknown space: ${data.spaceId}`);
+        }
+
+        const emoji = space.emojis.find((emoji) => emoji.id === data.id);
+        if (!emoji) {
+          return console.warn(`SSpaceEmojiUpdate for unknown emoji: ${data.id}`);
+        }
+
+        Object.assign(
+          emoji,
+          cleanObject({
+            name: data.name,
+          }),
+        );
+      }
+
+      if (msg.t === SocketMessageType.SSpaceEmojiDelete) {
+        const data = msg.d as {
+          spaceId: string;
+          id: string;
+        };
+
+        const space = store.spaces.find((space) => space.id === data.spaceId);
+        if (!space) {
+          return console.warn(`SSpaceEmojiDelete for unknown space: ${data.spaceId}`);
+        }
+
+        space.emojis = space.emojis.filter((emoji) => emoji.id !== data.id);
       }
 
       // add new WS message types here!

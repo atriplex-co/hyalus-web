@@ -29,6 +29,7 @@
       </div>
     </div>
     <OverlayScrollbarsComponent
+      v-if="channels.length"
       defer
       class="min-h-0 h-full flex-1"
       :options="{

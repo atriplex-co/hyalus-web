@@ -8,8 +8,8 @@ import {
   SpacePermission,
   Status,
 } from "@/../../hyalus-server/src/types";
-import SoundNotification from "../assets/sounds/notification_simple-01.ogg";
-import ImageIcon from "../assets/images/icon-background.png";
+import SoundNotification from "@/assets/sounds/notification_simple-01.ogg";
+import ImageIcon from "@/assets/images/icon-background.png";
 import type {
   ICallPersist,
   IChannel,

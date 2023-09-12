@@ -7,7 +7,7 @@
 
 <script lang="ts" setup>
 import MarkdownIt from "markdown-it";
-import changelog from "../../CHANGELOG.md?raw";
+import changelog from "@/../CHANGELOG.md?raw";
 
 const changelogHtml = new MarkdownIt().render(changelog);
 </script>

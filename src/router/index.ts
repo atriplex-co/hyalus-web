@@ -36,30 +36,30 @@ export const router = createRouter({
     {
       name: "home",
       path: "/",
-      component: () => import("../views/HomeView.vue"),
+      component: () => import("@/views/HomeView.vue"),
     },
     {
       name: "app",
       path: "/app",
-      component: () => import("../views/AppView.vue"),
+      component: () => import("@/views/AppView.vue"),
       beforeEnter: requireAuth,
     },
     {
       name: "auth",
       path: "/auth",
-      component: () => import("../views/AuthView.vue"),
+      component: () => import("@/views/AuthView.vue"),
       beforeEnter: requireNoAuth,
     },
     {
       name: "channel",
       path: "/channels/:channelId",
-      component: () => import("../views/ChannelView.vue"),
+      component: () => import("@/views/ChannelView.vue"),
       beforeEnter: requireAuth,
     },
     {
       name: "add",
       path: "/add/:username",
-      component: () => import("../views/AppView.vue"),
+      component: () => import("@/views/AppView.vue"),
       beforeEnter: (
         to: RouteLocationNormalized,
         _from: RouteLocationNormalized,
@@ -72,12 +72,12 @@ export const router = createRouter({
     {
       name: "verify",
       path: "/verify/:key",
-      component: () => import("../views/VerifyView.vue"),
+      component: () => import("@/views/VerifyView.vue"),
     },
     {
       name: "not-found",
       path: "/:pathMatch(.*)*",
-      component: () => import("../views/NotFoundView.vue"),
+      component: () => import("@/views/NotFoundView.vue"),
     },
   ],
 });
