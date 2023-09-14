@@ -716,7 +716,7 @@ onMounted(async () => {
   }
 });
 
-const keydownHandler = (e: KeyboardEvent) => {
+const onKeydown = (e: KeyboardEvent) => {
   if (e.key === "Escape") {
     replyMessage.value = null;
     return;
@@ -727,11 +727,22 @@ const keydownHandler = (e: KeyboardEvent) => {
     // TOOD: make this work without breaking so much shit.
   }
 };
-addEventListener("keydown", keydownHandler);
+
+const onFocusIn = () => {
+  () => {
+    if (!scrollUpdated.value) {
+      updateReadAt();
+    }
+  };
+};
+
+addEventListener("keydown", onKeydown);
+addEventListener("focusin", onFocusIn);
 
 onUnmounted(() => {
   clearTimeout(updateTypingStatusTimeout);
-  removeEventListener("keydown", keydownHandler);
+  removeEventListener("keydown", onKeydown);
+  removeEventListener("focusin", onFocusIn);
 });
 
 watch(
@@ -792,12 +803,6 @@ const onScroll = () => {
     scrollUpdated.value = true;
   }
 };
-
-addEventListener("focusin", () => {
-  if (!scrollUpdated.value) {
-    updateReadAt();
-  }
-});
 
 watch(
   () => channel.value?.activeAt,
