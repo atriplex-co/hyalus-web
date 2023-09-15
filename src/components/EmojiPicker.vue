@@ -55,12 +55,14 @@
 </template>
 
 <script setup lang="ts">
-import { emojis } from "@/../build/fluentui-emoji/metadata.json";
+import { emojis as _emojis } from "@/../build/fluentui-emoji/metadata.json";
 import { onUnmounted, ref } from "vue";
 import EmojiItem from "./EmojiItem.vue";
 import { useStore } from "@/global/store";
 import UserAvatar from "./UserAvatar.vue";
 import EmptyAvatar from "./EmptyAvatar.vue";
+
+const emojis = Array.from(_emojis).sort((a, b) => (a.glyph < b.glyph ? 1 : -1));
 
 const groups = [
   { name: "Smileys & Emotion", emoji: "grinning_face" },
