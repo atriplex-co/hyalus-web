@@ -205,6 +205,7 @@ const submit = async () => {
 
       if (data.totpRequired) {
         mode.value = "loginTotp";
+        ready.value = true;
         return;
       }
 
