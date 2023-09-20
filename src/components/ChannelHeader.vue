@@ -125,7 +125,7 @@
 import axios from "axios";
 import { CallStreamType, ChannelType } from "@/../../hyalus-server/src/types";
 import { computed, type PropType, ref } from "vue";
-import { isMobile } from "@/global/helpers";
+import { isMobile, postImage } from "@/global/helpers";
 import { useStore } from "@/global/store";
 import type { IChannel, ISpace } from "@/global/types";
 import UserAvatar from "./UserAvatar.vue";
@@ -172,25 +172,7 @@ const setAvatar = () => {
     return;
   }
 
-  const el = document.createElement("input");
-
-  el.addEventListener("input", async () => {
-    if (!el.files) {
-      return;
-    }
-
-    const form = new FormData();
-    form.append("avatar", el.files[0]);
-
-    await axios.post(`/api/v1/channels/${props.channel.id}/avatar`, form, {
-      headers: {
-        "Content-Type": "multipart/form-data",
-      },
-    });
-  });
-
-  el.type = "file";
-  el.click();
+  postImage(`/api/v1/channels/${props.channel.id}/avatar`);
 };
 
 const callStart = async (e: MouseEvent) => {

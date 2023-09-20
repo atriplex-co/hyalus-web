@@ -7,7 +7,7 @@
           <p class="text-sm font-semibold">Avatar</p>
           <div
             class="transition-gray-400 relative h-32 w-32 cursor-pointer overflow-hidden rounded-full bg-ctp-crust shadow-sm ring-ctp-accent transition"
-            @click="setAvatar"
+            @click="postImage(`/api/v1/spaces/${space.id}/avatar`)"
           >
             <UserAvatar
               v-if="space.avatar"
@@ -56,6 +56,7 @@ import axios from "axios";
 import { type PropType, ref } from "vue";
 import type { ISpace } from "@/global/types";
 import UserAvatar from "./UserAvatar.vue";
+import { postImage } from "@/global/helpers";
 
 const props = defineProps({
   space: {
@@ -68,28 +69,6 @@ const props = defineProps({
 
 // eslint-disable-next-line vue/no-setup-props-destructure
 const name = ref(props.space.name);
-
-const setAvatar = async () => {
-  const el = document.createElement("input");
-
-  el.addEventListener("input", async () => {
-    if (!el.files) {
-      return;
-    }
-
-    const form = new FormData();
-    form.append("avatar", el.files[0]);
-
-    await axios.post(`/api/v1/spaces/${props.space.id}/avatar`, form, {
-      headers: {
-        "Content-Type": "multipart/form-data",
-      },
-    });
-  });
-
-  el.type = "file";
-  el.click();
-};
 
 const deleteAvatar = async () => {
   await axios.delete(`/api/v1/spaces/${props.space.id}/avatar`);

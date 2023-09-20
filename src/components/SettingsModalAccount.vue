@@ -7,7 +7,7 @@
       <div class="flex items-center space-x-4">
         <div
           class="transition-gray-400 relative h-16 w-16 cursor-pointer overflow-hidden rounded-full bg-ctp-crust text-ctp-overlay0 shadow-sm ring-ctp-accent transition"
-          @click="setAvatar"
+          @click="postImage(`/api/v1/users/me/avatar`)"
         >
           <UserAvatar
             v-if="store.self.avatar"
@@ -139,6 +139,7 @@ import TotpEnableModal from "./TotpEnableModal.vue";
 import TotpDisableModal from "./TotpDisableModal.vue";
 import UserAvatar from "./UserAvatar.vue";
 import { SettingsPage } from "@/global/types";
+import { postImage } from "@/global/helpers";
 
 defineEmits(["activate"]);
 
@@ -149,28 +150,6 @@ const setEmailModal = ref(false);
 const setPhoneModal = ref(false);
 const setPasswordModal = ref(false);
 const totpModal = ref(false);
-
-const setAvatar = async () => {
-  const el = document.createElement("input");
-
-  el.addEventListener("input", async () => {
-    if (!el.files) {
-      return;
-    }
-
-    const form = new FormData();
-    form.append("avatar", el.files[0]);
-
-    await axios.post("/api/v1/users/me/avatar", form, {
-      headers: {
-        "Content-Type": "multipart/form-data",
-      },
-    });
-  });
-
-  el.type = "file";
-  el.click();
-};
 
 watch(
   () => store.self!.totpEnabled,

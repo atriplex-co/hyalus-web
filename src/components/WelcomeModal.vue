@@ -15,7 +15,7 @@
         <p>Get started by setting up your account.</p>
         <div
           class="relative h-16 w-16 cursor-pointer overflow-hidden rounded-full bg-ctp-crust shadow-sm ring-ctp-accent transition"
-          @click="setAvatar"
+          @click="postImage('/api/v1/users/me/avatar')"
         >
           <UserAvatar
             v-if="store.self.avatar"
@@ -119,7 +119,7 @@ import ModalInput from "./ModalInput.vue";
 import axios from "axios";
 import { useStore } from "@/global/store";
 import UserAvatar from "./UserAvatar.vue";
-import { prettyError } from "@/global/helpers";
+import { postImage, prettyError } from "@/global/helpers";
 import { ColorMode } from "@/../../hyalus-server/src/types";
 import InputList from "./InputList.vue";
 import InputListItem from "./InputListItem.vue";
@@ -146,28 +146,6 @@ const submit = async () => {
   }
 
   emit("close");
-};
-
-const setAvatar = async () => {
-  const el = document.createElement("input");
-
-  el.addEventListener("input", async () => {
-    if (!el.files) {
-      return;
-    }
-
-    const form = new FormData();
-    form.append("avatar", el.files[0]);
-
-    await axios.post("/api/v1/users/me/avatar", form, {
-      headers: {
-        "Content-Type": "multipart/form-data",
-      },
-    });
-  });
-
-  el.type = "file";
-  el.click();
 };
 
 const usableColorModes = [ColorMode.Light, ColorMode.Dark, ColorMode.DarkOLED];

@@ -7,7 +7,7 @@
           <p class="text-sm font-semibold">Avatar</p>
           <div
             class="transition-gray-400 relative h-32 w-32 cursor-pointer overflow-hidden rounded-full bg-ctp-crust shadow-sm ring-ctp-accent transition"
-            @click="setAvatar('avatar')"
+            @click="postImage('/api/v1/users/me/avatar')"
           >
             <UserAvatar
               v-if="store.self.avatar"
@@ -35,7 +35,7 @@
           <p class="text-sm font-semibold">Banner</p>
           <div
             class="transition-gray-400 relative aspect-[3/1] h-32 cursor-pointer overflow-hidden rounded-md bg-ctp-crust shadow-sm ring-ctp-accent transition"
-            @click="setAvatar('banner')"
+            @click="postImage(`/api/v1/users/me/banner`)"
           >
             <img
               v-if="store.self.banner"
@@ -91,33 +91,12 @@ import axios from "axios";
 import { ref } from "vue";
 import { useStore } from "@/global/store";
 import UserAvatar from "./UserAvatar.vue";
+import { postImage } from "@/global/helpers";
 
 const store = useStore();
 
 const name = ref(store.self?.name || "");
 const bio = ref(store.self?.bio || "");
-
-const setAvatar = async (type: string) => {
-  const el = document.createElement("input");
-
-  el.addEventListener("input", async () => {
-    if (!el.files) {
-      return;
-    }
-
-    const form = new FormData();
-    form.append("avatar", el.files[0]);
-
-    await axios.post(`/api/v1/users/me/${type}`, form, {
-      headers: {
-        "Content-Type": "multipart/form-data",
-      },
-    });
-  });
-
-  el.type = "file";
-  el.click();
-};
 
 const deleteAvatar = async (type: string) => {
   await axios.delete(`/api/v1/users/me/${type}`);

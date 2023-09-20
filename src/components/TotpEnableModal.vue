@@ -5,10 +5,15 @@
     </template>
     <template #main>
       <div class="overflow-hidden rounded-md border border-ctp-base shadow-sm">
-        <img
+        <!-- <img
           class="h-full w-full"
           :src="qrcodeUrl"
           style="filter: contrast(87%) invert() sepia() saturate(150%) hue-rotate(180deg)"
+        /> -->
+        <img
+          class="h-full w-full"
+          :src="qrcodeUrl"
+          style="filter: contrast(90%) invert() saturate(150%)"
         />
       </div>
       <div class="space-y-2 text-sm">

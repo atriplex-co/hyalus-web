@@ -528,3 +528,54 @@ export const experimentValueToComputed = (id: string) =>
       await store.writeConfig("experiments", experiments);
     },
   });
+
+export const scaleImage = async (data: Blob, maxWidth = 2048, maxHeight = 2048) => {
+  const image = await createImageBitmap(data);
+  if (image.width > maxWidth || image.height > maxHeight) {
+    const canvas = document.createElement("canvas");
+    canvas.width = image.width;
+    canvas.height = image.height;
+    if (canvas.width > maxWidth) {
+      canvas.height = Math.floor((canvas.height / canvas.width) * maxWidth);
+      canvas.width = maxWidth;
+    }
+    if (canvas.height > maxHeight) {
+      canvas.width = Math.floor((canvas.width / canvas.height) * maxHeight);
+      canvas.height = maxHeight;
+    }
+    const ctx = canvas.getContext("2d")!;
+    ctx.drawImage(image, 0, 0, canvas.width, canvas.height);
+    const scaled = await new Promise<Blob>((resolve) => {
+      canvas.toBlob((blob) => {
+        resolve(blob!);
+      }, "image/png");
+    });
+    image.close();
+    return scaled;
+  } else {
+    image.close();
+    return data;
+  }
+};
+
+export const postImage = async (url: string) => {
+  const el = document.createElement("input");
+
+  el.addEventListener("input", async () => {
+    if (!el.files || !el.files[0]) {
+      return;
+    }
+
+    const form = new FormData();
+    form.set("avatar", await scaleImage(el.files[0]));
+
+    await axios.post(url, form, {
+      headers: {
+        "Content-Type": "multipart/form-data",
+      },
+    });
+  });
+
+  el.type = "file";
+  el.click();
+};
