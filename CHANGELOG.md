@@ -1,3 +1,13 @@
+## 2023.09.19
+
+- Improved server stability
+- Improved image upload support (client-side)
+
+## 2023.09.12
+
+- Added Emoji Picker
+- Added Server Emoji support
+
 ## 2023.09.08
 
 - Added fancy scrollbars
