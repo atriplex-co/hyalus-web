@@ -129,7 +129,7 @@ import {
   TvIcon,
 } from "@heroicons/vue/24/solid";
 import axios from "axios";
-import { ref } from "vue";
+import { ref, watch } from "vue";
 import { useStore } from "@/global/store";
 import SetEmailModal from "./SetEmailModal.vue";
 import SetPasswordModal from "./SetPasswordModal.vue";
@@ -171,4 +171,11 @@ const setAvatar = async () => {
   el.type = "file";
   el.click();
 };
+
+watch(
+  () => store.self!.totpEnabled,
+  () => {
+    totpModal.value = false;
+  },
+);
 </script>
