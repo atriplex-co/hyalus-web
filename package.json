@@ -12,7 +12,7 @@
     "postinstall": "test -d node_modules/sharp && node scripts/postinstall || true"
   },
   "devDependencies": {
-    "@catppuccin/highlightjs": "^0.1.3",
+    "@catppuccin/highlightjs": "^0.1.2",
     "@catppuccin/tailwindcss": "^0.1.6",
     "@heroicons/vue": "^2.0.18",
     "@rushstack/eslint-patch": "^1.4.0",
