@@ -3,7 +3,7 @@
 </template>
 
 <script setup lang="ts">
-import { emojis } from "@/../build/fluentui-emoji/metadata.json";
+import { emojis } from "hyalus-fluentui-emoji/dist/metadata.json";
 import { useStore } from "@/global/store";
 import { ref } from "vue";
 

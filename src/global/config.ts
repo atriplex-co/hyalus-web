@@ -2,7 +2,7 @@ import MarkdownIt from "markdown-it";
 import highlight from "highlight.js";
 import type Renderer from "markdown-it/lib/renderer";
 import type { IExperiment } from "./types";
-import { emojis } from "@/../build/fluentui-emoji/metadata.json";
+import { emojis } from "hyalus-fluentui-emoji/dist/metadata.json";
 import { store } from "./store";
 
 export const MaxFileSize = 1024 * 1024 * 50;

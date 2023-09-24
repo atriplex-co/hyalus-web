@@ -315,7 +315,6 @@ import {
 } from "libsodium-wrappers";
 import axios from "axios";
 import { useStore } from "@/global/store";
-import Promise from "bluebird";
 import UserModal from "./UserModal.vue";
 import { checkSpacePermissions } from "@/global/helpers";
 import { ArrowUturnLeftIcon, PencilIcon, TrashIcon } from "@heroicons/vue/20/solid";

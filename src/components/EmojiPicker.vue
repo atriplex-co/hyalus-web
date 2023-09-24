@@ -55,7 +55,7 @@
 </template>
 
 <script setup lang="ts">
-import { emojis as _emojis } from "@/../build/fluentui-emoji/metadata.json";
+import { emojis as _emojis } from "hyalus-fluentui-emoji/dist/metadata.json";
 import { onUnmounted, ref } from "vue";
 import EmojiItem from "./EmojiItem.vue";
 import { useStore } from "@/global/store";
