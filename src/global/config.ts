@@ -100,11 +100,7 @@ export const messageFormatter = new MarkdownIt("zero", {
         asset = `/fluentui-emoji/${appEmoji.asset}`;
         alt = appEmoji.glyph;
       }
-      const spaceEmoji = store.spaces
-        .map((space) => space.emojis)
-        .reduce((a, b) => a.concat(b), [])
-        .find((emoji) => emoji.id === id);
-      if (spaceEmoji) {
+      if (/^[0-9a-f]{8}-[0-9a-f]{4}-[0-9a-f]{4}-[0-9a-f]{4}-[0-9a-f]{12}$/.test(id)) {
         asset = `/api/v1/emojis/${id}`;
         alt = `:${id}:`;
       }
