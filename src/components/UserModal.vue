@@ -225,10 +225,12 @@
               <p>No mutual groups.</p>
             </div>
             <div v-if="mutualGroups.length" class="space-y-2">
-              <div
+              <router-link
                 v-for="mutualGroup in mutualGroups"
                 :key="mutualGroup.id"
-                class="flex items-center space-x-2 rounded-md bg-ctp-base p-2"
+                :to="`/channels/${mutualGroup.id}`"
+                class="flex items-center space-x-2 rounded-md bg-ctp-base p-2 hover:bg-ctp-base/50 transition"
+                @click="$emit('close')"
               >
                 <div
                   class="flex h-8 w-8 items-center justify-center overflow-hidden rounded-full bg-ctp-surface0"
@@ -244,7 +246,7 @@
                     {{ mutualGroup.members.length + 1 }} Members
                   </p>
                 </div>
-              </div>
+              </router-link>
             </div>
           </template>
         </div>
