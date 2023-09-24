@@ -53,7 +53,7 @@
             <div class="space-y-1">
               <MessageItem
                 v-for="[k, message] in Object.entries(channel.messages)"
-                :key="k"
+                :key="message.id"
                 :index="+k"
                 :message="message"
                 :channel="channel"
@@ -795,8 +795,8 @@ store.sideBarOpen = false;
 
 const onScroll = () => {
   if (
-    messageList.value!.scrollTop ===
-    messageList.value!.scrollHeight - messageList.value!.offsetHeight
+    messageList.value &&
+    messageList.value.scrollTop === messageList.value.scrollHeight - messageList.value.offsetHeight
   ) {
     scrollUpdated.value = false; // yes this code sucks i'm tired fuck off
   } else {
