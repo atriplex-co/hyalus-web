@@ -1304,6 +1304,13 @@ export class Socket {
           id: string;
         };
 
+        // clear voice states
+        for (const channel of store.channels) {
+          if (channel.spaceId === data.id) {
+            store.voiceStates = store.voiceStates.filter((state) => state.channelId !== channel.id);
+          }
+        }
+
         store.spaces = store.spaces.filter((v) => v.id !== data.id);
         store.channels = store.channels.filter((v) => v.spaceId !== data.id);
       }
