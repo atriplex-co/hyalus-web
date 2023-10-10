@@ -34,6 +34,7 @@
       'bg-ctp-surface0/50': route.path === `/channels/${channel.id}`,
     }"
     @click="click($event)"
+    @contextmenu="menu!.open($event)"
   >
     <div class="flex items-center space-x-1.5">
       <div class="h-5 w-5 text-ctp-overlay0">
@@ -72,6 +73,7 @@
     :parent-id="channel.id"
     @close="createModal = false"
   />
+  <ChannelContextMenu ref="menu" :channel="channel" :space="space" />
 </template>
 
 <script lang="ts" setup>
@@ -82,7 +84,7 @@ import {
   SpacePermission,
   VoiceStateFlags,
 } from "@/../../hyalus-server/src/types";
-import { computed, type PropType, ref } from "vue";
+import { computed, type PropType, ref, type Ref } from "vue";
 import { useRoute, useRouter } from "vue-router";
 import { checkSpacePermissions } from "@/global/helpers";
 import { useStore } from "@/global/store";
@@ -90,6 +92,7 @@ import type { IChannel, ISelf, ISpace, ISpaceMember } from "@/global/types";
 import SpaceChannelCreateModal from "./SpaceChannelCreateModal.vue";
 import SpaceChannelManage from "./SpaceChannelManage.vue";
 import SideBarSpaceVoiceUser from "./SideBarSpaceVoiceUser.vue";
+import ChannelContextMenu from "./ChannelContextMenu.vue";
 
 const router = useRouter();
 const route = useRoute();
@@ -110,6 +113,7 @@ const props = defineProps({
 });
 const manageModal = ref(false);
 const createModal = ref(false);
+const menu: Ref<typeof ChannelContextMenu | null> = ref(null);
 
 const children = computed(() => {
   if (props.channel.type !== ChannelType.SpaceCategory) {

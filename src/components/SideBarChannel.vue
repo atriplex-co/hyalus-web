@@ -5,6 +5,7 @@
       'bg-ctp-base': selected,
     }"
     :to="`/channels/${channel.id}`"
+    @contextmenu="menu!.open($event)"
   >
     <div class="h-8 w-8">
       <UserAvatar
@@ -41,16 +42,18 @@
       </p>
     </div>
   </router-link>
+  <ChannelContextMenu ref="menu" :channel="channel" />
 </template>
 
 <script lang="ts" setup>
 import UserAvatar from "./UserAvatar.vue";
-import { computed, type PropType } from "vue";
+import { computed, type PropType, ref, type Ref } from "vue";
 import type { IChannel } from "@/global/types";
 import { useRoute } from "vue-router";
 import { ChannelType } from "@/../../hyalus-server/src/types";
 import { getChannelState, getStatus } from "@/global/helpers";
 import { UserGroupIcon } from "@heroicons/vue/20/solid";
+import ChannelContextMenu from "./ChannelContextMenu.vue";
 
 const props = defineProps({
   channel: {
@@ -103,4 +106,6 @@ const description = computed(() => {
 
   return "";
 });
+
+const menu: Ref<typeof ChannelContextMenu | null> = ref(null);
 </script>

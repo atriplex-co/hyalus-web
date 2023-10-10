@@ -3,7 +3,7 @@
     ref="root"
     class="select-text"
     :class="{
-      'pt-3': firstInChunk && !showDate && !embedded,
+      'pt-2': firstInChunk && !showDate && !embedded,
     }"
   >
     <div v-if="showDate && !embedded" class="relative px-2.5 py-6">
@@ -12,273 +12,298 @@
         <p class="bg-ctp-base px-2">{{ date }}</p>
       </div>
     </div>
-    <div v-if="message.parent" class="flex items-center space-x-1.5 px-5 pb-2 text-xs">
-      <div class="relative w-6 flex-shrink-0">
-        <div
-          class="absolute left-2 h-10 w-4 rounded-tl-lg border-l-2 border-t-2 border-ctp-surface0"
-        ></div>
-      </div>
-      <div class="flex min-w-0 items-center space-x-1.5 rounded-md bg-ctp-surface0 p-1.5">
-        <div
-          class="flex cursor-pointer items-center space-x-1.5 transition"
-          @click="parentUserModal = true"
-        >
-          <UserAvatar class="h-4 w-4" :avatar="message.parent.author.avatar" />
-          <p class="text-ctp-white">{{ message.parent.author.name }}</p>
-        </div>
-        <div
-          class="flex flex-1 space-x-2 truncate text-ctp-subtext0"
-          v-html="message.parent.dataFormatted"
-        ></div>
-      </div>
-    </div>
     <div
-      v-if="isEvent(message)"
-      class="group mx-4 flex items-center justify-between rounded-[4px] border-l-4 bg-ctp-mantle px-3 py-2.5 text-sm shadow-md"
       :class="{
-        'border-ctp-surface0': !sentByMe,
-        'border-ctp-accent': sentByMe,
+        'hover:bg-ctp-mantle py-1': !embedded,
       }"
+      @contextmenu="messageMenu!.open($event)"
     >
-      <div class="flex items-center space-x-3">
-        <div class="h-4 w-4 text-ctp-subtext0">
-          <FriendsIcon v-if="message.type === MessageType.FriendAccept" />
-          <GroupIcon v-if="message.type === MessageType.GroupCreate" />
-          <UserAddIcon v-if="message.type === MessageType.GroupAdd" />
-          <UserRemoveIcon v-if="message.type === MessageType.GroupRemove" />
-          <LogoutIcon v-if="message.type === MessageType.GroupLeave" />
-          <PencilIcon v-if="message.type === MessageType.GroupName" />
-          <PhotographIcon v-if="message.type === MessageType.GroupAvatar" />
+      <div v-if="message.parent" class="flex items-center space-x-1.5 px-5 pb-2 text-xs">
+        <div class="relative w-6 flex-shrink-0">
+          <div
+            class="absolute left-2 h-10 w-4 rounded-tl-lg border-l-2 border-t-2 border-ctp-surface0"
+          ></div>
         </div>
-        <p class="text-ctp-text">{{ message.dataString }}</p>
-      </div>
-      <p class="text-ctp-subtext0 opacity-0 transition group-hover:opacity-100">
-        {{ time }}
-      </p>
-    </div>
-    <div
-      v-if="!isEvent(message)"
-      class="group flex items-end space-x-2"
-      :class="{
-        'mx-4': !embedded,
-        'flex-row-reverse space-x-reverse': store.config.adaptiveLayout && sentByMe,
-      }"
-    >
-      <div class="relative h-8 w-8">
-        <UserAvatar
-          v-if="lastInChunk || embedded"
-          :avatar="message.author.avatar"
-          class="h-8 w-8 flex-shrink-0 cursor-pointer rounded-full"
-          @click="userModal = true"
-        />
+        <div class="flex min-w-0 items-center space-x-1.5 rounded-md bg-ctp-surface0 p-1.5">
+          <div
+            class="flex cursor-pointer items-center space-x-1.5 transition"
+            @click="
+              userModalId = message.parent.author.id;
+              userModal = true;
+            "
+          >
+            <UserAvatar class="h-4 w-4" :avatar="message.parent.author.avatar" />
+            <p class="text-ctp-white">{{ message.parent.author.name }}</p>
+          </div>
+          <div
+            class="flex flex-1 space-x-2 truncate text-ctp-subtext0"
+            v-html="message.parent.dataFormatted"
+          ></div>
+        </div>
       </div>
       <div
-        class="flex min-w-0 max-w-full flex-1 flex-col items-start space-y-1"
+        v-if="isEvent(message)"
+        class="group mx-4 flex items-center justify-between rounded-[4px] border-l-4 bg-ctp-mantle px-3 py-2.5 text-sm shadow-md"
         :class="{
-          'items-end': store.config.adaptiveLayout && sentByMe,
+          'border-ctp-surface0': !sentByMe,
+          'border-ctp-accent': sentByMe,
         }"
       >
-        <div v-if="firstInChunk" class="flex items-center space-x-1.5 text-xs">
-          <p
-            class="cursor-pointer transition"
-            :class="{
-              'text-ctp-text': !userColor,
-            }"
-            :style="userColor ? `color:${userColor};` : ''"
-            @click="userModal = true"
-          >
-            {{ message.author.name }}
-          </p>
-          <div class="relative text-ctp-overlay2 transition-all">
-            <div
-              class="ttarrow absolute bottom-[calc(100%+0.5rem)] left-[50%] -ml-[5rem] w-[10rem] transform rounded-md bg-ctp-surface0 p-2 text-center text-ctp-text shadow-md transition"
-              :class="{
-                'invisible opacity-0': !timeExpanded,
-              }"
-            >
-              <p>
-                {{ Day(message.createdAt).format("YYYY/MM/DD h:mm:ss A") }}
-              </p>
-            </div>
-            <p @mouseenter="timeExpanded = true" @mouseleave="timeExpanded = false">
-              {{ time }}
-            </p>
+        <div class="flex items-center space-x-3">
+          <div class="h-4 w-4 text-ctp-subtext0">
+            <FriendsIcon v-if="message.type === MessageType.FriendAccept" />
+            <GroupIcon v-if="message.type === MessageType.GroupCreate" />
+            <UserAddIcon v-if="message.type === MessageType.GroupAdd" />
+            <UserRemoveIcon v-if="message.type === MessageType.GroupRemove" />
+            <LogoutIcon v-if="message.type === MessageType.GroupLeave" />
+            <PencilIcon v-if="message.type === MessageType.GroupName" />
+            <PhotographIcon v-if="message.type === MessageType.GroupAvatar" />
           </div>
-          <PencilIcon
-            v-if="+message.createdAt !== +message.updatedAt"
-            class="h-3 w-3 text-ctp-subtext0"
+          <p class="text-ctp-text">{{ message.dataString }}</p>
+        </div>
+        <p class="text-ctp-subtext0 opacity-0 transition group-hover:opacity-100">
+          {{ time }}
+        </p>
+      </div>
+      <div
+        v-if="!isEvent(message)"
+        class="group flex items-end space-x-2"
+        :class="{
+          'mx-4': !embedded,
+          'flex-row-reverse space-x-reverse': store.config.adaptiveLayout && sentByMe,
+        }"
+      >
+        <div class="relative h-8 w-8">
+          <UserAvatar
+            v-if="lastInChunk || embedded || message.parent"
+            :avatar="message.author.avatar"
+            class="h-8 w-8 flex-shrink-0 cursor-pointer rounded-full"
+            @click="
+              userModalId = message.author.id;
+              userModal = true;
+            "
+            @contextmenu="!embedded && userMenu!.open($event)"
           />
         </div>
         <div
-          class="flex max-w-full flex-1 items-center space-x-3"
+          class="flex min-w-0 max-w-full flex-1 flex-col items-start space-y-1"
           :class="{
-            'flex-row-reverse': store.config.adaptiveLayout && sentByMe,
+            'items-end': store.config.adaptiveLayout && sentByMe,
           }"
         >
-          <div
-            class="relative flex min-w-0 flex-1 flex-col break-words rounded-md text-sm shadow-md"
-            :class="{
-              'bg-ctp-accent text-ctp-base': sentByMe && !previewUrl,
-              'bg-ctp-surface0': !sentByMe || previewUrl,
-            }"
-          >
-            <!-- eslint-disable vue/no-v-html -->
-            <div v-if="message.dataFormatted" class="whitespace-pre-wrap p-2">
-              <div v-html="message.dataFormatted"></div>
+          <div v-if="firstInChunk" class="flex items-center space-x-1.5 text-xs">
+            <p
+              class="cursor-pointer transition"
+              :class="{
+                'text-ctp-text': !userColor,
+              }"
+              :style="userColor ? `color:${userColor};` : ''"
+              @click="userModal = true"
+            >
+              {{ message.author.name }}
+            </p>
+            <div class="relative text-ctp-overlay2 transition-all">
               <div
-                v-if="invite"
-                class="mt-2 flex w-80 items-center justify-between rounded-md bg-ctp-base p-3 text-ctp-text"
+                class="ttarrow absolute bottom-[calc(100%+0.5rem)] left-[50%] -ml-[5rem] w-[10rem] transform rounded-md bg-ctp-surface0 p-2 text-center text-ctp-text shadow-md transition"
+                :class="{
+                  'invisible opacity-0': !timeExpanded,
+                }"
               >
-                <div class="flex items-center space-x-3">
-                  <div
-                    class="flex h-10 w-10 items-center justify-center overflow-hidden rounded-full bg-gray-300"
-                  >
-                    <UserAvatar v-if="invite.space.avatar" :avatar="invite.space.avatar" />
-                    <p v-else>{{ invite.space.name.slice(0, 1) }}</p>
-                  </div>
-                  <div>
-                    <p class="text-semibold">
-                      {{ invite.space.name }}
-                    </p>
-                    <p class="text-xs text-ctp-subtext0">
-                      {{ invite.space.memberCount }} Member{{
-                        invite.space.memberCount > 1 ? "s" : ""
-                      }}
-                    </p>
-                  </div>
-                </div>
-                <button
-                  class="rounded-md bg-ctp-accent p-1.5 text-xs text-ctp-base transition hover:bg-ctp-accent/75"
-                  @click="useInvite"
-                >
-                  Join
-                </button>
+                <p>
+                  {{ Day(message.createdAt).format("YYYY/MM/DD h:mm:ss A") }}
+                </p>
               </div>
+              <p @mouseenter="timeExpanded = true" @mouseleave="timeExpanded = false">
+                {{ time }}
+              </p>
             </div>
-            <!-- eslint-enable -->
-            <div v-if="upload">
-              <div v-if="!previewUrl" class="flex items-center space-x-2 p-2">
-                <div
-                  v-if="!embedded"
-                  class="h-8 w-8 rounded-full p-2 text-ctp-surface0"
-                  :class="{
-                    'cursor-pointer': !fileDownloadActive,
-                    'bg-black/10': sentByMe,
-                    'bg-ctp-accent': !sentByMe,
-                  }"
-                  @click="fileDownload(true)"
-                >
-                  <DownloadIcon v-if="!fileDownloadActive" />
-                  <LoadingIcon v-if="fileDownloadActive" />
-                </div>
-                <div>
-                  <p class="font-bold">{{ upload.name }}</p>
-                  <p
-                    class="text-xs"
-                    :class="{
-                      'text-ctp-surface0': sentByMe,
-                      'text-ctp-subtext0': !sentByMe,
-                    }"
-                  >
-                    {{ upload.sizeFormatted }}
-                  </p>
-                </div>
-              </div>
-              <div v-if="previewUrl" class="flex items-center justify-center">
-                <img
-                  v-if="upload.type.split('/')[0] === 'image'"
-                  ref="previewEl"
-                  :src="previewUrl"
-                  class="max-h-80 max-w-md cursor-pointer rounded-md"
-                  @error="delPreview"
-                  @click="imageView = true"
-                />
-                <!-- TODO: custom video player UI bc the stock chromium one kinda sucks -->
-                <video
-                  v-if="upload.type.split('/')[0] === 'video'"
-                  ref="previewEl"
-                  :src="previewUrl"
-                  class="max-h-80 max-w-md rounded-md"
-                  controls
-                  @error="delPreview"
-                />
-                <div
-                  v-if="upload.type.split('/')[0] === 'audio'"
-                  class="filter[85.5%] overflow-hidden rounded-md bg-[#f1f3f4] grayscale"
-                >
-                  <audio
-                    ref="previewEl"
-                    :src="previewUrl"
-                    controls
-                    class="-m-1 w-96"
-                    @error="delPreview"
-                  />
-                </div>
-              </div>
-            </div>
+            <PencilIcon
+              v-if="+message.createdAt !== +message.updatedAt"
+              class="h-3 w-3 text-ctp-subtext0"
+            />
           </div>
           <div
-            v-if="!embedded"
-            class="flex flex-shrink-0 items-center space-x-2 text-ctp-overlay0 transition"
+            class="flex max-w-full flex-1 items-center space-x-3"
             :class="{
-              'px-2 opacity-0 group-hover:opacity-100': !embedded,
+              'flex-row-reverse': store.config.adaptiveLayout && sentByMe,
             }"
           >
             <div
-              v-if="canReply"
-              class="h-4 w-4 cursor-pointer transition hover:text-ctp-text"
-              @click="reply"
+              class="relative flex min-w-0 flex-1 flex-col break-words rounded-md text-sm shadow-md"
+              :class="{
+                'bg-ctp-accent text-ctp-base': sentByMe && !previewUrl,
+                'bg-ctp-surface0': !sentByMe || previewUrl,
+              }"
             >
-              <ArrowUturnLeftIcon />
+              <!-- eslint-disable vue/no-v-html -->
+              <div v-if="message.dataFormatted" class="whitespace-pre-wrap p-2">
+                <div v-html="message.dataFormatted"></div>
+                <div
+                  v-if="invite"
+                  class="mt-2 flex w-80 items-center justify-between rounded-md bg-ctp-base p-3 text-ctp-text"
+                >
+                  <div class="flex items-center space-x-3">
+                    <div
+                      class="flex h-10 w-10 items-center justify-center overflow-hidden rounded-full bg-gray-300"
+                    >
+                      <UserAvatar v-if="invite.space.avatar" :avatar="invite.space.avatar" />
+                      <p v-else>{{ invite.space.name.slice(0, 1) }}</p>
+                    </div>
+                    <div>
+                      <p class="text-semibold">
+                        {{ invite.space.name }}
+                      </p>
+                      <p class="text-xs text-ctp-subtext0">
+                        {{ invite.space.memberCount }} Member{{
+                          invite.space.memberCount > 1 ? "s" : ""
+                        }}
+                      </p>
+                    </div>
+                  </div>
+                  <button
+                    class="rounded-md bg-ctp-accent p-1.5 text-xs text-ctp-base transition hover:bg-ctp-accent/75"
+                    @click="useInvite"
+                  >
+                    Join
+                  </button>
+                </div>
+              </div>
+              <!-- eslint-enable -->
+              <div v-if="upload">
+                <div v-if="!previewUrl" class="flex items-center space-x-2 p-2">
+                  <div
+                    v-if="!embedded"
+                    class="h-8 w-8 rounded-full p-2 text-ctp-surface0"
+                    :class="{
+                      'cursor-pointer': !fileDownloadActive,
+                      'bg-black/10': sentByMe,
+                      'bg-ctp-accent': !sentByMe,
+                    }"
+                    @click="fileDownload(true)"
+                  >
+                    <DownloadIcon v-if="!fileDownloadActive" />
+                    <LoadingIcon v-if="fileDownloadActive" />
+                  </div>
+                  <div>
+                    <p class="font-bold">{{ upload.name }}</p>
+                    <p
+                      class="text-xs"
+                      :class="{
+                        'text-ctp-surface0': sentByMe,
+                        'text-ctp-subtext0': !sentByMe,
+                      }"
+                    >
+                      {{ upload.sizeFormatted }}
+                    </p>
+                  </div>
+                </div>
+                <div v-if="previewUrl" class="flex items-center justify-center">
+                  <img
+                    v-if="upload.type.split('/')[0] === 'image'"
+                    ref="previewEl"
+                    :src="previewUrl"
+                    class="max-h-80 max-w-md cursor-pointer rounded-md"
+                    @error="delPreview"
+                    @click="imageView = true"
+                  />
+                  <!-- TODO: custom video player UI bc the stock chromium one kinda sucks -->
+                  <video
+                    v-if="upload.type.split('/')[0] === 'video'"
+                    ref="previewEl"
+                    :src="previewUrl"
+                    class="max-h-80 max-w-md rounded-md"
+                    controls
+                    @error="delPreview"
+                  />
+                  <div
+                    v-if="upload.type.split('/')[0] === 'audio'"
+                    class="filter[85.5%] overflow-hidden rounded-md bg-[#f1f3f4] grayscale"
+                  >
+                    <audio
+                      ref="previewEl"
+                      :src="previewUrl"
+                      controls
+                      class="-m-1 w-96"
+                      @error="delPreview"
+                    />
+                  </div>
+                </div>
+              </div>
             </div>
             <div
-              v-if="canEdit"
-              class="h-4 w-4 cursor-pointer transition hover:text-ctp-text"
-              @click="editModal = true"
+              v-if="!embedded"
+              class="text-ctp-overlay0 opacity-0 group-hover:opacity-100 transition flex-shrink-0"
+              @click="messageMenu!.open($event)"
             >
-              <PencilIcon />
+              <EllipsisVerticalIcon class="h-4 w-4 cursor-pointer transition hover:text-ctp-text" />
             </div>
-            <div
-              v-if="canRemove"
-              class="h-4 w-4 cursor-pointer transition hover:text-ctp-text"
-              @click="remove"
+            <!-- <div
+              v-if="!embedded"
+              class="flex flex-shrink-0 items-center space-x-2 text-ctp-overlay0 transition"
+              :class="{
+                'px-2 opacity-0 group-hover:opacity-100': !embedded,
+              }"
             >
-              <TrashIcon />
-            </div>
-            <a
-              v-if="previewUrl"
-              class="h-4 w-4 cursor-pointer transition hover:text-ctp-text"
-              :href="previewUrl"
-              :download="upload?.name"
-            >
-              <DownloadIcon />
-            </a>
+              <div
+                v-if="canReply"
+                class="h-4 w-4 cursor-pointer transition hover:text-ctp-text"
+                @click="reply"
+              >
+                <ArrowUturnLeftIcon />
+              </div>
+              <div
+                v-if="canEdit"
+                class="h-4 w-4 cursor-pointer transition hover:text-ctp-text"
+                @click="editModal = true"
+              >
+                <PencilIcon />
+              </div>
+              <div
+                v-if="canRemove"
+                class="h-4 w-4 cursor-pointer transition hover:text-ctp-text"
+                @click="remove"
+              >
+                <TrashIcon />
+              </div>
+              <a
+                v-if="previewUrl"
+                class="h-4 w-4 cursor-pointer transition hover:text-ctp-text"
+                :href="previewUrl"
+                :download="upload?.name"
+              >
+                <DownloadIcon />
+              </a>
+            </div> -->
           </div>
         </div>
       </div>
     </div>
   </div>
   <ImageView v-if="!!previewUrl && imageView" :src="previewUrl || ''" @close="imageView = false" />
-  <MessageDeleteModal
-    v-if="deleteModal"
+  <UserModal v-if="userModal" :id="userModalId" @close="userModal = false" />
+  <!-- <UserContextMenu ref="userMenu" :user="message.author" /> -->
+  <MessageContextMenu
+    ref="messageMenu"
+    @reply="$emit('reply')"
+    @edit="editModal = true"
+    @delete="deleteModal = true"
     :message="message"
     :channel="channel"
+  />
+  <MessageEditModal
+    v-if="editModal"
+    @close="editModal = false"
+    :message="message"
+    :channel="channel"
+  />
+  <MessageDeleteModal
+    v-if="deleteModal"
     @close="deleteModal = false"
+    :message="message"
+    :channel="channel"
   >
     <MessageItem :channel="channel" :message="message" embedded />
   </MessageDeleteModal>
-  <MessageEditModal
-    v-if="editModal"
-    :message="message"
-    :channel="channel"
-    @close="editModal = false"
-  />
-  <UserModal v-if="userModal" :id="message.author.id" @close="userModal = false" />
-  <UserModal
-    v-if="message.parent && parentUserModal"
-    :id="message.parent.author.id"
-    @close="parentUserModal = false"
-  />
 </template>
 
 <script lang="ts" setup>
@@ -317,7 +342,14 @@ import axios from "axios";
 import { useStore } from "@/global/store";
 import UserModal from "./UserModal.vue";
 import { checkSpacePermissions } from "@/global/helpers";
-import { ArrowUturnLeftIcon, PencilIcon, TrashIcon } from "@heroicons/vue/20/solid";
+import {
+  ArrowUturnLeftIcon,
+  PencilIcon,
+  TrashIcon,
+  EllipsisVerticalIcon,
+} from "@heroicons/vue/20/solid";
+import UserContextMenu from "./UserContextMenu.vue";
+import MessageContextMenu from "./MessageContextMenu.vue";
 
 const store = useStore();
 const props = defineProps({
@@ -351,7 +383,7 @@ const props = defineProps({
 const emit = defineEmits(["reply"]);
 const chunkThreshold = 1000 * 60 * 5;
 const userModal = ref(false);
-const parentUserModal = ref(false);
+const userModalId = ref("");
 // eslint-disable-next-line vue/no-setup-props-destructure
 const date = Day(props.message.createdAt).format("MMMM D, YYYY");
 const time = ref("");
@@ -372,6 +404,8 @@ const invite = ref<{
     memberCount: number;
   };
 } | null>(null);
+const userMenu: Ref<typeof UserContextMenu | null> = ref(null);
+const messageMenu: Ref<typeof MessageContextMenu | null> = ref(null);
 
 const sentByMe = computed(() => {
   if (!store.self) {
@@ -395,7 +429,8 @@ const firstInChunk = computed(() => {
     isEvent(precedingMessage.value) ||
     props.message.author.id !== precedingMessage.value.author.id ||
     +props.message.createdAt - +precedingMessage.value.createdAt > chunkThreshold ||
-    props.message.parent
+    props.message.parent ||
+    precedingMessage.value.parent
   );
 });
 
@@ -753,10 +788,6 @@ const useInvite = async () => {
   await axios.post(`/api/v1/spaces/use-invite`, {
     code: invite.value.code,
   });
-};
-
-const reply = () => {
-  emit("reply", props.message);
 };
 </script>
 

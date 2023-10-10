@@ -3,6 +3,7 @@
     <div
       class="group flex min-w-0 cursor-pointer items-center justify-between space-x-3 rounded-md p-1.5 hover:bg-gray-900"
       @click="userModal = true"
+      @contextmenu="menu!.open($event)"
     >
       <div class="flex min-w-0 items-center space-x-3">
         <UserAvatar
@@ -43,12 +44,13 @@
       :channel="channel"
       @close="groupRemoveModal = false"
     />
+    <UserContextMenu ref="menu" :user="member" :channel="channel" />
   </div>
 </template>
 
 <script lang="ts" setup>
 import UserAvatar from "./UserAvatar.vue";
-import { computed, type PropType, ref } from "vue";
+import { computed, type PropType, ref, type Ref } from "vue";
 import type { IChannel, IChannelMember, ISelf, ISpace, ISpaceMember } from "@/global/types";
 import { ChannelType } from "@/../../hyalus-server/src/types";
 import { useStore } from "@/global/store";
@@ -56,6 +58,7 @@ import UserModal from "./UserModal.vue";
 import GroupRemoveModal from "./GroupRemoveModal.vue";
 import GroupLeaveModal from "./GroupLeaveModal.vue";
 import { TrashIcon } from "@heroicons/vue/20/solid";
+import UserContextMenu from "./UserContextMenu.vue";
 
 const store = useStore();
 const props = defineProps({
@@ -80,6 +83,7 @@ const props = defineProps({
 });
 const userModal = ref(false);
 const groupRemoveModal = ref(false);
+const menu: Ref<typeof UserContextMenu | null> = ref(null);
 
 const color = computed(() => {
   if (!props.space) {

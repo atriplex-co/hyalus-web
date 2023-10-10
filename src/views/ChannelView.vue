@@ -50,7 +50,7 @@
             @scroll="onScroll"
           >
             <div id="messageListBefore" ref="messageListBefore" class="flex-1 pt-16"></div>
-            <div class="space-y-1">
+            <div class="-space-y-0.5">
               <MessageItem
                 v-for="[k, message] in Object.entries(channel.messages)"
                 :key="message.id"
@@ -58,10 +58,10 @@
                 :message="message"
                 :channel="channel"
                 :space="space"
-                @reply="replyMessage = $event"
+                @reply="replyMessage = message"
               />
             </div>
-            <div id="messageListAfter" ref="messageListAfter" class="pb-4"></div>
+            <div id="messageListAfter" ref="messageListAfter" class="pb-3"></div>
           </div>
         </div>
         <div class="m-4 mt-0 rounded-md bg-ctp-mantle shadow-lg">

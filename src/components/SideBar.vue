@@ -56,22 +56,16 @@
       <div class="w-full px-3">
         <div class="-mt-px border-t border-ctp-surface0/50"></div>
       </div>
-      <button
+      <SidebarSpaceIcon
         v-for="space in store.spaces"
         :key="space.id"
-        class="flex h-10 w-10 items-center justify-center overflow-hidden rounded-full bg-ctp-base text-ctp-accent transition hover:bg-ctp-surface0/75"
-        :class="{
-          'ring-2 ring-ctp-accent':
-            store.sideBarState === SideBarState.SPACE && selectedSpaceId === space.id,
-        }"
-        @click="
+        :space="space"
+        :selected="selectedSpaceId === space.id"
+        @select="
           store.sideBarState = SideBarState.SPACE;
           selectedSpaceId = space.id;
         "
-      >
-        <UserAvatar v-if="space.avatar" :avatar="space.avatar" />
-        <p v-else>{{ space.name.slice(0, 1) }}</p>
-      </button>
+      />
       <button
         class="flex h-10 w-10 items-center justify-center rounded-full bg-ctp-base text-ctp-accent transition hover:bg-ctp-surface0/75"
         @click="spaceCreateModal = true"
@@ -91,7 +85,7 @@
       class="flex min-w-0 flex-1 flex-col bg-ctp-mantle"
     >
       <div class="min-h-0 flex-1">
-        <SidebarHome v-if="store.sideBarState == SideBarState.HOME" />
+        <SideBarHome v-if="store.sideBarState == SideBarState.HOME" />
         <SideBarFriendList v-if="store.sideBarState === SideBarState.FRIENDS" />
         <SideBarSpace
           v-if="store.sideBarState === SideBarState.SPACE && selectedSpace"
@@ -113,7 +107,7 @@
 <script lang="ts" setup>
 import UserAvatar from "./UserAvatar.vue";
 import RefreshIcon from "@/icons/RefreshIcon.vue";
-import SidebarHome from "./SidebarHome.vue";
+import SideBarHome from "./SideBarHome.vue";
 import SideBarFriendList from "./SideBarFriendList.vue";
 import SideBarUserMenu from "./SideBarUserMenu.vue";
 import UpdateReloadModal from "./UpdateReloadModal.vue";
@@ -127,7 +121,8 @@ import SpaceCreateModal from "./SpaceCreateModal.vue";
 import SideBarCall from "./SideBarCall.vue";
 import SideBarSpace from "./SideBarSpace.vue";
 import { ChannelType } from "@/../../hyalus-server/src/types";
-import SpaceJoinModal from "./SpaceJoinModal.vue";
+import SpaceJoinModal from "@/components/SpaceJoinModal.vue";
+import SidebarSpaceIcon from "./SidebarSpaceIcon.vue";
 
 const store = useStore();
 const route = useRoute();
