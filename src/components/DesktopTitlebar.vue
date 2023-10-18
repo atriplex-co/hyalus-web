@@ -1,5 +1,5 @@
 <template>
-  <div class="z-30 flex h-[30px] items-center bg-ctp-crust text-sm">
+  <div v-if="platform !== 'linux'" class="z-30 flex h-[30px] items-center bg-ctp-crust text-sm">
     <div
       class="draggable flex h-full flex-1 select-none items-center justify-between px-2"
       :class="{
