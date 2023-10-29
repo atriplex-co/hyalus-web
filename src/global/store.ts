@@ -858,21 +858,7 @@ export const useStore = defineStore("main", {
                     return;
                   }
 
-                  if (
-                    store.call.localStreams.find((stream) => stream.type === CallStreamType.Audio)
-                  ) {
-                    await store.callRemoveLocalStream({
-                      type: CallStreamType.Audio,
-                    });
-                  } else {
-                    await store.callAddLocalStream({
-                      type: CallStreamType.Audio,
-                    });
-
-                    if (store.call.deaf) {
-                      await store.callSetDeaf(false);
-                    }
-                  }
+                  await store.callSetMuted(!store.call.muted);
                 },
               },
             ]
@@ -884,16 +870,6 @@ export const useStore = defineStore("main", {
                 async cb() {
                   if (!store.call) {
                     return;
-                  }
-
-                  if (
-                    !store.call.deaf &&
-                    store.call.localStreams.find((stream) => stream.type === CallStreamType.Audio)
-                  ) {
-                    await store.callRemoveLocalStream({
-                      type: CallStreamType.Audio,
-                      silent: true,
-                    });
                   }
 
                   await store.callSetDeaf(!store.call.deaf);
