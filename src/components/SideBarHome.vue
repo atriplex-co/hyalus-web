@@ -5,7 +5,7 @@
         class="flex h-8 w-full cursor-pointer items-center space-x-3 overflow-hidden rounded-md bg-ctp-crust px-3"
         @click="store.quickSwitcherOpen = true"
       >
-        <p class="flex-1 bg-transparent text-start text-sm text-ctp-overlay0">Search</p>
+        <p class="flex-1 bg-transparent text-start text-sm text-ctp-overlay0">Search (Ctrl+K)</p>
         <MagnifyingGlassIcon class="h-4 w-4 text-ctp-overlay0" />
       </button>
       <div
