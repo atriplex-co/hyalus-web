@@ -3,10 +3,21 @@ import { defineConfig, splitVendorChunkPlugin } from "vite";
 import vue from "@vitejs/plugin-vue";
 import { getManifest } from "workbox-build";
 import fs from "node:fs";
+import child_process from "node:child_process";
 
 // https://vitejs.dev/config/
 export default defineConfig({
   plugins: [
+    {
+      name: "prebuild",
+      buildStart() {
+        console.log("copying deps (prebuild)");
+        child_process.execSync("rm -rf public/fluentui-emoji");
+        child_process.execSync(
+          "cp -ar node_modules/hyalus-fluentui-emoji/dist/assets public/fluentui-emoji",
+        );
+      },
+    },
     vue(),
     splitVendorChunkPlugin(),
     {
