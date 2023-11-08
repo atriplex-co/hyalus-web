@@ -1,3 +1,14 @@
+## 2023.11.08
+
+- Improve voice server networking code
+- Various backend improvements
+- New server hosting
+- Improved keybind support
+- Fixed titlebar on Linux client
+- Fixed emojis not working outside of mutual spaces
+- Fixed deleting messages causing layout issues
+- Fixed issues with updating server roles
+
 ## 2023.09.19
 
 - Improved server stability
