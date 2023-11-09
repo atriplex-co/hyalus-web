@@ -128,12 +128,12 @@ export const messageFormatter = new MarkdownIt("zero", {
 export const availableExperiments: IExperiment[] = [
   {
     id: "enable_wgc_screen_capture",
-    default: "off",
+    default: "on",
     options: ["off", "on"],
   },
   {
     id: "enable_wgc_window_capture",
-    default: "off",
+    default: "on",
     options: ["off", "on"],
   },
   {
