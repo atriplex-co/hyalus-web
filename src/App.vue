@@ -141,6 +141,7 @@
       </div>
       <LoadingView v-show="(inApp && !store.ready) || desktopUpdating" />
       <UpdateRequiredView v-show="store.updateRequired" />
+      <UserDisabledView v-show="store.userDisabled" />
     </div>
     <!-- DON'T REMOVE THIS! -->
     <!-- this is here to keep some random css classes from being puregd. -->
@@ -153,6 +154,7 @@
 import DesktopTitlebar from "@/components/DesktopTitlebar.vue";
 import LoadingView from "@/views/LoadingView.vue";
 import UpdateRequiredView from "@/views/UpdateRequiredView.vue";
+import UserDisabledView from "@/views/UserDisabledView.vue";
 import SideBar from "@/components/SideBar.vue";
 import { computed, ref, watch, onMounted } from "vue";
 import { useRoute } from "vue-router";

@@ -109,6 +109,7 @@ export const useStore = defineStore("main", {
       quickSwitcherOpen: false,
       cachedUsers: new Map(),
       userStatuses: new Map(),
+      userDisabled: false,
     };
   },
   actions: {

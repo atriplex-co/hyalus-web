@@ -1990,6 +1990,11 @@ export class Socket {
         space.emojis = space.emojis.filter((emoji) => emoji.id !== data.id);
       }
 
+      if (msg.t === SocketMessageType.SDisabled) {
+        store.userDisabled = true;
+        this.close();
+      }
+
       // add new WS message types here!
     });
 

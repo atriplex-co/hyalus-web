@@ -34,6 +34,7 @@ export interface IState {
   quickSwitcherOpen: boolean;
   cachedUsers: Map<string, ICachedUser>;
   userStatuses: Map<string, IUserStatus>;
+  userDisabled: boolean;
 }
 
 export type IConfig = _IConfig & Record<string, unknown>;

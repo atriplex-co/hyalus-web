@@ -27,14 +27,21 @@
     </div>
   </div>
   <div
-    v-if="channel.type !== ChannelType.SpaceCategory"
+    v-else
     class="group flex cursor-pointer items-center justify-between rounded-md p-1.5 text-sm transition hover:bg-ctp-surface0/75 hover:text-ctp-text"
     :class="{
       'text-ctp-subtext0': route.path !== `/channels/${channel.id}`,
       'bg-ctp-surface0/50': route.path === `/channels/${channel.id}`,
     }"
+    draggable="true"
+    dropzone="true"
     @click="click($event)"
     @contextmenu="menu!.open($event)"
+    @dragstart="onDragStart"
+    @dragenter="onDragEnter"
+    @dragover="onDragOver"
+    @dragleave="onDragLeave"
+    @drop="onDrop"
   >
     <div class="flex items-center space-x-1.5">
       <div class="h-5 w-5 text-ctp-overlay0">
@@ -208,4 +215,28 @@ const voiceUsers = computed(() => {
   ret.sort((a, b) => (a.member.name > b.member.name ? 1 : -1));
   return ret;
 });
+
+const onDragStart = (e: DragEvent) => {
+  console.log("dragstart: %s", props.channel.id);
+  e.dataTransfer!.setData("text/plain", props.channel.id);
+};
+
+const onDragEnter = (e: DragEvent) => {
+  e.preventDefault();
+  console.log("dragenter: %s (%s)", props.channel.id, e.dataTransfer!.getData("text/plain"));
+};
+
+const onDragOver = (e: DragEvent) => {
+  e.preventDefault();
+  console.log("dragover: %s (%s)", props.channel.id, e.dataTransfer!.getData("text/plain"));
+};
+
+const onDragLeave = (e: DragEvent) => {
+  e.preventDefault();
+  console.log("dragleave: %s (%s)", props.channel.id, e.dataTransfer!.getData("text/plain"));
+};
+
+const onDrop = (e: DragEvent) => {
+  console.log("drop: %s (%s)", props.channel.id, e.dataTransfer!.getData("text/plain"));
+};
 </script>
