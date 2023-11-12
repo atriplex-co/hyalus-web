@@ -98,7 +98,10 @@
                 'text-ctp-text': !userColor,
               }"
               :style="userColor ? `color:${userColor};` : ''"
-              @click="userModal = true"
+              @click="
+                userModalId = message.author.id;
+                userModal = true;
+              "
             >
               {{ message.author.name }}
             </p>
