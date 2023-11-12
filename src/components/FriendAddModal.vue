@@ -5,7 +5,23 @@
     </template>
     <template #main>
       <ModalError v-if="error" :error="error" />
-      <ModalInput v-model="username" type="text" label="Username" autofocus />
+      <div class="w-full space-y-2">
+        <p>Username</p>
+        <div class="relative">
+          <input
+            v-model="username"
+            class="w-full rounded-md border border-ctp-base bg-ctp-crust px-4 py-2 pl-11 text-ctp-subtext0 shadow-sm ring-ctp-accent transition focus:outline-none focus:ring-2"
+            type="text"
+            spellcheck="false"
+            autofocus
+          />
+          <div
+            class="absolute left-0 top-0 -mt-px ml-1 flex h-full items-center border-r border-ctp-base px-2 text-ctp-subtext0"
+          >
+            <p>@</p>
+          </div>
+        </div>
+      </div>
     </template>
   </ModalBase>
 </template>
