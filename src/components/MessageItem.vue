@@ -289,7 +289,7 @@
     ref="messageMenu"
     @reply="$emit('reply')"
     @edit="editModal = true"
-    @delete="deleteModal = true"
+    @delete="onDelete"
     :message="message"
     :channel="channel"
   />
@@ -575,7 +575,7 @@ const delPreview = () => {
   previewUrl.value = "";
 };
 
-const remove = async (e: MouseEvent) => {
+const onDelete = async (e: MouseEvent) => {
   if (e.shiftKey) {
     await axios.delete(`/api/v1/channels/${props.channel.id}/messages/${props.message.id}`);
   } else {

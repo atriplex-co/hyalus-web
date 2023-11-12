@@ -16,7 +16,7 @@
       v-if="canDelete"
       @click="
         menu!.close();
-        $emit('delete');
+        $emit('delete', $event);
       "
     >
       <p>Delete Message</p>
