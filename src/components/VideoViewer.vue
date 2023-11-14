@@ -35,10 +35,7 @@
         'opacity-0': !(controls || !playing),
       }"
     >
-      <div
-        class="text-ctp-subtext0 w-4 h-4 cursor-pointer hover:text-ctp-text transition"
-        @click="play"
-      >
+      <div class="text-[#ccc] hover:text-white w-4 h-4 cursor-pointer transition" @click="play">
         <PlayIcon v-if="!playing" />
         <PauseIcon v-if="playing" />
       </div>
@@ -51,7 +48,7 @@
         />
       </div>
       <div
-        class="text-ctp-subtext0 w-4 h-4 cursor-pointer hover:text-ctp-text transition relative"
+        class="text-[#ccc] hover:text-white w-4 h-4 cursor-pointer transition relative"
         @click="mute"
         @mouseenter="showVolume = true"
       >
@@ -73,7 +70,7 @@
         </div>
       </div>
       <ArrowsPointingOutIcon
-        class="text-ctp-subtext0 w-4 h-4 cursor-pointer hover:text-ctp-text transition"
+        class="text-[#ccc] hover:text-white w-4 h-4 cursor-pointer transition"
         @click="expand"
       />
     </div>
