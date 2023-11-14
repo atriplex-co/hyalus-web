@@ -10,9 +10,6 @@
       <UserPlusIcon />
     </template>
     <template #main>
-      <p class="text-ctp-accent">
-        WARNING: Spaces are currently experimental and may be wiped during development!
-      </p>
       <ModalError v-if="error" :error="error" />
       <div v-if="code">
         <p class="select-all">{{ code }}</p>

@@ -4,9 +4,6 @@
       <PlusIcon />
     </template>
     <template #main>
-      <p class="text-ctp-accent">
-        WARNING: Spaces are currently experimental and may be wiped during development!
-      </p>
       <ModalError v-if="error" :error="error" />
       <ModalInput v-model="name" type="text" label="Name" autofocus />
     </template>

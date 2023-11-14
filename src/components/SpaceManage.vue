@@ -80,9 +80,6 @@
       <div class="px-3 py-2">
         <div class="border-t border-ctp-surface0/50"></div>
       </div>
-      <div class="px-3 py-1.5 text-sm text-ctp-accent">
-        WARNING: Spaces are currently experimental and may be wiped during development!
-      </div>
     </template>
     <template #right>
       <SpaceManageOverview v-if="active === 'overview'" :space="space" />

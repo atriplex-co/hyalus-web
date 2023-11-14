@@ -4,9 +4,6 @@
       <HashtagIcon />
     </template>
     <template #main>
-      <p class="text-ctp-accent">
-        WARNING: Spaces are currently experimental and may be wiped during development!
-      </p>
       <ModalError v-if="error" :error="error" />
       <ModalInput v-model="code" type="text" label="Invite Code/URL" autofocus />
     </template>
