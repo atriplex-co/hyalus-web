@@ -1,5 +1,8 @@
 <template>
   <ContextMenu ref="menu">
+    <ContextMenuItem v-if="upload" @click="$emit('download')">
+      <p>Download</p>
+    </ContextMenuItem>
     <ContextMenuItem v-if="canReply" @click="reply">
       <p>Reply</p>
     </ContextMenuItem>
@@ -35,7 +38,7 @@
 
 <script lang="ts">
 import { defineComponent, ref, type Ref, type PropType } from "vue";
-import type { IChannel, IMessage } from "@/global/types";
+import type { IChannel, IMessage, IMessageUpload } from "@/global/types";
 import ContextMenu from "./ContextMenu.vue";
 import ContextMenuItem from "./ContextMenuItem.vue";
 import { MessageType } from "../../../hyalus-server/src/types";
@@ -100,6 +103,10 @@ export default defineComponent({
       type: Object as PropType<IChannel>,
       required: true,
     },
+    upload: {
+      type: Object as PropType<IMessageUpload>,
+      required: false,
+    },
   },
   methods: {
     open(e: MouseEvent) {
@@ -124,7 +131,7 @@ export default defineComponent({
       }
     },
   },
-  emits: ["reply", "edit", "delete"],
+  emits: ["reply", "edit", "delete", "download"],
   components: {
     ContextMenu,
     ContextMenuItem,

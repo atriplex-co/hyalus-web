@@ -282,7 +282,13 @@
       </div>
     </div>
   </div>
-  <ImageView v-if="!!previewUrl && imageView" :src="previewUrl || ''" @close="imageView = false" />
+  <ImageViewer
+    v-if="upload && previewUrl && imageView"
+    :src="previewUrl"
+    :name="upload.name"
+    :size="upload.sizeFormatted"
+    @close="imageView = false"
+  />
   <UserModal v-if="userModal" :id="userModalId" @close="userModal = false" />
   <!-- <UserContextMenu ref="userMenu" :user="message.author" /> -->
   <MessageContextMenu
@@ -290,8 +296,10 @@
     @reply="$emit('reply')"
     @edit="editModal = true"
     @delete="onDelete"
+    @download="() => fileDownload(true)"
     :message="message"
     :channel="channel"
+    :upload="upload"
   />
   <MessageEditModal
     v-if="editModal"
@@ -311,7 +319,7 @@
 
 <script lang="ts" setup>
 import UserAvatar from "./UserAvatar.vue";
-import ImageView from "./ImageView.vue";
+import ImageViewer from "./ImageViewer.vue";
 import MessageDeleteModal from "./MessageDeleteModal.vue";
 import MessageEditModal from "./MessageEditModal.vue";
 import FriendsIcon from "@/icons/FriendsIcon.vue";
@@ -333,9 +341,9 @@ import {
   onBeforeUnmount,
   watch,
 } from "vue";
-import type { IChannel, IMessage, ISpace } from "@/global/types";
+import type { IChannel, IMessage, ISpace, IMessageUpload } from "@/global/types";
 import { MaxFileSize, MaxFileChunkSize } from "@/global/config";
-import { MessageType, SpacePermission } from "@/../../hyalus-server/src/types";
+import { MessageType } from "@/../../hyalus-server/src/types";
 import {
   crypto_secretstream_xchacha20poly1305_init_pull,
   crypto_secretstream_xchacha20poly1305_pull,
@@ -344,13 +352,7 @@ import {
 import axios from "axios";
 import { useStore } from "@/global/store";
 import UserModal from "./UserModal.vue";
-import { checkSpacePermissions } from "@/global/helpers";
-import {
-  ArrowUturnLeftIcon,
-  PencilIcon,
-  TrashIcon,
-  EllipsisVerticalIcon,
-} from "@heroicons/vue/20/solid";
+import { PencilIcon, EllipsisVerticalIcon } from "@heroicons/vue/20/solid";
 import UserContextMenu from "./UserContextMenu.vue";
 import MessageContextMenu from "./MessageContextMenu.vue";
 
@@ -383,7 +385,7 @@ const props = defineProps({
     default: 0,
   },
 });
-const emit = defineEmits(["reply"]);
+defineEmits(["reply"]);
 const chunkThreshold = 1000 * 60 * 5;
 const userModal = ref(false);
 const userModalId = ref("");
@@ -615,15 +617,7 @@ const upload = computed(() => {
     size: json.size,
     sizeFormatted,
     chunks: json.chunks, // TODO: remove support for PrivateUploadOld
-  } as {
-    name: string;
-    type: string;
-    header: Uint8Array;
-    key: Uint8Array;
-    size: number;
-    sizeFormatted: string;
-    chunks: string[];
-  };
+  } as IMessageUpload;
 });
 
 onMounted(async () => {
@@ -671,37 +665,6 @@ const getTime = () => {
 
   return time.format("M/D/YY"); // 9/5/22
 };
-
-const canRemove = computed(() => {
-  return (
-    sentByMe.value ||
-    (props.channel.spaceId &&
-      checkSpacePermissions({
-        permissions: SpacePermission.ManageMessages,
-        spaceId: props.channel.spaceId,
-        channelId: props.channel.id,
-      }))
-  );
-});
-
-const canEdit = computed(() => {
-  return (
-    sentByMe.value &&
-    [
-      // editable message types:
-      MessageType.PrivateText,
-      MessageType.SpaceText,
-    ].includes(props.message.type)
-  );
-});
-
-const canReply = computed(() => {
-  return [
-    // repliable message types:
-    MessageType.PrivateText,
-    MessageType.SpaceText,
-  ].includes(props.message.type);
-});
 
 const userColor = computed(() => {
   if (!props.space) {

@@ -392,3 +392,13 @@ export interface ISpaceEmoji {
   };
   name: string;
 }
+
+export interface IMessageUpload {
+  name: string;
+  type: string;
+  header: Uint8Array;
+  key: Uint8Array;
+  size: number;
+  sizeFormatted: string;
+  chunks: string[];
+}
