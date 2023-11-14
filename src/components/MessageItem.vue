@@ -210,17 +210,15 @@
                     @click="imageView = true"
                   />
                   <!-- TODO: custom video player UI bc the stock chromium one kinda sucks -->
-                  <video
+                  <VideoViewer
                     v-if="upload.type.split('/')[0] === 'video'"
-                    ref="previewEl"
                     :src="previewUrl"
-                    class="max-h-80 max-w-md rounded-md"
-                    controls
-                    @error="delPreview"
+                    :name="upload.name"
+                    :size="upload.sizeFormatted"
                   />
                   <div
                     v-if="upload.type.split('/')[0] === 'audio'"
-                    class="filter[85.5%] overflow-hidden rounded-md bg-[#f1f3f4] grayscale"
+                    class="filter contrast-[85%] overflow-hidden rounded-md bg-[#f1f3f4] grayscale invert"
                   >
                     <audio
                       ref="previewEl"
@@ -355,6 +353,7 @@ import UserModal from "./UserModal.vue";
 import { PencilIcon, EllipsisVerticalIcon } from "@heroicons/vue/20/solid";
 import UserContextMenu from "./UserContextMenu.vue";
 import MessageContextMenu from "./MessageContextMenu.vue";
+import VideoViewer from "./VideoViewer.vue";
 
 const store = useStore();
 const props = defineProps({
