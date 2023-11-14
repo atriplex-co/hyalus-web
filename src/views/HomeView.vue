@@ -128,7 +128,7 @@
     </div>
     <div class="text-ctp-subtext0">
       <div class="mx-auto flex w-full max-w-4xl items-center justify-between py-12">
-        <p>&copy; Atriplex 2022</p>
+        <p>&copy; Atriplex {{ new Date().getFullYear() }}</p>
         <div class="flex space-x-4">
           <a href="https://twitter.com/hyalusapp" rel="noopener noreferrer" target="_blank">
             <TwitterIcon class="h-5 w-5" />
