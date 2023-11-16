@@ -10,16 +10,17 @@
           type="text"
           class="w-[50%] resize-none rounded-md border border-ctp-base bg-ctp-crust px-2 py-1 text-ctp-subtext0 shadow-sm ring-ctp-accent transition placeholder:text-ctp-overlay0 focus:outline-none focus:ring-2"
           placeholder="Search Members"
+          v-model="search"
         />
       </div>
       <div
         class="divide-y divide-ctp-surface0/50 border-t border-ctp-surface0/50"
         :class="{
-          'border-b': space.members.length,
+          'border-b': members.length,
         }"
       >
         <SpaceMemberManageItem
-          v-for="member in space.members"
+          v-for="member in members"
           :key="member.id"
           :space="space"
           :member="member"
@@ -30,16 +31,29 @@
 </template>
 
 <script lang="ts" setup>
-import type { PropType } from "vue";
+import { type PropType, ref, computed } from "vue";
 import type { ISpace } from "@/global/types";
 import SpaceMemberManageItem from "./SpaceMemberManageItem.vue";
 
-defineProps({
+const search = ref("");
+const props = defineProps({
   space: {
     type: Object as PropType<ISpace>,
     default() {
       //
     },
   },
+});
+
+const members = computed(() => {
+  if (search.value) {
+    return props.space.members.filter(
+      (member) =>
+        member.username.toLowerCase().includes(search.value.toLowerCase()) ||
+        member.name.toLowerCase().includes(search.value.toLowerCase()),
+    );
+  }
+
+  return props.space.members;
 });
 </script>
