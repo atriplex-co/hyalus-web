@@ -86,6 +86,7 @@ export interface _IConfig {
   recentChannelIds: string[];
   experimentsEnabled: boolean;
   experiments: Record<string, string>;
+  showPublicKeyIds: boolean;
 }
 
 export interface ICachedUser {
@@ -97,6 +98,7 @@ export interface ICachedUser {
   banner: string | null;
   bio: string;
   flags: number;
+  publicKey: Uint8Array;
 }
 
 export interface ICall {

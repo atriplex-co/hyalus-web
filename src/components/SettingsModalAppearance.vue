@@ -111,6 +111,10 @@
         <p class="font-bold">Grayscale</p>
         <InputBoolean v-model="grayscale" />
       </div>
+      <div class="flex h-16 items-center justify-between">
+        <p class="font-bold">Show Public Key IDs</p>
+        <InputBoolean v-model="showPublicKeyIds" />
+      </div>
     </div>
   </div>
 </template>
@@ -138,6 +142,7 @@ const adaptiveLayout = configToComputed<boolean>("adaptiveLayout");
 const fontScale = configToComputed<number>("fontScale");
 const grayscale = configToComputed<boolean>("grayscale");
 const colorSync = configToComputed<boolean>("colorSync");
+const showPublicKeyIds = configToComputed<boolean>("showPublicKeyIds");
 // const colorMode = configToComputed<ColorMode>("colorMode");
 // const colorTheme = configToComputed<ColorTheme>("colorTheme");
 

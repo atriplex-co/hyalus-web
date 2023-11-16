@@ -304,8 +304,9 @@ export const getCachedUser = async (id: string): Promise<ICachedUser | null> => 
   try {
     const { data } = await axios.get(`/api/v1/users/by-id/${id}`);
     const cachedUser = {
-      time: new Date(),
       ...data,
+      time: new Date(),
+      publicKey: sodium.from_base64(data.publicKey),
     };
     store.cachedUsers.set(id, cachedUser);
     return cachedUser;

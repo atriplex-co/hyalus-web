@@ -170,8 +170,19 @@
               <div class="select-text whitespace-pre-wrap text-sm" v-html="bioHtml" />
               <!-- eslint-enable vue/no-v-html -->
             </div>
+            <div v-if="store.config.showPublicKeyIds">
+              <p
+                class="text-xs font-semibold uppercase text-ctp-subtext0"
+                title="Public Key ID (used for E2E encryption)"
+              >
+                Public Key ID
+              </p>
+              <p class="select-text text-sm">
+                {{ keyId }}
+              </p>
+            </div>
             <div
-              v-if="!cachedUser.bio && !space"
+              v-if="!cachedUser.bio && !space && !store.config.showPublicKeyIds"
               class="flex h-full w-full flex-col items-center justify-center space-y-4 text-sm text-ctp-subtext0"
             >
               <InformationCircleIcon class="-mt-6 h-8 w-8" />
@@ -292,6 +303,7 @@ import { ServerStackIcon, WrenchScrewdriverIcon } from "@heroicons/vue/20/solid"
 import RobotIcon from "@/icons/RobotIcon.vue";
 import { messageFormatter } from "@/global/config";
 import SettingsModal from "./SettingsModal.vue";
+import sodium from "libsodium-wrappers";
 
 const store = useStore();
 const router = useRouter();
@@ -389,5 +401,25 @@ const bioHtml = computed(() => {
   }
 
   return messageFormatter.render(cachedUser.value.bio.trim()).trim();
+});
+
+const keyId = computed(() => {
+  if (!cachedUser.value) {
+    return "";
+  }
+
+  const chars = sodium
+    .to_hex(sodium.crypto_generichash(16, cachedUser.value.publicKey))
+    .toUpperCase()
+    .split("");
+  let fingerprint = "";
+  for (let i = 0; i < chars.length; i += 2) {
+    if (fingerprint) {
+      fingerprint += ":";
+    }
+    fingerprint += chars[i];
+    fingerprint += chars[i + 1];
+  }
+  return fingerprint;
 });
 </script>

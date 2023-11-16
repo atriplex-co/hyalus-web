@@ -90,6 +90,7 @@ export const useStore = defineStore("main", {
         recentChannelIds: [],
         experimentsEnabled: false,
         experiments: {},
+        showPublicKeyIds: false,
       },
       updateAvailable: false,
       updateRequired: false,
