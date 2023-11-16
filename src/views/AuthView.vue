@@ -221,6 +221,9 @@ const submit = async () => {
       await store.writeConfig("publicKey", sodium.from_base64(data.publicKey));
       await store.writeConfig("privateKey", privateKey);
       await store.writeConfig("token", sodium.from_base64(data.token));
+      if (window.HyalusDesktop && window.HyalusDesktop.flushStorageData) {
+        window.HyalusDesktop.flushStorageData();
+      }
       await store.start();
       await router.push("/app");
     }
@@ -272,6 +275,9 @@ const submit = async () => {
       await store.writeConfig("publicKey", publicKey);
       await store.writeConfig("privateKey", privateKey);
       await store.writeConfig("token", sodium.from_base64(data.token));
+      if (window.HyalusDesktop && window.HyalusDesktop.flushStorageData) {
+        window.HyalusDesktop.flushStorageData();
+      }
       await store.start();
       await router.push("/app");
     }

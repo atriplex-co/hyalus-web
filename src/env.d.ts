@@ -48,12 +48,12 @@ declare interface IHyalusDesktop {
   setContentProtection(v: boolean): Promise<void>;
   setExperiments(v: Record<string, string>): Promise<void>;
   moveTop(): void;
+  flushStorageData(): void;
 }
 
 declare interface IHyalusDesktopWin32 {
   startCapture(opts: HyalusWin32CaptureOpts, cb: (data?: HyalusWin32CaptureData) => void): void;
   stopCapture(): void;
-  msgCapture(msg: string): void;
   startEvents(cb: (e: string) => void): void;
   stopEvents(): void;
 }

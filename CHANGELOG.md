@@ -1,3 +1,14 @@
+## 2023.11.14
+
+- New video player
+- New attachment image viewer
+- Fixed saving image & video attachments
+- Improved screensharing on Windows
+- Improved video quality in calls
+- Added mute/deafen icons for voice call on sidebar
+- Fixed opening user profiles from messages
+- Fixed desktop app downloads
+
 ## 2023.11.08
 
 - Improve voice server networking code
