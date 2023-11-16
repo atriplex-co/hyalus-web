@@ -11,7 +11,10 @@
   >
     <video
       ref="video"
-      class="max-w-md max-h-80"
+      :class="{
+        'max-w-md max-h-80': !isFullscreen,
+        'w-full h-full': isFullscreen,
+      }"
       :src="src"
       @error="$emit('error')"
       @play="playing = true"
@@ -19,6 +22,7 @@
       @ended="playing = false"
       @click="play"
       @timeupdate="onTimeUpdate"
+      @dblclick="toggleFullscreen"
     />
     <div
       v-if="!init"
@@ -43,7 +47,7 @@
         <input
           type="range"
           :value="time"
-          class="w-full h-1 mb-3 bg-ctp-surface2 bg-opacity-75 rounded-lg appearance-none cursor-pointer accent-ctp-accent"
+          class="w-full h-1 mb-2.5 bg-ctp-overlay0 bg-opacity-75 rounded-lg cursor-pointer accent-ctp-accent appearance-none"
           @input="updateTime"
         />
       </div>
@@ -56,7 +60,7 @@
         <SpeakerXMarkIcon v-if="muted" />
         <div
           v-if="showVolume"
-          class="absolute bottom-3 w-full transform scale-75 pt-1.5 rounded-md bg-[#1e1e1e] bg-opacity-75 backdrop-blur"
+          class="absolute bottom-3 w-full transform scale-75 pt-1.5 rounded-lg bg-[#1e1e1e] bg-opacity-75 backdrop-blur"
           @mouseleave="showVolume = false"
           @click.stop
         >
@@ -64,14 +68,13 @@
             type="range"
             :value="volume"
             class="h-24 w-4 rounded-lg appearance-none cursor-pointer accent-ctp-accent range-vertical"
-            orient="vertical"
             @input="updateVolume"
           />
         </div>
       </div>
       <ArrowsPointingOutIcon
         class="text-[#ccc] hover:text-white w-4 h-4 cursor-pointer transition"
-        @click="expand"
+        @click="toggleFullscreen"
       />
     </div>
   </div>
@@ -85,9 +88,9 @@ import {
   SpeakerWaveIcon,
   SpeakerXMarkIcon,
 } from "@heroicons/vue/20/solid";
-import { ref, watch } from "vue";
+import { ref, watch, onBeforeUnmount } from "vue";
 
-const props = defineProps({
+defineProps({
   src: {
     type: String,
     required: true,
@@ -101,7 +104,7 @@ const props = defineProps({
     required: true,
   },
 });
-const emit = defineEmits(["error"]);
+defineEmits(["error"]);
 const init = ref(false);
 const playing = ref(false);
 const muted = ref(false);
@@ -111,6 +114,7 @@ const volume = ref("50");
 const time = ref("0");
 const video = ref<HTMLVideoElement | null>(null);
 const root = ref<HTMLDivElement | null>(null);
+const isFullscreen = ref(false);
 
 const play = () => {
   if (!init.value) {
@@ -125,15 +129,15 @@ const play = () => {
   }
 };
 
-const expand = () => {
-  if (!document.fullscreenElement) {
+const toggleFullscreen = () => {
+  if (!isFullscreen.value) {
     root.value!.requestFullscreen();
   } else {
     document.exitFullscreen();
   }
 };
 
-const onTimeUpdate = (e: Event) => {
+const onTimeUpdate = () => {
   time.value = (video.value!.currentTime / video.value!.duration) * 100 + "";
 };
 
@@ -166,6 +170,15 @@ const updateVolume = (e: Event) => {
   volume.value = (e.target! as HTMLInputElement).value!;
   video.value!.volume = +volume.value / 100;
 };
+
+const onFullscreenChange = () => {
+  isFullscreen.value = document.fullscreenElement === root.value;
+};
+
+addEventListener("fullscreenchange", onFullscreenChange);
+onBeforeUnmount(() => {
+  removeEventListener("fullscreenchange", onFullscreenChange);
+});
 </script>
 
 <style>
