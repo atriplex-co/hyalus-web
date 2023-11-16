@@ -187,6 +187,7 @@ export interface ISession {
   updatedAt: Date;
   ip: string;
   userAgent: string;
+  location: string;
 }
 
 export interface IFriend {

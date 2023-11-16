@@ -41,6 +41,7 @@ onMounted(async () => {
         updatedAt: number;
         ip: string;
         userAgent: string;
+        location: string;
       }[];
     };
   } = await axios.get("/api/v1/sessions");
@@ -50,6 +51,7 @@ onMounted(async () => {
     updatedAt: new Date(session.updatedAt),
     ip: session.ip,
     userAgent: session.userAgent,
+    location: session.location,
   }));
   sessions.value.sort((a, b) => {
     if (a.id === data.currentSessionId) {

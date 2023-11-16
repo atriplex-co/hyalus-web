@@ -15,15 +15,22 @@
       </div>
       <div>
         <p class="font-bold">{{ agentFormatted }}</p>
-        <p
-          class="text-sm"
-          :class="{
-            'text-ctp-subtext0': session.id !== store.self.currentSessionId,
-            'text-ctp-surface0': session.id === store.self.currentSessionId,
-          }"
-        >
-          {{ updatedAt }}
-        </p>
+        <div class="flex items-center space-x-1 text-sm">
+          <p
+            :class="{
+              'text-ctp-subtext0': session.id !== store.self.currentSessionId,
+              'text-ctp-surface0': session.id === store.self.currentSessionId,
+            }"
+          >
+            {{ updatedAt }}
+          </p>
+          <p>&bull;</p>
+          <button v-if="!showIp" @click="showIp = true" class="flex items-center space-x-1">
+            <ArrowTopRightOnSquareIcon class="w-4 h-4" />
+            <p>Show IP</p>
+          </button>
+          <p v-if="showIp">{{ session.location }} ({{ session.ip }})</p>
+        </div>
       </div>
     </div>
     <button
@@ -39,7 +46,7 @@
 <script lang="ts" setup>
 import Day from "dayjs";
 import UAParser from "ua-parser-js";
-import type { PropType } from "vue";
+import { type PropType, ref } from "vue";
 import type { ISession } from "@/global/types";
 import axios from "axios";
 import { useStore } from "@/global/store";
@@ -49,6 +56,7 @@ import {
   GlobeAltIcon,
   TrashIcon,
 } from "@heroicons/vue/24/outline";
+import { ArrowTopRightOnSquareIcon } from "@heroicons/vue/20/solid";
 
 const store = useStore();
 const props = defineProps({
@@ -65,7 +73,7 @@ const updatedAt = Day(props.session.updatedAt).calendar();
 // const ip = props.session.ip.replace("::ffff:", "");
 // eslint-disable-next-line vue/no-setup-props-destructure
 const agentParsed = UAParser(props.session.userAgent);
-// const showIp = ref(false);
+const showIp = ref(false);
 
 let agentFormatted = "";
 let agentType = "web";
