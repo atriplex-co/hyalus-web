@@ -389,8 +389,9 @@ const stop = async () => {
 };
 
 const resizeMouseMove = (e: MouseEvent) => {
-  resizeHeight.value += e.y - resizeY;
-  resizeY = e.y;
+  const y = Math.min(e.y, innerHeight - 80);
+  resizeHeight.value += y - resizeY;
+  resizeY = y;
 };
 
 const resizeMouseUp = () => {
@@ -399,7 +400,8 @@ const resizeMouseUp = () => {
 };
 
 const resizeMouseDown = (e: MouseEvent) => {
-  resizeY = e.y;
+  const y = Math.min(e.y, innerHeight - 80);
+  resizeY = y;
 
   addEventListener("mousemove", resizeMouseMove);
   addEventListener("mouseup", resizeMouseUp);
