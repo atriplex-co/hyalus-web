@@ -1,6 +1,12 @@
 <template>
   <ContextMenu ref="menu">
-    <ContextMenuItem v-if="upload" @click="$emit('download')">
+    <ContextMenuItem
+      v-if="upload"
+      @click="
+        menu!.close();
+        $emit('download');
+      "
+    >
       <p>Download</p>
     </ContextMenuItem>
     <ContextMenuItem v-if="canReply" @click="reply">
