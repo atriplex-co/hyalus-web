@@ -1021,7 +1021,8 @@ export class Socket {
         }
 
         channel.messages.push(message);
-        channel.activeAt = new Date();
+        // channel.activeAt = new Date();
+        channel.activeAt = new Date(Math.max(+channel.activeAt, +message.createdAt));
 
         const state = getChannelState(channel);
 
