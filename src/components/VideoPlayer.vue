@@ -20,14 +20,14 @@
       @play="playing = true"
       @pause="playing = false"
       @ended="playing = false"
-      @click="play"
+      @click="togglePlay"
       @timeupdate="onTimeUpdate"
       @dblclick="toggleFullscreen"
     />
     <div
       v-if="!init"
       class="absolute inset-0 flex items-center justify-center cursor-pointer rounded-md"
-      @click="play"
+      @click="togglePlay"
     >
       <PlayIcon class="w-12 h-12 p-3 rounded-full bg-ctp-base opacity-75" />
     </div>
@@ -39,7 +39,10 @@
         'opacity-0': !(controls || !playing),
       }"
     >
-      <div class="text-[#ccc] hover:text-white w-4 h-4 cursor-pointer transition" @click="play">
+      <div
+        class="text-[#ccc] hover:text-white w-5 h-5 cursor-pointer transition"
+        @click="togglePlay"
+      >
         <PlayIcon v-if="!playing" />
         <PauseIcon v-if="playing" />
       </div>
@@ -47,13 +50,13 @@
         <input
           type="range"
           :value="time"
-          class="w-full h-1 mb-2.5 bg-ctp-overlay0 bg-opacity-75 rounded-lg cursor-pointer accent-ctp-accent appearance-none"
+          class="w-full h-1 mb-3 bg-ctp-overlay0 bg-opacity-75 rounded-lg cursor-pointer accent-ctp-accent appearance-none"
           @input="updateTime"
         />
       </div>
       <div
-        class="text-[#ccc] hover:text-white w-4 h-4 cursor-pointer transition relative"
-        @click="mute"
+        class="text-[#ccc] hover:text-white w-5 h-5 cursor-pointer transition relative"
+        @click="toggleMute"
         @mouseenter="showVolume = true"
       >
         <SpeakerWaveIcon v-if="!muted" />
@@ -116,7 +119,7 @@ const video = ref<HTMLVideoElement | null>(null);
 const root = ref<HTMLDivElement | null>(null);
 const isFullscreen = ref(false);
 
-const play = () => {
+const togglePlay = () => {
   if (!init.value) {
     init.value = true;
   }
@@ -137,11 +140,7 @@ const toggleFullscreen = () => {
   }
 };
 
-const onTimeUpdate = () => {
-  time.value = (video.value!.currentTime / video.value!.duration) * 100 + "";
-};
-
-const mute = () => {
+const toggleMute = () => {
   if (!muted.value) {
     video.value!.muted = true;
     muted.value = true;
@@ -151,9 +150,18 @@ const mute = () => {
   }
 };
 
+const onTimeUpdate = () => {
+  time.value = (video.value!.currentTime / video.value!.duration) * 100 + "";
+};
+
 const updateTime = (e: Event) => {
   time.value = (e.target! as HTMLInputElement).value!;
   video.value!.currentTime = (+time.value / 100) * video.value!.duration;
+};
+
+const updateVolume = (e: Event) => {
+  volume.value = (e.target! as HTMLInputElement).value!;
+  video.value!.volume = +volume.value / 100;
 };
 
 let controlsTimeout = 0;
@@ -165,11 +173,6 @@ watch(controls, () => {
     }, 1000);
   }
 });
-
-const updateVolume = (e: Event) => {
-  volume.value = (e.target! as HTMLInputElement).value!;
-  video.value!.volume = +volume.value / 100;
-};
 
 const onFullscreenChange = () => {
   isFullscreen.value = document.fullscreenElement === root.value;
