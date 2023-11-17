@@ -10,8 +10,8 @@
       @click="togglePlay"
       @timeupdate="onTimeUpdate"
     />
-    <div class="rounded-md bg-[#1e1e1e] w-96 p-1">
-      <div class="p-2 flex items-center space-x-2">
+    <div class="rounded-md bg-[#1e1e1e] w-96 p-2 space-y-2">
+      <div class="flex items-center space-x-2">
         <MusicalNoteIcon class="w-8 h-8 p-2 rounded-full bg-ctp-surface0 text-ctp-text" />
         <div class="flex justify-between items-center space-x-2 flex-1">
           <div class="min-w-0 flex-1">
@@ -24,7 +24,9 @@
           />
         </div>
       </div>
-      <div class="h-8 w-full flex items-center px-2 space-x-2 transform transition duration-100">
+      <div
+        class="py-1 bg-ctp-crust rounded-md w-full flex items-center px-2 space-x-2 transform transition duration-100"
+      >
         <div
           class="text-[#ccc] hover:text-white w-5 h-5 cursor-pointer transition"
           @click="togglePlay"
