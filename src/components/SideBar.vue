@@ -1,14 +1,14 @@
 <template>
   <div
     v-if="store.self"
-    class="flex"
+    class="flex h-full min-h-0"
     :class="{
       'fixed inset-0 z-40': isMobile,
       'w-[22.5rem]': !isMobile,
       'w-full': isMobile && store.sideBarState !== SideBarState.NONE,
     }"
   >
-    <div class="flex min-h-0 w-16 flex-col items-center space-y-2 bg-ctp-crust py-2">
+    <div class="flex min-h-0 w-16 flex-col items-center space-y-2 bg-ctp-crust pt-2">
       <div class="relative" @mouseup="userMenu && $event.stopPropagation()">
         <UserAvatar
           :id="store.self.id"
@@ -56,29 +56,36 @@
       <div class="w-full px-3">
         <div class="-mt-px border-t border-ctp-surface0/50"></div>
       </div>
-      <SidebarSpaceIcon
-        v-for="space in store.spaces"
-        :key="space.id"
-        :space="space"
-        :selected="selectedSpaceId === space.id"
-        @select="
-          store.sideBarState = SideBarState.SPACE;
-          selectedSpaceId = space.id;
-        "
-      />
-      <button
-        class="flex h-10 w-10 items-center justify-center rounded-full bg-ctp-base text-ctp-accent transition hover:bg-ctp-surface0/75"
-        @click="spaceCreateModal = true"
+      <div
+        class="overflow-auto w-full h-full flex-1 flex flex-col items-center pt-[2px]"
+        id="space-list"
       >
-        <PlusIcon class="h-5 w-5" />
-      </button>
-      <button
-        v-if="store.updateAvailable"
-        class="flex h-10 w-10 items-center justify-center rounded-full bg-ctp-base text-ctp-accent transition hover:bg-ctp-surface0/75"
-        @click="updateReloadModal = true"
-      >
-        <RefreshIcon class="h-5 w-5" />
-      </button>
+        <div class="space-y-2 pb-2">
+          <SidebarSpaceIcon
+            v-for="space in store.spaces"
+            :key="space.id"
+            :space="space"
+            :selected="selectedSpaceId === space.id"
+            @select="
+              store.sideBarState = SideBarState.SPACE;
+              selectedSpaceId = space.id;
+            "
+          />
+          <button
+            class="flex h-10 w-10 items-center justify-center rounded-full bg-ctp-base text-ctp-accent transition hover:bg-ctp-surface0/75"
+            @click="spaceCreateModal = true"
+          >
+            <PlusIcon class="h-5 w-5" />
+          </button>
+          <button
+            v-if="store.updateAvailable"
+            class="flex h-10 w-10 items-center justify-center rounded-full bg-ctp-base text-ctp-accent transition hover:bg-ctp-surface0/75"
+            @click="updateReloadModal = true"
+          >
+            <RefreshIcon class="h-5 w-5" />
+          </button>
+        </div>
+      </div>
     </div>
     <div
       v-if="store.sideBarState !== SideBarState.NONE"
@@ -175,3 +182,9 @@ if (store.sideBarState === SideBarState.NONE) {
   store.sideBarState = SideBarState.HOME;
 }
 </script>
+
+<style scoped>
+#space-list::-webkit-scrollbar {
+  display: none;
+}
+</style>

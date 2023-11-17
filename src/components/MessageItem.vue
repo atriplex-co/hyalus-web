@@ -209,7 +209,6 @@
                     @error="delPreview"
                     @click="imageView = true"
                   />
-                  <!-- TODO: custom video player UI bc the stock chromium one kinda sucks -->
                   <VideoPlayer
                     v-if="upload.type.split('/')[0] === 'video'"
                     :src="previewUrl"
