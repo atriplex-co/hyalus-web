@@ -716,10 +716,40 @@ onMounted(async () => {
   }
 });
 
-const onKeydown = (e: KeyboardEvent) => {
+const onKeydown = async (e: KeyboardEvent) => {
   if (e.key === "Escape") {
     replyMessage.value = null;
     return;
+  }
+
+  if (e.key === "'" && e.ctrlKey) {
+    if (
+      ![
+        // voice capable channel types:
+        ChannelType.DM,
+        ChannelType.Group,
+        ChannelType.SpaceVoice,
+      ].includes(channel.value!.type)
+    ) {
+      return;
+    }
+
+    if (store.call) {
+      if (store.call.channelId === channel.value!.id) {
+        return;
+      } else {
+        await store.callReset();
+      }
+    }
+
+    await store.callStart(channel.value!.id);
+
+    if (!e.shiftKey) {
+      await store.callAddLocalStream({
+        type: CallStreamType.Audio,
+        silent: true,
+      });
+    }
   }
 
   if (messageBox.value && !e.ctrlKey) {
