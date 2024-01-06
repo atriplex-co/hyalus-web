@@ -181,6 +181,7 @@ export interface ISelf {
   totpEnabled: boolean;
   currentSessionId: string;
   flags: number;
+  userConfig: IUserConfig;
 }
 
 export interface ISession {
@@ -404,4 +405,9 @@ export interface IMessageUpload {
   size: number;
   sizeFormatted: string;
   chunks: string[];
+}
+
+export interface IUserConfig {
+  v: number;
+  pinnedChannelIds: string[];
 }

@@ -22,6 +22,7 @@ import type {
 } from "./types";
 import {
   cleanObject,
+  decryptUserConfig,
   getChannelState,
   getUserOutputGain,
   isDesktop,
@@ -134,6 +135,7 @@ export class Socket {
             typingEvents: boolean;
             currentSessionId: string;
             flags: number;
+            userConfig: string | null;
           };
           friends: {
             id: string;
@@ -260,6 +262,11 @@ export class Socket {
           totpEnabled: data.self.totpEnabled,
           currentSessionId: data.self.currentSessionId,
           flags: data.self.flags,
+          userConfig: {
+            v: 0,
+            pinnedChannelIds: [],
+            ...((data.self.userConfig ? decryptUserConfig(data.self.userConfig) : null) || {}),
+          },
         };
 
         store.friends = [];
@@ -586,6 +593,7 @@ export class Socket {
           colorMode?: ColorMode;
           colorTheme?: ColorTheme;
           authKeyUpdatedAt?: number;
+          userConfig?: string;
         };
 
         if (!store.self) {
@@ -617,6 +625,13 @@ export class Socket {
 
         if (data.colorTheme !== undefined && store.config.colorSync) {
           await store.writeConfig("colorTheme", data.colorTheme);
+        }
+
+        if (data.userConfig) {
+          const userConfig = decryptUserConfig(data.userConfig);
+          if (userConfig) {
+            Object.assign(store.self, { userConfig });
+          }
         }
       }
 

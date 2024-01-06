@@ -26,6 +26,7 @@ import {
 } from "./types";
 import {
   callUpdatePersist,
+  encryptUserConfig,
   getUserOutputGain,
   getWorkerUrl,
   playSound,
@@ -880,6 +881,12 @@ export const useStore = defineStore("main", {
             ]
           : []),
       ]);
+    },
+    async updateUserConfig() {
+      await axios.post("/api/v1/users/me/config", {
+        userConfig: encryptUserConfig(store.self!.userConfig),
+        userConfigTime: +new Date(),
+      });
     },
   },
 });

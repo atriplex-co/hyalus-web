@@ -20,10 +20,12 @@ import type {
   ICachedUser,
   IChannelState,
   ISpaceRole,
+  IUserConfig,
 } from "./types";
 import { availableExperiments, messageFormatter } from "./config";
 import { store } from "./store";
 import msgpack from "msgpack-lite";
+import z from "zod";
 
 export const prettyError = (e: unknown): string => {
   return (
@@ -579,4 +581,43 @@ export const postImage = async (url: string) => {
 
   el.type = "file";
   el.click();
+};
+
+export const encryptUserConfig = (v: unknown): string => {
+  const key = sodium.randombytes_buf(sodium.crypto_secretbox_KEYBYTES);
+  const keyNonce = sodium.randombytes_buf(sodium.crypto_box_NONCEBYTES);
+  const keyEnc = sodium.crypto_box_easy(
+    key,
+    keyNonce,
+    store.config.publicKey!,
+    store.config.privateKey!,
+  );
+  const configNonce = sodium.randombytes_buf(sodium.crypto_secretbox_NONCEBYTES);
+  const configEnc = sodium.crypto_secretbox_easy(msgpack.encode(v), configNonce, key);
+  return sodium.to_base64(msgpack.encode([keyNonce, keyEnc, configNonce, configEnc]));
+};
+
+export const decryptUserConfig = (s: string): IUserConfig | null => {
+  try {
+    const [keyNonce, keyEnc, configNonce, configEnc] = z
+      .array(z.instanceof(Uint8Array))
+      .length(4)
+      .parse(msgpack.decode(sodium.from_base64(s)));
+    const key = sodium.crypto_box_open_easy(
+      keyEnc,
+      keyNonce,
+      store.config.publicKey!,
+      store.config.privateKey!,
+    );
+    const _config = sodium.crypto_secretbox_open_easy(configEnc, configNonce, key);
+    return z
+      .object({
+        v: z.number(),
+        pinnedChannelIds: z.array(z.string().uuid()),
+      })
+      .parse(msgpack.decode(_config));
+  } catch {
+    console.warn("[!] failed to decrypt userConfig");
+    return null;
+  }
 };

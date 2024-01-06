@@ -28,15 +28,18 @@
         'text-ctp-text': selected || channelState.mentionCount,
       }"
     >
-      <p
-        class="truncate text-sm"
-        :class="{
-          'font-medium': !channelState.mentionCount,
-          'font-bold': channelState.mentionCount,
-        }"
-      >
-        {{ name }}
-      </p>
+      <div class="flex items-center space-x-1.5">
+        <p
+          class="truncate text-sm"
+          :class="{
+            'font-medium': !channelState.mentionCount,
+            'font-bold': channelState.mentionCount,
+          }"
+        >
+          {{ name }}
+        </p>
+        <PinIcon v-if="isPinned" class="w-[14px] text-ctp-overlay0" />
+      </div>
       <p v-if="description" class="truncate text-xs">
         {{ description }}
       </p>
@@ -54,7 +57,10 @@ import { ChannelType } from "@/../../hyalus-server/src/types";
 import { getChannelState, getStatus } from "@/global/helpers";
 import { UserGroupIcon } from "@heroicons/vue/20/solid";
 import ChannelContextMenu from "./ChannelContextMenu.vue";
+import { useStore } from "@/global/store";
+import PinIcon from "../icons/PinIcon.vue";
 
+const store = useStore();
 const props = defineProps({
   channel: {
     type: Object as PropType<IChannel>,
@@ -108,4 +114,8 @@ const description = computed(() => {
 });
 
 const menu: Ref<typeof ChannelContextMenu | null> = ref(null);
+
+const isPinned = computed(() => {
+  return store.self!.userConfig.pinnedChannelIds.includes(props.channel.id);
+});
 </script>

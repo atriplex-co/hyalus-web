@@ -29,7 +29,7 @@
       </div>
     </div>
     <OverlayScrollbarsComponent
-      v-if="channels.length"
+      v-if="channels.length || pinnedChannels.length"
       defer
       class="min-h-0 h-full flex-1"
       :options="{
@@ -39,12 +39,18 @@
         },
       }"
     >
+      <template v-if="pinnedChannels.length">
+        <div class="pb-1.5 px-2 space-y-0.5">
+          <SideBarChannel v-for="channel in pinnedChannels" :key="channel.id" :channel="channel" />
+        </div>
+        <div class="pb-1.5 mx-3 border-t border-ctp-surface0/30"></div>
+      </template>
       <div class="pb-2 px-2 space-y-0.5">
         <SideBarChannel v-for="channel in channels" :key="channel.id" :channel="channel" />
       </div>
     </OverlayScrollbarsComponent>
     <div
-      v-if="!channels.length"
+      v-else
       class="flex flex-1 flex-col items-center justify-center space-y-4 text-sm text-ctp-subtext0"
     >
       <SparklesIcon class="h-12 w-12 rounded-full bg-ctp-surface0/75 p-3" />
@@ -74,7 +80,7 @@ import { ChannelType } from "@/../../hyalus-server/src/types";
 import SettingsModal from "./SettingsModal.vue";
 import { SparklesIcon } from "@heroicons/vue/24/solid";
 import FriendAddModal from "./FriendAddModal.vue";
-import { CogIcon, MagnifyingGlassIcon, UsersIcon } from "@heroicons/vue/20/solid";
+import { CogIcon, MagnifyingGlassIcon, PlusIcon, UsersIcon } from "@heroicons/vue/20/solid";
 import { OverlayScrollbarsComponent } from "overlayscrollbars-vue";
 
 const store = useStore();
@@ -88,9 +94,20 @@ const acceptableFriendsCount = computed(() => {
   return store.friends.filter((friend) => friend.acceptable).length;
 });
 
+const pinnedChannels = computed(() => {
+  return store.channels
+    .filter(
+      (channel) => !channel.spaceId && store.self!.userConfig.pinnedChannelIds.includes(channel.id),
+    )
+    .sort((a, b) => (a.activeAt < b.activeAt ? 1 : -1));
+});
+
 const channels = computed(() => {
   return store.channels
-    .filter((channel) => !channel.spaceId)
+    .filter(
+      (channel) =>
+        !channel.spaceId && !store.self!.userConfig.pinnedChannelIds.includes(channel.id),
+    )
     .sort((a, b) => (a.activeAt < b.activeAt ? 1 : -1));
 });
 

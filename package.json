@@ -63,6 +63,7 @@
     "vue-router": "^4.2.5",
     "vue-tsc": "^1.8.22",
     "workbox-build": "^7.0.0",
-    "workbox-precaching": "^7.0.0"
+    "workbox-precaching": "^7.0.0",
+    "zod": "^3.22.4"
   }
 }

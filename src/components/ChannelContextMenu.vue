@@ -81,6 +81,10 @@
     >
       <p>Delete Channel</p>
     </ContextMenuItem>
+    <ContextMenuItem v-if="canPin" @click="pinChannel">
+      <p v-if="!isPinned">Pin Channel</p>
+      <p v-if="isPinned">Unpin Channel</p>
+    </ContextMenuItem>
     <ContextMenuItem @click="copyChannelId">
       <p>Copy Channel ID</p>
     </ContextMenuItem>
@@ -175,6 +179,12 @@ export default defineComponent({
     isOwner() {
       return this.channel.type === ChannelType.Group && this.channel.ownerId === store.self!.id;
     },
+    canPin() {
+      return this.channel.type === ChannelType.DM || this.channel.type === ChannelType.Group;
+    },
+    isPinned() {
+      return store.self!.userConfig.pinnedChannelIds.includes(this.channel.id);
+    },
   },
   data() {
     return {
@@ -232,6 +242,16 @@ export default defineComponent({
     async openChannel() {
       this.menu!.close();
       await this.$router.push(`/channels/${this.channel.id}`);
+    },
+    async pinChannel() {
+      if (!this.isPinned) {
+        store.self!.userConfig.pinnedChannelIds.push(this.channel.id);
+      } else {
+        store.self!.userConfig.pinnedChannelIds = store.self!.userConfig.pinnedChannelIds.filter(
+          (id) => id !== this.channel.id,
+        );
+      }
+      await store.updateUserConfig();
     },
   },
   props: {
