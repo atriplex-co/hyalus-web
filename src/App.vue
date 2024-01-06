@@ -114,11 +114,8 @@
     <div class="flex h-full min-h-0 flex-col bg-ctp-base text-ctp-text">
       <div id="app-inner"></div>
       <DesktopTitlebar v-if="isDesktop" />
-      <router-view v-if="!inApp && !desktopUpdating" />
-      <div
-        v-if="inApp && store.ready && !desktopUpdating"
-        class="flex h-full min-h-0 flex-1 flex-col"
-      >
+      <router-view v-if="!inApp" />
+      <div v-if="inApp && store.ready" class="flex h-full min-h-0 flex-1 flex-col">
         <EmailVerifyBanner v-if="banner === 'emailVerify'" />
         <AppDownloadBanner v-if="banner === 'appDownload'" />
         <StreamerModeBanner v-if="banner === 'streamerMode'" />
@@ -139,7 +136,9 @@
         <WelcomeModal v-if="welcomeModal" @close="welcomeModal = false" />
         <SettingsModal v-if="settingsModal" @close="settingsModal = false" />
       </div>
-      <LoadingView v-show="(inApp && !store.ready) || desktopUpdating" />
+      <LoadingView
+        v-if="(inApp && !store.ready) || desktopUpdating"
+      />
       <UpdateRequiredView v-show="store.updateRequired" />
       <UserDisabledView v-show="store.userDisabled" />
     </div>
