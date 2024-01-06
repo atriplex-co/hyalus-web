@@ -61,6 +61,7 @@ import { useStore } from "@/global/store";
 import PinIcon from "../icons/PinIcon.vue";
 
 const store = useStore();
+const route = useRoute();
 const props = defineProps({
   channel: {
     type: Object as PropType<IChannel>,
@@ -69,7 +70,6 @@ const props = defineProps({
 });
 
 const selected = computed(() => {
-  const route = useRoute();
   return route.name === "channel" && route.params.channelId === props.channel.id;
 });
 

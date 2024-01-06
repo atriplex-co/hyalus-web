@@ -159,6 +159,7 @@ const updateRoute = () => {
       selectedSpaceId.value = channel.spaceId;
       store.sideBarState = SideBarState.SPACE;
     } else {
+      selectedSpaceId.value = "";
       store.sideBarState = SideBarState.HOME;
     }
   }
