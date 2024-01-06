@@ -7,17 +7,13 @@
   >
     <div class="flex h-8 items-center space-x-2">
       <UserAvatar
-        class="h-5 w-5"
-        :avatar="channel.members[0].avatar"
         v-if="channel.type === ChannelType.DM"
-      />
-      <UserAvatar
         class="h-5 w-5"
         :avatar="channel.members[0].avatar"
-        v-if="channel.type !== ChannelType.DM && channel.avatar"
       />
+      <UserAvatar v-else-if="channel.avatar" class="h-5 w-5" :avatar="channel.avatar" />
       <div
-        v-if="channel.type !== ChannelType.DM && !channel.avatar && channel.name"
+        v-else-if="channel.name"
         class="flex h-5 w-5 items-center justify-center rounded-full bg-ctp-surface0 text-xs"
       >
         <p>{{ channel.name.slice(0, 1) }}</p>
