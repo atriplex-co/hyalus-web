@@ -43,7 +43,7 @@
         <div class="pb-1.5 px-2 space-y-0.5">
           <SideBarChannel v-for="channel in pinnedChannels" :key="channel.id" :channel="channel" />
         </div>
-        <div class="pb-1.5 mx-3 border-t border-ctp-surface0/30"></div>
+        <div class="pb-1.5 mx-3 border-t-2 border-ctp-surface0/50"></div>
       </template>
       <div class="pb-2 px-2 space-y-0.5">
         <SideBarChannel v-for="channel in channels" :key="channel.id" :channel="channel" />
