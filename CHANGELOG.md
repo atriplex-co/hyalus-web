@@ -1,6 +1,17 @@
+## 2024.01.06
+
+- Added DM/group pinning
+- Added `Ctrl+'` to join calls
+- Added ability to search members in server management UI
+- Added option for showing public keys
+- Added GeoIP (hidden by default) to Sessions page
+- Fixed icon highlight not updating in sidebar
+- Fixed local time issue causing desync
+
 ## 2023.11.14
 
-- New video player
+- New in-app audio player
+- New in-app video player
 - New attachment image viewer
 - Fixed saving image & video attachments
 - Improved screensharing on Windows
