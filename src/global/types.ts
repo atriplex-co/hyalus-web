@@ -410,4 +410,5 @@ export interface IMessageUpload {
 export interface IUserConfig {
   v: number;
   pinnedChannelIds: string[];
+  userAliases: Record<string, string>;
 }

@@ -79,6 +79,10 @@ const name = computed(() => {
   }
 
   if (props.channel.type === ChannelType.DM && props.channel.members.length) {
+    const nickname = store.self!.userConfig.userAliases[props.channel.members[0]!.id];
+    if (nickname) {
+      return nickname;
+    }
     return props.channel.members[0].name;
   }
 

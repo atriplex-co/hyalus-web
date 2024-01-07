@@ -7,6 +7,17 @@
       <ModalError v-if="error" :error="error" />
       <ModalInput v-model="code" type="text" label="Invite Code/URL" autofocus />
     </template>
+    <template #submit>
+      <button
+        class="hover:bg-ctp-base:bg-dark-400 cursor-pointer rounded-md bg-ctp-base px-4 py-2 text-ctp-subtext0 shadow-sm transition hover:text-white"
+        @click="
+          nickname = '';
+          submit();
+        "
+      >
+        Reset
+      </button>
+    </template>
   </ModalBase>
 </template>
 

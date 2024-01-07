@@ -583,6 +583,12 @@ export const postImage = async (url: string) => {
   el.click();
 };
 
+export const DefaultUserConfig: IUserConfig = {
+  v: 0,
+  pinnedChannelIds: [],
+  userAliases: {},
+};
+
 export const encryptUserConfig = (v: unknown): string => {
   const key = sodium.randombytes_buf(sodium.crypto_secretbox_KEYBYTES);
   const keyNonce = sodium.randombytes_buf(sodium.crypto_box_NONCEBYTES);
@@ -597,7 +603,7 @@ export const encryptUserConfig = (v: unknown): string => {
   return sodium.to_base64(msgpack.encode([keyNonce, keyEnc, configNonce, configEnc]));
 };
 
-export const decryptUserConfig = (s: string): IUserConfig | null => {
+export const decryptUserConfig = (s: string): IUserConfig => {
   try {
     const [keyNonce, keyEnc, configNonce, configEnc] = z
       .array(z.instanceof(Uint8Array))
@@ -610,14 +616,18 @@ export const decryptUserConfig = (s: string): IUserConfig | null => {
       store.config.privateKey!,
     );
     const _config = sodium.crypto_secretbox_open_easy(configEnc, configNonce, key);
-    return z
-      .object({
-        v: z.number(),
-        pinnedChannelIds: z.array(z.string().uuid()),
-      })
-      .parse(msgpack.decode(_config));
+    return {
+      ...DefaultUserConfig,
+      ...z
+        .object({
+          v: z.number(),
+          pinnedChannelIds: z.array(z.string().uuid()).optional(),
+          userAliases: z.record(z.string().uuid(), z.string()).optional(),
+        })
+        .parse(msgpack.decode(_config)),
+    };
   } catch {
     console.warn("[!] failed to decrypt userConfig");
-    return null;
+    return DefaultUserConfig;
   }
 };

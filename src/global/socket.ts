@@ -32,6 +32,7 @@ import {
   playSound,
   processMessage,
   wcImportKey,
+  DefaultUserConfig,
 } from "./helpers";
 import { store } from "@/global/store";
 import axios from "axios";
@@ -263,8 +264,7 @@ export class Socket {
           currentSessionId: data.self.currentSessionId,
           flags: data.self.flags,
           userConfig: {
-            v: 0,
-            pinnedChannelIds: [],
+            ...DefaultUserConfig,
             ...((data.self.userConfig ? decryptUserConfig(data.self.userConfig) : null) || {}),
           },
         };

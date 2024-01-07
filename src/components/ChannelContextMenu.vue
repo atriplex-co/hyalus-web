@@ -52,6 +52,15 @@
       <p>Remove Friend</p>
     </ContextMenuItem>
     <ContextMenuItem
+      v-if="channel.type === ChannelType.DM"
+      @click="
+        setAliasModal = true;
+        menu!.close();
+      "
+    >
+      <p>Set Nickname</p>
+    </ContextMenuItem>
+    <ContextMenuItem
       @click="
         groupCreateModal = true;
         menu!.close();
@@ -117,6 +126,11 @@
     :channel="channel"
     :space="space!"
   />
+  <SetUserAliasModal
+    v-if="setAliasModal"
+    @close="setAliasModal = false"
+    :id="channel.members[0].id"
+  />
 </template>
 
 <script lang="ts">
@@ -135,6 +149,7 @@ import GroupAddModal from "./GroupAddModal.vue";
 import GroupLeaveModal from "./GroupLeaveModal.vue";
 import SpaceChannelManage from "./SpaceChannelManage.vue";
 import SpaceChannelDeleteModal from "./SpaceChannelDeleteModal.vue";
+import SetUserAliasModal from "./SetUserAliasModal.vue";
 import { router } from "@/router";
 
 const store = useStore();
@@ -196,6 +211,7 @@ export default defineComponent({
       profileModal: false,
       spaceChannelManageModal: false,
       spaceChannelDeleteModal: false,
+      setAliasModal: false,
     };
   },
   methods: {
@@ -274,6 +290,7 @@ export default defineComponent({
     GroupLeaveModal,
     SpaceChannelManage,
     SpaceChannelDeleteModal,
+    SetUserAliasModal,
   },
 });
 </script>
