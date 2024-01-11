@@ -14,6 +14,98 @@ export const iceServers = [
   },
 ];
 
+export const MarkdownItEmojiPlugin = (md: MarkdownIt) => {
+  const renderEm: Renderer.RenderRule = (tokens, idx, opts, _, self) => {
+    const token = tokens[idx];
+    if (token.markup === "__") {
+      token.tag = "u";
+    }
+    return self.renderToken(tokens, idx, opts);
+  };
+
+  md.renderer.rules.strong_open = renderEm;
+  md.renderer.rules.strong_close = renderEm;
+
+  md.core.ruler.after("linkify", "emoji", (state) => {
+    for (let i = state.tokens.length - 1; i >= 0; --i) {
+      const token = state.tokens[i];
+      if (token.type !== "inline" || !token.children) {
+        continue;
+      }
+      for (let j = token.children.length - 1; j >= 0; --j) {
+        const token2 = token.children[j];
+        if (token2.type !== "text") {
+          continue;
+        }
+        for (const emoji of emojis) {
+          if (!token2.content.includes(emoji.glyph)) {
+            continue; // speeds things up
+          }
+          token2.content = token2.content.replaceAll(emoji.glyph, `:${emoji.id}:`);
+        }
+        const regex = /:[a-zA-Z0-9-_]+:/g;
+        let pos = 0;
+        const tokens = [];
+        for (;;) {
+          const exec = regex.exec(token2.content);
+          if (!exec) {
+            break;
+          }
+          const before = token2.content.slice(pos, exec.index);
+          if (before.length) {
+            const token = new state.Token("text", "", 0);
+            token.content = before;
+            tokens.push(token);
+          }
+          const token = new state.Token("emoji", "", 0);
+          token.content = exec[0];
+          tokens.push(token);
+          pos = exec.index + exec[0].length;
+        }
+        if (pos !== token2.content.length) {
+          const token = new state.Token("text", "", 0);
+          token.content = token2.content.slice(pos);
+          tokens.push(token);
+        }
+        token.children.splice(j, 1, ...tokens);
+      }
+    }
+  });
+
+  md.renderer.rules.emoji = (tokens, idx, options, env, self) => {
+    const id = tokens[idx].content.slice(1).slice(0, -1);
+    let asset = "";
+    let alt = "";
+    const appEmoji = emojis.find((emoji) => emoji.id === id);
+    if (appEmoji) {
+      asset = `/fluentui-emoji/${appEmoji.asset}`;
+      alt = appEmoji.glyph;
+    }
+    if (/^[0-9a-f]{8}-[0-9a-f]{4}-[0-9a-f]{4}-[0-9a-f]{4}-[0-9a-f]{12}$/.test(id)) {
+      asset = `/api/v1/emojis/${id}`;
+      alt = `:${id}:`;
+    }
+    if (asset) {
+      return `<img src="${asset}" style="width:16px;height:16px;display:inline;margin-top:-2px;margin-left:1px;margin-right:1px" alt="${alt}"/>`;
+    }
+    return tokens[idx].content;
+  };
+
+  const renderLink =
+    md.renderer.rules.link_open ||
+    function (tokens, idx, options, env, self) {
+      return self.renderToken(tokens, idx, options);
+    };
+  md.renderer.rules.link_open = function (tokens, idx, options, env, self) {
+    tokens[idx].attrPush(["target", "_blank"]); // add new attribute
+    tokens[idx].attrPush(["rel", "noopener noreferrer"]);
+    tokens[idx].attrPush(["class", "underline font-medium"]);
+
+    // pass token to default renderer.
+    return renderLink(tokens, idx, options, env, self);
+  };
+};
+
 export const messageFormatter = new MarkdownIt("zero", {
   html: false,
   linkify: true,
@@ -33,97 +125,13 @@ export const messageFormatter = new MarkdownIt("zero", {
   },
 })
   .enable(["emphasis", "strikethrough", "backticks", "fence", "linkify", "block", "escape"])
-  .use((md) => {
-    const renderEm: Renderer.RenderRule = (tokens, idx, opts, _, self) => {
-      const token = tokens[idx];
-      if (token.markup === "__") {
-        token.tag = "u";
-      }
-      return self.renderToken(tokens, idx, opts);
-    };
+  .use(MarkdownItEmojiPlugin);
 
-    md.renderer.rules.strong_open = renderEm;
-    md.renderer.rules.strong_close = renderEm;
-
-    md.core.ruler.after("linkify", "emoji", (state) => {
-      for (let i = state.tokens.length - 1; i >= 0; --i) {
-        const token = state.tokens[i];
-        if (token.type !== "inline" || !token.children) {
-          continue;
-        }
-        for (let j = token.children.length - 1; j >= 0; --j) {
-          const token2 = token.children[j];
-          if (token2.type !== "text") {
-            continue;
-          }
-          for (const emoji of emojis) {
-            if (!token2.content.includes(emoji.glyph)) {
-              continue; // speeds things up
-            }
-            token2.content = token2.content.replaceAll(emoji.glyph, `:${emoji.id}:`);
-          }
-          const regex = /:[a-zA-Z0-9-_]+:/g;
-          let pos = 0;
-          const tokens = [];
-          for (;;) {
-            const exec = regex.exec(token2.content);
-            if (!exec) {
-              break;
-            }
-            const before = token2.content.slice(pos, exec.index);
-            if (before.length) {
-              const token = new state.Token("text", "", 0);
-              token.content = before;
-              tokens.push(token);
-            }
-            const token = new state.Token("emoji", "", 0);
-            token.content = exec[0];
-            tokens.push(token);
-            pos = exec.index + exec[0].length;
-          }
-          if (pos !== token2.content.length) {
-            const token = new state.Token("text", "", 0);
-            token.content = token2.content.slice(pos);
-            tokens.push(token);
-          }
-          token.children.splice(j, 1, ...tokens);
-        }
-      }
-    });
-
-    md.renderer.rules.emoji = (tokens, idx, options, env, self) => {
-      const id = tokens[idx].content.slice(1).slice(0, -1);
-      let asset = "";
-      let alt = "";
-      const appEmoji = emojis.find((emoji) => emoji.id === id);
-      if (appEmoji) {
-        asset = `/fluentui-emoji/${appEmoji.asset}`;
-        alt = appEmoji.glyph;
-      }
-      if (/^[0-9a-f]{8}-[0-9a-f]{4}-[0-9a-f]{4}-[0-9a-f]{4}-[0-9a-f]{12}$/.test(id)) {
-        asset = `/api/v1/emojis/${id}`;
-        alt = `:${id}:`;
-      }
-      if (asset) {
-        return `<img src="${asset}" style="width:16px;height:16px;display:inline;margin-top:-2px;margin-left:1px;margin-right:1px" alt="${alt}"/>`;
-      }
-      return tokens[idx].content;
-    };
-
-    const renderLink =
-      md.renderer.rules.link_open ||
-      function (tokens, idx, options, env, self) {
-        return self.renderToken(tokens, idx, options);
-      };
-    md.renderer.rules.link_open = function (tokens, idx, options, env, self) {
-      tokens[idx].attrPush(["target", "_blank"]); // add new attribute
-      tokens[idx].attrPush(["rel", "noopener noreferrer"]);
-      tokens[idx].attrPush(["class", "underline font-medium"]);
-
-      // pass token to default renderer.
-      return renderLink(tokens, idx, options, env, self);
-    };
-  });
+export const statusFormatter = new MarkdownIt("zero", {
+  html: false,
+})
+  .enable(["emphasis", "strikethrough", "block", "escape"])
+  .use(MarkdownItEmojiPlugin);
 
 export const availableExperiments: IExperiment[] = [
   {

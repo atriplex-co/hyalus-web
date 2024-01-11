@@ -43,6 +43,7 @@
       <p v-if="description" class="truncate text-xs">
         {{ description }}
       </p>
+      <div v-if="status" v-html="status" class="min-w-0 text-xs truncate" id="status"></div>
     </div>
   </router-link>
   <ChannelContextMenu ref="menu" :channel="channel" />
@@ -55,6 +56,7 @@ import type { IChannel } from "@/global/types";
 import { useRoute } from "vue-router";
 import { ChannelType } from "@/../../hyalus-server/src/types";
 import { getChannelState, getStatus } from "@/global/helpers";
+import { statusFormatter } from "@/global/config";
 import { UserGroupIcon } from "@heroicons/vue/20/solid";
 import ChannelContextMenu from "./ChannelContextMenu.vue";
 import { useStore } from "@/global/store";
@@ -105,13 +107,21 @@ const channelState = computed(() => {
   return getChannelState(props.channel);
 });
 
+const status = computed(() => {
+  if (props.channel.type === ChannelType.DM) {
+    const status = getStatus(props.channel.members[0].id).statusText;
+    if (!status) {
+      return "";
+    }
+    return statusFormatter.render(status);
+  }
+
+  return "";
+});
+
 const description = computed(() => {
   if (props.channel.type === ChannelType.Group) {
     return `${props.channel.members.length + 1} members`;
-  }
-
-  if (props.channel.type === ChannelType.DM) {
-    return getStatus(props.channel.members[0].id).statusText;
   }
 
   return "";
@@ -123,3 +133,9 @@ const isPinned = computed(() => {
   return store.self!.userConfig.pinnedChannelIds.includes(props.channel.id);
 });
 </script>
+
+<style scoped>
+#status p {
+  @apply truncate;
+}
+</style>
