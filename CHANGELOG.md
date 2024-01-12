@@ -1,3 +1,11 @@
+## 2024.01.12
+
+- Added channel muting support
+- Added status formatting & emoji support
+- Added friend nicknames
+- Fixed quick switcher group icons
+- Fixed desktop app loading bug
+
 ## 2024.01.06
 
 - Added DM/group pinning
