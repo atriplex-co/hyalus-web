@@ -71,7 +71,7 @@
 <script lang="ts" setup>
 import SideBarChannel from "./SideBarChannel.vue";
 import GroupCreateModal from "./GroupCreateModal.vue";
-import { ref, computed, onMounted, onUnmounted } from "vue";
+import { ref, computed, onMounted, onUnmounted, toValue } from "vue";
 import { useRoute, useRouter } from "vue-router";
 import { isMobile } from "@/global/helpers";
 import { useStore } from "@/global/store";
@@ -131,25 +131,28 @@ onMounted(() => {
 });
 
 const keydownHandler = (e: KeyboardEvent) => {
-  const channel = channels.value.find((channel) => channel.id === route.params.channelId);
-  if (!channel || channels.value.length < 2) {
-    return;
-  }
-  const index = channels.value.indexOf(channel);
-
-  if (e.altKey && e.key == "ArrowDown") {
-    if (index < channels.value.length - 1) {
-      router.push(`/channels/${channels.value[index + 1].id}`);
-    } else {
-      router.push(`/channels/${channels.value[0].id}`);
+  if (e.altKey && (e.key === "ArrowDown" || e.key === "ArrowUp")) {
+    const mergedChannels = [...pinnedChannels.value, ...channels.value];
+    const channel = mergedChannels.find((channel) => channel.id === route.params.channelId);
+    if (!channel || mergedChannels.length < 2) {
+      return;
     }
-  }
+    const index = mergedChannels.indexOf(channel);
 
-  if (e.altKey && e.key == "ArrowUp") {
-    if (index > 0) {
-      router.push(`/channels/${channels.value[index - 1].id}`);
-    } else {
-      router.push(`/channels/${channels.value[channels.value.length - 1].id}`);
+    if (e.key == "ArrowDown") {
+      if (index < mergedChannels.length - 1) {
+        router.push(`/channels/${mergedChannels[index + 1].id}`);
+      } else {
+        router.push(`/channels/${mergedChannels[0].id}`);
+      }
+    }
+
+    if (e.key == "ArrowUp") {
+      if (index > 0) {
+        router.push(`/channels/${mergedChannels[index - 1].id}`);
+      } else {
+        router.push(`/channels/${mergedChannels[mergedChannels.length - 1].id}`);
+      }
     }
   }
 };
