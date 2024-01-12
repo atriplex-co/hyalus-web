@@ -883,6 +883,12 @@ export const useStore = defineStore("main", {
       ]);
     },
     async updateUserConfig() {
+      this.self!.userConfig.mutedChannelIds = Array.from(
+        new Set(this.self!.userConfig.mutedChannelIds),
+      ); // dedupe muted channels
+      this.self!.userConfig.pinnedChannelIds = Array.from(
+        new Set(this.self!.userConfig.pinnedChannelIds),
+      ); // dedupe pinned channels
       await axios.post("/api/v1/users/me/config", {
         userConfig: encryptUserConfig(store.self!.userConfig),
         userConfigTime: +new Date(),

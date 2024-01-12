@@ -1070,7 +1070,7 @@ export class Socket {
             }
           }
 
-          if (!body) {
+          if (!body || store.self!.userConfig.mutedChannelIds.includes(data.channelId)) {
             return;
           }
 
@@ -1079,10 +1079,8 @@ export class Socket {
             title,
             body,
             onclick() {
-              console.log("onclick called");
               router.push(`/channels/${channel.id}`);
               if (window.HyalusDesktop && window.HyalusDesktop.moveTop) {
-                console.log("moveTop called");
                 window.HyalusDesktop.moveTop();
               }
             },

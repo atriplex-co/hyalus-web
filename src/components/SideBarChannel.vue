@@ -38,7 +38,10 @@
         >
           {{ name }}
         </p>
-        <PinIcon v-if="isPinned" class="w-[14px] text-ctp-overlay0" />
+        <div class="space-x-0.5 flex">
+          <PinIcon v-if="isPinned" class="w-[16px] text-ctp-overlay0" />
+          <BellSlashIcon v-if="isMuted" class="w-[16px] text-ctp-overlay0" />
+        </div>
       </div>
       <p v-if="description" class="truncate text-xs">
         {{ description }}
@@ -57,7 +60,7 @@ import { useRoute } from "vue-router";
 import { ChannelType } from "@/../../hyalus-server/src/types";
 import { getChannelState, getStatus } from "@/global/helpers";
 import { statusFormatter } from "@/global/config";
-import { UserGroupIcon } from "@heroicons/vue/20/solid";
+import { BellSlashIcon, UserGroupIcon } from "@heroicons/vue/16/solid";
 import ChannelContextMenu from "./ChannelContextMenu.vue";
 import { useStore } from "@/global/store";
 import PinIcon from "../icons/PinIcon.vue";
@@ -131,6 +134,10 @@ const menu: Ref<typeof ChannelContextMenu | null> = ref(null);
 
 const isPinned = computed(() => {
   return store.self!.userConfig.pinnedChannelIds.includes(props.channel.id);
+});
+
+const isMuted = computed(() => {
+  return store.self!.userConfig.mutedChannelIds.includes(props.channel.id);
 });
 </script>
 
