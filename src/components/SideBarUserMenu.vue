@@ -45,7 +45,12 @@
         <PencilSquareIcon class="h-4 w-4" />
         <div class="min-w-0">
           <p>Edit Custom Status</p>
-          <p class="truncate text-xs text-ctp-subtext0">{{ store.self.preferredStatusText }}</p>
+          <div
+            v-if="statusHtml"
+            v-html="statusHtml"
+            class="min-w-0 text-xs truncate"
+            id="status"
+          ></div>
         </div>
       </div>
       <div class="my-1 border-t border-ctp-surface0"></div>
@@ -119,7 +124,7 @@
 </template>
 
 <script lang="ts" setup>
-import { ref, onUnmounted } from "vue";
+import { ref, onUnmounted, computed } from "vue";
 import { Status } from "@/../../hyalus-server/src/types";
 import axios from "axios";
 import LogoutIcon from "@/icons/LogoutIcon.vue";
@@ -129,6 +134,7 @@ import SettingsModal from "./SettingsModal.vue";
 import { useStore } from "@/global/store";
 import { PencilSquareIcon, PlusCircleIcon } from "@heroicons/vue/20/solid";
 import SetPreferredStatusTextModal from "./SetPreferredStatusTextModal.vue";
+import { statusFormatter } from "@/global/config";
 
 const store = useStore();
 const emit = defineEmits(["close"]);
@@ -147,6 +153,14 @@ const setStatus = async (preferredStatus: Status) => {
     preferredStatus,
   });
 };
+
+const statusHtml = computed(() => {
+  if (store.self!.preferredStatusText) {
+    return statusFormatter.render(store.self!.preferredStatusText);
+  } else {
+    return "";
+  }
+});
 
 const close = () => emit("close");
 addEventListener("mouseup", close);
