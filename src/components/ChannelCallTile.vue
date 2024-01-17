@@ -145,12 +145,15 @@ const speaking = computed(() => {
   }
 
   if (props.tile.localTrack) {
-    return store.call!.localStreams.find((track2) => track2.speaking);
+    return !!store.call!.localStreams.find((track2) => track2.speaking);
   }
 
   if (props.tile.remoteTrack) {
-    return store.call!.remoteStreams.find(
-      (stream2) => stream2.userId === props.tile.user.id && stream2.speaking,
+    return !!store.call!.remoteStreams.find(
+      (stream2) =>
+        stream2.userId === props.tile.user.id &&
+        stream2.type === +props.tile.id.split(":")[1] &&
+        stream2.speaking,
     );
   }
 
