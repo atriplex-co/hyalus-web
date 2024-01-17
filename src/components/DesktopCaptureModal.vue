@@ -188,12 +188,19 @@ const submit = async () => {
   emit("close");
 };
 
+const ignoredSourceNames = [
+  // windows listed here will be ignored:
+  "NVIDIA GeForce Overlay",
+];
+
 const updateSources = async () => {
   if (!window.HyalusDesktop) {
     return;
   }
 
-  sources.value = await window.HyalusDesktop.getSources();
+  let _sources = await window.HyalusDesktop.getSources();
+  _sources = _sources.filter((source) => !ignoredSourceNames.includes(source.name));
+  sources.value = _sources;
 };
 
 const keyDownHandler = (e: KeyboardEvent) => {
