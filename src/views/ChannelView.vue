@@ -189,6 +189,7 @@ import UserAvatar from "@/components/UserAvatar.vue";
 import MessageEditModal from "@/components/MessageEditModal.vue";
 import { SpeakerWaveIcon } from "@heroicons/vue/24/outline";
 import EmojiPicker from "@/components/EmojiPicker.vue";
+import { before } from "node:test";
 
 const store = useStore();
 const route = useRoute();
@@ -289,14 +290,9 @@ const inVoice = computed(() => {
 
 const getMessages = async () => {
   const channelVal = channel.value;
-
   if (!channelVal) {
     return;
   }
-
-  const sortedMessages = Array.from(channelVal.messages).sort((a, b) =>
-    a.createdAt > b.createdAt ? 1 : -1,
-  );
 
   const {
     data: messages,
@@ -329,7 +325,7 @@ const getMessages = async () => {
     }[];
   } = await axios.get(
     `/api/v1/channels/${channelVal.id}/messages${
-      channelVal.messages.length ? `?before=${+sortedMessages[0].createdAt}` : ""
+      channelVal.messages.length ? `?before=${+channelVal.messages[0].createdAt}` : ""
     }`,
   );
 
@@ -337,27 +333,35 @@ const getMessages = async () => {
   const processedMessages = [];
 
   for (const message of messages) {
-    const processedMessage = await processMessage({
-      ...message,
-      channel: channelVal,
-      parent: message.parent && {
-        ...message.parent,
+    try {
+      const processedMessage = await processMessage({
+        ...message,
         channel: channelVal,
-      },
-    });
+        parent: message.parent && {
+          ...message.parent,
+          channel: channelVal,
+        },
+      });
 
-    if (!processedMessage || channelVal.messages.find(({ id }) => id === processedMessage.id)) {
-      continue;
+      if (!processedMessage || channelVal.messages.find(({ id }) => id === processedMessage.id)) {
+        continue;
+      }
+
+      processedMessages.push(processedMessage);
+    } catch {
+      console.log("error processing message: %s", message.id);
     }
-
-    processedMessages.push(processedMessage);
   }
 
-  const beforeScrollHeight = messageList.value?.scrollHeight;
   channelVal.messages = processedMessages.concat(channelVal.messages);
-  await nextTick();
+  channelVal.messages.sort((a, b) => (a.createdAt > b.createdAt ? 1 : -1));
 
-  if (messageList.value && beforeScrollHeight) {
+  if (messageList.value) {
+    const beforeScrollHeight = messageList.value.scrollHeight;
+    if (!beforeScrollHeight) {
+      return;
+    }
+    await nextTick();
     messageList.value.scrollTop += messageList.value.scrollHeight - beforeScrollHeight;
   }
 };
