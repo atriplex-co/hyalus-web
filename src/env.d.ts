@@ -43,8 +43,6 @@ declare interface IHyalusDesktop {
   ): void;
   win32?: IHyalusDesktopWin32;
   checkForUpdates(): Promise<void>;
-  setBoostrapConfig(config: string): void;
-  getBoostrapConfig(): string;
   setContentProtection(v: boolean): Promise<void>;
   setExperiments(v: Record<string, string>): Promise<void>;
   moveTop(): void;
