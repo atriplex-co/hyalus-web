@@ -33,7 +33,8 @@
             <slot v-if="empty" />
             <div
               v-else
-              class="w-screen max-w-md overflow-hidden rounded-md bg-ctp-mantle opacity-100 shadow-lg"
+              class="w-screen overflow-hidden rounded-md bg-ctp-mantle opacity-100 shadow-lg"
+              :class="mainClass"
             >
               <div class="space-y-4 p-4">
                 <div class="flex items-center space-x-3">
@@ -109,6 +110,10 @@ defineProps({
   required: {
     type: Boolean,
     default: false,
+  },
+  mainClass: {
+    type: String,
+    default: "max-w-md",
   },
 });
 

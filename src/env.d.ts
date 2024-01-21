@@ -28,6 +28,7 @@ declare interface IHyalusDesktop {
       id: string;
       name: string;
       thumbnail: string;
+      appIcon?: string;
     }[]
   >;
   osPlatform: string;
