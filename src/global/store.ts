@@ -118,25 +118,10 @@ export const useStore = defineStore("main", {
     async start(): Promise<void> {
       await sodium.ready;
 
-      if (window.HyalusDesktop && window.HyalusDesktop.getBoostrapConfig) {
-        const config = window.HyalusDesktop.getBoostrapConfig();
-        if (config) {
-          localStorage.config = config;
-        }
-      }
-
-      const oldConfig = await idbGet("config");
-      if (oldConfig) {
-        localStorage.config = sodium.to_base64(msgpack.encode(oldConfig));
-        await idbDel("config");
-        location.reload();
-      }
-
       if (localStorage.config) {
         try {
           this.config = {
             ...this.config,
-            // ...((await idbGet("config")) as IConfig),
             ...(msgpack.decode(sodium.from_base64(localStorage.config)) as IConfig),
           };
         } catch (e) {
