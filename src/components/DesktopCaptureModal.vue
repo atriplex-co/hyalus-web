@@ -40,28 +40,27 @@
           <div v-if="!sources.length" class="w-full h-full flex items-center justify-center">
             <LoadingIcon class="h-5 w-5" />
           </div>
-          <div
-            v-if="sources.length"
-            class="grid flex-1 h-full w-full grid-cols-3 items-start gap-2 p-2 overflow-auto"
-          >
-            <div
-              v-for="source in sources"
-              :key="source.id"
-              class="flex min-w-0 cursor-pointer flex-col items-center space-y-2 rounded-md p-2 text-ctp-subtext0 hover:bg-ctp-mantle transition"
-              :class="{
-                'bg-ctp-mantle ring-2 ring-ctp-accent/50': selectedSourceId === source.id,
-              }"
-              @click="selectedSourceId = source.id"
-            >
-              <img
-                class="aspect-video h-[80px] max-w-[200px] rounded-sm object-contain"
-                :src="source.thumbnail"
-              />
-              <div class="justify-center flex items-center w-full space-x-2">
-                <img v-if="source.appIcon" :src="source.appIcon" class="w-4 h-4" />
-                <p class="truncate text-xs">
-                  {{ source.name }}
-                </p>
+          <div v-if="sources.length" class="flex-1 overflow-auto">
+            <div class="grid grid-cols-3 items-start gap-3 p-3">
+              <div
+                v-for="source in sources"
+                :key="source.id"
+                class="flex min-w-0 cursor-pointer flex-col items-center space-y-2 rounded-md p-2 text-ctp-subtext0 hover:bg-ctp-mantle transition"
+                :class="{
+                  'bg-ctp-mantle ring-2 ring-ctp-accent/50': selectedSourceId === source.id,
+                }"
+                @click="selectedSourceId = source.id"
+              >
+                <img
+                  class="aspect-video h-[80px] max-w-[200px] rounded-sm object-contain"
+                  :src="source.thumbnail"
+                />
+                <div class="justify-center flex items-center w-full space-x-2">
+                  <img v-if="source.appIcon" :src="source.appIcon" class="w-4 h-4" />
+                  <p class="truncate text-xs">
+                    {{ source.name }}
+                  </p>
+                </div>
               </div>
             </div>
           </div>
