@@ -127,6 +127,7 @@ export interface ICall {
   initComplete: boolean;
   encryptWorkers: Map<string, Worker>;
   decryptWorkers: Map<string, Worker>;
+  connectionState: string;
 }
 
 export interface ICallPersist {

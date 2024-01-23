@@ -563,6 +563,9 @@ export const useStore = defineStore("main", {
             d: {},
           });
         }
+        if (store.call) {
+          store.call.connectionState = pc.connectionState;
+        }
       };
 
       this.call = {
@@ -591,6 +594,7 @@ export const useStore = defineStore("main", {
         initComplete: false,
         encryptWorkers: new Map(),
         decryptWorkers: new Map(),
+        connectionState: pc.connectionState,
       };
 
       this.socket!.send({

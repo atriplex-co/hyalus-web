@@ -10,11 +10,11 @@
         </div>
         <div class="min-w-0 flex-1">
           <div class="text-sm font-bold text-ctp-accent flex items-center space-x-1">
-            <p v-if="store.call.pc.connectionState === 'new'">Waiting for Server</p>
-            <p v-if="store.call.pc.connectionState === 'connecting'">Call Connecting</p>
-            <p v-if="store.call.pc.connectionState === 'connected'">Call Connected</p>
-            <p v-if="store.call.pc.connectionState === 'disconnected'">Call Disconnected</p>
-            <p v-if="store.call.pc.connectionState === 'failed'">You're Fucked (F5)</p>
+            <p v-if="store.call.connectionState === 'new'">Waiting for Server</p>
+            <p v-if="store.call.connectionState === 'connecting'">Call Connecting</p>
+            <p v-if="store.call.connectionState === 'connected'">Call Connected</p>
+            <p v-if="store.call.connectionState === 'disconnected'">Call Disconnected</p>
+            <p v-if="store.call.connectionState === 'failed'">You're Fucked (F5)</p>
             <div
               v-if="!store.call.deaf && store.call.muted"
               class="w-5 h-5 rounded-full bg-ctp-surface0 p-[3px] text-ctp-text"
