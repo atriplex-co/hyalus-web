@@ -1642,85 +1642,90 @@ export class Socket {
         }
 
         for (const trans of store.call.pc.getTransceivers()) {
-          let encryptWorker = store.call.encryptWorkers.get(trans.mid!);
-          let decryptWorker = store.call.decryptWorkers.get(trans.mid!);
-          if (!encryptWorker) {
-            const streams = trans.sender.createEncodedStreams();
-            encryptWorker = new VoiceCryptoWorker();
-            encryptWorker.postMessage(
-              {
-                t: "init_encrypt",
-                d: {
-                  readable: streams.readable,
-                  writable: streams.writable,
+          if (trans.direction === "sendrecv" || trans.direction === "sendonly") {
+            let encryptWorker = store.call.encryptWorkers.get(trans.mid!);
+            if (!encryptWorker) {
+              const streams = trans.sender.createEncodedStreams();
+              encryptWorker = new VoiceCryptoWorker();
+              encryptWorker.postMessage(
+                {
+                  t: "init_encrypt",
+                  d: {
+                    readable: streams.readable,
+                    writable: streams.writable,
+                  },
                 },
-              },
-              [streams.readable, streams.writable],
-            );
-            for (const [k, v] of store.call.localKeys) {
+                [streams.readable, streams.writable],
+              );
+              for (const [k, v] of store.call.localKeys) {
+                encryptWorker.postMessage({
+                  t: "set_local_key",
+                  d: {
+                    id: k,
+                    key: v,
+                  },
+                });
+              }
               encryptWorker.postMessage({
-                t: "set_local_key",
+                t: "set_local_key_id",
                 d: {
-                  id: k,
-                  key: v,
+                  localKeyId: store.call.localKeyId,
                 },
               });
+              store.call.encryptWorkers.set(trans.mid!, encryptWorker);
             }
             encryptWorker.postMessage({
-              t: "set_local_key_id",
+              t: "set_payload_codecs",
               d: {
-                localKeyId: store.call.localKeyId,
+                payloadCodecs,
               },
             });
-            store.call.encryptWorkers.set(trans.mid!, encryptWorker);
           }
-          if (!decryptWorker) {
-            const streams = trans.receiver.createEncodedStreams();
-            decryptWorker = new VoiceCryptoWorker();
-            decryptWorker.postMessage(
-              {
-                t: "init_decrypt",
-                d: {
-                  readable: streams.readable,
-                  writable: streams.writable,
+
+          if (trans.direction === "sendrecv" || trans.direction === "recvonly") {
+            let decryptWorker = store.call.decryptWorkers.get(trans.mid!);
+            if (!decryptWorker) {
+              const streams = trans.receiver.createEncodedStreams();
+              decryptWorker = new VoiceCryptoWorker();
+              decryptWorker.postMessage(
+                {
+                  t: "init_decrypt",
+                  d: {
+                    readable: streams.readable,
+                    writable: streams.writable,
+                  },
                 },
-              },
-              [streams.readable, streams.writable],
-            );
-            for (const [k, v] of store.call.remoteKeys) {
-              decryptWorker.postMessage({
-                t: "set_remote_key",
-                d: {
-                  id: k,
-                  key: v,
-                },
-              });
-            }
-            decryptWorker.onmessage = (e) => {
-              if (e.data.t === "set_speaking" && store.call) {
-                const stream = store.call.remoteStreams.find(
-                  (stream) => stream.receiver === trans.receiver,
-                );
-                if (!stream) {
-                  return;
-                }
-                stream.speaking = e.data.d.speaking;
+                [streams.readable, streams.writable],
+              );
+              for (const [k, v] of store.call.remoteKeys) {
+                decryptWorker.postMessage({
+                  t: "set_remote_key",
+                  d: {
+                    id: k,
+                    key: v,
+                  },
+                });
               }
-            };
-            store.call.decryptWorkers.set(trans.mid!, decryptWorker);
+              decryptWorker.onmessage = (e) => {
+                if (e.data.t === "set_speaking" && store.call) {
+                  const stream = store.call.remoteStreams.find(
+                    (stream) => stream.receiver === trans.receiver,
+                  );
+                  if (!stream) {
+                    return;
+                  }
+                  stream.speaking = e.data.d.speaking;
+                }
+              };
+              store.call.decryptWorkers.set(trans.mid!, decryptWorker);
+            }
+            decryptWorker.postMessage({
+              t: "set_payload_codecs",
+              d: {
+                payloadCodecs,
+              },
+            });
           }
-          encryptWorker.postMessage({
-            t: "set_payload_codecs",
-            d: {
-              payloadCodecs,
-            },
-          });
-          decryptWorker.postMessage({
-            t: "set_payload_codecs",
-            d: {
-              payloadCodecs,
-            },
-          });
         }
 
         // the SFU i built uses a different ID format. (honestly it's for easier-to-read logs)
