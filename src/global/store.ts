@@ -1,4 +1,3 @@
-import { idbDel, idbGet } from "./idb";
 import { iceServers } from "./config";
 import sodium from "libsodium-wrappers";
 import {
