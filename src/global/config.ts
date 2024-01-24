@@ -4,6 +4,7 @@ import type Renderer from "markdown-it/lib/renderer";
 import type { IExperiment } from "./types";
 import { emojis } from "hyalus-fluentui-emoji/dist/metadata.json";
 import { store } from "./store";
+import { b32ToUUID } from "./helpers";
 
 export const MaxFileSize = 1024 * 1024 * 50;
 export const MaxFileChunkSize = 1024 * 256;
@@ -83,6 +84,10 @@ export const MarkdownItEmojiPlugin = (md: MarkdownIt) => {
     }
     if (/^[0-9a-f]{8}-[0-9a-f]{4}-[0-9a-f]{4}-[0-9a-f]{4}-[0-9a-f]{12}$/.test(id)) {
       asset = `/api/v1/emojis/${id}`;
+      alt = `:${id}:`;
+    }
+    if (/^[1iIlL0o23456789aAbBcCdDeEfFhHgGjJkKmMnNpPqQrRsStTvVwWxXyYzZ]{26}$/.test(id)) {
+      asset = `/api/v1/emojis/${b32ToUUID(id)}`;
       alt = `:${id}:`;
     }
     if (asset) {

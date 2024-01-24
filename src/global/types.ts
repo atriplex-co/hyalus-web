@@ -414,3 +414,12 @@ export interface IUserConfig {
   mutedChannelIds: string[];
   userAliases: Record<string, string>;
 }
+
+export interface ISystemEmoji {
+  id: string;
+  asset: string;
+  name: string;
+  glyph: string;
+  keywords: string[];
+  group: string;
+}

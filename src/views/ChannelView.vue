@@ -101,8 +101,23 @@
                 @close="emojiPicker = false"
               />
             </Transition>
+            <Transition
+              enter-active-class="transition ease-out duration-100 origin-bottom"
+              enter-from-class="transform opacity-0 scale-95"
+              enter-to-class="transform opacity-100 scale-100"
+              leave-active-class="transition ease-in duration-75 origin-bottom"
+              leave-from-class="transform opacity-100 scale-100"
+              leave-to-class="transform opacity-0 scale-95"
+            >
+              <div
+                v-if="emojiQuery"
+                class="absolute bottom-[100%] left-0 right-0 rounded-md overflow-hidden bg-ctp-crust mb-2"
+              >
+                <EmojiCompleter :query="emojiQuery" @replace="onReplace" />
+              </div>
+            </Transition>
           </div>
-          <div v-if="writable" class="flex items-center space-x-4 px-4 py-2">
+          <div v-if="writable" class="flex items-center space-x-4 px-4 py-2 relative">
             <textarea
               ref="messageBox"
               v-model="messageBoxText"
@@ -189,7 +204,7 @@ import UserAvatar from "@/components/UserAvatar.vue";
 import MessageEditModal from "@/components/MessageEditModal.vue";
 import { SpeakerWaveIcon } from "@heroicons/vue/24/outline";
 import EmojiPicker from "@/components/EmojiPicker.vue";
-import { before } from "node:test";
+import EmojiCompleter from "@/components/EmojiCompleter.vue";
 
 const store = useStore();
 const route = useRoute();
@@ -206,6 +221,7 @@ let updateTypingStatusTimeout = 0;
 const replyMessage: Ref<IMessage | null> = ref(null);
 const messageBeingEdited: Ref<IMessage | null> = ref(null);
 const emojiPicker = ref(false);
+const emojiQuery = ref("");
 
 const channel = computed(() => {
   return store.channels.find((channel) => channel.id === route.params.channelId);
@@ -846,6 +862,40 @@ watch(
     }
   },
 );
+
+const getSelectedWordStart = () => {
+  let wordStart = 0;
+  for (let i = messageBox.value!.selectionStart - 1; i >= 0; i--) {
+    if (messageBoxText.value[i] === " ") {
+      break;
+    }
+    wordStart = i;
+  }
+  return wordStart;
+};
+
+watch(
+  () => messageBoxText.value,
+  () => {
+    const wordStart = getSelectedWordStart();
+    const word = messageBoxText.value.slice(wordStart).split(" ")[0];
+    if (word.startsWith(":") && messageBoxText.value.slice(wordStart).split(":").length < 3) {
+      emojiQuery.value = word.slice(1);
+    } else {
+      if (emojiQuery.value) {
+        emojiQuery.value = "";
+      }
+    }
+  },
+);
+
+const onReplace = (newWord: string) => {
+  const wordStart = getSelectedWordStart();
+  const word = messageBoxText.value.slice(wordStart).split(" ")[0];
+  const chars = messageBoxText.value.split("");
+  chars.splice(wordStart, word.length, newWord);
+  messageBoxText.value = chars.join("");
+};
 </script>
 
 <style scoped>

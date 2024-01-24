@@ -26,6 +26,8 @@ import { availableExperiments, messageFormatter } from "./config";
 import { store } from "./store";
 import msgpack from "msgpack-lite";
 import z from "zod";
+import b32Encode from "base32-encode";
+import b32Decode from "base32-decode";
 
 export const prettyError = (e: unknown): string => {
   return (
@@ -632,4 +634,19 @@ export const decryptUserConfig = (s: string): IUserConfig => {
     console.warn("[!] failed to decrypt userConfig");
     return DefaultUserConfig;
   }
+};
+
+export const uuidToB32 = (v: string): string => {
+  return b32Encode(sodium.from_hex(v.replaceAll("-", "")), "Crockford");
+};
+
+export const b32ToUUID = (v: string): string => {
+  const hex = sodium.to_hex(new Uint8Array(b32Decode(v, "Crockford")));
+  let ret = "";
+  ret = `${hex.slice(0, 8)}`;
+  ret += `-${hex.slice(8, 8 + 4)}`;
+  ret += `-${hex.slice(12, 12 + 4)}`;
+  ret += `-${hex.slice(16, 16 + 4)}`;
+  ret += `-${hex.slice(20, 20 + 12)}`;
+  return ret;
 };
