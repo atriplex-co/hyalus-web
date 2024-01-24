@@ -1642,8 +1642,10 @@ export class Socket {
         }
 
         for (const trans of store.call.pc.getTransceivers()) {
-          if (trans.direction === "sendrecv" || trans.direction === "sendonly") {
-            let encryptWorker = store.call.encryptWorkers.get(trans.mid!);
+          let encryptWorker = store.call.encryptWorkers.get(trans.mid!);
+          let decryptWorker = store.call.decryptWorkers.get(trans.mid!);
+
+          if (trans.currentDirection === "sendrecv" || trans.currentDirection === "sendonly") {
             if (!encryptWorker) {
               const streams = trans.sender.createEncodedStreams();
               encryptWorker = new VoiceCryptoWorker();
@@ -1680,10 +1682,14 @@ export class Socket {
                 payloadCodecs,
               },
             });
+          } else {
+            if (encryptWorker) {
+              encryptWorker.terminate();
+              store.call.encryptWorkers.delete(trans.mid!);
+            }
           }
 
-          if (trans.direction === "sendrecv" || trans.direction === "recvonly") {
-            let decryptWorker = store.call.decryptWorkers.get(trans.mid!);
+          if (trans.currentDirection === "sendrecv" || trans.currentDirection === "recvonly") {
             if (!decryptWorker) {
               const streams = trans.receiver.createEncodedStreams();
               decryptWorker = new VoiceCryptoWorker();
@@ -1725,6 +1731,11 @@ export class Socket {
                 payloadCodecs,
               },
             });
+          } else {
+            if (decryptWorker) {
+              decryptWorker.terminate();
+              store.call.decryptWorkers.delete(trans.mid!);
+            }
           }
         }
 
