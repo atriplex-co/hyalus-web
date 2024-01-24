@@ -1,7 +1,7 @@
 <template>
   <tr class="h-16">
     <td>
-      <img :src="`/api/v1/emojis/${emoji.id}`" class="w-10 h-10" />
+      <img :src="`/api/v1/emojis/${emoji.id}`" class="h-10 w-10" />
     </td>
     <td>
       <p>{{ emoji.name }}</p>

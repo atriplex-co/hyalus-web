@@ -38,7 +38,7 @@
         >
           {{ name }}
         </p>
-        <div class="space-x-0.5 flex">
+        <div class="flex space-x-0.5">
           <PinIcon v-if="isPinned" class="w-[16px] text-ctp-overlay0" />
           <BellSlashIcon v-if="isMuted" class="w-[16px] text-ctp-overlay0" />
         </div>
@@ -46,7 +46,7 @@
       <p v-if="description" class="truncate text-xs">
         {{ description }}
       </p>
-      <div v-if="status" v-html="status" class="min-w-0 text-xs truncate" id="status"></div>
+      <div v-if="status" v-html="status" class="min-w-0 truncate text-xs" id="status"></div>
     </div>
   </router-link>
   <ChannelContextMenu ref="menu" :channel="channel" />

@@ -10,10 +10,10 @@
             }}
           </p>
           <button
-            class="bg-ctp-accent text-ctp-crust flex items-center text-xs space-x-1.5 p-1.5 h-7 rounded-md transition hover:bg-ctp-accent/75"
+            class="flex h-7 items-center space-x-1.5 rounded-md bg-ctp-accent p-1.5 text-xs text-ctp-crust transition hover:bg-ctp-accent/75"
             @click="upload"
           >
-            <ArrowUpTrayIcon class="w-4 h-4" />
+            <ArrowUpTrayIcon class="h-4 w-4" />
             <p>Upload</p>
           </button>
         </div>
@@ -23,7 +23,7 @@
           placeholder="Search Emojis"
         />
       </div>
-      <div class="h-8 flex items-center justify-between">
+      <div class="flex h-8 items-center justify-between">
         <p>Allow External Use</p>
         <InputBoolean v-model="allowEmojiUse" />
       </div>
@@ -32,7 +32,7 @@
       >
         <thead>
           <tr>
-            <th class="text-start w-24">Image</th>
+            <th class="w-24 text-start">Image</th>
             <th class="text-start">Name</th>
             <th class="text-start">Uploader</th>
             <td class="w-16"></td>

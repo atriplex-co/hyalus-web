@@ -7,16 +7,16 @@
       }"
     >
       <div
-        class="w-[calc(50vw-(48rem/2)+(16rem/2))] bg-ctp-crust flex flex-col items-end px-4 pt-16 text-ctp-subtext0"
+        class="flex w-[calc(50vw-(48rem/2)+(16rem/2))] flex-col items-end bg-ctp-crust px-4 pt-16 text-ctp-subtext0"
       >
         <div class="w-56 space-y-0.5">
           <slot name="left"></slot>
         </div>
       </div>
       <div
-        class="w-[calc(50vw-(16rem/2)+(48rem/2))] bg-ctp-mantle pt-16 px-8 flex space-x-4 min-w-0 overflow-auto"
+        class="flex w-[calc(50vw-(16rem/2)+(48rem/2))] min-w-0 space-x-4 overflow-auto bg-ctp-mantle px-8 pt-16"
       >
-        <div class="max-w-2xl w-screen">
+        <div class="w-screen max-w-2xl">
           <transition
             enter-active-class="transition transform duration-75 ease-out"
             enter-from-class="opacity-0 translate-y-1"

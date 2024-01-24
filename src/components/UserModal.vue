@@ -240,7 +240,7 @@
                 v-for="mutualGroup in mutualGroups"
                 :key="mutualGroup.id"
                 :to="`/channels/${mutualGroup.id}`"
-                class="flex items-center space-x-2 rounded-md bg-ctp-base p-2 hover:bg-ctp-base/50 transition"
+                class="flex items-center space-x-2 rounded-md bg-ctp-base p-2 transition hover:bg-ctp-base/50"
                 @click="$emit('close')"
               >
                 <div

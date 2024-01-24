@@ -14,7 +14,7 @@
     </div>
     <div
       :class="{
-        'hover:bg-ctp-mantle py-1': !embedded,
+        'py-1 hover:bg-ctp-mantle': !embedded,
       }"
       @contextmenu="messageMenu!.open($event)"
     >
@@ -230,7 +230,7 @@
             </div>
             <div
               v-if="!embedded"
-              class="text-ctp-overlay0 opacity-0 group-hover:opacity-100 transition flex-shrink-0"
+              class="flex-shrink-0 text-ctp-overlay0 opacity-0 transition group-hover:opacity-100"
               @click="messageMenu!.open($event)"
             >
               <EllipsisVerticalIcon class="h-4 w-4 cursor-pointer transition hover:text-ctp-text" />

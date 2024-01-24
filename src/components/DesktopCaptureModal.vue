@@ -10,16 +10,16 @@
       <DisplayIcon />
     </template>
     <template #main>
-      <div class="w-full h-[30rem] space-y-2 flex flex-col min-h-0">
+      <div class="flex h-[30rem] min-h-0 w-full flex-col space-y-2">
         <p class="text-sm">Source</p>
         <div
-          class="flex-1 h-full w-full rounded-md border border-ctp-base bg-ctp-crust shadow-sm flex flex-col min-h-0"
+          class="flex h-full min-h-0 w-full flex-1 flex-col rounded-md border border-ctp-base bg-ctp-crust shadow-sm"
         >
-          <div class="bg-ctp-mantle/50 border-b border-ctp-base flex shadow-sm space-x-2 p-2">
+          <div class="flex space-x-2 border-b border-ctp-base bg-ctp-mantle/50 p-2 shadow-sm">
             <p
-              class="p-1.5 rounded-md hover:bg-ctp-base cursor-pointer transition"
+              class="cursor-pointer rounded-md p-1.5 transition hover:bg-ctp-base"
               :class="{
-                'text-ctp-text bg-ctp-base ring-2 ring-ctp-accent/50': sourceType === 'window',
+                'bg-ctp-base text-ctp-text ring-2 ring-ctp-accent/50': sourceType === 'window',
                 'text-ctp-overlay2': sourceType !== 'window',
               }"
               @click="sourceType = 'window'"
@@ -27,9 +27,9 @@
               Windows
             </p>
             <p
-              class="p-1.5 rounded-md hover:bg-ctp-base cursor-pointer transition"
+              class="cursor-pointer rounded-md p-1.5 transition hover:bg-ctp-base"
               :class="{
-                'text-ctp-text bg-ctp-base ring-2 ring-ctp-accent/50': sourceType === 'screen',
+                'bg-ctp-base text-ctp-text ring-2 ring-ctp-accent/50': sourceType === 'screen',
                 'text-ctp-overlay2': sourceType !== 'screen',
               }"
               @click="sourceType = 'screen'"
@@ -37,7 +37,7 @@
               Screens
             </p>
           </div>
-          <div v-if="!sources.length" class="w-full h-full flex items-center justify-center">
+          <div v-if="!sources.length" class="flex h-full w-full items-center justify-center">
             <LoadingIcon class="h-5 w-5" />
           </div>
           <div v-if="sources.length" class="flex-1 overflow-auto">
@@ -45,7 +45,7 @@
               <div
                 v-for="source in sources"
                 :key="source.id"
-                class="flex min-w-0 cursor-pointer flex-col items-center space-y-2 rounded-md p-2 text-ctp-subtext0 hover:bg-ctp-mantle transition"
+                class="flex min-w-0 cursor-pointer flex-col items-center space-y-2 rounded-md p-2 text-ctp-subtext0 transition hover:bg-ctp-mantle"
                 :class="{
                   'bg-ctp-mantle ring-2 ring-ctp-accent/50': selectedSourceId === source.id,
                 }"
@@ -55,8 +55,8 @@
                   class="aspect-video h-[80px] max-w-[200px] rounded-sm object-contain"
                   :src="source.thumbnail"
                 />
-                <div class="justify-center flex items-center w-full space-x-2">
-                  <img v-if="source.appIcon" :src="source.appIcon" class="w-4 h-4" />
+                <div class="flex w-full items-center justify-center space-x-2">
+                  <img v-if="source.appIcon" :src="source.appIcon" class="h-4 w-4" />
                   <p class="truncate text-xs">
                     {{ source.name }}
                   </p>

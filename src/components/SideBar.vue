@@ -57,7 +57,7 @@
         <div class="-mt-px border-t border-ctp-surface0/50"></div>
       </div>
       <div
-        class="overflow-auto w-full h-full flex-1 flex flex-col items-center pt-[2px]"
+        class="flex h-full w-full flex-1 flex-col items-center overflow-auto pt-[2px]"
         id="space-list"
       >
         <div class="space-y-2 pb-2">

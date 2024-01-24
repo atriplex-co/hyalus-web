@@ -136,9 +136,7 @@
         <WelcomeModal v-if="welcomeModal" @close="welcomeModal = false" />
         <SettingsModal v-if="settingsModal" @close="settingsModal = false" />
       </div>
-      <LoadingView
-        v-if="(inApp && !store.ready) || desktopUpdating"
-      />
+      <LoadingView v-if="(inApp && !store.ready) || desktopUpdating" />
       <UpdateRequiredView v-show="store.updateRequired" />
       <UserDisabledView v-show="store.userDisabled" />
     </div>

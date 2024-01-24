@@ -1,12 +1,12 @@
 <template>
-  <div class="flex flex-col flex-1 min-h-0">
+  <div class="flex min-h-0 flex-1 flex-col">
     <p class="text-2xl">Permissions</p>
     <div v-if="channel.parentId" class="mt-8 flex items-center space-x-4">
       <InputBoolean v-model="sync" />
       <p>Sync Permissions</p>
     </div>
-    <div v-if="!sync" class="mt-8 flex flex-1 space-x-4 min-h-0">
-      <div class="w-48 space-y-2 min-h-0 flex flex-col">
+    <div v-if="!sync" class="mt-8 flex min-h-0 flex-1 space-x-4">
+      <div class="flex min-h-0 w-48 flex-col space-y-2">
         <div class="flex items-center justify-between">
           <p class="text-sm font-semibold text-ctp-subtext0">
             {{ channel.overrides.length }} Override{{ channel.overrides.length !== 1 ? "s" : "" }}
@@ -55,7 +55,7 @@
             </div>
           </div>
         </div>
-        <div class="space-y-0.5 flex-1 pb-8">
+        <div class="flex-1 space-y-0.5 pb-8">
           <button
             v-for="override in roleOverrides"
             :key="override.override.id"
@@ -65,7 +65,7 @@
             }"
             @click="id = override.override.id"
           >
-            <div class="w-5 h-5 flex items-center justify-center">
+            <div class="flex h-5 w-5 items-center justify-center">
               <div
                 class="h-3 w-3 rounded-full bg-gray-500"
                 :style="
@@ -84,7 +84,7 @@
             }"
             @click="id = ''"
           >
-            <div class="w-5 h-5 flex items-center justify-center">
+            <div class="flex h-5 w-5 items-center justify-center">
               <div class="h-3 w-3 rounded-full bg-gray-500"></div>
             </div>
             <p>@everyone</p>

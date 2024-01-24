@@ -26,7 +26,7 @@
           </p>
           <p>&bull;</p>
           <button v-if="!showIp" @click="showIp = true" class="flex items-center space-x-1">
-            <ArrowTopRightOnSquareIcon class="w-4 h-4" />
+            <ArrowTopRightOnSquareIcon class="h-4 w-4" />
             <p>Show IP</p>
           </button>
           <p v-if="showIp">{{ session.location }} ({{ session.ip }})</p>

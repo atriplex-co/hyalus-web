@@ -31,7 +31,7 @@
     <OverlayScrollbarsComponent
       v-if="channels.length || pinnedChannels.length"
       defer
-      class="min-h-0 h-full flex-1"
+      class="h-full min-h-0 flex-1"
       :options="{
         scrollbars: {
           autoHide: 'leave',
@@ -40,12 +40,12 @@
       }"
     >
       <template v-if="pinnedChannels.length">
-        <div class="pb-1.5 px-2 space-y-0.5">
+        <div class="space-y-0.5 px-2 pb-1.5">
           <SideBarChannel v-for="channel in pinnedChannels" :key="channel.id" :channel="channel" />
         </div>
-        <div class="pb-1.5 mx-3 border-t-2 border-ctp-surface0/50"></div>
+        <div class="mx-3 border-t-2 border-ctp-surface0/50 pb-1.5"></div>
       </template>
-      <div class="pb-2 px-2 space-y-0.5">
+      <div class="space-y-0.5 px-2 pb-2">
         <SideBarChannel v-for="channel in channels" :key="channel.id" :channel="channel" />
       </div>
     </OverlayScrollbarsComponent>

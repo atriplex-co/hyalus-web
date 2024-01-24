@@ -96,7 +96,7 @@
             >
               <EmojiPicker
                 v-if="emojiPicker"
-                class="absolute right-0 bottom-[calc(100%+0.5rem)]"
+                class="absolute bottom-[calc(100%+0.5rem)] right-0"
                 @append="messageBoxText += $event"
                 @close="emojiPicker = false"
               />
@@ -115,17 +115,17 @@
             <div class="flex space-x-2 text-ctp-subtext0">
               <div @click="emojiPicker = !emojiPicker" @mouseup.stop>
                 <FaceSmileIcon
-                  class="h-8 w-8 cursor-pointer rounded-full bg-ctp-surface0 p-1.5 transition hover:text-ctp-text hover:bg-ctp-surface0/50"
+                  class="h-8 w-8 cursor-pointer rounded-full bg-ctp-surface0 p-1.5 transition hover:bg-ctp-surface0/50 hover:text-ctp-text"
                 />
               </div>
               <div @click="attachFile">
                 <PaperClipIcon
-                  class="h-8 w-8 cursor-pointer rounded-full bg-ctp-surface0 p-1.5 transition hover:text-ctp-text hover:bg-ctp-surface0/50"
+                  class="h-8 w-8 cursor-pointer rounded-full bg-ctp-surface0 p-1.5 transition hover:bg-ctp-surface0/50 hover:text-ctp-text"
                 />
               </div>
               <div @click="messageBoxSubmit">
                 <PaperAirplaneIcon
-                  class="h-8 w-8 cursor-pointer rounded-full bg-ctp-surface0 p-1.5 transition hover:text-ctp-text hover:bg-ctp-surface0/50"
+                  class="h-8 w-8 cursor-pointer rounded-full bg-ctp-surface0 p-1.5 transition hover:bg-ctp-surface0/50 hover:text-ctp-text"
                 />
               </div>
             </div>

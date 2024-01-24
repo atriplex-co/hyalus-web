@@ -2,7 +2,7 @@
   <div
     v-if="itemsTest"
     ref="items"
-    class="absolute opacity-0 p-2 top-[100vw] left-[100vw] w-48 pointer-events-none"
+    class="pointer-events-none absolute left-[100vw] top-[100vw] w-48 p-2 opacity-0"
   >
     <!-- used for computing height -->
     <slot />
@@ -18,7 +18,7 @@
     >
       <div
         v-if="isOpen"
-        class="fixed bg-ctp-crust shadow-md p-2 rounded-md text-sm w-48 z-50"
+        class="fixed z-50 w-48 rounded-md bg-ctp-crust p-2 text-sm shadow-md"
         :style="style"
         @mouseup.stop
         @contextmenu.prevent

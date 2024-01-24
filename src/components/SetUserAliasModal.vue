@@ -4,11 +4,7 @@
       <PencilSquareIcon />
     </template>
     <template #main>
-      <ModalInput
-        label="Nickname"
-        type="text"
-        v-model="nickname"
-      />
+      <ModalInput label="Nickname" type="text" v-model="nickname" />
     </template>
     <template #submit>
       <button

@@ -1,13 +1,13 @@
 <template>
   <div
-    class="max-w-xs bg-ctp-mantle w-full h-80 rounded-md p-2 space-x-1.5 flex shadow-md"
+    class="flex h-80 w-full max-w-xs space-x-1.5 rounded-md bg-ctp-mantle p-2 shadow-md"
     @mouseup.stop
   >
-    <div class="overflow-auto flex-shrink-0 flex flex-col gap-0.5 px-0.5" style="">
+    <div class="flex flex-shrink-0 flex-col gap-0.5 overflow-auto px-0.5" style="">
       <div
         v-for="group in groups"
         :key="group.name"
-        class="w-8 h-8 p-1.5 cursor-pointer hover:bg-ctp-surface0/50 rounded-md transition"
+        class="h-8 w-8 cursor-pointer rounded-md p-1.5 transition hover:bg-ctp-surface0/50"
         :class="{
           'bg-ctp-surface0': selectedCategoryId === `group:${group.name}`,
         }"
@@ -22,7 +22,7 @@
       <div
         v-for="space in store.spaces.filter((space) => space.allowEmojiUse && space.emojis.length)"
         :key="space.id"
-        class="w-8 h-8 p-1.5 cursor-pointer hover:bg-ctp-surface0/50 rounded-md transition"
+        class="h-8 w-8 cursor-pointer rounded-md p-1.5 transition hover:bg-ctp-surface0/50"
         :class="{
           'bg-ctp-surface0': selectedCategoryId === `space:${space.id}`,
         }"
@@ -37,14 +37,14 @@
       </div>
     </div>
     <div class="border-l border-ctp-surface0"></div>
-    <div class="overflow-auto space-y-0.5">
-      <p class="text-sm p-1.5 text-ctp-subtext0 h-8">{{ selectedCategoryName }}</p>
+    <div class="space-y-0.5 overflow-auto">
+      <p class="h-8 p-1.5 text-sm text-ctp-subtext0">{{ selectedCategoryName }}</p>
       <div class="flex flex-wrap gap-0.5" ref="emojiList">
         <div
           v-for="emoji in selectedEmojis"
           :key="emoji.id"
           :title="emoji.name"
-          class="w-8 h-8 p-1.5 hover:bg-ctp-surface0/50 transition rounded-md cursor-pointer"
+          class="h-8 w-8 cursor-pointer rounded-md p-1.5 transition hover:bg-ctp-surface0/50"
           @click="$emit('append', `:${emoji.id}: `)"
         >
           <EmojiItem :id="emoji.id" />

@@ -1,10 +1,10 @@
 <template>
   <div class="flex h-full w-full flex-col">
     <div class="flex h-14 items-center justify-between px-4">
-      <div class="space-x-3 flex items-center">
+      <div class="flex items-center space-x-3">
         <div @click="store.sideBarState = SideBarState.HOME">
           <ChevronLeftIcon
-            class="h-8 w-8 cursor-pointer rounded-full bg-ctp-surface0 p-1.5 text-ctp-subtext0 hover:text-ctp-text transition hover:bg-ctp-surface0/75"
+            class="h-8 w-8 cursor-pointer rounded-full bg-ctp-surface0 p-1.5 text-ctp-subtext0 transition hover:bg-ctp-surface0/75 hover:text-ctp-text"
           />
         </div>
         <p class="text-lg font-bold">Friends</p>
@@ -12,7 +12,7 @@
 
       <div
         @click="friendAddModal = true"
-        class="cursor-pointer rounded-md bg-ctp-accent py-1 px-1.5 text-ctp-base transition hover:bg-ctp-accent/75 flex items-center text-xs space-x-1"
+        class="flex cursor-pointer items-center space-x-1 rounded-md bg-ctp-accent px-1.5 py-1 text-xs text-ctp-base transition hover:bg-ctp-accent/75"
       >
         <UserAddIcon class="h-5 w-5" />
         <p>Add</p>

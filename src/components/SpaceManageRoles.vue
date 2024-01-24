@@ -1,8 +1,8 @@
 <template>
-  <div class="flex-1 flex-col flex min-h-0">
+  <div class="flex min-h-0 flex-1 flex-col">
     <p class="text-2xl">Roles</p>
-    <div class="mt-8 flex-1 flex min-h-0 space-x-4">
-      <div class="w-48 space-y-2.5 min-h-0">
+    <div class="mt-8 flex min-h-0 flex-1 space-x-4">
+      <div class="min-h-0 w-48 space-y-2.5">
         <div class="flex items-center justify-between">
           <p class="text-sm font-semibold text-ctp-subtext0">
             {{ space.roles.length + 1 }} Role{{ space.roles.length + 1 === 1 ? "" : "s" }}

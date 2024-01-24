@@ -1,6 +1,6 @@
 <template>
   <div
-    class="rounded-md relative overflow-hidden"
+    class="relative overflow-hidden rounded-md"
     ref="root"
     @mouseenter="controls = true"
     @mouseleave="
@@ -12,8 +12,8 @@
     <video
       ref="video"
       :class="{
-        'max-w-md max-h-80': !isFullscreen,
-        'w-full h-full': isFullscreen,
+        'max-h-80 max-w-md': !isFullscreen,
+        'h-full w-full': isFullscreen,
       }"
       :src="src"
       @error="$emit('error')"
@@ -26,21 +26,21 @@
     />
     <div
       v-if="!init"
-      class="absolute inset-0 flex items-center justify-center cursor-pointer rounded-md"
+      class="absolute inset-0 flex cursor-pointer items-center justify-center rounded-md"
       @click="togglePlay"
     >
-      <PlayIcon class="w-12 h-12 p-3 rounded-full bg-ctp-base opacity-75" />
+      <PlayIcon class="h-12 w-12 rounded-full bg-ctp-base p-3 opacity-75" />
     </div>
     <div
       v-if="init"
-      class="absolute bottom-0 h-8 bg-[#1e1e1e] bg-opacity-75 backdrop-blur w-full flex items-center px-2 space-x-2 transform transition duration-100"
+      class="absolute bottom-0 flex h-8 w-full transform items-center space-x-2 bg-[#1e1e1e] bg-opacity-75 px-2 backdrop-blur transition duration-100"
       :class="{
         'opacity-100': controls || !playing,
         'opacity-0': !(controls || !playing),
       }"
     >
       <div
-        class="text-[#ccc] hover:text-white w-5 h-5 cursor-pointer transition"
+        class="h-5 w-5 cursor-pointer text-[#ccc] transition hover:text-white"
         @click="togglePlay"
       >
         <PlayIcon v-if="!playing" />
@@ -50,12 +50,12 @@
         <input
           type="range"
           :value="time"
-          class="w-full h-1 mb-3 bg-ctp-overlay0 bg-opacity-75 rounded-lg cursor-pointer accent-ctp-accent appearance-none"
+          class="mb-3 h-1 w-full cursor-pointer appearance-none rounded-lg bg-ctp-overlay0 bg-opacity-75 accent-ctp-accent"
           @input="updateTime"
         />
       </div>
       <div
-        class="text-[#ccc] hover:text-white w-5 h-5 cursor-pointer transition relative"
+        class="relative h-5 w-5 cursor-pointer text-[#ccc] transition hover:text-white"
         @click="toggleMute"
         @mouseenter="showVolume = true"
       >
@@ -63,20 +63,20 @@
         <SpeakerXMarkIcon v-if="muted" />
         <div
           v-if="showVolume"
-          class="absolute bottom-3 w-full transform scale-75 pt-1.5 rounded-lg bg-[#1e1e1e] bg-opacity-75 backdrop-blur"
+          class="absolute bottom-3 w-full scale-75 transform rounded-lg bg-[#1e1e1e] bg-opacity-75 pt-1.5 backdrop-blur"
           @mouseleave="showVolume = false"
           @click.stop
         >
           <input
             type="range"
             :value="volume"
-            class="h-24 w-4 rounded-lg appearance-none cursor-pointer accent-ctp-accent range-vertical"
+            class="range-vertical h-24 w-4 cursor-pointer appearance-none rounded-lg accent-ctp-accent"
             @input="updateVolume"
           />
         </div>
       </div>
       <ArrowsPointingOutIcon
-        class="text-[#ccc] hover:text-white w-4 h-4 cursor-pointer transition"
+        class="h-4 w-4 cursor-pointer text-[#ccc] transition hover:text-white"
         @click="toggleFullscreen"
       />
     </div>

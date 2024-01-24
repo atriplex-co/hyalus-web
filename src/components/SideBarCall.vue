@@ -9,7 +9,7 @@
           <PhoneIcon />
         </div>
         <div class="min-w-0 flex-1">
-          <div class="text-sm font-bold text-ctp-accent flex items-center space-x-1">
+          <div class="flex items-center space-x-1 text-sm font-bold text-ctp-accent">
             <p v-if="store.call.connectionState === 'new'">Waiting for Server</p>
             <p v-if="store.call.connectionState === 'connecting'">Call Connecting</p>
             <p v-if="store.call.connectionState === 'connected'">Call Connected</p>
@@ -17,13 +17,13 @@
             <p v-if="store.call.connectionState === 'failed'">You're Fucked (F5)</p>
             <div
               v-if="!store.call.deaf && store.call.muted"
-              class="w-5 h-5 rounded-full bg-ctp-surface0 p-[3px] text-ctp-text"
+              class="h-5 w-5 rounded-full bg-ctp-surface0 p-[3px] text-ctp-text"
             >
               <MicOffIcon />
             </div>
             <div
               v-if="store.call.deaf"
-              class="w-5 h-5 rounded-full bg-ctp-surface0 p-[3px] text-ctp-text"
+              class="h-5 w-5 rounded-full bg-ctp-surface0 p-[3px] text-ctp-text"
             >
               <AudioOffIcon />
             </div>

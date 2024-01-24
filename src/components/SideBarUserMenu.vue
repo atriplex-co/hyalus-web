@@ -48,7 +48,7 @@
           <div
             v-if="statusHtml"
             v-html="statusHtml"
-            class="min-w-0 text-xs truncate"
+            class="min-w-0 truncate text-xs"
             id="status"
           ></div>
         </div>

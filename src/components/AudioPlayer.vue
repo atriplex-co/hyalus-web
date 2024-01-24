@@ -10,25 +10,25 @@
       @click="togglePlay"
       @timeupdate="onTimeUpdate"
     />
-    <div class="rounded-md bg-[#1e1e1e] w-96 p-2 space-y-2">
+    <div class="w-96 space-y-2 rounded-md bg-[#1e1e1e] p-2">
       <div class="flex items-center space-x-2">
-        <MusicalNoteIcon class="w-8 h-8 p-2 rounded-full bg-ctp-surface0 text-ctp-text" />
-        <div class="flex justify-between items-center space-x-2 flex-1">
+        <MusicalNoteIcon class="h-8 w-8 rounded-full bg-ctp-surface0 p-2 text-ctp-text" />
+        <div class="flex flex-1 items-center justify-between space-x-2">
           <div class="min-w-0 flex-1">
             <p class="truncate">{{ name }}</p>
             <p class="text-xs text-ctp-subtext0">{{ size }}</p>
           </div>
           <ArrowDownTrayIcon
-            class="w-5 h-5 hover:text-white text-ctp-subtext0 cursor-pointer"
+            class="h-5 w-5 cursor-pointer text-ctp-subtext0 hover:text-white"
             @click="$emit('download')"
           />
         </div>
       </div>
       <div
-        class="py-1 bg-ctp-crust rounded-md w-full flex items-center px-2 space-x-2 transform transition duration-100"
+        class="flex w-full transform items-center space-x-2 rounded-md bg-ctp-crust px-2 py-1 transition duration-100"
       >
         <div
-          class="text-[#ccc] hover:text-white w-5 h-5 cursor-pointer transition"
+          class="h-5 w-5 cursor-pointer text-[#ccc] transition hover:text-white"
           @click="togglePlay"
         >
           <PlayIcon v-if="!playing" />
@@ -38,12 +38,12 @@
           <input
             type="range"
             :value="time"
-            class="w-full h-1 mb-3 bg-ctp-overlay0 bg-opacity-75 rounded-lg cursor-pointer accent-ctp-accent appearance-none"
+            class="mb-3 h-1 w-full cursor-pointer appearance-none rounded-lg bg-ctp-overlay0 bg-opacity-75 accent-ctp-accent"
             @input="updateTime"
           />
         </div>
         <div
-          class="text-[#ccc] hover:text-white w-5 h-5 cursor-pointer transition relative"
+          class="relative h-5 w-5 cursor-pointer text-[#ccc] transition hover:text-white"
           @click="toggleMute"
           @mouseenter="showVolume = true"
         >
@@ -51,14 +51,14 @@
           <SpeakerXMarkIcon v-if="muted" />
           <div
             v-if="showVolume"
-            class="absolute bottom-3 w-full transform scale-75 pt-1.5 rounded-lg bg-[#1e1e1e] bg-opacity-75 backdrop-blur"
+            class="absolute bottom-3 w-full scale-75 transform rounded-lg bg-[#1e1e1e] bg-opacity-75 pt-1.5 backdrop-blur"
             @mouseleave="showVolume = false"
             @click.stop
           >
             <input
               type="range"
               :value="volume"
-              class="h-24 w-4 rounded-lg appearance-none cursor-pointer accent-ctp-accent range-vertical"
+              class="range-vertical h-24 w-4 cursor-pointer appearance-none rounded-lg accent-ctp-accent"
               @input="updateVolume"
             />
           </div>
