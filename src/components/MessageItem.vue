@@ -132,14 +132,22 @@
             }"
           >
             <div
-              class="relative flex min-w-0 flex-1 flex-col break-words rounded-md text-sm shadow-md"
+              class="relative flex min-w-0 flex-1 flex-col break-words rounded-md text-sm"
               :class="{
-                'bg-ctp-accent text-ctp-base': sentByMe && !previewUrl,
-                'bg-ctp-surface0': !sentByMe || previewUrl,
+                'bg-ctp-accent text-ctp-base': sentByMe && !previewUrl && !useLargeEmojis,
+                'bg-ctp-surface0': (!sentByMe || previewUrl) && !useLargeEmojis,
+                'large-emojis': useLargeEmojis,
+                'shadow-md': !useLargeEmojis,
               }"
             >
               <!-- eslint-disable vue/no-v-html -->
-              <div v-if="message.dataFormatted" class="whitespace-pre-wrap p-2">
+              <div
+                v-if="message.dataFormatted"
+                class="whitespace-pre-wrap"
+                :class="{
+                  'p-2': !useLargeEmojis,
+                }"
+              >
                 <div v-html="message.dataFormatted"></div>
                 <div
                   v-if="invite"
@@ -752,6 +760,20 @@ const useInvite = async () => {
     code: invite.value.code,
   });
 };
+
+const useLargeEmojis = computed(() => {
+  if (!props.message.dataFormatted) {
+    return false;
+  }
+  const dom = new DOMParser().parseFromString(props.message.dataFormatted, "text/html");
+  const tagNames = new Set();
+  const p = dom.body.children[0] as HTMLParagraphElement;
+  if (!p) {
+    return false;
+  }
+  p.querySelectorAll("*").forEach((el) => tagNames.add(el.tagName));
+  return !p.innerText && tagNames.size === 1 && tagNames.has("IMG");
+});
 </script>
 
 <style>
@@ -772,5 +794,11 @@ pre + * {
   margin-left: -5px;
   border-width: 5px;
   border-style: solid;
+}
+
+.large-emojis img {
+  width: 3rem !important;
+  height: 3rem !important;
+  margin-top: 0.125rem !important;
 }
 </style>
