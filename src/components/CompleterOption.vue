@@ -23,7 +23,7 @@ const props = defineProps({
 const emit = defineEmits(["replace", "select"]);
 
 const keydownHandler = (e: KeyboardEvent) => {
-  if (e.key === "Enter" && props.selected) {
+  if ((e.key === "Enter" || e.key === "Tab") && props.selected) {
     e.preventDefault();
     e.stopPropagation();
     emit("replace");
