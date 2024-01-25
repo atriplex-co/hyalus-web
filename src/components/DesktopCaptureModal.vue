@@ -182,6 +182,12 @@ const startWin32AudioCapture = async () => {
       }
 
       if (data.t === "audio") {
+        if (generator.readyState === "ended") {
+          console.log("shutting down win32 audio capture");
+          window.HyalusDesktop!.win32!.stopCapture();
+          return;
+        }
+
         await writer.write(
           new AudioData({
             format: "f32",
