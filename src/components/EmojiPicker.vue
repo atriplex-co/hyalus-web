@@ -45,7 +45,7 @@
           :key="emoji.id"
           :title="emoji.name"
           class="h-8 w-8 cursor-pointer rounded-md p-1.5 transition hover:bg-ctp-surface0/50"
-          @click="$emit('append', `:${emoji.id}: `)"
+          @click="$emit('append', `:${uuidToB32(emoji.id).toLowerCase()}: `)"
         >
           <EmojiItem :id="emoji.id" />
         </div>
@@ -61,6 +61,7 @@ import EmojiItem from "./EmojiItem.vue";
 import { useStore } from "@/global/store";
 import UserAvatar from "./UserAvatar.vue";
 import EmptyAvatar from "./EmptyAvatar.vue";
+import { uuidToB32 } from "@/global/helpers";
 
 const emojis = Array.from(_emojis).sort((a, b) => (a.glyph < b.glyph ? 1 : -1));
 
