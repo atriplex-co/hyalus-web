@@ -4,6 +4,7 @@
 - Added emoji auto-complete
 - Added emoji info on click in messages
 - Added larger emojis in emoji-only messages
+- Added user mentions/pings
 - Improved call connection times
 - Improved call experience on poor network connections
 - Lower RAM usage in calls
