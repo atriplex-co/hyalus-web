@@ -1,3 +1,19 @@
+## 2024.01.25
+
+- Added new Screen Sharing UI
+- Added emoji auto-complete
+- Added emoji info on click in messages
+- Added larger emojis in emoji-only messages
+- Improved call connection times
+- Improved call experience on poor network connections
+- Lower RAM usage in calls
+- Fixed Alt+Up/Alt+Down in pinned channels
+- Fixed status formatting in user menu
+- Fixed "NVIDIA GeForce Overlay" showing in screenshare UI
+- Fixed users rendering as speaking while screensharing
+- Fixed memory leak in desktop app (Windows)
+- Fixed corrupted messages breaking chats
+
 ## 2024.01.12
 
 - Added channel muting support
