@@ -36,10 +36,13 @@
             <p class="text-ctp-white">{{ message.parent.author.name }}</p>
           </div>
           <div
-            v-if="renderParentData"
+            v-if="message.parent.dataFormatted"
             class="pointer-events-none flex min-w-0 flex-1 select-none space-x-2 truncate text-ctp-subtext0"
           >
-            <renderParentData />
+            <MessageRenderer
+              :html="message.parent.dataFormatted"
+              :key="message.parent.dataFormatted"
+            />
           </div>
         </div>
       </div>
@@ -143,13 +146,13 @@
               }"
             >
               <div
-                v-if="message.dataFormatted && renderData"
+                v-if="message.dataFormatted"
                 class="whitespace-pre-wrap"
                 :class="{
                   'p-2': !useLargeEmojis,
                 }"
               >
-                <renderData />
+                <MessageRenderer :html="message.dataFormatted" :key="message.dataFormatted" />
                 <div
                   v-if="invite"
                   class="mt-2 flex w-80 items-center justify-between rounded-md bg-ctp-base p-3 text-ctp-text"
@@ -363,6 +366,7 @@ import MessageContextMenu from "./MessageContextMenu.vue";
 import VideoPlayer from "./VideoPlayer.vue";
 import AudioPlayer from "./AudioPlayer.vue";
 import MessageEmoji from "./MessageEmoji.vue";
+import MessageRenderer from "./MessageRenderer.vue";
 
 const store = useStore();
 const props = defineProps({
@@ -777,25 +781,6 @@ const useLargeEmojis = computed(() => {
   p.querySelectorAll("*").forEach((el) => tagNames.add(el.tagName));
   return !p.innerText && tagNames.size === 1 && tagNames.has("MESSAGEEMOJI");
 });
-
-const renderData = props.message.dataFormatted
-  ? h({
-      template: props.message.dataFormatted,
-      components: {
-        MessageEmoji,
-      },
-    })
-  : null;
-
-const renderParentData =
-  props.message.parent && props.message.parent.dataFormatted
-    ? h({
-        template: props.message.parent.dataFormatted,
-        components: {
-          MessageEmoji,
-        },
-      })
-    : null;
 </script>
 
 <style>
