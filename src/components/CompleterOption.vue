@@ -1,6 +1,6 @@
 <template>
   <div
-    class="rounded-md p-1 cursor-pointer"
+    class="cursor-pointer rounded-md p-1"
     :class="{
       'bg-ctp-base': selected,
     }"

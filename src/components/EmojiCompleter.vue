@@ -4,12 +4,12 @@
       v-for="option in options"
       :key="option.id"
       :selected="options.indexOf(option) === selected"
-      class="flex justify-between items-center"
+      class="flex items-center justify-between"
       @replace="$emit('replace', `:${option.id}: `)"
       @select="selected = options.indexOf(option)"
     >
       <div class="flex items-center space-x-2">
-        <img :src="option.url" class="w-4 h-4" />
+        <img :src="option.url" class="h-4 w-4" />
         <p>{{ option.name }}</p>
       </div>
       <div v-if="option.space" class="text-ctp-overlay0">

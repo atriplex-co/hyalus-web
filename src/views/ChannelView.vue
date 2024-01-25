@@ -111,13 +111,13 @@
             >
               <div
                 v-if="emojiQuery"
-                class="absolute bottom-[100%] left-0 right-0 rounded-md overflow-hidden bg-ctp-crust mb-2"
+                class="absolute bottom-[100%] left-0 right-0 mb-2 overflow-hidden rounded-md bg-ctp-crust"
               >
                 <EmojiCompleter :query="emojiQuery" @replace="onReplace" />
               </div>
             </Transition>
           </div>
-          <div v-if="writable" class="flex items-center space-x-4 px-4 py-2 relative">
+          <div v-if="writable" class="relative flex items-center space-x-4 px-4 py-2">
             <textarea
               ref="messageBox"
               v-model="messageBoxText"

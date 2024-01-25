@@ -3,7 +3,6 @@ import highlight from "highlight.js";
 import type Renderer from "markdown-it/lib/renderer";
 import type { IExperiment } from "./types";
 import { emojis } from "hyalus-fluentui-emoji/dist/metadata.json";
-import { store } from "./store";
 import { b32ToUUID } from "./helpers";
 
 export const MaxFileSize = 1024 * 1024 * 50;
@@ -75,24 +74,19 @@ export const MarkdownItEmojiPlugin = (md: MarkdownIt) => {
 
   md.renderer.rules.emoji = (tokens, idx, options, env, self) => {
     const id = tokens[idx].content.slice(1).slice(0, -1);
-    let asset = "";
-    let alt = "";
     const appEmoji = emojis.find((emoji) => emoji.id === id);
     if (appEmoji) {
-      asset = `/fluentui-emoji/${appEmoji.asset}`;
-      alt = appEmoji.glyph;
+      return `<MessageEmoji type="system" id="${id}" />`;
     }
     if (/^[0-9a-f]{8}-[0-9a-f]{4}-[0-9a-f]{4}-[0-9a-f]{4}-[0-9a-f]{12}$/.test(id)) {
-      asset = `/api/v1/emojis/${id}`;
-      alt = `:${id}:`;
+      return `<MessageEmoji type="user" id="${id}" />`;
     }
     if (/^[1iIlL0o23456789aAbBcCdDeEfFhHgGjJkKmMnNpPqQrRsStTvVwWxXyYzZ]{26}$/.test(id)) {
-      asset = `/api/v1/emojis/${b32ToUUID(id)}`;
-      alt = `:${id}:`;
+      return `<MessageEmoji type="user" id="${b32ToUUID(id)}" />`;
     }
-    if (asset) {
-      return `<img src="${asset}" style="width:16px;height:16px;display:inline;margin-top:-2px;margin-left:1px;margin-right:1px" alt="${alt}"/>`;
-    }
+    // if (asset) {
+    //   return `<img src="${asset}" style="width:16px;height:16px;display:inline;margin-top:-2px;margin-left:1px;margin-right:1px" alt="${alt}"/>`;
+    // }
     return tokens[idx].content;
   };
 

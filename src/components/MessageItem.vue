@@ -36,9 +36,11 @@
             <p class="text-ctp-white">{{ message.parent.author.name }}</p>
           </div>
           <div
-            class="flex flex-1 space-x-2 truncate text-ctp-subtext0"
-            v-html="message.parent.dataFormatted"
-          ></div>
+            v-if="renderParentData"
+            class="pointer-events-none flex min-w-0 flex-1 select-none space-x-2 truncate text-ctp-subtext0"
+          >
+            <renderParentData />
+          </div>
         </div>
       </div>
       <div
@@ -140,15 +142,14 @@
                 'shadow-md': !useLargeEmojis,
               }"
             >
-              <!-- eslint-disable vue/no-v-html -->
               <div
-                v-if="message.dataFormatted"
+                v-if="message.dataFormatted && renderData"
                 class="whitespace-pre-wrap"
                 :class="{
                   'p-2': !useLargeEmojis,
                 }"
               >
-                <div v-html="message.dataFormatted"></div>
+                <renderData />
                 <div
                   v-if="invite"
                   class="mt-2 flex w-80 items-center justify-between rounded-md bg-ctp-base p-3 text-ctp-text"
@@ -179,7 +180,7 @@
                   </button>
                 </div>
               </div>
-              <!-- eslint-enable -->
+
               <div v-if="upload">
                 <div v-if="!previewUrl" class="flex items-center space-x-2 p-2">
                   <div
@@ -343,6 +344,7 @@ import {
   onUnmounted,
   onBeforeUnmount,
   watch,
+  h,
 } from "vue";
 import type { IChannel, IMessage, ISpace, IMessageUpload } from "@/global/types";
 import { MaxFileSize, MaxFileChunkSize } from "@/global/config";
@@ -360,6 +362,7 @@ import UserContextMenu from "./UserContextMenu.vue";
 import MessageContextMenu from "./MessageContextMenu.vue";
 import VideoPlayer from "./VideoPlayer.vue";
 import AudioPlayer from "./AudioPlayer.vue";
+import MessageEmoji from "./MessageEmoji.vue";
 
 const store = useStore();
 const props = defineProps({
@@ -772,8 +775,27 @@ const useLargeEmojis = computed(() => {
     return false;
   }
   p.querySelectorAll("*").forEach((el) => tagNames.add(el.tagName));
-  return !p.innerText && tagNames.size === 1 && tagNames.has("IMG");
+  return !p.innerText && tagNames.size === 1 && tagNames.has("MESSAGEEMOJI");
 });
+
+const renderData = props.message.dataFormatted
+  ? h({
+      template: props.message.dataFormatted,
+      components: {
+        MessageEmoji,
+      },
+    })
+  : null;
+
+const renderParentData =
+  props.message.parent && props.message.parent.dataFormatted
+    ? h({
+        template: props.message.parent.dataFormatted,
+        components: {
+          MessageEmoji,
+        },
+      })
+    : null;
 </script>
 
 <style>
@@ -796,7 +818,7 @@ pre + * {
   border-style: solid;
 }
 
-.large-emojis img {
+.large-emojis img.emoji {
   width: 3rem !important;
   height: 3rem !important;
   margin-top: 0.125rem !important;

@@ -74,6 +74,7 @@ export default defineConfig({
     alias: {
       "@": fileURLToPath(new URL("./src", import.meta.url)),
       "libsodium-wrappers": "libsodium-wrappers-sumo",
+      vue: "vue/dist/vue.esm-bundler.js",
     },
   },
 });
