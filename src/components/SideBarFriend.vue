@@ -14,7 +14,7 @@
       <div>
         <p class="truncate text-sm">{{ friend.name }}</p>
         <div class="flex min-w-0 items-center space-x-2 text-xs">
-          <p class="truncate text-ctp-subtext0">@{{ friend.username }}</p>
+          <p class="truncate slashed-zero text-ctp-subtext0">@{{ friend.username }}</p>
           <p
             v-if="!friend.accepted && !friend.acceptable"
             class="rounded-md bg-ctp-surface0 px-1 text-xs"

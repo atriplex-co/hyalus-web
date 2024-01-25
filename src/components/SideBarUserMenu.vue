@@ -15,7 +15,7 @@
       <div class="flex items-center justify-between">
         <div class="min-w-0 p-2">
           <p class="font-bold">{{ store.self.name }}</p>
-          <p class="truncate text-xs text-ctp-subtext0">@{{ store.self.username }}</p>
+          <p class="truncate text-xs slashed-zero text-ctp-subtext0">@{{ store.self.username }}</p>
         </div>
         <button
           @click="

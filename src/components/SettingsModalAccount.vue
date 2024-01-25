@@ -25,7 +25,7 @@
         </div>
         <div class="-space-y-0.5">
           <p class="text-lg font-semibold">{{ store.self.name }}</p>
-          <p class="text-sm text-ctp-subtext0">@{{ store.self.username }}</p>
+          <p class="text-sm slashed-zero text-ctp-subtext0">@{{ store.self.username }}</p>
         </div>
       </div>
       <p
@@ -44,7 +44,7 @@
           <AtSymbolIcon class="h-5 w-5" />
           <div>
             <p class="text-xs font-semibold uppercase">Username</p>
-            <p class="-mb-0.5 text-sm">{{ store.self.username }}</p>
+            <p class="-mb-0.5 text-sm slashed-zero">{{ store.self.username }}</p>
           </div>
         </div>
         <PencilIcon class="h-4 w-4" />

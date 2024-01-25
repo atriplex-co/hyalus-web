@@ -23,7 +23,7 @@
           >
             {{ member.name }}
           </p>
-          <p class="truncate text-xs text-ctp-subtext0">@{{ member.username }}</p>
+          <p class="truncate text-xs slashed-zero text-ctp-subtext0">@{{ member.username }}</p>
         </div>
       </div>
       <TrashIcon

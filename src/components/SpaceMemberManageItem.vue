@@ -18,7 +18,7 @@
         />
         <div>
           <p class="text-sm font-semibold">{{ member.name }}</p>
-          <p class="text-sm text-ctp-subtext0">@{{ member.username }}</p>
+          <p class="text-sm slashed-zero text-ctp-subtext0">@{{ member.username }}</p>
         </div>
       </div>
       <ChevronDownIcon v-if="!open" class="h-5 w-5 text-gray-500" />

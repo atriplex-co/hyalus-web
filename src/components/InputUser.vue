@@ -15,7 +15,7 @@
               <UserAvatar :avatar="user.avatar" class="h-8 w-8 rounded-full" />
               <div>
                 <p class="font-bold">{{ user.name }}</p>
-                <p class="text-xs text-ctp-subtext0">@{{ user.username }}</p>
+                <p class="text-xs slashed-zero text-ctp-subtext0">@{{ user.username }}</p>
               </div>
             </div>
             <CheckBox v-model="user.selected" />

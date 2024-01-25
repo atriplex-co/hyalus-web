@@ -7,7 +7,10 @@
       <ModalError v-if="error" :error="error" />
       <p>
         Are you sure you want to ban
-        <strong>{{ props.member.name }} (@{{ props.member.username }})</strong>
+        <strong
+          >{{ props.member.name }}
+          <span class="slashed-zero">(@{{ props.member.username }})</span></strong
+        >
         from the space?
       </p>
       <ModalInput v-model="reason" type="text" label="Reason" placeholder="None specified" />

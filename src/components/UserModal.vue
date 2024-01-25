@@ -48,7 +48,9 @@
         <div class="flex items-center justify-between">
           <div class="min-w-0 select-text">
             <p class="truncate text-xl font-bold">{{ cachedUser.name }}</p>
-            <p class="truncate text-sm text-ctp-subtext0">@{{ cachedUser.username }}</p>
+            <p class="truncate text-sm slashed-zero text-ctp-subtext0">
+              @{{ cachedUser.username }}
+            </p>
           </div>
           <div v-if="cachedUser.flags" class="flex space-x-2 rounded-md bg-ctp-base p-2 shadow-md">
             <div

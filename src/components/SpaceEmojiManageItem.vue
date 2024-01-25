@@ -11,7 +11,7 @@
         <UserAvatar :avatar="emoji.creator.avatar" class="h-8 w-8 rounded-full" />
         <div class="-space-y-0.5">
           <p class="text-sm font-semibold">{{ emoji.creator.name }}</p>
-          <p class="text-sm text-ctp-subtext0">@{{ emoji.creator.username }}</p>
+          <p class="text-sm slashed-zero text-ctp-subtext0">@{{ emoji.creator.username }}</p>
         </div>
       </div>
     </td>

@@ -5,7 +5,7 @@
         <UserAvatar :avatar="invite.user.avatar" class="h-8 w-8 rounded-full" />
         <div class="-space-y-0.5">
           <p class="text-sm font-semibold">{{ invite.user.name }}</p>
-          <p class="text-sm text-ctp-subtext0">@{{ invite.user.username }}</p>
+          <p class="text-sm slashed-zero text-ctp-subtext0">@{{ invite.user.username }}</p>
         </div>
       </div>
     </td>

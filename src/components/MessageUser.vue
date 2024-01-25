@@ -1,5 +1,7 @@
 <template>
-  <span class="cursor-pointer font-semibold hover:underline" @click="profileOpen = true">@{{ name }}</span>
+  <span class="cursor-pointer font-semibold hover:underline" @click="profileOpen = true"
+    >@{{ name }}</span
+  >
   <UserModal v-if="profileOpen" @close="profileOpen = false" :id="id" />
 </template>
 

@@ -48,7 +48,7 @@
                   <UserAvatar :avatar="member.avatar" class="h-6 w-6" />
                   <div>
                     <p>{{ member.name }}</p>
-                    <p class="text-xs text-ctp-subtext0">@{{ member.username }}</p>
+                    <p class="text-xs slashed-zero text-ctp-subtext0">@{{ member.username }}</p>
                   </div>
                 </div>
               </div>

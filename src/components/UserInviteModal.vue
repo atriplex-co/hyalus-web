@@ -14,7 +14,7 @@
           <UserAvatar :avatar="user.avatar" class="h-8 w-8 rounded-full" />
           <div>
             <p class="text-sm font-bold">{{ user.name }}</p>
-            <p class="text-sm text-ctp-subtext0">@{{ user.username }}</p>
+            <p class="text-sm slashed-zero text-ctp-subtext0">@{{ user.username }}</p>
           </div>
         </div>
       </div>
