@@ -116,6 +116,21 @@
                 <EmojiCompleter :query="emojiQuery" @replace="onReplace" />
               </div>
             </Transition>
+            <Transition
+              enter-active-class="transition ease-out duration-100 origin-bottom"
+              enter-from-class="transform opacity-0 scale-95"
+              enter-to-class="transform opacity-100 scale-100"
+              leave-active-class="transition ease-in duration-75 origin-bottom"
+              leave-from-class="transform opacity-100 scale-100"
+              leave-to-class="transform opacity-0 scale-95"
+            >
+              <div
+                v-if="userQuery"
+                class="absolute bottom-[100%] left-0 right-0 mb-2 overflow-hidden rounded-md bg-ctp-crust"
+              >
+                <UserCompleter :query="userQuery" :channel="channel" @replace="onReplace" />
+              </div>
+            </Transition>
           </div>
           <div v-if="writable" class="relative flex items-center space-x-4 px-4 py-2">
             <textarea
@@ -205,6 +220,7 @@ import MessageEditModal from "@/components/MessageEditModal.vue";
 import { SpeakerWaveIcon } from "@heroicons/vue/24/outline";
 import EmojiPicker from "@/components/EmojiPicker.vue";
 import EmojiCompleter from "@/components/EmojiCompleter.vue";
+import UserCompleter from "@/components/UserCompleter.vue";
 
 const store = useStore();
 const route = useRoute();
@@ -222,6 +238,7 @@ const replyMessage: Ref<IMessage | null> = ref(null);
 const messageBeingEdited: Ref<IMessage | null> = ref(null);
 const emojiPicker = ref(false);
 const emojiQuery = ref("");
+const userQuery = ref("");
 
 const channel = computed(() => {
   return store.channels.find((channel) => channel.id === route.params.channelId);
@@ -884,6 +901,13 @@ watch(
     } else {
       if (emojiQuery.value) {
         emojiQuery.value = "";
+      }
+    }
+    if (word.startsWith("@") && messageBoxText.value.slice(wordStart).split(":").length < 3) {
+      userQuery.value = word.slice(1);
+    } else {
+      if (userQuery.value) {
+        userQuery.value = "";
       }
     }
   },

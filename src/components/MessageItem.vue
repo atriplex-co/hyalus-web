@@ -347,7 +347,6 @@ import {
   onUnmounted,
   onBeforeUnmount,
   watch,
-  h,
 } from "vue";
 import type { IChannel, IMessage, ISpace, IMessageUpload } from "@/global/types";
 import { MaxFileSize, MaxFileChunkSize } from "@/global/config";
@@ -365,7 +364,6 @@ import UserContextMenu from "./UserContextMenu.vue";
 import MessageContextMenu from "./MessageContextMenu.vue";
 import VideoPlayer from "./VideoPlayer.vue";
 import AudioPlayer from "./AudioPlayer.vue";
-import MessageEmoji from "./MessageEmoji.vue";
 import MessageRenderer from "./MessageRenderer.vue";
 
 const store = useStore();

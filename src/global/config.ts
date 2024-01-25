@@ -72,6 +72,46 @@ export const MarkdownItEmojiPlugin = (md: MarkdownIt) => {
     }
   });
 
+  md.core.ruler.after("linkify", "userid", (state) => {
+    for (let i = state.tokens.length - 1; i >= 0; --i) {
+      const token = state.tokens[i];
+      if (token.type !== "inline" || !token.children) {
+        continue;
+      }
+      for (let j = token.children.length - 1; j >= 0; --j) {
+        const token2 = token.children[j];
+        if (token2.type !== "text") {
+          continue;
+        }
+        const regex = /<@[a-zA-Z0-9-_]+>/g;
+        let pos = 0;
+        const tokens = [];
+        for (;;) {
+          const exec = regex.exec(token2.content);
+          if (!exec) {
+            break;
+          }
+          const before = token2.content.slice(pos, exec.index);
+          if (before.length) {
+            const token = new state.Token("text", "", 0);
+            token.content = before;
+            tokens.push(token);
+          }
+          const token = new state.Token("userid", "", 0);
+          token.content = exec[0];
+          tokens.push(token);
+          pos = exec.index + exec[0].length;
+        }
+        if (pos !== token2.content.length) {
+          const token = new state.Token("text", "", 0);
+          token.content = token2.content.slice(pos);
+          tokens.push(token);
+        }
+        token.children.splice(j, 1, ...tokens);
+      }
+    }
+  });
+
   md.renderer.rules.emoji = (tokens, idx, options, env, self) => {
     const id = tokens[idx].content.slice(1).slice(0, -1);
     const appEmoji = emojis.find((emoji) => emoji.id === id);
@@ -84,9 +124,17 @@ export const MarkdownItEmojiPlugin = (md: MarkdownIt) => {
     if (/^[1iIlL0o23456789aAbBcCdDeEfFhHgGjJkKmMnNpPqQrRsStTvVwWxXyYzZ]{26}$/.test(id)) {
       return `<MessageEmoji type="user" id="${b32ToUUID(id)}" />`;
     }
-    // if (asset) {
-    //   return `<img src="${asset}" style="width:16px;height:16px;display:inline;margin-top:-2px;margin-left:1px;margin-right:1px" alt="${alt}"/>`;
-    // }
+    return tokens[idx].content;
+  };
+
+  md.renderer.rules.userid = (tokens, idx, options, env, self) => {
+    const id = tokens[idx].content.slice(2).slice(0, -1);
+    if (/^[0-9a-f]{8}-[0-9a-f]{4}-[0-9a-f]{4}-[0-9a-f]{4}-[0-9a-f]{12}$/.test(id)) {
+      return `<MessageUser id="${id}" />`;
+    }
+    if (/^[1iIlL0o23456789aAbBcCdDeEfFhHgGjJkKmMnNpPqQrRsStTvVwWxXyYzZ]{26}$/.test(id)) {
+      return `<MessageUser id="${b32ToUUID(id)}" />`;
+    }
     return tokens[idx].content;
   };
 
