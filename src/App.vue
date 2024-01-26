@@ -144,6 +144,7 @@
     <!-- this is here to keep some random css classes from being puregd. -->
     <p class="hidden font-medium underline"></p>
     <QuickSwitcher v-if="store.quickSwitcherOpen" @close="store.quickSwitcherOpen = false" />
+    <RTCStatsWindow v-if="rtcStatsWindowOpen" @close="rtcStatsWindowOpen = false" />
   </div>
 </template>
 
@@ -165,12 +166,14 @@ import SettingsModal from "@/components/SettingsModal.vue";
 import { ColorMode, ColorTheme } from "@/../../hyalus-server/src/types";
 import StreamerModeBanner from "@/components/StreamerModeBanner.vue";
 import QuickSwitcher from "@/components/QuickSwitcher.vue";
+import RTCStatsWindow from "./components/RTCStatsWindow.vue";
 
 const store = useStore();
 
 const welcomeModal = ref(false);
 const settingsModal = ref(false);
 const desktopUpdating = ref(isDesktop);
+const rtcStatsWindowOpen = ref(false);
 
 const inAppRoutes = [
   "app",
@@ -264,6 +267,11 @@ addEventListener("keydown", (e: KeyboardEvent) => {
   if (e.ctrlKey && e.key === "k") {
     e.preventDefault();
     store.quickSwitcherOpen = !store.quickSwitcherOpen;
+  }
+
+  if (e.ctrlKey && e.shiftKey && e.key === "D") {
+    e.preventDefault();
+    rtcStatsWindowOpen.value = !rtcStatsWindowOpen.value;
   }
 });
 </script>

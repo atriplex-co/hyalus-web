@@ -174,7 +174,7 @@ const getComputedStream = (type: CallStreamType) => {
   });
 };
 
-const audioStream = getComputedStream(CallStreamType.Audio);
+// const audioStream = getComputedStream(CallStreamType.Audio);
 const videoStream = getComputedStream(CallStreamType.Video);
 const displayVideoStream = getComputedStream(CallStreamType.DisplayVideo);
 
