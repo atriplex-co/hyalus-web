@@ -444,8 +444,7 @@ const firstInChunk = computed(() => {
     isEvent(precedingMessage.value) ||
     props.message.author.id !== precedingMessage.value.author.id ||
     +props.message.createdAt - +precedingMessage.value.createdAt > chunkThreshold ||
-    props.message.parent ||
-    precedingMessage.value.parent
+    props.message.parent
   );
 });
 
