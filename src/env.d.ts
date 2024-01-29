@@ -55,6 +55,7 @@ declare interface IHyalusDesktopWin32 {
   stopCapture(): void;
   startEvents(cb: (e: string) => void): void;
   stopEvents(): void;
+  clearMemory(): void;
 }
 
 declare interface Window {
