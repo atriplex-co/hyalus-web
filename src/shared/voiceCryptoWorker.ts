@@ -5,7 +5,7 @@ const getNaluOffsets = (data: Uint8Array) => {
   const offsets = [];
   let zc = 0;
   for (let i = 0; i < data.length; ++i) {
-    if (data[i] === 1 && zc >= 2) {
+    if (zc >= 2 && data[i] === 0x01) {
       zc = 0;
       offsets.push(i + 1);
     }
@@ -19,15 +19,13 @@ const getNaluOffsets = (data: Uint8Array) => {
 };
 
 const packNalu = (data: Uint8Array) => {
-  let zc = 0;
   const offsets = [];
-  for (let i = 0; i < data.length; ++i) {
-    if (zc >= 2 && [0x00, 0x01, 0x02, 0x03].includes(data[i])) {
+  let zc = 0;
+  for (let i = 2; i < data.length; ++i) {
+    if (zc == 2 && data[i] <= 0x03) {
       offsets.push(i);
-      zc = 0;
     }
-
-    if (data[i] == 0) {
+    if (data[i] == 0x00) {
       zc++;
     } else {
       zc = 0;
@@ -48,14 +46,13 @@ const packNalu = (data: Uint8Array) => {
 };
 
 const unpackNalu = (data: Uint8Array) => {
-  let zc = 0;
   const offsets = [];
-  for (let i = 0; i < data.length; ++i) {
-    if (zc >= 2 && data[i] === 0x03 && [0x00, 0x01, 0x02, 0x03].includes(data[i + 1])) {
+  let zc = 0;
+  for (let i = 3; i < data.length - 1; ++i) {
+    if (zc == 2 && data[i] == 0x03 && data[i + 1] <= 0x03) {
       offsets.push(i);
     }
-
-    if (data[i] === 0) {
+    if (data[i] == 0x00) {
       zc++;
     } else {
       zc = 0;
