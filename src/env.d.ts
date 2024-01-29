@@ -276,8 +276,10 @@ declare interface RTCRtpReceiver extends RTCRtpSender {
 
 declare interface RTCEncodedVideoFrameMetadata extends RTCEncodedVideoFrameMetadata {
   payloadType: number;
+  mimeType: string;
 }
 
 declare interface RTCEncodedAudioFrameMetadata extends RTCEncodedAudioFrameMetadata {
   payloadType: number;
+  mimeType: string;
 }

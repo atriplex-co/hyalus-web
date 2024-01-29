@@ -1676,12 +1676,6 @@ export class Socket {
               });
               store.call.encryptWorkers.set(trans.mid!, encryptWorker);
             }
-            encryptWorker.postMessage({
-              t: "set_payload_codecs",
-              d: {
-                payloadCodecs,
-              },
-            });
           } else {
             if (encryptWorker) {
               encryptWorker.terminate();
@@ -1725,12 +1719,6 @@ export class Socket {
               };
               store.call.decryptWorkers.set(trans.mid!, decryptWorker);
             }
-            decryptWorker.postMessage({
-              t: "set_payload_codecs",
-              d: {
-                payloadCodecs,
-              },
-            });
           } else {
             if (decryptWorker) {
               decryptWorker.terminate();
