@@ -251,10 +251,19 @@ watch(
   },
 );
 
+const clearMemory = () => {
+  requestIdleCallback(window.HyalusDesktop!.win32!.clearMemory);
+};
+
 onMounted(async () => {
-  if (window.HyalusDesktop && window.HyalusDesktop.checkForUpdates) {
+  if (window.HyalusDesktop?.checkForUpdates) {
     await window.HyalusDesktop.checkForUpdates();
     desktopUpdating.value = false;
+  }
+
+  if (window.HyalusDesktop?.win32?.clearMemory) {
+    clearMemory();
+    setInterval(clearMemory, 1000 * 60 * 60 * 2);
   }
 });
 
