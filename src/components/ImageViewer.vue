@@ -1,12 +1,12 @@
 <template>
   <ModalBase empty @close="$emit('close')">
-    <div class="bg-ctp-base">
+    <div class="bg-ctp-base min-w-0 flex flex-col">
       <img :src="src" />
-      <div class="flex items-center justify-between p-2">
-        <div class="flex items-center space-x-2">
+      <div class="flex items-center justify-between p-2 min-w-0 space-x-2">
+        <div class="flex items-center space-x-2 min-w-0">
           <PhotoIcon class="h-8 w-8 rounded-full bg-ctp-surface0 p-2 text-ctp-subtext0" />
-          <div class="-space-y-0.5">
-            <p class="font-bold">{{ name }}</p>
+          <div class="-space-y-0.5 min-w-0">
+            <p class="font-bold truncate">{{ name }}</p>
             <p class="text-sm text-ctp-subtext0">{{ size }}</p>
           </div>
         </div>
@@ -56,5 +56,7 @@ const save = () => {
 img {
   max-width: calc(100vw - 12rem);
   max-height: calc(100vh - 12rem);
+  object-fit: contain;
+  background: #0c0c0c;
 }
 </style>
