@@ -6,16 +6,6 @@ const state = {
   remoteKeys: new Map<string, CryptoKey>(),
   remoteUserId: "",
   speaking: false,
-  speakingTimeout: 0,
-};
-
-const updateSpeaking = () => {
-  self.postMessage({
-    t: "set_speaking",
-    d: {
-      speaking: state.speaking,
-    },
-  });
 };
 
 const encryptChunk: TransformerTransformCallback<
@@ -23,10 +13,6 @@ const encryptChunk: TransformerTransformCallback<
   RTCEncodedVideoFrame | RTCEncodedAudioFrame
 > = async (chunk, controller) => {
   try {
-    if (chunk instanceof RTCEncodedAudioFrame && chunk.data.byteLength <= 3) {
-      return;
-    }
-
     const key = state.localKeys.get(state.localKeyId);
     if (!key) {
       return console.warn("voice_crypto_enc: missing key");
@@ -77,17 +63,17 @@ const decryptChunk: TransformerTransformCallback<
     );
     chunk.data = data.buffer;
 
-    if (chunk instanceof RTCEncodedAudioFrame && data.length > 3) {
-      if (!state.speaking) {
-        state.speaking = true;
-        updateSpeaking();
+    if (chunk instanceof RTCEncodedAudioFrame) {
+      const speaking = data.length > 3;
+      if (state.speaking !== speaking) {
+        state.speaking = speaking;
+        self.postMessage({
+          t: "set_speaking",
+          d: {
+            speaking: state.speaking,
+          },
+        });
       }
-
-      clearTimeout(state.speakingTimeout);
-      state.speakingTimeout = +setTimeout(() => {
-        state.speaking = false;
-        updateSpeaking();
-      }, 100);
     }
 
     controller.enqueue(chunk);
