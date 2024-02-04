@@ -648,7 +648,7 @@ onMounted(async () => {
     if (
       upload.value &&
       ["audio", "video", "image"].indexOf(upload.value.type.split("/")[0]) !== -1 &&
-      upload.value.size < 1024 * 1024 * 20 &&
+      upload.value.size < 1024 * 1024 * 25 &&
       previewUrl.value === ""
     ) {
       previewUrl.value = (await fileDownload(false)) || "";

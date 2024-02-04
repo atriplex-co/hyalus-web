@@ -9,7 +9,6 @@
         </div>
         <p class="text-lg font-bold">Friends</p>
       </div>
-
       <div
         @click="friendAddModal = true"
         class="flex cursor-pointer items-center space-x-1 rounded-md bg-ctp-accent px-1.5 py-1 text-xs text-ctp-base transition hover:bg-ctp-accent/75"
@@ -18,9 +17,38 @@
         <p>Add</p>
       </div>
     </div>
+    <div class="bg-ctp-crust rounded-md p-2 mx-2 flex space-x-2 text-sm">
+      <div
+        class="bg-ctp-mantle rounded-md py-1 px-2 cursor-pointer transition hover:bg-ctp-surface0/50 text-ctp-subtext0 hover:text-ctp-text"
+        :class="{
+          'ring-2 ring-ctp-accent/50 text-ctp-text': filter === 'all',
+        }"
+        @click="filter = 'all'"
+      >
+        All
+      </div>
+      <div
+        class="bg-ctp-mantle rounded-md py-1 px-2 cursor-pointer transition hover:bg-ctp-surface0/50 text-ctp-subtext0 hover:text-ctp-text"
+        :class="{
+          'ring-2 ring-ctp-accent/50 text-ctp-text': filter === 'online',
+        }"
+        @click="filter = 'online'"
+      >
+        Online
+      </div>
+      <div
+        class="bg-ctp-mantle rounded-md py-1 px-2 cursor-pointer transition hover:bg-ctp-surface0/50 text-ctp-subtext0 hover:text-ctp-text"
+        :class="{
+          'ring-2 ring-ctp-accent/50 text-ctp-text': filter === 'blocked',
+        }"
+        @click="filter = 'blocked'"
+      >
+        Blocked
+      </div>
+    </div>
     <OverlayScrollbarsComponent
       defer
-      class="flex-1"
+      class="flex-1 pt-2"
       :options="{
         scrollbars: {
           autoHide: 'leave',
@@ -47,6 +75,7 @@ import { SideBarState } from "@/global/types";
 import { ChevronLeftIcon } from "@heroicons/vue/20/solid";
 
 const store = useStore();
+const filter = ref("all");
 
 const friendAddModal = ref(false);
 const friends = computed(() =>
