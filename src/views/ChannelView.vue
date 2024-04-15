@@ -896,7 +896,12 @@ watch(
   () => {
     const wordStart = getSelectedWordStart();
     const word = messageBoxText.value.slice(wordStart).split(" ")[0];
-    if (word.startsWith(":") && messageBoxText.value.slice(wordStart).split(":").length < 3) {
+    console.log({ word });
+    if (
+      word.startsWith(":") &&
+      messageBoxText.value.slice(wordStart).split(":").length < 3 &&
+      word.length > 2
+    ) {
       emojiQuery.value = word.slice(1);
     } else {
       if (emojiQuery.value) {
