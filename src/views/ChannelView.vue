@@ -896,7 +896,6 @@ watch(
   () => {
     const wordStart = getSelectedWordStart();
     const word = messageBoxText.value.slice(wordStart).split(" ")[0];
-    console.log({ word });
     if (
       word.startsWith(":") &&
       messageBoxText.value.slice(wordStart).split(":").length < 3 &&
