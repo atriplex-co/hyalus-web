@@ -97,7 +97,10 @@ const acceptableFriendsCount = computed(() => {
 const pinnedChannels = computed(() => {
   return store.channels
     .filter(
-      (channel) => !channel.spaceId && store.self!.userConfig.pinnedChannelIds.includes(channel.id),
+      (channel) =>
+        !channel.spaceId &&
+        store.self!.userConfig.pinnedChannelIds.includes(channel.id) &&
+        !store.self!.userConfig.hiddenChannelIds.includes(channel.id),
     )
     .sort((a, b) => (a.activeAt < b.activeAt ? 1 : -1));
 });
@@ -106,7 +109,9 @@ const channels = computed(() => {
   return store.channels
     .filter(
       (channel) =>
-        !channel.spaceId && !store.self!.userConfig.pinnedChannelIds.includes(channel.id),
+        !channel.spaceId &&
+        !store.self!.userConfig.pinnedChannelIds.includes(channel.id) &&
+        !store.self!.userConfig.hiddenChannelIds.includes(channel.id),
     )
     .sort((a, b) => (a.activeAt < b.activeAt ? 1 : -1));
 });

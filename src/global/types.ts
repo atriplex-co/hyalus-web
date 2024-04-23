@@ -419,6 +419,7 @@ export interface IUserConfig {
   v: number;
   pinnedChannelIds: string[];
   mutedChannelIds: string[];
+  hiddenChannelIds: string[];
   userAliases: Record<string, string>;
 }
 

@@ -589,6 +589,7 @@ export const DefaultUserConfig: IUserConfig = {
   v: 0,
   pinnedChannelIds: [],
   mutedChannelIds: [],
+  hiddenChannelIds: [],
   userAliases: {},
 };
 
@@ -626,9 +627,12 @@ export const decryptUserConfig = (s: string): IUserConfig => {
           v: z.number(),
           pinnedChannelIds: z.array(z.string().uuid()).optional(),
           mutedChannelIds: z.array(z.string().uuid()).optional(),
+          hiddenChannelIds: z.array(z.string().uuid()).optional(),
           userAliases: z.record(z.string().uuid(), z.string()).optional(),
         })
-        .parse(msgpack.decode(_config)),
+        .parse({
+          ...msgpack.decode(_config),
+        }),
     };
   } catch {
     console.warn("[!] failed to decrypt userConfig");

@@ -1021,6 +1021,13 @@ export class Socket {
           return;
         }
 
+        if (store.self!.userConfig.hiddenChannelIds.includes(data.channelId)) {
+          store.self!.userConfig.hiddenChannelIds = store.self!.userConfig.hiddenChannelIds.filter(
+            (id) => id !== data.channelId,
+          );
+          store.updateUserConfig();
+        }
+
         const message = await processMessage({
           ...data,
           channel,

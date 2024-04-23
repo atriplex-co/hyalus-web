@@ -94,6 +94,9 @@
       <p v-if="!isPinned">Pin Channel</p>
       <p v-if="isPinned">Unpin Channel</p>
     </ContextMenuItem>
+    <ContextMenuItem v-if="canHide" @click="setHidden(true)">
+      <p>Hide Channel</p>
+    </ContextMenuItem>
     <ContextMenuItem @click="setMuted(!isMuted)">
       <p v-if="!isMuted">Mute Channel</p>
       <p v-if="isMuted">Unmute Channel</p>
@@ -201,6 +204,9 @@ export default defineComponent({
     canPin() {
       return this.channel.type === ChannelType.DM || this.channel.type === ChannelType.Group;
     },
+    canHide() {
+      return this.channel.type === ChannelType.DM;
+    },
     isPinned() {
       return store.self!.userConfig.pinnedChannelIds.includes(this.channel.id);
     },
@@ -283,6 +289,17 @@ export default defineComponent({
         store.self!.userConfig.mutedChannelIds.push(this.channel.id);
       } else {
         store.self!.userConfig.mutedChannelIds = store.self!.userConfig.mutedChannelIds.filter(
+          (id) => id !== this.channel.id,
+        );
+      }
+      await store.updateUserConfig();
+    },
+    async setHidden(hidden: boolean) {
+      this.menu!.close();
+      if (hidden) {
+        store.self!.userConfig.hiddenChannelIds.push(this.channel.id);
+      } else {
+        store.self!.userConfig.hiddenChannelIds = store.self!.userConfig.hiddenChannelIds.filter(
           (id) => id !== this.channel.id,
         );
       }

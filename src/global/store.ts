@@ -877,6 +877,9 @@ export const useStore = defineStore("main", {
       this.self!.userConfig.pinnedChannelIds = Array.from(
         new Set(this.self!.userConfig.pinnedChannelIds),
       ); // dedupe pinned channels
+      this.self!.userConfig.hiddenChannelIds = Array.from(
+        new Set(this.self!.userConfig.hiddenChannelIds),
+      ); // dedupe pinned channels
       await axios.post("/api/v1/users/me/config", {
         userConfig: encryptUserConfig(store.self!.userConfig),
         userConfigTime: +new Date(),
