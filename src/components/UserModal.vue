@@ -52,44 +52,55 @@
               @{{ cachedUser.username }}
             </p>
           </div>
-          <div v-if="cachedUser.flags" class="flex space-x-2 rounded-md bg-ctp-base p-2 shadow-md">
+          <div
+            v-if="cachedUser.flags || cachedUser.badges.length"
+            class="flex space-x-2 rounded-md bg-ctp-base p-2 shadow-md"
+          >
             <div
               v-if="cachedUser.flags & UserFlag.System"
-              class="h-4 w-4 text-blue-400"
+              class="h-5 w-5 text-blue-400"
               title="System"
             >
               <ServerStackIcon />
             </div>
             <div
               v-if="cachedUser.flags & UserFlag.Staff"
-              class="h-4 w-4 text-green-400"
+              class="h-5 w-5 text-green-400"
               title="Staff"
             >
               <WrenchScrewdriverIcon />
             </div>
             <div
               v-if="cachedUser.flags & UserFlag.Tester"
-              class="h-4 w-4 text-pink-400"
+              class="h-5 w-5 text-pink-400"
               title="Tester"
             >
               <BeakerIcon />
             </div>
             <div
               v-if="cachedUser.flags & UserFlag.BugReporter"
-              class="h-4 w-4 text-purple-400"
+              class="h-5 w-5 text-purple-400"
               title="Bug Reporter"
             >
               <BugAntIcon />
             </div>
             <div
               v-if="cachedUser.flags & UserFlag.EarlySupporter"
-              class="h-4 w-4 text-indigo-400"
+              class="h-5 w-5 text-indigo-400"
               title="Early Supporter"
             >
               <SparklesIcon />
             </div>
-            <div v-if="cachedUser.flags & UserFlag.Bot" class="h-4 w-4 text-teal-400" title="Bot">
+            <div v-if="cachedUser.flags & UserFlag.Bot" class="h-5 w-5 text-teal-400" title="Bot">
               <RobotIcon />
+            </div>
+            <div
+              v-for="badge in cachedUser.badges"
+              :id="badge.id"
+              class="h-5 w-5 text-teal-400"
+              :title="badge.name"
+            >
+              <img :src="badge.icon" />
             </div>
           </div>
         </div>

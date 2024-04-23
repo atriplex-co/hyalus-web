@@ -99,6 +99,13 @@ export interface ICachedUser {
   bio: string;
   flags: number;
   publicKey: Uint8Array;
+  badges: IServerBadge[];
+}
+
+export interface IServerBadge {
+  id: string;
+  name: string;
+  icon: string;
 }
 
 export interface ICall {
