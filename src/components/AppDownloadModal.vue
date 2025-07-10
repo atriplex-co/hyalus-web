@@ -32,7 +32,7 @@
         class="mb-4 flex w-full transform flex-col items-center space-y-4 overflow-hidden transition-all"
         :class="{
           'h-0 ': !showAllDownloads,
-          'mt-4 h-[7.75rem] ': showAllDownloads,
+          'mt-4 h-[10.5rem] ': showAllDownloads,
         }"
       >
         <div
@@ -76,7 +76,12 @@ const downloads = [
   {
     platform: "osx",
     branch: "main",
-    url: "https://github.com/atriplex-co/hyalus-desktop/releases/latest/download/HyalusDesktop-osx.zip",
+    url: "https://github.com/atriplex-co/hyalus-desktop/releases/latest/download/HyalusDesktop-osx-x64.zip",
+  },
+  {
+    platform: "osx",
+    branch: "main",
+    url: "https://github.com/atriplex-co/hyalus-desktop/releases/latest/download/HyalusDesktop-osx-arm64.zip",
   },
   {
     platform: "linux",
